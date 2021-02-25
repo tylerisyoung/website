@@ -1,0 +1,92 @@
+---
+title: ""
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+    
+    css: styles.css
+
+
+---
+
+<br>
+<br>
+
+<h1>**Tyler Young**</h1>
+<h6>Creativity, Data Science & Prioritization for a Greater Good.
+</h6>
+<h6>
+***B.S. Environmental Studies***  
+***UO '18,  M.S. Data Analytics***  
+***ASU '22(EXP)***
+</h6>  
+_______________________________________
+
+<br>
+
+<h4>
+**My name is Tyler, I’m an Environmentalist, a Journalist, and a Filmmaker.
+I love prioritization science, effective altruism, beneficial business & nonprofits, 
+storytelling through visual media, and I especially enjoy when my work 
+can have a positive impact. I aim to make the world a better place 
+through creativity for a greater good.** 
+</h4>
+
+<br>
+<h5>
+**Currently:**
+</h5>
+<h6>
+**Creative Director - Lighthearted Humans**  
+**Video Production - California Academy of Sciences**  
+**Marketing - SF Media Co.**
+</h6>
+
+Social:
+*
+[Youtube](http://youtube.com/tylerisyoung/?target=_blank) , 
+[Instagram](https://www.instagram.com/tylerisyoung/?target=_blank) ,
+[Twitter](https://www.twitter.com/Tylerisyoung/?target=_blank) ,
+[GitHub](https://www.github.com/tylerisyoung/?target=_blank) ,
+[Email](mailto:Tyleralexanderyoung@gmail.com/?target=_blank])
+*
+
+
+
+![](images/surf.jpg)
+
+
+<h6>
+***This website was created by Tyler Young in Rstudio***
+</h6>
+
+
+
+
+
+
+
+<br>
+<center>
+![](images/tiylogo_tiny.png)
+
+
+
+
+
+
+
+
+
+
+</a>
+</div>
+
+
+
+
+
+

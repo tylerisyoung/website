@@ -1,0 +1,34 @@
+---
+title: ""
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+    
+    css: styles.css
+
+
+---
+
+<br>
+<br>
+
+<h1>**The Artists Rebellion**</h1> 
+<h6>
+***An essay by Tyler Young.***
+</h6>
+
+*[Tylerisyoung.Substack.com](www.tylerisyoung.substack.com)*   
+*[Twitter.com/TylerisYoung](www.twitter.com/Tylerisyoung)*  
+ _________________________
+ 
+ <br>
+ 
+<h1>
+The Artists Rebellion  
+</h1>
+Artists of the 21st century have room for creative investigation never before
+seen in history, and with that comes responsibility. A technological and materialistic 
+revolution has allowed everyone to ..... yada yada 

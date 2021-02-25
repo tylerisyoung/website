@@ -1,0 +1,24 @@
+name: "Tyler's site"
+navbar:
+  title: ""
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Lighthearted Humans"
+      href: Lightheartedhumans.html
+    - text: ""
+      href: Eatbadfish.html
+    - text: ""
+      href: Enviromapping.html
+    - text: ""
+      href: Albatross.html
+    - text: "Film"
+      href: Film.html
+    - text: "Photography"
+      href: Photography.html
+    - text: "Journalism"
+      href: Journalism.html
+    - text: "Contact"
+      href: Contact.html
+output_dir: "docs"
+

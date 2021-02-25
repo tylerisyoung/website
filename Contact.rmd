@@ -1,0 +1,27 @@
+---
+title: ""
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+    
+    css: styles.css
+
+
+---
+
+<br>
+<br>
+
+
+
+
+<h3>
+***Drop me a line...*** 
+</h3>
+*[Email](mailto:Tyleralexanderyoung@gmail.com) , 
+[Instagram](https://www.instagram.com/tylerisyoung/?target=_blank) , 
+[Twitter](https://www.twitter.com/Tylerisyoung/?target=_blank)*  
+_________________________
