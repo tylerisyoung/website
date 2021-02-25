@@ -19,24 +19,11 @@ output:
 <h6>Creativity, Data Science & Prioritization for a Greater Good.
 </h6>
 <h6>
-***B.S. Environmental Studies***  
-***UO '18,  M.S. Data Analytics***  
+***B.S. Environmental Studies***
+***UO '18,***  
+***M.S. Data Analytics***
 ***ASU '22****
-</h6>  
-_______________________________________
-
-<br>
-
-<h4>
-**My name is Tyler, I’m an Environmentalist, a Journalist, and a Filmmaker.
-I love prioritization science, effective altruism, beneficial business & nonprofits, 
-storytelling through visual media, and I especially enjoy when my work 
-can have a positive impact. I aim to make the world a better place 
-through creativity for a greater good.** 
-</h4>
-
-<br>
-<h5>
+</h6><h5>
 **Currently:**
 </h5>
 <h6>
@@ -44,7 +31,6 @@ through creativity for a greater good.**
 **Video Production - California Academy of Sciences**  
 **Marketing - SF Media Co.**
 </h6>
-
 Social:
 *
 [Youtube](http://youtube.com/tylerisyoung/?target=_blank) , 
@@ -53,6 +39,16 @@ Social:
 [GitHub](https://www.github.com/tylerisyoung/?target=_blank) ,
 [Email](mailto:Tyleralexanderyoung@gmail.com/?target=_blank])
 *
+ 
+________________________________________
+
+<br>
+
+<h5>
+**My name is Tyler, I’m an Environmentalist, a Journalist, and a Filmmaker. Currently in School for a masters in program evaluation & data analytics. I love prioritization science, effective altruism, beneficial business, storytelling through visual media, and I especially enjoy when my work can have a positive impact. I aim to make the world a better place through creativity for a greater good.** 
+</h5>
+
+<br>
 
 
 
@@ -60,7 +56,7 @@ Social:
 
 
 <h6>
-***This website was created by Tyler Young in Rstudio***
+***This website was created by Tyler Young in Rstudio, more info on Github***
 </h6>
 
 

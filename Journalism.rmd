@@ -26,7 +26,7 @@ output:
  _________________________
  
  <br>
- Article: [Joe Biden is the result of our loss in Sensemaking](./JoeBiden.html)   
+ Article:  
  Essay: [The Artists Rebellion](./Theartistsrebellion.html)   
  Article: [Free to Speak, navigating free speech since 1984]   
  Article: [Covid-1984]  
