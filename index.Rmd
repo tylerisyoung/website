@@ -21,7 +21,7 @@ output:
 <h6>
 ***B.S. Environmental Studies***  
 ***UO '18,  M.S. Data Analytics***  
-***ASU '22(EXP)***
+***ASU '22****
 </h6>  
 _______________________________________
 
