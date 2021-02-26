@@ -27,7 +27,7 @@ output:
  
  <br>
  Article:  
- Essay: [The Artists Rebellion](./Theartistsrebellion.html)   
+ Essay: [Example Site](./amiright_.html)   
  Article: [Free to Speak, navigating free speech since 1984]   
  Article: [Covid-1984]  
  Story: [The REI campaign]  
