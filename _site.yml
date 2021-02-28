@@ -20,5 +20,7 @@ navbar:
       href: Journalism.html
     - text: "Contact"
       href: Contact.html
+       - text: "527 Example Site"
+      href: amiright_.html
 output_dir: "docs"
 

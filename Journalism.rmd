@@ -25,9 +25,12 @@ output:
 [Twitter.com/TylerisYoung](https://twitter.com/Tylerisyoung/?tagets=_blank)*  
  _________________________
  
+ <h3>
+ CPP 527 Example Site: [Am I Right?](./amiright_.html)
+ </h3>
+ 
  <br>
  Article:  
- Essay: [Am I Right?](./amiright_.html)   
  Article: [Free to Speak, navigating free speech since 1984]   
  Article: [Covid-1984]  
  Story: [The REI campaign]  
