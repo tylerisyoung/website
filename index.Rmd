@@ -56,7 +56,7 @@ ________________________________________
 
 
 <h6>
-***This website was created by Tyler Young in Rstudio, more info on Github.***
+***This website was created by Tyler Young in Rstudio, more info on Github***
 </h6>
 
 
