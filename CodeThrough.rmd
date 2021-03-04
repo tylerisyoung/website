@@ -1,0 +1,144 @@
+---
+title: ""
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+    
+    css: styles.css
+
+
+---
+<center>
+<br>
+<H1>
+***GoogleViz in R, A Code Through.***
+</H1>
+
+<h5>
+***"googleViz"([CRAN](https://cran.r-project.org/web/packages/googleVis)) allows users to quickly interface with and customize google's graphical tools within R, and for those visualizations to be published on the web in an html format that allows for interactivity even within github pages. This package will also work with data from any .csv file. ***
+</h5>
+</center>
+_________________________
+
+<h2>
+Let's Install it 
+
+```{r, eval=FALSE}
+install.packages("googleVis")
+
+```
+
+We can read over the documentation or execute the extensive demo by using
+
+```{r, eval=FALSE}
+??googleviz
+
+#or
+
+demo(googleVis) 
+```
+
+
+Now lets load the library and visualize a few examples from the included data.
+
+```{r}
+library(googleVis)
+op <- options(gvis.plot.tag="chart")
+```
+<br>
+Population Chart with interactive pages
+```{r results='asis', tidy=TRUE}
+PopTable <- gvisTable(Population, 
+                      formats=list(Population="#,###",
+                                   '% of World Population'='#.#%'),
+                      options=list(page='enable'))
+plot(PopTable)
+```
+<br>
+<br>
+<br>
+The popular Sankey Chart with interactive labels and cursor highlighting
+
+```{r results='asis', tidy=TRUE}
+datSK <- data.frame(From=c(rep("A",3), rep("B", 3)),
+                    To=c(rep(c("X", "Y", "Z"),2)),
+                    Weight=c(5,7,6,2,9,4))
+
+Sankey <- gvisSankey(datSK, from="From", to="To", weight="Weight",
+                     options=list(
+                       sankey="{link: {color: { fill: '#d799ae' } },
+                            node: { color: { fill: '#a61d4c' },
+                            label: { color: '#871b47' } }}"))
+plot(Sankey)
+
+```
+<br>
+<br>
+<br>
+A simple histogram with interactive tags
+
+```{r results='asis', tidy=TRUE}
+set.seed(123)
+datHist=data.frame(A=rpois(100, 20),
+                   B=rpois(100, 5),
+                   C=rpois(100, 50))
+
+Hist <- gvisHistogram(datHist, options=list(
+  legend="{ position: 'top', maxLines: 2 }",
+  colors="['#5C3292', '#1A8763', '#871B47']",
+  width=400, height=360))
+plot(Hist)
+
+```
+<br>
+<br>
+<br>
+Or even an annotation chart with interactive plot locations
+
+```{r results='asis', tidy=TRUE}
+Anno <- gvisAnnotationChart(Stock, 
+                            datevar="Date",
+                            numvar="Value", 
+                            idvar="Device",
+                            titlevar="Title", 
+                            annotationvar="Annotation",
+                            options=list(
+                              width=600, height=350,
+                              fill=10, displayExactValues=TRUE,
+                              colors="['#0000ff','#00ff00']")
+)
+plot(Anno)
+```
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Now a custom heatmap of life expectancy from the existing data with interactive state numbers
+</h2>
+```{r results='asis', tidy=TRUE}
+require(datasets)
+states <- data.frame(state.name, state.x77)
+exp <- gvisGeoChart(states, "state.name", "Life.Exp",
+                          options=list(region="US", 
+                                       displayMode="regions", 
+                                       resolution="provinces",
+                                       width=600, height=400))
+plot(exp)
+```
+
+<br>
+<br>
+<br>
+<br>
+
+<center> HAPPY PLOTTING! </center>

@@ -22,5 +22,7 @@ navbar:
       href: Contact.html
     - text: "527 Example Page"
       href: amiright_.html
+    - text: "527 Codethrough"
+      href: CodeThrough.html
 output_dir: "docs"
 
