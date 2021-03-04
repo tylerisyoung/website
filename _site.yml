@@ -24,5 +24,7 @@ navbar:
       href: amiright_.html
     - text: "527 Codethrough"
       href: CodeThrough.html
+    - text: "527 CV"
+      href: CV/index.html
 output_dir: "docs"
 

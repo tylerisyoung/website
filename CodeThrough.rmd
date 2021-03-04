@@ -78,17 +78,17 @@ plot(Sankey)
 <br>
 <br>
 <br>
-A simple histogram with interactive tags
+A simple histogram with interactive tags, a data.frame to be displayed as a histogram. Each column will be displayed as a histogram.
 
 ```{r results='asis', tidy=TRUE}
-set.seed(123)
+set.seed(12345)
 datHist=data.frame(A=rpois(100, 20),
                    B=rpois(100, 5),
                    C=rpois(100, 50))
 
 Hist <- gvisHistogram(datHist, options=list(
   legend="{ position: 'top', maxLines: 2 }",
-  colors="['#5C3292', '#1A8763', '#871B47']",
+  colors="['#5C3112', '#3A5723', '#871B47']",
   width=400, height=360))
 plot(Hist)
 
@@ -123,6 +123,8 @@ plot(Anno)
 <br>
 
 
+
+
 Now a custom heatmap of life expectancy from the existing data with interactive state numbers
 </h2>
 ```{r results='asis', tidy=TRUE}
@@ -133,6 +135,8 @@ exp <- gvisGeoChart(states, "state.name", "Life.Exp",
                                        displayMode="regions", 
                                        resolution="provinces",
                                        width=600, height=400))
+# It is also possible to use "icon=paste0 to use custom icons from icons.iconarchive.com
+
 plot(exp)
 ```
 
@@ -140,5 +144,13 @@ plot(exp)
 <br>
 <br>
 <br>
+
+Note: 
+You will need an internet connection to load the graphical data as they require api access to run. 
+
+
+Other links:
+Google Charts API: https://developers.google.com/chart/
+Google Maps API Terms of Service: https://cloud.google.com/maps-platform/terms/
 
 <center> HAPPY PLOTTING! </center>
