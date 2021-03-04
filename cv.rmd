@@ -1,0 +1,24 @@
+---
+title: ""
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+    
+    css: styles.css
+
+
+---
+
+<br>
+<br>
+
+
+<h1>**Automated CV Project**</h1>
+<h6>***An automatic way to generate a new CV from an excel sheet with your past positions. This project was done in a class with Jesse Lecey from ASU & sourced form Nick Strayer*** [Github](https://github.com/DS4PS/cv)</h6>
+*[My Custom CV](https://tylerisyoung.github.io/CV/) Git Hub Project [Link](https://github.com/tylerisyoung/cv)
+*
+
+
