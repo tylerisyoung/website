@@ -18,13 +18,9 @@ navbar:
       href: Photography.html
     - text: "Journalism"
       href: Journalism.html
+    - text: "CV"
+      href: cv.html
     - text: "Contact"
       href: Contact.html
-    - text: "527 Example Page"
-      href: amiright_.html
-    - text: "527 Codethrough"
-      href: CodeThrough.html
-    - text: "527 CV"
-      href: cv.html
 output_dir: "docs"
 

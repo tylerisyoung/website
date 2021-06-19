@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>fromcanadatocoosbay.utf8</title>
+
+<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="Lightheartedhumans.html">Lighthearted Humans</a>
+</li>
+<li>
+  <a href="Eatbadfish.html"></a>
+</li>
+<li>
+  <a href="Enviromapping.html"></a>
+</li>
+<li>
+  <a href="Albatross.html"></a>
+</li>
+<li>
+  <a href="Film.html">Film</a>
+</li>
+<li>
+  <a href="Photography.html">Photography</a>
+</li>
+<li>
+  <a href="Journalism.html">Journalism</a>
+</li>
+<li>
+  <a href="cv.html">CV</a>
+</li>
+<li>
+  <a href="Contact.html">Contact</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<p><br> <br></p>
+<h1>
+<strong>From Canada to Coos Bay</strong>
+</h1>
+<h6>
+<strong><em>The Politics of a Pipeline.</em></strong>
+</h6>
+<em><a href="www.tylerisyoung.substack.com">Tylerisyoung.Substack.com</a></em><br />
+<em><a href="www.twitter.com/Tylerisyoung">Twitter.com/TylerisYoung</a></em><br />
+_________________________ <br> 11/02/2021 <br> An article by Tyler Young with Photography &amp; On site reporting by Jessica Smith<br />
+Previously published in: Ethos &amp; <a href="https://www.dailyemerald.com/ethos/from-canada-to-coos-bay-the-politics-of-a-pipeline/article_6496c922-2423-11e9-bcea-c7e629e45c4b.html">The Daily Emerald</a>
+<h3>
+How pipeline politics, climate change, and oil spills, can create incentives that muddy the waters.
+</h3>
+<center>
+<img src="Journalism/Environment/fromcanadatocoosbay/pipeline01.jpg" />
+</center>
+<p><br></p>
+<p>In the parking lot of the Veterans’ Affairs building, clusters of glowing faces watch a projected broadcast of the public hearing happening within. Pacing side to side and warming their hands with their breath, onlookers intermittently weigh in on the testimonies in hushed voices.</p>
+<p>An eager line of people extends out from the building and mixes with the crowd outside. They are all waiting for the chance to either condemn or support the removal-fill permit proposal of the Jordan Cove Pipeline, a project belonging to the Canadian energy corporation, Pembina, which seeks to construct a 229 mile liquid natural gas pipeline (LNG) from Malin, to Coos Bay, Oregon. Having been twice denied by the Federal Energy Regulatory Commission (FERC) for failing to provide evidence for public benefit, the pipeline is now under the consideration of the Department of State Lands for the third time.</p>
+<p>Leading the charge against the pipeline are environmentalist organizations such as Our Children’s Trust (OCT), Rogue Climate, Cascadia Wildlands and 350 Eugene, a local chapter of 350.org.</p>
+Allie Rosenbluth, campaign director for Rogue Climate, says that in the wake of the hearings she and her team are taking a much needed rest while continuing to push for additional public comments through online outreach. “Communities have stopped it before,” Rosenbluth says, “we’ll continue to be the watch dogs.”
+<center>
+<img src="Journalism/Environment/fromcanadatocoosbay/pipeline02.jpg" />
+</center>
+<p>Among those submitting comments at the hearings are plaintiffs from the historic Youth v. Gov. case in which youths between the ages of 11 and 22 have filed suit against the government for violating their rights by contributing to climate change. The case was first filed in 2015 and is lead by Eugene’s own Kelsey Juliana. Also part of the lawsuit is climate scientist James Hansen, the former director of NASA’s Goddard Institute for Space Studies. Hansen’s famous saying, “the only safe level of Carbon Dioxide (CO2) concentration in the atmosphere is below 350 Parts per million,” he inspired the name for the environmental organization 350.org.</p>
+<p>The parties are suing several branches of the U.S. government, including the Departments of Energy, Commerce, and the Interior, for allowing excessive carbon emissions to be released into the atmosphere. Commonly known as the “Trial of the Century,” more pretrial briefs are due to be filed in February and March, 2019.</p>
+<p>The effects of the Jordan Cove Pipeline would contrast with the ambitions put forth by the OCT plaintiffs, as the project would be Oregon’s largest investment in greenhouse gas infrastructure to date. Pembina claims that the construction would employ 6,000 people, and once completed, retain more than 200 workers to operate the terminal. Though other organizations like Citizens Against LNG and Counter Punch claim there would be only 100 permanent jobs, and most of them would not be filled by Oregon citizens. The Federal Energy Regulatory Commission has also previously cited this concern.</p>
+Despite this discrepancy, Pembina asserts that their pipeline would bring 10 billion dollars to the state and local economies. Many of the impacted communities, formerly beneficiaries of local investments from the timber industry, have been patiently waiting for such a project.
+<center>
+<img src="Journalism/Environment/fromcanadatocoosbay/pipeline03.jpg" />
+</center>
+<p>Oregon’s elected officials and politicians who are consistently called upon to make public statements either for or against the project are caught between these two groups. There is no apparent middle ground solution on the horizon.</p>
+<p>Scott Strickland, union organizer for Local 701 of the International Union of Operating Engineers, represents the interests of the 3,500 workers who build much of Oregon’s infrastructure.</p>
+<p>“You know I think of myself as environmentally minded too,” he says. “We don’t want there to be leaks or pollution in our water either, but it’s a question of ‘is it going to be here or there?’”</p>
+<p>While Strickland admits that there are alway risks that come with building a pipeline, he wonders if Oregon, with its various environmental protection laws, would be a safer place to have the LNG line than in a state without those protections.</p>
+<p>According to Oregon.gov, Oregon’s Removal-Fill Law (ORS 196.795-990) “requires people who plan to remove or fill material in wetlands or waterways to obtain a permit from the Department of State Lands (DSL).” This requirement is the reason for the various public comment hearings that occurred throughout the state and ended in the capital on Jan. 15, 2019.</p>
+<p>The Jordan Cove Pipeline would go through more than 400 waterways, streams, lakes, rivers, and wetlands, like a scar across the landscape of Southern Oregon. Leaks are not only possible, but over time, practically inevitable. In 2014, there was a major LNG leak in Plymouth, WA, along the Columbia river causing hundreds of people to evacuate. Officials claimed if rare conditions of oxygen mixture were met, and an ignition source were present, an explosion spanning three quarters of a mile could have ensued. However, it is important to note that according to Breaking Energy, contrary to popular belief, a “spill” of the liquid natural gas which the pipeline would be carrying will usually result in a quick boiling and evaporation of the gas into the atmosphere. That said, it would do very minor damage to the environment apart from the long term greenhouse gas emission effects.</p>
+In other words, any leaks or spills from the Jordan Cove Pipeline, aside from something catastrophic, would evaporate quickly, and leave almost no trace on the immediate environment.
+<center>
+<img src="Journalism/Environment/fromcanadatocoosbay/pipeline04.jpg" />
+</center>
+<p>The United States is the world’s largest producer of natural gas, currently supplying about one-third of all U.S. energy needs, and one-half of its household heating fuel. Natural gas, which is extracted from fracking, is roughly 600 times more dense in its liquid form than in its gaseous form. Cooling the gas down to a temperature of -260 degrees Fahrenheit allows it to be transported in specialized tanker ships to locations unreachable by pipelines. The Jordan Cove Connector Pipeline would cut the travel time of transporting the gas from the interior of the U.S. to the coastline, becoming a more efficient and profitable means of transport for Pembina.</p>
+<p>The Pipeline, if approved, would transport natural gas through a double-layered pipe made of reinforced stainless steel. The pipes are mostly placed underground and are often invisible from the surface after installment. On their website, Pembina has uploaded a beautiful photo of plush green farmland being replanted over a pipeline to indicate there would be minimal impact to the current landscape. In Oregon, however, where winters can be harsh, and rain is a given, underground pipes within a few feet of topsoil can easily disrupt the landscape. Moreover, even slight shifts in the pipeline, over time, can cause leaks.</p>
+<p>Oil Change International (OCI), a nonprofit organization that seeks to expose the true costs of fossil fuels, conducted a thorough investigation on the Jordan Cove Pipeline. They reported it would emit 36 million metric tons of CO2, 15.4 times as much as Oregon’s last remaining coal fired power plant. According to BP Oil’s 2017 data, of the United State’s 5,087.7 million metric tons of annual CO2 emissions the pipeline would account for 0.71% of the United States carbon footprint. OCI calls for a reduction of fossil fuel emissions to zero by mid century.</p>
+<p>CO2 emissions are the largest contributor to climate change, accounting for 65% of total greenhouse gas emissions. Methane (CH4) is another greenhouse gas which is burned to power many of our household appliances, like stoves and water heaters. Methane itself is responsible for 16% of greenhouse gasses emitted, though when it is burned a chemical reaction takes place, which turns the methane into CO2 and gives off heat as a by product. The oil development fields around the country which are drilling, cracking, and fracking the earth for natural gas, are typically harvesting the CH4 which is piped to our stovetops.</p>
+<p>The Jordan Cove pipeline is a connector pipeline, which would connect existing LNG infrastructure throughout the United States with Oregon, where it would be placed on tanker ships and exported to Asian markets. It would be the first LNG export terminal on the west coast of the continental United States. As of now, the existing LNG infrastructure across the nation is either being used for domestic consumption or being shipped to foreign markets through export terminals in Texas and the Gulf of Mexico.</p>
+<p>It’s a long way to the Asian markets, and though LNG has a far better safety record than traditional crude oil, as documented by the U.S. Department of Transportation, there is an undeniable history of leaks and explosions which can happen in any number of ways, from the mining, to the storage, or in transport. A study conducted by Scientific American demonstrates that gas leaks are difficult to trace. Some natural gas companies already in operation can give us a better understanding of what leakage rates might be.</p>
+<p>The largest gas distribution company in the United States, Southern California Gas Co., states that their loss rate was 0.84% in 2011 and 0.87% in 2012. This is quite low when compared to Washington Gas Light Co., serving the Washington DC area, whose loss rates were 4.04% in 2011 and 3.65% in 2012. Some natural gas extraction sites in Russia, a large producer of global LNG, have loss rates as high as 7.0%. The gas companies themselves are careful to state that the gas is simply “unaccounted for,” which could mean a leak, an accounting error, or inconsistent conversion rates, among other explanations for the discrepancy.</p>
+<p>Leakage rates above 3% could offset any benefits of a cleaner fossil fuel, reported that in Washington, D.C., the gas transport system had more than 6,000 leaks across 1,500 miles of pipeline — four leaks per mile. While that number includes pipes attached to households (which can be very old), any leak is potentially dangerous. They also found that in 12 locations, methane had accumulated to “explosive levels” (defined as between 50,000 and 500,000 PPM). A similar study conducted in Boston found almost 3,400 leaks over 785 miles of pipeline, averaging 4.3 leaks per mile.</p>
+<p>While the 229 mile long Jordan Cove Pipeline is much shorter than pipelines elsewhere, and would not be connecting to households directly, the gas would eventually be piped through to local infrastructure, and into households or industrial machinery. Using the D.C. and Boston studies as reference, unless newer techniques emerge, there is a possibility of up to 936 to 1,010 leaks in total. An average of 4.15 leaks per mile.</p>
+<p>Currently, the law does not require Pembina to consider the pipeline’s climatological effects, nor adhere to the concerns of Native tribal members, who have come out in opposition to the pipeline. Tribal Councils all over the state of Oregon have stated that Pembina gives no consideration to their upstream water rights and traditional burial grounds, which the pipeline could disrupt. They will however need to contend with required wetland restoration in correlation to the amount of construction they are doing on wetland ecosystems.</p>
+Don Gentry, Chairman of the Klamath Tribal Council, expressed his people’s worries about the pipeline numerous times over the years. “We are concerned about the economy, but we are also concerned with sustainability,” he said. “We lived off the land. We aren’t conservationists.”
+<center>
+<img src="Journalism/Environment/fromcanadatocoosbay/pipeline05.jpg" />
+</center>
+<p>Aside from the risks to fish and wildlife, which are important for spiritual ceremonies, and are part of the traditional diet of the Klamath people, Gentry says that the major excavation of lands for the pipeline will indefinitely unearth ancient burial grounds. “Once that damage is done, it’s done,” he said speaking from experience. A 1993 article published by Herald and News, Klamath Falls’ local paper, reads as follows:</p>
+<p>“State highway engineers are redesigning a bridge under construction across the Klamath River south of Klamath Falls after crews uncovered remains of what are believed to be Native Americans of ancient origin.Work on the Highway 97 bridge was halted May 10 after workers discovered human bones strewn about in dirt that had been moved by heavy equipment.”</p>
+Gentry attested to being present at the reburial of these ancestral remains, saying the experience was painful and traumatic. “It makes us feel like we aren’t as important as other people when our remains are disturbed,” he said concluding, “enough is enough.”
+<center>
+<img src="Journalism/Environment/fromcanadatocoosbay/pipeline06.jpg" />
+<center>
+<p>In an article originally published by Street Roots called, “Jordan Cove LNG pipeline ‘a never-ending nightmare,’” the author reports that any wetland mitigation that does not take place at the source of construction is hardly mitigating the effects at all. Restoration efforts elsewhere, which aim to offset the overall impact, would do little to help the local communities and wildlife that will actually be affected by the construction. Nonetheless, the efforts qualify as permitted mitigation. This scenario would be like the Flint, Michigan, municipality paying for watershed and wetland mitigation in Louisiana while their own river, and source of drinking water, continues to remain as polluted as it is today. The overall wetland acreage in the world remains the same, though people nearest to the project will continue to suffer the consequences of the pipeline.</p>
+This issue could present itself as the pipeline’s construction will need to remove, and displace large amounts of land, throughout the proposed route, and this could lead to disturbed soil, ecosystem damage, and the contamination of groundwater.
+<center>
+<img src="Journalism/Environment/fromcanadatocoosbay/pipeline07.jpg" />
+</center>
+<p>Many organizations, like 350.org, Greenpeace and the Sierra Club, have been instrumental in educating the public on the concerns of ecosystem function and climate change. More people than ever in the industrialized world are now concerned about the potentially catastrophic warming of two to eight degrees Celsius, which can result in a number of negative environmental impacts.</p>
+<p>The problem, as many environmentalists put it, is the difficulty of curbing the greenhouse gas emissions of developing nations, especially the larger ones. China, India and Sub Saharan Africa, all with massively growing populations, are gearing up for large scale and rapid industrialization. It’s not as simple as saying they must simply go through the industrialization process using 100% clean energy, largely due to the fact that it is still more expensive at this moment in time to do so. Using clean energy would slow their development, keeping their people in poverty longer, as widespread use of cheap energy is the driving factor behind developing nations economic growth.</p>
+<p>Under the current economic system, it is often said that there is an inherent subsidization of any industry using fossil fuels for production and the externality of that cost will be paid by our children and our grandchildren. That’s is why the plaintiffs are suing the government in the Youth v. Gov case.The public trust doctrine states that “public lands, waters and natural resources are to be held in trust for the benefit of the public.” Currently, the federal government has no comprehensive plan in place to protect these resources. The Juliana plaintiffs claim that if we want our planet to remain under 2 degrees Celsius, it is going to be a battle.</p>
+<p>Naomi Klein, a Canadian author and social activist, who has visited and spoke at the University of Oregon in the past, advocates for a carbon tax and divestment from the fossil fuel industry in her book “This Changes Everything, Capitalism vs. The Climate.” She writes that once large scale investments have been decided on, it is difficult to change course, and that as time goes on, more drastic mitigation efforts will be required. She also claims there is no shortage of options to equitably fund the lowering of carbon emissions. Among other things, Klein suggests a $50 tax per metric ton of CO2 emitted in developed countries, and the phasing out of fossil fuel subsidies. The revenue from this and additional measures, if implemented simultaneously, would amount to roughly $2 trillion annually, which she claims is the seed money for “a very healthy start to finance a Great Transition (and avoid a Great Depression).”</p>
+The Intergovernmental Panel on Climate Change (IPCC)’s latest report on climate change states, “Limiting global warming to 1.5°C would require rapid, far-reaching and unprecedented changes in all aspects of society…limiting global warming to 1.5°C compared to 2°C could go hand in hand with ensuring a more sustainable and equitable society.”
+<center>
+<img src="Journalism/Environment/fromcanadatocoosbay/pipeline08.jpg" />
+</center>
+<p>Many politicians refer to the IPCC as an authority figure on climate data. Leaders are now looking to the panel for information as they make political decisions on these matters. The IPCC typically releases a climate report every six years and has recently released an important special report in 2018. In this most recent report, the IPCC has reiterated its intention to influence nations to make drastic and far reaching changes to infrastructure.</p>
+<p>The IPCC continues in the vein of Naomi Klein and the major environmental organizations, advising that if we do not act quickly and radically, unalterable damage to the climate will ensue. Still, it might be worth exploring alternative narratives like that of Bjorn Lomborg who has written on global welfare, and given an analysis of economics in climate change throughout his books, “How to spend $75 Billion to Make the World a Better Place,” “Cool It,” and “Prioritizing development.”</p>
+<p>Lomborg first indicates that the IPCC’s warming prediction has actually gone down in their recent reports when compared to 1990 data. He also notes that climate models have very wide margins of error, and that organizations like Greenpeace, 350.org, and the Sierra Club often lead with the highest estimates as they are interest groups who have members, subscribers, and lobbyists who all benefit when the climate predictions and stories told continue to get worse. This places them at the forefront of the climate movement, and on the front page of the news where “if it bleeds it leads.” As polar bears tend to do.</p>
+<p>University of Sussex economist Richard Tol claims that a carbon tax is a terribly inefficient means of mitigating climate change. He says that drastic carbon cuts will do more harm than good, and that the effects of an 80% reduction in carbon emissions to achieve the 2 degrees celsius of warming mark by 2100 will be felt by developing nations most.</p>
+<p>Ambient air pollution killed nearly 6 million people globally in 2010, more than alcohol and drugs combined, and many of these deaths were in developing nations and Southern Asia. These same markets, who cannot afford green energy, could cheaply reduce dangerous levels of ambient, and household 2.5 micron particulate matter air pollution by substituting the higher carbon footprint fuel used for cooking and heating; biomass and replacing it with natural gas.</p>
+<p>Lomborg suggests we count all humans, in all areas, as equal, prioritize human welfare, and bring as many people out of poverty, as fast as possible, as he claims this has been demonstrated to do the most overall good, both in maintaining equity between nations, and in reinforcing the climate’s relatively stable position.</p>
+<p>The issue of climate economics is complicated, and with no one group having all the answers, the void left by uncertainty can leave room for convincing… Pembina has offered a lot of financial help to Oregon communities in need. They helped the Egyptian Theater in Coos Bay purchase new curtain rigging equipment, helped fund Dillian’s Park, an all inclusive park in North Bend, purchased paint for the Winchester Bay Lighthouse, and commissioned several other community investments. But all this generosity makes you wonder if Pembina is attempting to buy popularity.</p>
+<p>In addition to these donations, Pembina has also recently offered landowners in the path of the pipeline $30,000 as a pre-approved payment with a deadline to accept their offer by December 31, 2018. If the project does not go through, the homeowners would be able to keep this payment. This is in addition to any offers they have already made, and is likely a means of persuading FERC into approving their permits. When Pembina was previously denied, the board cited the fact that the company only had homeowner approval for a small portion of the proposed route.</p>
+<p>On one hand, there’s an energy company with a lot of money, and on the other, there are activists with endless willpower who are gathering data to bring to the courts. Nonetheless, transparency and education are needed at every level. Rather than emotion and dollar signs influencing negotiations, knowledge and reason should be guiding inclusive and democratic decisions. Environmental solutions are not always black and white, but the fact remains that there are two paths forward. Either Pembina will be permitted to build a pipeline that will bring jobs to local economies and provide economic benefit along with pollution to the atmosphere, or the permits will be blocked by either Oregon’s officials or the Federal Energy Regulatory commission in favor of preserving the climate. Which side are you on?</p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

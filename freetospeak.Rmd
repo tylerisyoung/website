@@ -1,0 +1,39 @@
+---
+title: ""
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+    
+    css: styles.css
+
+
+---
+
+<br>
+<br>
+
+<h1>**Free to Speak**</h1> 
+<h6>
+***Navigating Free Speech since 1984.***
+</h6>
+
+*[Tylerisyoung.Substack.com](www.tylerisyoung.substack.com)*   
+*[Twitter.com/TylerisYoung](www.twitter.com/Tylerisyoung)*  
+ _________________________
+ <br>
+06/02/2020
+ <br>
+ An article by Tyler Young 
+
+<h3>
+By allowing government and corporations to limit and censor our speech we are hindering our response to the pandemic and are no better than China who takes the top down approach.
+</h3>
+<center>
+![](.jpg)
+</center>
+<br>
+
+

@@ -1,0 +1,40 @@
+---
+title: ""
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+    
+    css: styles.css
+
+
+---
+
+<br>
+<br>
+
+<h1>**Journalism**</h1> 
+<h6>
+***I'm writing in good faith about things I feel important.***  
+***Completely Independent.***
+</h6>
+
+*[Tylerisyoung.Substack.com](https://tylerisyoung.substack.com/?target=_blank)   
+[Twitter.com/TylerisYoung](https://twitter.com/Tylerisyoung/?tagets=_blank)*  
+ _________________________
+ 
+ <br>
+ Article: [Joe Biden is the result of our loss in Sensemaking](./JoeBiden.html)   
+ Essay: [The Artists Rebellion](./Theartistsrebellion.html)   
+ Article: [Free to Speak, navigating free speech since 1984]   
+ Article: [Covid-1984]  
+ Story: [The REI campaign]  
+ Article: [Deep Ecology]  
+ Story: [Rafting the Deschutes]  
+ Story: [Cycling from Oregon to Mexico]  
+ Article: [From Canada to Coos Bay, The Politics of a Pipeline]  
+ 
+ <br>
+ ![](images/theartistsrebellion.jpg)

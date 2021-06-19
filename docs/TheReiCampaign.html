@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>TheReiCampaign.utf8</title>
+
+<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="Lightheartedhumans.html">Lighthearted Humans</a>
+</li>
+<li>
+  <a href="Eatbadfish.html"></a>
+</li>
+<li>
+  <a href="Enviromapping.html"></a>
+</li>
+<li>
+  <a href="Albatross.html"></a>
+</li>
+<li>
+  <a href="Film.html">Film</a>
+</li>
+<li>
+  <a href="Photography.html">Photography</a>
+</li>
+<li>
+  <a href="Journalism.html">Journalism</a>
+</li>
+<li>
+  <a href="cv.html">CV</a>
+</li>
+<li>
+  <a href="Contact.html">Contact</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<p><br> <br></p>
+<h1>
+<strong>The REI Campaign</strong>
+</h1>
+<h6>
+<strong><em>An article by Tyler Young.</em></strong>
+</h6>
+<p><em><a href="www.tylerisyoung.substack.com">Tylerisyoung.Substack.com</a></em><br />
+<em><a href="www.twitter.com/Tylerisyoung">Twitter.com/TylerisYoung</a></em><br />
+_________________________ <br> 06/20/2018 <br></p>
+<h3>
+We convinced* REI to divest their corporate holdings from the fossil fuel industry.
+</h3>
+<p><br></p>
+<p>As a senior at the University of Oregon, I partnered with fellow senior Asha Rao, and attorney Alice Warner with support from th student group Cascadia Action Network, in an attempt to convince a brand we have all historically loved and supported to divest their money from the fossil fuel industry. We eventually got a petition with 30,000 signatures and were invited to sit down with REI executives.</p>
+<p>The divestment movement with roots from apartheid in South Africa has proven to effectively put pressure on the most valuable asset of any corporation or nationstate; their finances. We started a movement called “Opt4Climate.”</p>
+<p><strong><em>“Opt 4 Climate is an organization of REI members who are also climate activists. We care about the world and think that one of our favorite brands should too, so join us in helping convince REI that the divestment of our cooperative from fossil fuel companies, and the big banks that fund them is a viable solution that directly helps climate change.”</em></strong></p>
+<p>Climate change is simultaneously threatening communities, individuals human rights, and more importantly, our ecosystems which we rely on (and hike in). REI currently has investments in big banks like U.S. Bank, and Wells Fargo which are funding the fossil fuel industries driving climate change. These banks have been placed on a list entitled Mazaska Talks (money talks) published by a group of Indigenous activists which formed after the standing rock protest over water rights, and this list shows the banks which are directly funding the fossil fuel industry and driving climate change. Environmental watchdog giants like The Rainforest Action Network are simultaneously calling for the same thing. <img src="images/Journalism/Rei/MazaskaTalks.png" alt="image" /> Opt 4 Climate says, “Banking is stewardship, too. REI’s banking practices fly in the face of its claim to put environmental purpose above profit and prevent REI from reaching its goal to become carbon-neutral by 2020.”</p>
+<p>We targeted REI based on claims like, “our co-op’s health depends on the environment’s health.” REI certainly promotes itself as a very eco-friendly brand though consumeristic at its core. While this is true, it was not lost on our small activist group that while the REI cooperative has become somewhat prepackaged, and sterile, they are certainly good at what they do in terms of encouraging people to get outdoors which in turn, promotes a greater respect for the environment in which we all live, breathe, and play. This sort of adventure based advertising has lead to campaigns like REI’s #OPTOUTSIDE which has since taken off to become an instagram favorite among avid hikers, cyclists, kayakers, and general go getters. And this is where Opt 4 Climate got their name, encouraging people to think about their impact with the #OPT4CLIMATE hashtag and we have encouraged our supporters to post photos with their cell phones or the linked image to show their support for REI to divest their money into banks that are better for the environment.</p>
+<center>
+<img src="images/Journalism/Rei/opt4climate.jpeg" alt="image" /> <br> <img src="images/Journalism/Rei/opt4climate_4.jpg" alt="image" />
+</center>
+<p>On our former website we provided education on a variety of topics including climate data like James Hansen’s plea to remain below 350 parts per million of CO2 in the atmosphere, well below the UN target to remain under 450ppm which is roughly 2 degrees celsius, a number we are approaching rather quickly as they also mention the most recent climatic data at Mauna Loa, Hawaii which has placed the current concentration at 411PPM.</p>
+<p>In addition to our successes on social media, the Opt 4 Climate team sat down with REI executives including the head of marketing, and HR, and key staff members at their headquarters in Seattle to discuss divestment. In the end, while the brand did not make any commitments to our team, they were receptive to new ideas, they claimed that they would likely offer a “greener” fund for all employee pensions, and felt their longterm values aligned with the campaign overall. Those following along only wish the apparently eco-friendly outdoor brand would move a bit faster, and be a bit more bold. Overall, it is reassuring that environmentalists like you and I aren’t allowing brands to greenwash their practices as blatantly as just a few years ago. While REI is better off than most, there’s always room for improvement.</p>
+<center>
+<p><img src="images/Journalism/Rei/cascadiaactionnetwork.jpg" /><br />
+<br></p>
+<img src="images/Journalism/Rei/opt4climate_5.jpg" />
+</center>
+<p><br> <br></p>
+<h3>
+<strong><em>2020 UPDATE</em></strong>
+</h3>
+<strong><em>REI annouces that they are more committed to the climate than ever before, though some may argue it’s the same song and dance…</em></strong>
+<center>
+<img src="images/Journalism/Rei/opt4climate_3.jpg" />
+</center>
+<p><br></p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

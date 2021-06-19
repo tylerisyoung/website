@@ -1,0 +1,42 @@
+---
+title: ""
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+    
+    css: styles.css
+
+
+---
+
+<br>
+<br>
+
+<h1>**Economics**</h1> 
+<h6>
+***I am not a financial advisor, yet continue to encourage you to take advice from people on the internet.***
+</h6>
+
+*[Tylerisyoung.Substack.com](https://tylerisyoung.substack.com/?target=_blank)   
+[Twitter.com/TylerisYoung](https://twitter.com/Tylerisyoung/?tagets=_blank)*  
+ _________________________
+ 
+ <br>
+<h4>
+<details><summary>***Articles***</summary>
+[ ](./n/a.html)  
+  
+[*Bitcoin*](./bitcoin.html)    
+
+[*Bitcoin*](./bitcoin.html)   
+  
+[*Bitcoin*](./bitcoin.html)
+</details>
+</h4>
+
+
+ <br>
+ ![](images/theartandscienceofEconomics.png)

@@ -1,0 +1,62 @@
+
+---
+title: ""
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+    
+    css: styles.css
+
+
+---
+
+<br>
+<br>
+
+<h1>**Politics**</h1> 
+<h6>
+******
+</h6>
+
+*[Tylerisyoung.Substack.com](www.tylerisyoung.substack.com)*   
+*[Twitter.com/TylerisYoung](www.twitter.com/Tylerisyoung)*  
+ _________________________
+<br>
+<h5>
+<center>
+***“Fascism should rightly be called Corporatism, as it is the merger of corporate and government power.”      
+- Benito Mussolini***
+</center>
+</h5>
+
+<br>
+
+<h4>
+<details><summary>***Articles***</summary>
+[ ](./n/a.html)  
+  
+Article: [*Joe Biden and our loss in Sensemaking*](./joebidenandourlossinsensemaking.html)    
+
+Essay: [*Cuomo Will Not Crack!*](./.html)   
+  
+Article: [*Free to Speak, Navigating Free Speech since 1984*](./freetospeak.html)
+</details>
+</h4>
+
+<h4>
+<details><summary>***Notes***</summary>
+[ ](./n/a.html)  
+
+Text Message: [*Makhia Bryant*](./makhiabryant.html)   
+  
+
+</details>
+</h4>
+<br>
+
+![](onepager)
+
+

@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "adventure.html"
 output:
   html_document:
     theme: yeti
@@ -15,41 +15,19 @@ output:
 <br>
 <br>
 
-<h1>**Adventure Films**</h1>
-<h6>***Ecuador, Lost Coast,  Smith Rock, Deschutes River, The Enchantments, Eclipse***</h6>
+<h1>**Adventure**</h1> 
+<h6>
+***Sometimes, life is fun! ***
+</h6>
 
-*[Youtube.com/tylerisyoung](https://www.youtube.com/tylerisyoung/?target=_blank)   
-*
-____________________________
-
-<br>
-<br>
-
-<br>
-[Watchtower of Ecuador](https://youtube.com/watch?v=ZbWKWzaExlk "Cool Stuff - Click to Watch!")
-<br>
-
-<br>
-[Lost Coast](https://youtube.com/watch?v=YUOhvFJArkw "Cool Stuff - Click to Watch!")
-<br>
-
-<br>
-[Smith Rock](https://youtube.com/watch?v=CSwuTXZW2sk "Cool Stuff - Click to Watch!")
-<br>
-
-
-<br>
-[Rafting The Deschutes](https://vimeo.com/318633228 "Cool Stuff - Click to Watch!")
-<br>
-
-
-<br>
-[The Enchantments](https://youtube.com/watch?v=CAZ9rqBjp7o "Cool Stuff - Click to Watch!")
-<br>
-
-<br>
-[Eclipse](https://youtube.com/watch?v=Ra9WC87YT_k&t "Cool Stuff - Click to Watch!")
-<br>
-
-
-
+*[Tylerisyoung.Substack.com](https://tylerisyoung.substack.com/?target=_blank)   
+[Twitter.com/TylerisYoung](https://twitter.com/Tylerisyoung/?tagets=_blank)*  
+ _________________________
+ 
+ <br>
+Story: [Rafting the Deschutes]  
+Story: [Cycling from Oregon to Mexico] 
+Story: [A Year in Ecuador](./journalism/adventure/ayearinecuador.html)
+ 
+ <br>
+ ![](images/theartistsrebellion.jpg)

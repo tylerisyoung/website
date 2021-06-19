@@ -1,0 +1,49 @@
+---
+title: ""
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+    
+    css: styles.css
+
+
+---
+
+<br>
+<br>
+
+<h1>**Health**</h1> 
+<h6>
+***Feel better, Live better.***  
+</h6>
+
+*[Tylerisyoung.Substack.com](https://tylerisyoung.substack.com/?target=_blank)   
+[Twitter.com/TylerisYoung](https://twitter.com/Tylerisyoung/?tagets=_blank)*  
+ _________________________
+ 
+ <br>
+  <br>
+<h4>
+<details><summary>***Articles***</summary>
+[ ](./n/a.html)  
+  
+Essay: [*My Morning Oatmeal*](./mymorningoatmeal.html)    
+
+
+</details>
+</h4>
+
+<h4>
+<details><summary>***Notes***</summary>
+[ ](./n/a.html)  
+  
+Text Message: [*Thoughts on a Vaccine*](./thoughtsonavaccine.html)    
+
+</details>
+</h4>
+ 
+ <br>
+ ![](images/theartistsrebellion.jpg)

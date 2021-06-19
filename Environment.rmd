@@ -1,0 +1,43 @@
+---
+title: ""
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+    
+    css: styles.css
+
+
+---
+
+<br>
+<br>
+
+<h1>**Environment**</h1> 
+<h6>
+***The planet will warm, and we will be fine.***  
+</h6>
+
+*[Tylerisyoung.Substack.com](https://tylerisyoung.substack.com/?target=_blank)   
+[Twitter.com/TylerisYoung](https://twitter.com/Tylerisyoung/?tagets=_blank)*  
+ _________________________
+ 
+ <br>
+  <br>
+<h4>
+<details><summary>***Articles***</summary>
+[ ](./n/a.html)  
+  
+Story: [*The REI Campaign*](./thereicampaign.html)    
+
+Article: [*Deep Ecology*](./deepecology.html)   
+  
+Article: [*From Canada to Coos Bay, The Politics of a Pipeline*](./Fromcanadatocoosbay.html) *Published in: Ethos & The Daily Emerald*
+</details>
+</h4>
+
+ 
+ <br>
+ ![](images/theartistsrebellion.jpg)
