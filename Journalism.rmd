@@ -25,6 +25,7 @@ output:
 [Twitter.com/TylerisYoung](https://twitter.com/Tylerisyoung/?tagets=_blank)*  
  _________________________
  
+<<<<<<< HEAD
  <br>
  
 <h3>
@@ -49,6 +50,21 @@ output:
  
  <br>
  ![](images/theartistsrebellion.jpg)
+=======
+
+
+ <br>
+ Project: [[Africa]()]*(In Collaboration with Simone Staff)*  
+ Article: [[Joe Biden and our loss of Sensemaking](JoeBiden.html)]  
+ Article: [Free to Speak, navigating free speech since 1984]   
+ Article: [Covid-1984]  
+ Story: [[The REI Campaign](TheReiCampaign.html)]   
+ Article: [[Deep Ecology](DeepEcology.html)]  
+ Story: [[Rafting the Deschutes](RaftinngTheDeschutes.html)]  
+ Story: [[Cycling from Oregon to Mexico](CyclingFromOregonToMexico.html)]   
+ Article: [From Canada to Coos Bay, The Politics of a Pipeline] *(In Collaboration with Jessica Smith)*  
+ Documentary: [[A Year in Ecuador](AYearInEcuador.html)]
+>>>>>>> 6774999fca5d1567b83ceb4cbc5cb7f9bb077723
  
  
 
