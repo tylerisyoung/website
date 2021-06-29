@@ -22,10 +22,5 @@ navbar:
       href: cv.html
     - text: "Contact"
       href: Contact.html
-<<<<<<< HEAD
-=======
-    - text: "527 CV"
-      href: cv.html
->>>>>>> 6774999fca5d1567b83ceb4cbc5cb7f9bb077723
 output_dir: "docs"
 
