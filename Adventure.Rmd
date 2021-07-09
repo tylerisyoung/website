@@ -30,4 +30,4 @@ Story: [Cycling from Oregon to Mexico]
 Story: [A Year in Ecuador](./journalism/adventure/ayearinecuador.html)
  
  <br>
- ![](images/theartistsrebellion.jpg)
+ ![](images/TheArtofAdventure.png)

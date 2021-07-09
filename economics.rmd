@@ -39,4 +39,4 @@ output:
 
 
  <br>
- ![](images/theartandscienceofEconomics.png)
+ ![](images/TheWisdomofEconomics.png)

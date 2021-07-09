@@ -48,7 +48,7 @@ output:
  Essay: [The Artists Rebellion](./docs/Theartistsrebellion.html)   
  
  <br>
- ![](images/theartistsrebellion.jpg)
+ ![](images/THE ARTISTS REBELLION.png)
  
  
 
