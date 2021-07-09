@@ -33,17 +33,17 @@ output:
  <h4>
 [***Economics***](./economics.html)
   
-[***Environment***](./environment.html)  
+[***Environment***](./Environment.html)  
   
-[***Adventure***](./adventure.html)  
+[***Adventure***](./Adventure.html)  
   
-[***Health***](./health.html)  
+[***Health***](./Health.html)  
   
-[***Politics***](./politics.html)  
+[***Politics***](./Politics.html)  
 </h4>
 
 <br>
-
+ 
 
  Essay: [The Artists Rebellion](./docs/Theartistsrebellion.html)   
  
