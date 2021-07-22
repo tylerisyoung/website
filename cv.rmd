@@ -16,9 +16,18 @@ output:
 
 
 <h1>**Automated CV Project**</h1>
-<h6>***An automatic way to generate a new CV from an excel sheet with your past positions. This project was done in a class with Jesse Lecey from ASU & sourced form Nick Strayer*** [Github](https://github.com/DS4PS/cv)</h6>
+<h6>***An automatic way to generate a new CV from an excel sheet with your past positions. This project was sourced and adapted from Nick Strayer via [Jesse Lacey](https://github.com/DS4PS/cv)***
+</h6>
 <br>
-*[My Custom CV](https://tylerisyoung.github.io/CV/) Git Hub Project [Link](https://github.com/tylerisyoung/cv)
+*[My Custom CV](https://tylerisyoung.github.io/CV/) Project 
 *
+``{r, echo=FALSE}
 
+knitr::opts_chunk$set(, fig.height=12, fig.fullwidth=TRUE)
 
+```
+ 
+```{r, fig.width=10, fig.fullheight=TRUE, fig.fullwidth=TRUE}
+knitr::include_url("https://tylerisyoung.github.io/CV/")
+
+```

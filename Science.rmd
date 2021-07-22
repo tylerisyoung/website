@@ -16,7 +16,11 @@ output:
 <br>
 
 <h1>**Science Films**</h1>
-<h6>***Big Astronomy,California Academy of Sciences***</h6>
+<h6>Clients:  
+***
+[Big Astronomy](https://www.bigastronomy.org),  
+[California Academy of Sciences](http://www.californiaacademyofsciences.com)
+***</h6>
 
 *[Youtube.com/tylerisyoung](https://www.youtube.com/tylerisyoung/?target=_blank)   
 *
@@ -25,27 +29,23 @@ ____________________________
 <br>
 <br>
 
-[Behind Big Astronomy](https://youtube.com/watch?v=O8KxQUVLvCM/?target=_blank)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/O8KxQUVLvCM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <br>
 
 <br>
-[Visits turned virtual: Building California's coastal observatory](https://https://www.youtube.com/watch?v=jVwHzXTii0M/?target=_blank)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jVwHzXTii0M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <br>
 
 <br>
-[Smith Rock](https://youtube.com/watch?v=CSwuTXZW2sk "Cool Stuff - Click to Watch!")
-<br>
-
-
-<br>
-[Dwarf Sperm Whale Articulation](https://youtube.com/watch?v=87p0Vy-iMv0/?target=_blank)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/87p0Vy-iMv0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <br>
 
 
 <br>
-[Pairing Penguins for Conservation](https://youtube.com/watch?v=fU7aKHGsxns/?target=_blank)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/fU7aKHGsxns" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <br>
 
 <br>
-[How did past climate change affect today's plants?](https://youtube.com/watch?v=NsLeiUvfGmE&feature=emb_title/?target=_blank)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/NsLeiUvfGmE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <br>
+

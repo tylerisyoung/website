@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "Home"
 output:
   html_document:
     theme: yeti
@@ -24,10 +24,11 @@ output:
 ***M.S. Data Analytics***
 ***ASU '22****
 </h6><h5>
+<br>
 **Currently:**
 </h5>
 <h6>
-**Creative Director - Lighthearted Humans**  
+**Founder & Creative Director - Lighthearted Humans**  
 **Video Production - California Academy of Sciences**  
 **Marketing - SF Media Co.**
 </h6>
@@ -45,7 +46,7 @@ ________________________________________
 <br>
 
 <h5>
-**My name is Tyler, I’m an Environmentalist, a Journalist, and a Filmmaker. Currently in School for a masters in program evaluation & data analytics. I love prioritization science, effective altruism, beneficial business, storytelling through visual media, and I especially enjoy when my work can have a positive impact. I aim to make the world a better place through creativity for a greater good. ** 
+**My name is Tyler, I’m an Environmentalist, a Journalist, and a Filmmaker. Currently in School for a masters in Data Science. I love prioritization, effective altruism, econometrics, and I especially enjoy when my work can have a positive impact. I aim to make the world a better place through creativity for a greater good. ** 
 </h5>
 
 <br>
