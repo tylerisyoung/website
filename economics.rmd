@@ -29,11 +29,11 @@ output:
 <details><summary>***Articles***</summary>
 [ ](./n/a.html)  
   
-[*Bitcoin*](./bitcoin.html)    
+[*Bitcoin*](./bitcoi.html)    
 
-[*Bitcoin*](./bitcoin.html)   
+[*Bitcoin*](./bitcoi.html)   
   
-[*Bitcoin*](./bitcoin.html)
+[*Bitcoin*](./bitcoi.html)
 </details>
 </h4>
 

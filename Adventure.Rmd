@@ -25,8 +25,8 @@ output:
  _________________________
  
  <br>
-Story: [Rafting the Deschutes]  
-Story: [Cycling from Oregon to Mexico] 
+Story: [Rafting the Deschutes](https://www.lightheartedhumans.com/storytelling/2019/6/19/entry-005-rafting-the-deschutes-tyler-young)  
+Story: [Cycling from Oregon to Mexico](https://www.lightheartedhumans.com/storytelling/2019/6/9/entry-003-cycling-from-oregon-to-mexico)
 Story: [A Year in Ecuador](./journalism/adventure/ayearinecuador.html)
  
  <br>
