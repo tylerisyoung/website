@@ -11,11 +11,19 @@ output:
 
 
 ---
-<center>
+
 <br>
-<H1>
-***GoogleViz in R, A Code Through.***
-</H1>
+<br>
+
+<h1>**GoogleViz in R**</h1> 
+<h6>
+***A Code Through***  
+
+</h6>
+
+*[github.com/tylerisyoung](www.github.com/tylerisyoung)   
+ _________________________
+
 
 <h5>
 ***"googleViz"([CRAN](https://cran.r-project.org/web/packages/googleVis)) allows users to quickly interface with and customize google's graphical tools within R, and for those visualizations to be published on the web in an html format that allows for interactivity even within github pages. This package will also work with data from any .csv file. ***
@@ -23,7 +31,7 @@ output:
 </center>
 _________________________
 
-<h2>
+
 Let's Install it 
 
 ```{r, eval=FALSE}

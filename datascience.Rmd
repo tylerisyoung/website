@@ -1,0 +1,47 @@
+---
+title: ""
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+    
+    css: styles.css
+
+
+---
+
+<br>
+<br>
+
+<h1>**Data Science**</h1>
+<h6>***A Collection of things I am learning & things I'm interested in.***</h6>
+*[github.com/Tylerisyoung](https://www.github.com/tylerisyoung)
+*
+
+____________________________
+<br>
+![](./images/tempedashboard.png)
+[Dashboard: Car Accident Characteristics in Tempe, AZ](./tempedashboard.html)
+<br>
+<br>
+<br>  
+<br>  
+<br> 
+![](./images/neighborhoodchange.png)
+[Neighborhood Change & Tax Evaluation, Team Project](https://r-class.github.io/cpp-528-spr-2021-group-04/)
+<br>  
+<br>
+<br>  
+<br>
+![](./images/googleviz.png)
+[Google Viz: A Code Through](./codethrough.html)  
+
+<br>
+<br>  
+<br>  
+<br> 
+
+![](images/GME.gif)  
+Gamestop stock trading halted 

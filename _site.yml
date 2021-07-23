@@ -18,8 +18,8 @@ navbar:
       href: Photography.html
     - text: "Journalism"
       href: Journalism.html
-    - text: "CV"
-      href: cv.html
+    - text: "Data Science"
+      href: datascience.html
     - text: "Contact"
       href: Contact.html
 output_dir: "docs"
