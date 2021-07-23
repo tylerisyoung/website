@@ -6,12 +6,6 @@ navbar:
       href: index.html
     - text: "Lighthearted Humans"
       href: Lightheartedhumans.html
-    - text: ""
-      href: Eatbadfish.html
-    - text: ""
-      href: Enviromapping.html
-    - text: ""
-      href: Albatross.html
     - text: "Film"
       href: Film.html
     - text: "Photography"
