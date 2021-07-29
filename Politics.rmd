@@ -25,6 +25,9 @@ output:
 *[Twitter.com/TylerisYoung](www.twitter.com/Tylerisyoung)*  
  _________________________
 <br>
+<br>
+<br>
+<br>
 <h5>
 <center>
 ***“Fascism should rightly be called Corporatism, as it is the merger of corporate and government power.”      
@@ -37,22 +40,61 @@ output:
 <h4>
 <details><summary>***Articles***</summary>
 [ ](./n/a.html)  
-  
+
+<br>
+
+<details><summary>***Politics***</summary>
+[ ](./n/a.html)  
+
+Article: [*America, An Overview*](./deepecolog.html) (Coming Soon)
+
+Article: [*America is an Oligarchy*](./deepecolog.html) (Coming Soon)
+
+Article: [*The Left*](./deepecolog.html) (Coming Soon)
+
+Article: [*The Right*](./deepecolog.html) (Coming Soon)
+
+Article: [*The Center*](./deepecolog.html) (Coming Soon)
+
+Article: [*The Greens*](./deepecolog.html) (Coming Soon)
+
+Article: [*The Libertarians*](./deepecolog.html) (Coming Soon)
+
+Article: [*Voting in America*](./deepecolog.html) (Coming Soon)
+
 Article: [*Joe Biden and our loss in Sensemaking*](./joebidenandourlossinsensemaking.html)    
 
 Essay: [*Cuomo Will Not Crack!*](./.html)   
   
 Article: [*Free to Speak, Navigating Free Speech since 1984*](./freetospeak.html)
-</details>
-</h4>
 
-<h4>
+</details>
+<br>
+
+<details><summary>***Activism***</summary>
+[ ](./n/a.html)  
+  
+Article: [*The New Activism*](./joebidenandourlossinsensemakin.html)  (Coming Soon)
+
+Article: [*The Left vs Leftists*](./joebidenandourlossinsensemakin.html) (Coming Soon)  
+
+Article: [*Marx, Hagel, Derrida, & Postmodernism*](./joebidenandourlossinsensemakin.html) (Coming Soon)  
+
+Article: [*The Motte & Bailey*](./joebidenandourlossinsensemakin.html)  (Coming Soon)
+
+Article: [*What we should do, & Why we're not doing it*](./joebidenandourlossinsensemakin.html)  (Coming Soon)
+
+
+</details>
+<br>
+
 <details><summary>***Notes***</summary>
 [ ](./n/a.html)  
 
 Text Message: [*Makhia Bryant*](./makhiabryant.html)   
   
 
+</details>
 </details>
 </h4>
 <br>

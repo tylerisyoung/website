@@ -17,7 +17,7 @@ output:
 
 <h1>**Economics**</h1> 
 <h6>
-***I am not a financial advisor, yet continue to encourage you to take advice from people on the internet.***
+***I am not a financial advisor, yet I'll continue to encourage you to take advice from people on the internet.***
 </h6>
 
 *[Tylerisyoung.Substack.com](https://tylerisyoung.substack.com/?target=_blank)   
@@ -28,12 +28,44 @@ output:
 <h4>
 <details><summary>***Articles***</summary>
 [ ](./n/a.html)  
-  
-[*Bitcoin*](./bitcoi.html)    
 
-[*Bitcoin*](./bitcoi.html)   
-  
-[*Bitcoin*](./bitcoi.html)
+<br>
+
+<details><summary>***Investing***</summary>
+[ ](./n/a.html)  
+=
+[*Bitcoin*](./bitcoi.html) (Coming Soon) 
+
+[*Silver*](./bitcoi.html) (Coming Soon) 
+
+[*Uranium*](./bitcoi.html) (Coming Soon) 
+
+[*NYSE Picks*](./bitcoi.html) (Coming Soon) 
+
+[*Emerging Markets*](./bitcoi.html) (Coming Soon) 
+
+[*Sharpe Ratio*](./bitcoi.html) (Coming Soon) 
+
+[*Portfolio Construction*](./bitcoi.html) (Coming Soon) 
+
+</details>
+
+<br>
+
+  <details><summary>***The Macro Picture***</summary>
+  [ ](./n/a.html)  
+
+[*The Green New Deal Makes No Sense*](./bitcoi.html) (Coming Soon) 
+
+[*The Macro Picture*](./bitcoi.html) (coming Soon)
+
+[*Inflation*](./bitcoi.html) (Coming Soon)   
+
+[*Deflation*](./bitcoi.html) (Coming Soon) 
+
+[*Stagflation*](./bitcoi.html) (Coming Soon) 
+
+</details>
 </details>
 </h4>
 

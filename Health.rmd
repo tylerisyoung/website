@@ -24,23 +24,100 @@ output:
 [Twitter.com/TylerisYoung](https://twitter.com/Tylerisyoung/?tagets=_blank)*  
  _________________________
  
+  
  <br>
   <br>
 <h4>
 <details><summary>***Articles***</summary>
 [ ](./n/a.html)  
-  
-Essay: [*My Morning Oatmeal*](./mymorningoatmeal.html)    
+
+<br>
+
+<details><summary>***Diet***</summary>
+[ ](./n/a.html)  
+
+Article: [*My thoughts on Diets*](./deepecolog.html) (Coming Soon)
+
+Article: [*The Vegan Diet*](./deepecolog.html) (Coming Soon)
+
+Article: [*The Carnivore Diet*](./deepecolog.html) (Coming Soon)
+
+Article: [*The Vegetarian Diet*](./deepecolog.html) (Coming Soon)
+
+Article: [*The Pescatarian Diet*](./deepecolog.html) (Coming Soon)
+
+Article: [*The Meditarranean Diet*](./deepecolog.html) (Coming Soon)
+
+Article: [*The High Carb Diet*](./deepecolog.html) (Coming Soon)
+
+Article: [*The Low Carb Diet*](./deepecolog.html) (Coming Soon)
+
+Article: [*The Potato Diet*](./deepecolog.html) (Coming Soon)
+
+Article: [*The Raw Vegan Diet*](./deepecolog.html) (Coming Soon)
+
+Article: [*Fasting*](./deepecolog.html) (Coming Soon)
+
+<br>
+
+<details><summary>***Foods***</summary>
+[ ](./n/a.html)
+
+Article: [*Kale*](./deepecolog.html) (Coming Soon)
+
+Article: [*The Daily Dozen*](./deepecolog.html) (Coming Soon)
+
+Article: [*Red Meat*](./deepecolog.html) (Coming Soon)
+
+Article: [*Chicken*](./deepecolog.html) (Coming Soon)
+
+Article: [*Fish*](./deepecolog.html) (Coming Soon)
+
+Article: [*Spiruilina*](./deepecolog.html) (Coming Soon)
+
+Article: [*Sugars*](./deepecolog.html) (Coming Soon)
+
+</details>
+</details>
+<br>
+
+<details><summary>***Exercise***</summary>
+[ ](./n/a.html)  
+
+Article: [*Workouts*](./deepecolog.html) (Coming Soon)
+ <br>
+
+</details>
+<br>
+
+<details><summary>***Mental***</summary>
+[ ](./n/a.html)  
+
+Article: [*Meditation*](./deepecolog.html) (Coming Soon)
+
+Article: [*Whim Hoff*](./deepecolog.html) (Coming Soon)
+ <br>
+
 
 
 </details>
-</h4>
+<br>
 
-<h4>
-<details><summary>***Notes***</summary>
+<details><summary>***Public Health***</summary>
 [ ](./n/a.html)  
-  
-Text Message: [*Thoughts on a Vaccine*](./thoughtsonavaccine.html)    
+
+Article: [*COVID 1984*](./deepecolog.html) (Coming Soon)
+
+Article: [*Lab Leak Hypothesis*](./deepecolog.html) (Coming Soon)
+
+Article: [*Censorship in Media and Public Health*](./deepecolog.html) (Coming Soon)
+
+Article: [*Vaccines*](./deepecolog.html) (Coming Soon)
+
+Article: [*Ivermectin*](./deepecolog.html) (Coming Soon)
+
+Article: [*Spike Protein*](./deepecolog.html) (Coming Soon)
+ <br>
 
 </details>
 </h4>
