@@ -35,9 +35,6 @@ ____________________________
 <br>
 <br>  
 <br>
-![](./images/googleviz.png)
-[Google Viz: A Code Through](./codethrough.html)  
-
 <br>
 <br>  
 <br>  

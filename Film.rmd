@@ -25,12 +25,13 @@ ___________________________
 <br>
 
 <h1>
-Portfolios:
+**Portfolios:**
 </h1><h3>
 *[Commercial Ads](./Commercial.html)  
+<br>
 [Science Films](./Science.html)  
-[Adventure Films & Docs](./AdventureFilms.html)  
-*
+<br>
+[Adventure Films & Docs](./AdventureFilms.html)*
 </h3>
 
 <br>
