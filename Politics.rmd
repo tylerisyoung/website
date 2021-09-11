@@ -46,6 +46,7 @@ output:
 <details><summary>***Politics***</summary>
 [ ](./n/a.html)  
 
+<!---
 Article: [*America, An Overview*](./deepecolog.html) (Coming Soon)
 
 Article: [*America is an Oligarchy*](./deepecolog.html) (Coming Soon)
@@ -68,11 +69,17 @@ Essay: [*Cuomo Will Not Crack!*](./.html)
   
 Article: [*Free to Speak, Navigating Free Speech since 1984*](./freetospeak.html)
 
+--->
+
+
 </details>
 <br>
 
 <details><summary>***Activism***</summary>
 [ ](./n/a.html)  
+  
+  
+<!---  
   
 Article: [*The New Activism*](./joebidenandourlossinsensemakin.html)  (Coming Soon)
 
@@ -84,6 +91,7 @@ Article: [*The Motte & Bailey*](./joebidenandourlossinsensemakin.html)  (Coming 
 
 Article: [*What we should do, & Why we're not doing it*](./joebidenandourlossinsensemakin.html)  (Coming Soon)
 
+--->
 
 </details>
 <br>
@@ -91,8 +99,11 @@ Article: [*What we should do, & Why we're not doing it*](./joebidenandourlossins
 <details><summary>***Notes***</summary>
 [ ](./n/a.html)  
 
+<!---
+
 Text Message: [*Makhia Bryant*](./makhiabryant.html)   
-  
+
+--->
 
 </details>
 </details>

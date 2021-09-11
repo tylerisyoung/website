@@ -36,6 +36,7 @@ output:
 <details><summary>***Diet***</summary>
 [ ](./n/a.html)  
 
+<!---
 Article: [*My thoughts on Diets*](./deepecolog.html) (Coming Soon)
 
 Article: [*The Vegan Diet*](./deepecolog.html) (Coming Soon)
@@ -58,11 +59,14 @@ Article: [*The Raw Vegan Diet*](./deepecolog.html) (Coming Soon)
 
 Article: [*Fasting*](./deepecolog.html) (Coming Soon)
 
+--->
+
 <br>
 
 <details><summary>***Foods***</summary>
 [ ](./n/a.html)
 
+<!---
 Article: [*Kale*](./deepecolog.html) (Coming Soon)
 
 Article: [*The Daily Dozen*](./deepecolog.html) (Coming Soon)
@@ -77,6 +81,8 @@ Article: [*Spiruilina*](./deepecolog.html) (Coming Soon)
 
 Article: [*Sugars*](./deepecolog.html) (Coming Soon)
 
+--->
+
 </details>
 </details>
 <br>
@@ -84,7 +90,9 @@ Article: [*Sugars*](./deepecolog.html) (Coming Soon)
 <details><summary>***Exercise***</summary>
 [ ](./n/a.html)  
 
+<!---
 Article: [*Workouts*](./deepecolog.html) (Coming Soon)
+--->
  <br>
 
 </details>
@@ -93,9 +101,12 @@ Article: [*Workouts*](./deepecolog.html) (Coming Soon)
 <details><summary>***Mental***</summary>
 [ ](./n/a.html)  
 
+<!---
 Article: [*Meditation*](./deepecolog.html) (Coming Soon)
 
 Article: [*Whim Hoff*](./deepecolog.html) (Coming Soon)
+
+--->
  <br>
 
 
@@ -105,6 +116,8 @@ Article: [*Whim Hoff*](./deepecolog.html) (Coming Soon)
 
 <details><summary>***Public Health***</summary>
 [ ](./n/a.html)  
+
+<!---
 
 Article: [*COVID 1984*](./deepecolog.html) (Coming Soon)
 
@@ -118,6 +131,8 @@ Article: [*Ivermectin*](./deepecolog.html) (Coming Soon)
 
 Article: [*Spike Protein*](./deepecolog.html) (Coming Soon)
  <br>
+ 
+ --->
 
 </details>
 </h4>

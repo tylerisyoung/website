@@ -47,7 +47,11 @@ Story: [A Year in Ecuador](./journalism/adventure/ayearinecuador.html)
 <details><summary>***Tips, Tricks, & Notes***</summary>
 [ ](./n/a.html)  
 
+<!---
+
 Article: [*Reviews*](./deepecolog.html) (Coming Soon)
+
+--->
  <br>
 
 </details>

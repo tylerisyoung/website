@@ -33,7 +33,9 @@ output:
 
 <details><summary>***Investing***</summary>
 [ ](./n/a.html)  
-=
+
+<!---
+
 [*Bitcoin*](./bitcoi.html) (Coming Soon) 
 
 [*Silver*](./bitcoi.html) (Coming Soon) 
@@ -48,12 +50,16 @@ output:
 
 [*Portfolio Construction*](./bitcoi.html) (Coming Soon) 
 
+--->
+
 </details>
 
 <br>
 
-  <details><summary>***The Macro Picture***</summary>
+  <details><summary>***Macro***</summary>
   [ ](./n/a.html)  
+  
+<!---
 
 [*The Green New Deal Makes No Sense*](./bitcoi.html) (Coming Soon) 
 
@@ -64,6 +70,8 @@ output:
 [*Deflation*](./bitcoi.html) (Coming Soon) 
 
 [*Stagflation*](./bitcoi.html) (Coming Soon) 
+
+--->
 
 </details>
 </details>

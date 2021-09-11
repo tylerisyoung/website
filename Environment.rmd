@@ -35,7 +35,7 @@ output:
 <details><summary>***Climate Science***</summary>
 [ ](./n/a.html)  
 
-Article: [*Climate Change, an Overview*](./deepecolog.html) (Coming Soon)
+<!--- Article: [*Climate Change, an Overview*](./deepecolog.html) (Coming Soon)
 
 Article: [*Why 2 degrees isn't achievable*](./deepecolog.html) (Coming Soon)
 
@@ -43,6 +43,7 @@ Article: [*Prioritization for the Climate*](./deepecolog.html) (Coming Soon)
 
 Article: [*The Best Climate Investments*](./deepecolog.html) (Coming Soon)
 
+--->
 
 </details>
 
@@ -50,11 +51,13 @@ Article: [*The Best Climate Investments*](./deepecolog.html) (Coming Soon)
 <details><summary>***Activism***</summary>
 [ ](./n/a.html)  
 
-Article: [*Activism, My Story*](./deepecolog.html) (Coming Soon)
+<!--- Article: [*Activism, My Story*](./deepecolog.html) (Coming Soon)
 
 Article: [*Activism, and why it won't work*](./deepecolog.html) (Coming Soon)
 
 Article: [*Activism, and how it has been taken over by Postmodernism*](./deepecolog.html) (Coming Soon)
+
+--->
 
 Story: [*The REI Campaign*](./thereicampaign.html)    
 
@@ -64,11 +67,14 @@ Article: [*From Canada to Coos Bay, The Politics of a Pipeline*](./Fromcanadatoc
 
 </details>
 
+<!---
 <br>
 <details><summary>***Climate Facts & How to Live your Life***</summary>
 [ ](./n/a.html)  
 
-Article: [*Why you shouldn't care about the climate*](./deepecolog.html) (Coming Soon)
+--->
+
+<!---Article: [*Why you shouldn't care about the climate*](./deepecolog.html) (Coming Soon)
 
 Article: [*How to have the greatest impact*](./deepecolog.html) (Coming Soon)
 
@@ -80,7 +86,7 @@ Article: [*All About Plastic*](./deepecolog.html) (Coming Soon)
 
 Article: [*The Optimal Climate Solution*](./deepecolog.html) (Coming Soon)
 
-
+--->
 
 <br>
 
