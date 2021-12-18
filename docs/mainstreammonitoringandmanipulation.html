@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>mainstreammonitoringandmanipulation.utf8</title>
+
+<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="Lightheartedhumans.html">Lighthearted Humans</a>
+</li>
+<li>
+  <a href="Film.html">Film</a>
+</li>
+<li>
+  <a href="Photography.html">Photography</a>
+</li>
+<li>
+  <a href="Journalism.html">Journalism</a>
+</li>
+<li>
+  <a href="datascience.html">Data Science</a>
+</li>
+<li>
+  <a href="cv.html">CV</a>
+</li>
+<li>
+  <a href="Contact.html">Contact</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<p><br> <br></p>
+<h1>
+<strong>Distributed Idea Suppression Complex</strong>
+</h1>
+<h6>
+<strong><em>An article by Tyler Young.</em></strong>
+</h6>
+<p><em><a href="www.tylerisyoung.substack.com">Tylerisyoung.Substack.com</a></em><br />
+<em><a href="www.twitter.com/Tylerisyoung">Twitter.com/TylerisYoung</a></em><br />
+_________________________ <br> 11/02/2021 <br></p>
+<h3>
+Are you being watched?
+</h3>
+<p><br> We need Twitter, Facebook, and all social media sites to be free of censorship, control, and manipulation in order to allow their users to critique the mainstream narrative. This alone could save millions of lives, however an illusive higher power often refereed to as Orwell’s “Big Brother” has an entirely different conception of national security than does the average American.</p>
+<p>We recently saw The World Health Organization and the Center for Disease Control openly lie to the world and the American public for weeks, at the minimum, about covid, claiming it was “not an airborne virus,” when they <a href="https://www.nationalreview.com/the-morning-jolt/chinas-devastating-lies/">knew</a> <a href="https://townhall.com/tipsheet/katiepavlich/2020/03/20/the-world-health-org-covered-for-china-after-direct-warnings-of-wuhan-virus-spread-n2565366">that</a> <a href="https://www.nationalreview.com/corner/yes-beijing-lied-to-the-world-but-their-reaction-should-have-warned-us/">it</a> <a href="https://nypost.com/2020/04/02/chinas-deadly-coronavirus-lie-co-conspirator-the-world-health-organization/">was</a>. What happens when we are only allowed to site the official institutions, and news, otherwise have our posts taken down and shadow banned without regard for what ends up to be proven true or otherwise.</p>
+<p>When we advocate for censorship online, we are inevitably putting our lives into the hands of private corporations or political and bureaucratic organizations like the CDC who told people that <a href="https://www.businessinsider.com/americans-dont-need-masks-pence-says-as-demand-increases-2020-2?op=1">masks aren’t effective</a> only to later change their minds and actually admit they <a href="https://www.youtube.com/watch?v=9tYdeuSebzQ">lied</a>. Many claim that this “white lie” was necessary; In order to keep local stores supply high for hometown hospital staff instead of distributing masks from the national stockpile because it was <a href="https://www.vox.com/2020/4/15/21210210/coronavirus-covid-19-national-strategic-stockpile">illegally</a> left at low capacity and not replenished.</p>
+<p>This is unacceptable, yet no one is held accountable.</p>
+<p>The extreme cases of censorship are Russia, China, and recently Australia which are all further along the authoritarian path when compared to the United States. However, we are not far behind, on May 14th, 2020, the senate voted to allow a reinstatement of the patriot act - an <a href="https://www.foreffectivegov.org/node/3430">unconstitutional</a> law which was meant to be temporary after 9/11 effectively bypassing the the constitution in favor of NSA “ <a href="https://cdt.org/insights/section-702-what-it-is-how-it-works/">702</a>” searches which Edward Snowden <a href="https://www.theguardian.com/us-news/2016/sep/29/edward-snowden-disclosures-patriot-act-fisa-court">says</a> are a very serious fourth amendment issue. The amendment also added a formerly illegal clause which gives the FBI &amp; CIA to access private user browsing and search history without a warrant, something Snowden probably wouldn’t like either. This is <a href="https://www.theguardian.com/us-news/2017/jul/06/naomi-klein-how-power-profits-from-disaster">Disaster Capitalism</a>.</p>
+<p>In 2017 alone, The FBI conducted over 3 million such <a href="https://www.brennancenter.org/our-work/analysis-opinion/how-fbi-violated-privacy-rights-tens-thousands-americans">searches</a> into hundreds of thousands of individual citizens to acquire previously private data without warrants, and without oversight. To be clear, both parties administration’s FBI abuse these same powers, as Obama’s top advisors told the <a href="https://www.wsj.com/articles/u-s-spy-net-on-israel-snares-congress-1451425210">Wall Street Journal</a> they had made use of FISA surveillance of “Jewish American groups” and “US law makers” in congress, in order to “counter” Israeli opposition to Obamas nuclear deal with Iran at the time. This investigation into anyone and everyone desired is a far stretch from “fighting terrorism.”</p>
+<p>Furthermore, the very definition of terrorism continues to <a href="https://www.e-ir.info/2019/09/24/terrorism-as-controversy-the-shifting-definition-of-terrorism-in-state-politics/">change</a>, including ever more individuals deemed as the opposition. The definition was formerly reserved for those outside of our own country, while now we are consistently warned of “domestic terrorists” on the 5 o’clock news.</p>
+<p>These important and overreaching bills always seem to pass or fail by a single vote, why might that be? Our hero Bernard Sanders might have an idea as he chose to opt out, along with Ben Sasse, deciding not to vote on this critical piece of legislation which could have revoked the unconstitutional powers our agencies now hold. Former Senator Lamar Alexander was infected &amp; quarantined with coronavirus, and Patty Murray was scheduled out of town for that day. Everyone was in their place.</p>
+<p>Plenty of individuals, of both parties, on both sides of the vote, but possibly the most outspoken of the <a href="https://medium.com/@kevinsarpei/3-reasons-why-bernie-sanders-might-be-controlled-opposition-b6884c492cef">controlled opposition</a>, Sanders, was at a gala for climate change instead of, well, doing his job. Many on the left now argue that Sanders is a sheep dog for the democratic party while decades ago he was demanding a third party in America. Today he mostly helps ‘the squad’ gaslight the American people by tweeting “revolutionary ideas” which were mainstream in the 1950’s, all the while continuing to vote with wall street for corporate donors he claims to hate so much.</p>
+<p>What is the purpose of not taking corporate money, if you continue to vote with corporate money? Why wouldn’t Sanders use his massive following to speak out against, and then vote against the anti-free market corporate bailouts of the CARES act, and the largest occurrence of monetary debasement in history harming those that can least afford it via inflation, or the recent Patriot Act amendment, even if he claims they will pass anyway. Why not continue to speak out on twitter while actually voting with your constituents, in case it comes down to a <a href="https://www.extremetech.com/internet/310579-us-senate-falls-one-vote-short-of-protecting-your-online-privacy">single</a> vote as it did on the patriot act amendment, just for old times sake.</p>
+<p>The fight for online privacy was dealt a major blow that day as the Patriot Act continues to allow our intelligence organizations warrantless and draconian surveillance over the American public.</p>
+<p>The United States was, and continues to be a surveillance state of its own people slowly forcing compliance through contagion and fear based partnerships with social media platforms &amp; moving in the direction of a citizen ranking system, whether it’s public or internal to the FBI, as <a href="https://www.bbc.com/news/world-asia-china-34592186">China has implemented</a>. Few understand that a fear based campaign surrounding tuberculosis was what allowed the Nazi’s to <a href="https://www.eviemagazine.com/post/did-you-know-the-nazis-were-obsessed-with-health-guidelines">come to power</a> in Germany. While history may not repeat itself, it is certainly rhyming in places like <a href="https://medium.com/discourse/why-and-how-is-australia-becoming-so-authoritarian-123093ed7569">Australia</a>.</p>
+<p>When my parents were growing up, they were told by the Intelligence community to be in fear of the Soviet Union where no one had privacy, where everyone was encouraged to snitch on each other to the state in fear of persecution, this was the <a href="https://en.wikipedia.org/wiki/Red_Scare">Red Scare</a>. It helped get the American public on the side of the war Machine. Next the CIA used 9/11 and a <a href="https://www.rollingstone.com/politics/politics-news/taibbi-the-legacy-of-the-iraq-war-204470/">false narrative</a> in order to spark fear of Islamic Terrorism. This helped get the American public on the side of the war Machine.</p>
+<p>Today the intelligence communities conspire to spark fear of Russia and China, and more dangerously - each other. This it plays into their long-term playbook for internal distractions and external world domination which has been playing out since the inception the CIA.</p>
+<p>General Wesley Clark in 2007 when speaking of the decisions in the days after 9/11, claims Rumsfeld and Wolfowitz possessed no evidence of any parties wrongdoing which could have lead to the bombing Afghanistan; Claiming his colleagues were simply planning to take over governments not due to human rights violations, war crimes, or for ideological reasons that were yet to be tied to the attack, but for the benefit of the Unites States bottom line and demand for power. He then <a href="https://www.globalresearch.ca/we-re-going-to-take-out-7-countries-in-5-years-iraq-syria-lebanon-libya-somalia-sudan-iran/5166">says on live television</a> of Rumsfeld’s memo; “This is a memo that describes how we’re gonna take out 7 countries in 5 years, starting with Iraq, and then Syria, Lebanon, Libya, Somalia, Sudan, and Finishing off Iran.”</p>
+<p>Today, the CIA would need something pretty great in terms of propaganda to convince the American public to conduct regime change wars in 7 countries. However, the rise of social media has, in part, helped deliver exactly the distractions necessary as Rumsfeld’s mission is almost complete only slightly behind schedule.</p>
+<p>George W Bush announced the invasion and occupation of Iraq and Afghanistan. He also inherited the hostility with Iran from both his father as well as the foregone era of the Iran Hostage Crisis under Ford and the Iran Contra Scandal under Reagan. Obama then famously <a href="https://jonathanturley.org/2014/09/10/obama-i-do-not-need-congressional-approval-to-go-to-war-with-isis/">announced</a> that he “Doesn’t need congressional approval to go to war” which lead to a new precedent in unofficial warfare which allowed the final invasions of Syria and Libya. Lastly, Biden recently <a href="https://www.nytimes.com/2019/11/01/world/middleeast/lebanon-military-aid.html">cut aid</a> to Lebanon against the advice of congress while he is simultaneously being pressured from militaristic aligned media organizations like Foreign Policy who are writing <a href="https://foreignpolicy.com/2021/11/09/in-ethiopia-and-sudan-u-s-policy-needs-less-talk-and-more-teeth/">articles</a> for the general public titled “In Ethiopia and Sudan, U.S. Policy Needs Less Talk and More Teeth.” Thus the 7 countries will be sufficiently dealt with as Rumsfeld’s vision comes to fruition.</p>
+<p>All 7 countries happen to have large oil reserves, or plans for an oil pipeline through them. Which Robert F. Kennedy Junior notes in an EcoWatch <a href="https://www.ecowatch.com/syria-another-pipeline-war-1882180532.html">article</a> which describes the entire reason for U.S. intervention in the Middle East. He also details how this relates to our governments hawkish view towards Russia who have different plans, for a different route through a formerly soviet aligned middle east.</p>
+<p>Truth becomes an enigma when intertwined by what is potentially covert propaganda seen by supposedly independent investigatory organizations like Bellingcat who are legitimately <a href="https://www.bellingcat.com/">exposing</a> real corruption but are also <a href="https://thegrayzone.com/2018/08/20/inside-americas-meddling-machine-the-us-funded-group-that-interferes-in-elections-around-the-globe/">funded</a> by NATO aligned governments and <a href="https://foreignpolicy.com/2020/12/17/bellingcat-can-say-what-u-s-intelligence-cant/">praised</a> by the intelligence community, only to be accused of purposefully lying on behalf of the west by “whistleblowers” like <a href="https://www.parkindymedia.org/izzy-awards-2019/">award winning</a> journalist Aaron Mate.</p>
+<p>Mate is famous for <a href="https://www.thenation.com/article/archive/rip-russiagate/">debunking</a> the Trump-Russia <a href="https://www.thenation.com/article/politics/trump-russiagate-steele-dossier/">conspiracies</a> in 2019 all prior to the deafening blow of the Muller Report. Back then it was already known that the narrative was, and always has been, and always will be; A smear campaign against outsiders like Donald Trump who don’t play by the traditional rules. Only recently was a FISA <a href="https://www.investors.com/wp-content/uploads/2018/02/FISA_memo_and_white_house_letter.pdf">memo</a> declassified showing the FBI was aware of the false nature of document, and already understood that the Clinton campaign had paid the former British spy to fabricate the Steele Dossier. This very document was used as justification for the FBI to investigate a sitting president presumably to find some evidence of actual collusion which could not be done as evidenced by Muller.</p>
+<p>Today, Mate claims the Organization for the Prohibition of Chemical Weapons (OPCW) was silenced and coerced into publishing a falsified report on the chemical gas attacks the Syrian leader Bashar al-Assad supposedly committed at Douma, in violation of international warfare. This attack was later used as <a href="https://www.thenation.com/article/world/opcw-leaks-syria/">justification</a> for the Obama administration to invade Syria.</p>
+<p>The waters are getting very murky, its nearly impossible for the average person to keep up with the ever increasing number of things that are deemed important, and nothing is followed up with despite so much on the line. Some seem to be numb, and many choose to ignore the media, politicians, and increasingly institutional consensus. Americans trust in government is at an <a href="https://news.gallup.com/poll/355124/americans-trust-government-remains-low.aspx">all time low</a> which is a disastrous trend.</p>
+<p>Well crafted official messages, which some might rightly call propaganda are specifically designed to manipulate others into a desired outcome, and today’s social media tactics are certainly cheaper than the Red Scare of the 50’s. It’s <a href="https://www.youtube.com/watch?v=ksb3KD6DfSI">worth watching</a> a few funny examples of these well crafted messages if you haven’t seen them before.</p>
+<p>The politicians and news pundits manufacture consent for the CIA by their new tactic of ignoring and distracting. If no one talks about wars, there are no wars. See no evil, hear no evil, speak no evil. This helped convince the American public to become unaware of the war Machine. This is why Noam Chomsky’s genre defining <a href="https://en.wikipedia.org/wiki/Manufacturing_Consent">book</a>" deserved an appreciable update that came with Matt Taibbi’s “<a href="https://en.wikipedia.org/wiki/Hate_Inc.">Hate inc</a>.” These works describe the unbalanced incentive structures that exist in our institutions today, and while social media does facilitate decentralized conversation around government’s encroachment of free speech and information access, correcting these structures will not be easy.</p>
+<p>The closer we get to truth the more uncomfortable it becomes. Many say we are living in a post-truth world, and at times it can certainly feel that way, but given enough time, I believe the truth will always come out, and individual logic will out-compete state sponsored surveillance.</p>
+<p>-Tyler<br />
+<span class="citation">@TylerisYoung</span></p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

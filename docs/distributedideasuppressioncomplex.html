@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>distributedideasuppressioncomplex.utf8</title>
+
+<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="Lightheartedhumans.html">Lighthearted Humans</a>
+</li>
+<li>
+  <a href="Film.html">Film</a>
+</li>
+<li>
+  <a href="Photography.html">Photography</a>
+</li>
+<li>
+  <a href="Journalism.html">Journalism</a>
+</li>
+<li>
+  <a href="datascience.html">Data Science</a>
+</li>
+<li>
+  <a href="cv.html">CV</a>
+</li>
+<li>
+  <a href="Contact.html">Contact</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<p><br> <br></p>
+<h1>
+<strong>Distributed Idea Suppression Complex</strong>
+</h1>
+<h6>
+<strong><em>An article by Tyler Young.</em></strong>
+</h6>
+<p><em><a href="www.tylerisyoung.substack.com">Tylerisyoung.Substack.com</a></em><br />
+<em><a href="www.twitter.com/Tylerisyoung">Twitter.com/TylerisYoung</a></em><br />
+_________________________ <br> 11/02/2021 <br></p>
+<h3>
+Is information disseminated fairly?
+</h3>
+<p><br> Universities, institutions, and the academic journals are playing the same bureaucratic institutional role that mainstream news organizations are; Suppressing new ideas in favor of tenure tracks, published research, and a cheap labor force doing the highest caliber work in the form of workers who are not tied into the distributed network of mainstream enforcement. Those who are detached include up and coming PHD students, blue collar workers, independent journalists, eager start up entrepreneurs, and the like, being largely the only ones capable of producing original thoughts, ideas, and solving problems in novel ways. They continue their paths thanklessly only to have their concerns silenced, shot down, and canceled, while their best original thoughts and ideas are stolen from under them and taken credit for by the established institutional players. This is not a new phenomenon.</p>
+<p>Dr Eric Weinstein coined the term <a href="https://medium.com/@josephparrish/encountering-the-disc-in-democratic-party-da7df9efd7aa">Distributed Idea Suppression Complex</a> the (DISC) has arisen and has a competitive advantage in every major society and sector until this phenomenon is either corrected to a mode that benefits a majority of society, or destroyed. The only downfall of the amorphous driving force of the DISC may come from public uprising; Unions and grad students on strike, political corruption that’s become too blatant to ignore, war, or depending on how you view it, the unnerving, or inevitable rise of former president Donald Trump.</p>
+<p>Over the last 50 years we have seen an unprecedented shift from the traditional economic bell curve of wealth distribution to more of a negatively skewing, bottom weighted Lorenz curve of economic inequality where the 1% thrive. This is not inherently bad, nor unexpected, but has negative consequences when it’s reinforced by corruption and politicians who not only favor the elite, but who are the elite. This influence can then be used to manipulate what should be free market capitalism with delicate regulation and has lead us to a place many call <a href="https://en.wikipedia.org/wiki/Late_capitalism">late stage capitalism</a>. Our elected representatives are openly corrupt, Nanci Pelosi is the third richest individual in Congress with a net worth of $120 million from a salary of $223k/ year. In addition to her salary over her 18 years in congress, she outperformed the market by a factor of 10 averaging 27% per year doing better than Warren Buffet himself.</p>
+<p>There have recently been <a href="https://www.forbes.com/sites/jackkelly/2020/03/20/senators-accused-of-insider-trading-dumping-stocks-after-coronavirus-briefings/#31ff28b94a45">accusations</a> of insider trading in congress, but this is nothing new considering the house speaker’s <a href="https://www.cbsnews.com/news/congress-trading-stock-on-inside-information/">precedent</a> of great stock picks: 5000 shares of VISA which she just so happened to buy while legislation that would have hurt credit card companies was likely to pass in the house, after her purchases were made public, the stock jumped an unprecedented 68% in two days, and the bill never made it to the floor.</p>
+<p>Our institutions are objectively corrupt, and the incentive structures of the DISC perpetuate this corruption out in the open, only to be later justified and greenwashed by the media and useful idiots. This is why a majority of Americans do not vote, or refuse to participate. This is also why it lands when people like Donald Trump called the democrats corrupt and calls out the fake news. We can’t pretend it’s not there on both sides, but I think Donald Trump made a great litmus test for objectivity.</p>
+<p>I was not around for the mystical Clinton years, but I refuse to believe that Joe Biden and the modern democratic party are Jesus reincarnate. While living in California, I have been “accused” of being a Republican as if vote shaming someone was ever a good thing, so I will also add that I do not believe anyone, especially a leader, should ever be as brazen and crass as Trump was, no one should lie so much about anything let alone things which don’t even matter, he should not have been overtly racist, he should stop getting fake tans etc. etc. but my position is that; Trump was the best example i’ve seen of the DISC in action when it came to things like the false narratives of <a href="https://taibbi.substack.com/p/the-russiagate-whitewash-era-begins?token=eyJ1c2VyX2lkIjo4Nzc1MjUyLCJfIjoiUk1OMU0iLCJpYXQiOjE2MzgxNzAyMTksImV4cCI6MTYzODE3MzgxOSwiaXNzIjoicHViLTEwNDIiLCJzdWIiOiJwb3N0LXJlYWN0aW9uIn0.RFCpH47ca_L0TI7DuHBgeCdBUrK376PaUBbl32Xd7gM">Russiagate</a>, <a href="https://www.sgtreport.com/2019/11/the-real-story-behind-ukrainegate/">Ukrainegate</a>, and the majority of his presidency which was lies on all sides which were easy to see if you don’t pledge allegiance to one side or the other.</p>
+<p>Similar false narratives are present within the Covid lab leak hypothesis, at first those who even mentioned it were called <a href="https://www.forbes.com/sites/startswithabang/2021/06/03/the-wuhan-lab-leak-hypothesis-is-a-conspiracy-theory-not-science/">conspiracy theorists</a>, even <a href="https://www.nationalreview.com/2021/06/the-lab-leak-theory-is-unbearably-racist/">racists</a>. Now it is<a href="https://unherd.com/2021/08/did-the-new-york-times-stifle-lab-leak-debate/">widely accepted</a> that it is one possible origin of many, though at this time I believe that there is <a href="https://nypost.com/2021/10/10/the-lab-leak-theory-is-now-almost-certainly-proved-and-other-commentary/">sufficient</a> and continually emerging <a href="https://www.washingtonpost.com/health/2021/08/25/coronavirus-origin-report-/">evidence</a> and <a href="https://www.msn.com/en-us/health/medical/more-evidence-that-the-wuhan-lab-leak-theory-is-the-correct-one/ar-BB1gtFWK">shifting narrative</a> spear headed by Yuri Deigin’s initial <a href="https://yurideigin.medium.com/lab-made-cov2-genealogy-through-the-lens-of-gain-of-function-research-f96dd7413748">report</a> which suggests that a lab leak would be not only the Occam’s razor conclusion, but is provably the only possible origin of Sars Cov-2. This of course will never be confirmed or publicly shared by any major news networks, or even by governments continually worried about international push back, because the DISC in all its forms buries inconvenient truths despite how much harm they may cause. Could lives have been saved if we focused on facts instead of censorship and manipulation?</p>
+<p>Neither the left or the right, nor Trump nor Biden is the root of the problem, corrupt politicians are a symptom of the problem. The problem is in part a financial one as explained by <a href="https://en.wikipedia.org/wiki/Manufacturing_Consent">Chomsky</a>, but it is also a philosophical one. We need an exit from our now entrenched us vs. them mentality, our identity politics and our newly adopted woke culture wars cannot sustain. Yes, we need to trust the science, but we also need to ensure that media and academic institutions are not self censoring the science for political reasons.</p>
+<p>In the British Medical Journal, an opinion piece titled “<a href="https://blogs.bmj.com/bmj/2021/06/02/political-censorship-in-academic-journals-sets-a-dangerous-new-precedent/">Political censorship in academic journals sets a dangerous new precedent</a>” details the political nature of a choice Lancet made to retract the authors paper warning of Covid on the war torn Gaza strip efore the virus had spread worldwide. Physicians from the U.S. and elsewhere demanded to Lancet that they remove the BMJ’s article from their database and Lancet complied, explaining to BMJ that they “could not sustain yet another campaign of this nature.”</p>
+<p>The same can be said for censorship campaigns in the name of combating misinformation on social media, facebook was forced to <a href="https://munrkazmir.medium.com/censorship-of-covid-lab-leak-theory-humiliates-social-media-giants-c50727db8b73">retract</a> their ban of any mentions of the lab leak hypothesis, twitter implimented a controversial misinformation <a href="https://abcnews.go.com/Technology/wireStory/twitter-rolls-redesigned-misinformation-warning-labels-81212172">label</a> and YouTube is rather <a href="https://www.lifesitenews.com/news/youtube-bans-frontline-doctors-speech-criticizing-experimental-agent-covid-vaccine/">liberal</a> with their permanent banning policy towards actual doctors with different opinions. Even if these doctors in question were wrong on their analysis, how and when did social media companies determine that they know better then practicing clinicians? Do these companies have teams of medical researchers determining what is or isn’t misinformation? They certainly don’t simply go off of what the CDC’s official policy is as evidenced by Dr. Pierre Cory’s testimony to congress on the official US government Youtube channel being <a href="https://www.foxnews.com/politics/youtube-remove-doctor-senate-testimony-coronavirus-ron-johnson-big-tech">taken down</a> without explication. The subject of the testimony was at the time regarding a cheap, off the shelf, and widely available drug which was potentially useful in the treatment of covid, Ivermectin. The testimony was prior to the CDC having any guidelines regarding the drug, therefore YouTube apparently bases its censorship decisions on some other internal policy which we are unable to know, similar to the algorithms of many major social media platforms.</p>
+<p>The same thing occurred to popular outsiders running in the 2020 election, the <a href="https://vocal.media/theSwamp/a-visual-history-of-the-yang-media-blackout">Yang</a> media blackout was apparent and similar to the <a href="https://www.inquisitr.com/5772836/tulsi-gabbard-media-blackout/">Tulsi</a> Media Blackout all of which are <a href="https://thehill.com/opinion/campaign/460224-why-the-media-dislike-andrew-tulsi-bernie-and-marianne">explained</a> by The Hill. Our very own institutions are clinging to power with every trick in the book, and with the recent pervasiveness of social media, we can see the corruption blatantly.</p>
+<p>The NY Post, a now conservative outlet ,was founded by Alexander Hamilton in 1801, today it holds the title of the Nations oldest newspaper. The paper had its official, verified account banned from twitter for breaking a story regarding Hunter Biden’s Laptop. Twitter also depopulated posts and placed misinformation tags below any mentions of the laptop. Facebook did the same. The images were leaked and the story turned out weeks later to be true. The Bidens have to this day not denied the laptops existence or contents, however was rarely discussed by other outlets because the DISC favors silence when it comes to those inconvenient truths. Only weeks before the election, it could be argued this act of censorship may have changed the course of history.</p>
+<p>Twitter’s CEO Jack Dorsey has recently resigned and appointed a the CEO Parag Arawal who said regarding free speech, “Our role is not to be bound by the First Amendment, but our role is to serve a healthy public conversation and our moves are reflective of things that we believe lead to a healthier public conversation. The kinds of things that we do about this is, focus less on thinking about free speech, but thinking about how the times have changed. One of the changes today that we see is speech is easy on the internet. Most people can speak. Where our role is particularly emphasized is who can be heard.” With this ominous attitude, Arawal alludes to a world were the constitution and freedom of the press does not hold any water online.</p>
+<p>In his first day as CEO, Arawal announced in a <a href="https://blog.twitter.com/en_us/topics/company/2021/private-information-policy-update">blog post</a> that Twitter would be implementing a new policy which prevents people from sharing photos and videos of other people without their consent if the images are intended to harass, or intimidate them. A twitter review team will assess whether the context and images violate the terms and conditions. The company claims that the policy is meant to protect people from physical or emotional harm. Emotional harm is real harm caused by real violence, and according to Berkeley <a href="https://twitter.com/SophiaLeeHyun/status/908506014038630400?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E908506014038630400%7Ctwgr%5E%7Ctwcon%5Es1_&amp;ref_url=https%3A%2F%2Fwelovetrump.com%2F2020%2F06%2F13%2Faccording-to-the-left-speech-and-silence-are-both-violence%2F">students</a>, and much of the woke left; “Speech is violence” and problematic speech must also be banned.</p>
+<p>The claim that Donald Trump incited violence with this specific tweet on January 6th got him banned from Twitter as <a href="https://www.theverge.com/2021/1/8/22221386/twitter-employees-trump-ban-internal-letter-capitol-attack">demanded</a> by hundreds twitter employees.</p>
+<p>This was all happening while the official Taliban <a href="https://twitter.com/Zabehulah_M33">account</a> remains active bragging about their wars waged across Afghanistan and inciting violence against women. The problem with this type of enforcement is that it can never be objective.</p>
+<p>Many fail to realize that this is exactly the aim, to remove objectivity, and allow those with institutional power to set the narrative based on whatever reparations they deem necessary based on a racist culture scorecard of oppression, whoever is most opressed gets precedent, this is how the “black lives matter” turned into “black trans lives matter”</p>
+<p>This phrasing becomes worrisome when emotional harm can only be inferred. Furthermore we are increasingly seeing the so called woke portion of the democratic party claiming that “speech is violence” and comparing</p>
+<p>Many conservatives argue that the tech giants are private companies with no obligations towards free speech and can therefore police their platforms however they desire. This argument however cannot simultaneously be used while these same platforms are protected under <a href="https://crsreports.congress.gov/product/pdf/R/R45650">Section 230</a> which prevents civil or criminal lawsuits against them for what is posted on their platforms. It is also highly problematic when press secretary Jen Psaki says that the Biden administration is “<a href="https://www.thenationalsentinel.com/2021/07/15/jen-psaki-admits-that-yes-the-biden-regime-is-working-with-facebook-social-media-to-flag-content/">working with</a>” social media companies to determine what content is flagged as misinformation.</p>
+<p>This behavior is unacceptable especially when the timely spread of information could save thousands, or millions of lives, a bright and shining example of constructive policy was demonstrated by Medrxiv and other pre-print medical journal servers who in the early days of the pandemic open sourced all of their soon to be published works. The entire website came with an inherent disclaimer of: These papers are pending peer review, so they should be taken with a grain of salt. The public should be treated as if they are capable of critical thinking and rationality, rather than a herd of sheep in need of coddling.</p>
+<p>Ultimately we need corruption and perverse incentive structures out of our politics and academic institutions. Until this occurs, we need free to strike a balance that is very near to speech across social platforms so that we may collectively advocate against those very same incentives which drive the false narrative conversations. It will save lives both right now, and into the future.</p>
+<p>The structural and financial problems in the media will need to be dealt with, but for now it is important that the average person knows that there is more to the news than just the fairway of mainstream information. The mainstream news will not dive into the weeds because it gets too complex and nuanced for a five minute news segment far too quickly. Therefore social media needs to remain the testing ground for information dissemination, free, and open to discussing problems that can then filter into a wider fairway of mainstream ideas, and solutions without fear of cancellation or censorship. When we as a society fear to speak out or are otherwise prevented from doing so, we are inevitably helping the DISC manufacture consent.</p>
+<p>Neither the government or private companies should be the arbiters of truth, truth is derived through decentralized consensus mechanisms that facilitate the scientific method of understanding where hypotheses become models and experiments which can then be replicated, those replicated studies provide information which can become a widely distributed theory, and if proven to be correct, a theory can become fact.</p>
+<p>I may be wrong, I hope that I am wrong, but I am afraid that I am not. We need to fight for whatever truths we have, we need to retain our open access to the internet, to a censorship free world without coercion, and to a world which strives for equal opportunity regardless of politics, and despite diverse circumstances.</p>
+<p>-Tyler<br />
+<span class="citation">@TylerisYoung</span></p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

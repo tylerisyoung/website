@@ -6,7 +6,7 @@ output:
     sansfont: Georgia
     df_print: paged
     Highlight: Tango
-    
+    self_contained: false
     css: styles.css
 
 
@@ -16,18 +16,17 @@ output:
 
 
 <h1>**Automated CV Project**</h1>
-<h6>***An automatic way to generate a new CV from an excel sheet with your past positions. This project was sourced and adapted from Nick Strayer via [Jesse Lacey](https://github.com/DS4PS/cv)***
+<h6>***An automatic way to generate a new CV from an excel sheet with your past positions. This project was sourced and adapted from Nick Strayer & [Jesse Lacey](https://github.com/DS4PS/cv)***
 </h6>
 <br>
-*[My Custom CV](https://tylerisyoung.github.io/CV/) Project 
-*
-``{r, echo=FALSE}
+<h6>*[My Custom CV](https://tylerisyoung.github.io/CV/) Project *
 
-knitr::opts_chunk$set(, fig.height=12, fig.fullwidth=TRUE)
-
-```
  
-```{r, fig.width=10, fig.fullheight=TRUE, fig.fullwidth=TRUE}
-knitr::include_url("https://tylerisyoung.github.io/CV/")
+```{r, echo=FALSE, cache=FALSE, fig.width=9}
+knitr::include_url("https://tylerisyoung.github.io/CV/", height = "1150px")
+
+
 
 ```
+
+
