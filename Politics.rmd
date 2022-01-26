@@ -103,9 +103,11 @@ Article: [*What we should do, & Why we're not doing it*](./joebidenandourlossins
 
 Text Message: [*Makhia Bryant*](./makhiabryant.html)  
 
+Text Message: [*77 Ways to Protect Yourself Online*](./77waystoprotectyourselfonline.html)  
+
 <!---
 
-Text Message: [*Makhia Bryant*](./makhiabryant.html)   
+Text Message: [*Policing and Makhia Bryant*](./makhiabryant.html)   
 
 --->
 
