@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Using GREP on Nonprofit Missions</title>
+
+<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="Lightheartedhumans.html">Lighthearted Humans</a>
+</li>
+<li>
+  <a href="Film.html">Film</a>
+</li>
+<li>
+  <a href="Photography.html">Photography</a>
+</li>
+<li>
+  <a href="Journalism.html">Journalism</a>
+</li>
+<li>
+  <a href="datascience.html">Data Science</a>
+</li>
+<li>
+  <a href="cv.html">CV</a>
+</li>
+<li>
+  <a href="Contact.html">Contact</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Using GREP on Nonprofit Missions</h1>
+<h4 class="author"></h4>
+
+</div>
+
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">#IRS 1023 DATA</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="co">#Load data </span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>URL &lt;-<span class="st"> &quot;https://github.com/DS4PS/cpp-527-spr-2020/blob/master/labs/data/IRS-1023-EZ-MISSIONS.rds?raw=true&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>dat &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">gzcon</span>(<span class="kw">url</span>( URL )))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="kw">head</span>( dat[ <span class="kw">c</span>(<span class="st">&quot;orgname&quot;</span>,<span class="st">&quot;codedef01&quot;</span>,<span class="st">&quot;mission&quot;</span>) ] ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pander</span>()</span></code></pre></div>
+<table style="width:88%;">
+<caption>Table continues below</caption>
+<colgroup>
+<col width="43%" />
+<col width="44%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">orgname</th>
+<th align="center">codedef01</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">NIA PERFORMING ARTS</td>
+<td align="center">Arts, Culture, and Humanities</td>
+</tr>
+<tr class="even">
+<td align="center">THE YOUNG ACTORS GUILD INC</td>
+<td align="center">Arts, Culture, and Humanities</td>
+</tr>
+<tr class="odd">
+<td align="center">RUTH STAGE INC</td>
+<td align="center">Arts, Culture, and Humanities</td>
+</tr>
+<tr class="even">
+<td align="center">STRIPLIGHT COMMUNITY THEATRE INC</td>
+<td align="center">Arts, Culture, and Humanities</td>
+</tr>
+<tr class="odd">
+<td align="center">NU BLACK ARTS WEST THEATRE</td>
+<td align="center">Arts, Culture, and Humanities</td>
+</tr>
+<tr class="even">
+<td align="center">OLIVE BRANCH THEATRICALS INC</td>
+<td align="center">Arts, Culture, and Humanities</td>
+</tr>
+</tbody>
+</table>
+<table style="width:46%;">
+<colgroup>
+<col width="45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">mission</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">A community based art organization that inspires, nutures,educates and empower artist and community.</td>
+</tr>
+<tr class="even">
+<td align="center">We engage and educate children in the various aspect of theatrical productions, through acting, directing, and stage crew. We produce community theater productions for children as well as educational theater camps and workshops.</td>
+</tr>
+<tr class="odd">
+<td align="center">Theater performances and performing arts</td>
+</tr>
+<tr class="even">
+<td align="center">To produce high-quality theater productions for our local community, guiding performers and audience members to a greater appreciation of creativity through the theatrical arts - while leading with respect, organization, accountability.</td>
+</tr>
+</tbody>
+</table>
+<div id="part-1-patterns" class="section level1">
+<h1>Part 1: Patterns</h1>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">#Example Pattern</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">grep</span>(  <span class="dt">pattern=</span><span class="st">&quot;some.reg.ex&quot;</span>, <span class="dt">x=</span><span class="st">&quot;mission statements&quot;</span>, <span class="dt">value=</span><span class="ot">TRUE</span> )</span></code></pre></div>
+</div>
+<div id="missions-with-numbers" class="section level1">
+<h1>Missions with Numbers</h1>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">#Missions with numbers</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">grep</span>( <span class="dt">pattern=</span><span class="st">&quot;[0-9]&quot;</span>, <span class="dt">x=</span>dat<span class="op">$</span>mission, <span class="dt">value=</span><span class="ot">TRUE</span> ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pander</span>()</span></code></pre></div>
+<p><em>Provide entertainment and education to private residence of a private residential community over 55.</em>, <em>To serve the community as a nonprofit organization dedicated to producing live theatre and educational opportunities in the theater arts. The theater’s primary activity is to put on 3-5 plays annually in Colorado Springs, CO.</em>, <em>The organization is a theater company that performs 3-4 plays per year.</em>, <em>Our mission is to facilitate personal growth and social development through the creativity of the Theatre Arts. We offer musical theatre camps for ages 4-7, 8-12, and 13-20 in the summers &amp; community theatre and classes for all ages fall-spring</em>, <em>Nurture minority actors, directors, playwrights, and theater artists by offering them the opportunity to participate in the best classic, contemporary, and original theater (A65 and R30).</em> and <em>The 574 Theatre Company strives to be a professional theatre company located in St. Joseph County, IN who seeks to create, inspire, and educate the members of the 574 community by producing high quality and innovative theatrical entertainment.</em></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co"># Sum of missions with numbers</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="kw">grepl</span>( <span class="st">&quot;[0-9]&quot;</span>, dat<span class="op">$</span>mission ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>()</span></code></pre></div>
+<pre><code>## [1] 4142</code></pre>
+<h2>
+<ol style="list-style-type: decimal">
+<li>Filter by: Starts with “to”</li>
+</ol>
+</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co">#How many begin with &quot;to&quot;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>filter_to &lt;-<span class="st"> </span><span class="kw">grep</span>( <span class="st">&quot;to&quot;</span> , <span class="dt">x=</span>dat<span class="op">$</span>mission, <span class="dt">value=</span><span class="ot">TRUE</span> )</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="kw">head</span>(filter_to, <span class="dv">6</span> ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pander</span>()</span></code></pre></div>
+<p><em>To produce high-quality theater productions for our local community, guiding performers and audience members to a greater appreciation of creativity through the theatrical arts - while leading with respect, organization, accountability.</em>, <em>Harbor Repertory Theater is organized exclusively for the charitable and educational purposes of producing theatrical entertainment.</em>, <em>Primitive Grace Theater inc , primary mission is to raise social and economic awareness through the arts. Currently we create and perform original works that creates conversation, which in turn will bring about change in our communities.</em>, <em>Honestly Speaking Inc is an organization dedicated to using theatre and literary works as a resource for art therapy, workforce development, and education.</em>, <em>The mission of the Shakespeare Troupe of South Florida is to cultivate an appreciation for the text of Shakespeare among new audiences through the employment of professional actors trained to give live performances from the First Folio.</em> and <em>Pier Pressure Productions is dedicated to life-affirming graphic and performance art that focuses on language and theater as a social and educational tool.</em></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>filter_to &lt;-<span class="st"> </span><span class="kw">grepl</span>( <span class="st">&quot;to&quot;</span> , <span class="dt">x=</span>dat<span class="op">$</span>mission ) </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="kw">sum</span>(filter_to)</span></code></pre></div>
+<pre><code>## [1] 34359</code></pre>
+<h2>
+<ol start="2" style="list-style-type: decimal">
+<li>Filter by: blank mission statements</li>
+</ol>
+</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">#Orgs by number which have blank missino statements</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>filter_blank &lt;-<span class="st"> </span><span class="kw">grep</span>(<span class="st">&quot;^[[:space:]]*$&quot;</span>,<span class="dt">x=</span>dat<span class="op">$</span>mission)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="co">#subset(dat,!grepl(&quot;^[[:space:]]*$&quot;, mission))</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="co">#dat[which(dat$mission!=&quot;&quot;),]</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="kw">head</span>(filter_blank , <span class="dv">6</span> )</span></code></pre></div>
+<pre><code>## [1]  4  5 18 29 36 44</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="co">#returns first 6 </span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="co">#Sum of blank mission statement orgs</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>filter_blank &lt;-<span class="st"> </span><span class="kw">grep</span>(<span class="st">&quot;^[[:space:]]*$&quot;</span>,<span class="dt">x=</span>dat<span class="op">$</span>mission)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a><span class="kw">sum</span>(filter_blank)</span></code></pre></div>
+<pre><code>## [1] 137577911</code></pre>
+<h2>
+<ol start="3" style="list-style-type: decimal">
+<li>Filter by: Mission statements with trailing whitespace</li>
+</ol>
+</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="co">#Identify trailing whitespace</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a>filter_blank_end &lt;-<span class="st"> </span><span class="kw">grepl</span>(<span class="st">&quot;[[:space:]]+$&quot;</span>, <span class="dt">x=</span>dat<span class="op">$</span>mission) <span class="co">#Blankk space at all?</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a><span class="co">#filter_spaces_after &lt;- grep(&quot;[[:space:]]+$&quot;, dat$mission) # Blank space after </span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a><span class="kw">sum</span>(filter_blank_end)</span></code></pre></div>
+<pre><code>## [1] 3464</code></pre>
+<p>Trim Trailing Whitespace:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="co">#Trim trainling whitespace</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a>trim_final_spaces &lt;-<span class="st"> </span><span class="cf">function</span> (<span class="dt">x=</span>dat<span class="op">$</span>mission) <span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">s+$&quot;</span>, <span class="st">&quot;&quot;</span>, x)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="kw">trim_final_spaces</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">6</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pander</span>()</span></code></pre></div>
+<em>A community based art organization that inspires, nutures,educates and empower artist and community.</em>, <em>We engage and educate children in the various aspect of theatrical productions, through acting, directing, and stage crew. We produce community theater productions for children as well as educational theater camps and workshops.</em>, <em>Theater performances and performing arts</em>, <strong>, </strong> and <em>To produce high-quality theater productions for our local community, guiding performers and audience members to a greater appreciation of creativity through the theatrical arts - while leading with respect, organization, accountability.</em>
+<h2>
+<ol start="3" style="list-style-type: decimal">
+<li>Filter by: How many missions have a dollar sign</li>
+</ol>
+</h2>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a>filter_dollar &lt;-<span class="st"> </span><span class="kw">grepl</span>( <span class="st">&quot;$&quot;</span> , <span class="dt">x=</span>dat<span class="op">$</span>mission ) </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a><span class="kw">sum</span>(filter_dollar)</span></code></pre></div>
+<pre><code>## [1] 54773</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

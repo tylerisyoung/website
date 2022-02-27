@@ -1,0 +1,217 @@
+---
+title: 'Omitted Variable Bias'
+author: ""
+date: ""
+output:
+  html_document:
+    df_print: paged
+    theme: cerulean
+    highlight: haddock
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=F, warning=F, fig.align='center', fig.width=9 )
+
+
+```
+
+
+
+
+```{r}
+library( pander )     # formatting tables
+library( dplyr )      # data wrangling
+library( stargazer )  # regression tables
+```
+
+
+
+
+```{r}
+URL <- "https://raw.githubusercontent.com/DS4PS/cpp-523-fall-2019/master/labs/data/predicting-subjective-wellbeing.csv"
+dat <- read.csv( URL, stringsAsFactors=F )
+```
+
+
+
+
+
+#### Variables
+
+Consider a three-variable regression of Subjective Well-Being (SWB), Network Diversity (ND) and Perceived Social Support (PSS):
+
+$SWB=β_0+β_1 \cdot ND+β_2 \cdot PSS+e$
+
+Calculate the omitted variable bias on the Network Diversity (ND) coefficient that results from omitting the Perceived Social Support (PSS) variable from the regression. 
+
+
+$SWB=b_0+b_1 \cdot ND+e$
+
+```{r, results="asis"}
+# Html viz problems 
+# Graph changes when knitted vs executed in console? 
+# Necessary to make third code chunk Eval = F
+
+m.full <- lm( SWB ~ ND + PSS, data=dat )
+m.naive <- lm( SWB ~ ND, data=dat )
+
+stargazer( m.naive, m.full, 
+           type = "html", digits=2,
+           dep.var.caption = "DV: Subjective Well-Being",
+           omit.stat = c("rsq","f","ser"),
+           notes.label = "Standard errors in parentheses")
+```
+
+
+
+Results from above chunk:
+
+
+```{r}
+B1 <- -0.05  # replace with the appropriate value from the table above
+b1 <- 0.52  # replace with the appropriate value from the table above
+bias <- b1 - B1
+bias 
+#= 0.57
+```
+
+
+
+
+
+#### Estimation
+
+Run the auxiliary regression to estimate $\alpha_1$.
+
+Calculate the bias using the omitted variable bias equation and show your math.  You can check your results by comparing your answer to bias calculation from **Variables**.
+
+
+```{r, results="asis" ,eval=T }
+
+#Html  viz problems 
+# Eval = F /T to knit (html/text)
+
+
+
+m.auxiliary <- lm( PSS ~ ND, data=dat )
+
+stargazer( m.auxiliary,  
+           type = "html", digits=2,
+           dep.var.caption = "DV: PSS",
+           omit.stat = c("rsq","f","ser"),
+           notes.label = "Standard errors in parentheses")
+
+ summary(m.auxiliary)
+ 
+#x_2=a_0+a_1X+E_2 
+# (b1-B1) / B1
+a1 <- 1.81
+B2 <- 0.32
+bias <- a1*B2
+bias
+
+```
+
+
+
+
+<br>
+
+#### Estimation on Happiness 
+
+How good is the naive estimation of β1, the impact of network diversity on our happiness, in this case?
+
+```{r, eval=T}
+#bias / B1  # rough measure of the magnitude of bias
+
+(.52 - (-0.05))/ (-0.05) 
+#= -11.4 
+
+#This is very far off from our previous estimates and our true model.  
+
+```
+
+
+<br>
+
+#### Standard errors
+
+Possible Std error increase (as well as network diversity loosing significance) possibly due to original estimatino of slope being too large. 
+
+In the previous lecture we saw how the Class Size model lost significance when SES was added as a result of an increase in the standard errors. In this model Network Diversity also loses significance. Explain why.
+
+<br>
+
+---
+
+<br>
+
+### Self Esteem on Happiness
+How does our need for approval of others (contingent self-esteem) impact our happiness (SWB)?
+
+What happens to our inferences if we estimate the impact of CSE on happiness without accounting for baseline self-esteem (RSE)?
+
+To examine this we will regress SWB onto RSE, SWB onto CSE.
+
+SWB=b0+b1⋅CSE+e1
+SWB=b0+b2⋅RSE+e2
+
+We can then compare these two bivariate regressions to the results in the full model:
+
+SWB=β0+β1⋅CSE+β2⋅RSE+ϵ
+
+```{r}
+#Hdoes function in the console despite html viz
+
+m.01 <- lm( SWB ~ CSE, data=dat )
+m.02 <- lm( SWB ~ RSE, data=dat )
+m.03 <- lm( SWB ~ CSE + RSE, data=dat )
+
+stargazer( m.01, m.02, m.03, 
+           type = "text", digits=2,
+           dep.var.caption = "DV: Subjective Well-Being",
+           omit.stat = c("rsq","f","ser"),
+           notes.label = "Standard errors in parentheses")
+
+```
+
+<br>
+#### Analysis
+
+The slope of CSE flipped from negative to positive, and it is highly statistically significant in both cases, but now with the added variable, our slope has changed meaning that it is correlated with the variableand that our standard error is now larger as well. 
+    
+The control variable caused the slope estimate for Network Diversity to shift to the left toward the null hypothesis (slope=0, no impact) and as a result it lost statistical significance. 
+    
+Our slope was corrected downward, The standard error typically becomes larger and did here, as we saw our model become less accurate #with less significance. 
+  
+What happens in this case? Why did that happen? Drawing the coefficient plot might help. 
+  
+
+#### Bias
+
+
+
+$bias = \alpha_1 \cdot B_2$
+
+
+|  $\alpha_1$  | $B_2$  | Sign of Bias |  
+|--------------|--------|:------------:|  
+|  (+)  |  (+)  |  (+)  |  
+|  (-)  |  (-)  |  (+)  |  
+|  (+)  |  (-)  |  (-)  |  
+|  (-)  |  (+)  |  (-)  |  
+
+
+
+$b_1 = B_1 + bias$  
+
+Therefore: 
+
+If bias (+) then $b_1 > B_1$  
+
+If bias (-) then $b_1 < B_1$ 
+
+
+<br>
+

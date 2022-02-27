@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Tyler Young" />
+
+
+<title>Gender in Nonprofits - a Chi Squared test</title>
+
+<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="Lightheartedhumans.html">Lighthearted Humans</a>
+</li>
+<li>
+  <a href="Film.html">Film</a>
+</li>
+<li>
+  <a href="Photography.html">Photography</a>
+</li>
+<li>
+  <a href="Journalism.html">Journalism</a>
+</li>
+<li>
+  <a href="datascience.html">Data Science</a>
+</li>
+<li>
+  <a href="cv.html">CV</a>
+</li>
+<li>
+  <a href="Contact.html">Contact</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Gender in Nonprofits - a Chi Squared test</h1>
+<h4 class="author">Tyler Young</h4>
+
+</div>
+
+
+<div id="question-are-male-and-female-entrepeneurs-represented-differently-in-the-nonprofit-industry" class="section level1">
+<h1>Question: Are male and female entrepeneurs represented differently in the nonprofit industry?</h1>
+<div id="the-dataset-contains-ten-survey-questions-from-a-survey-of-nonprofit-entrepreneurs.-the-gender-variable-represents-our-study-groups-male-and-female." class="section level3">
+<h3>The dataset contains ten survey questions from a survey of nonprofit entrepreneurs. The gender variable represents our study groups, male and female.</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>URL &lt;-<span class="st"> &quot;https://github.com/DS4PS/cpp-524-sum-2020/blob/master/labs/data/female-np-entrepreneurs.rds?raw=true&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>dat &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">gzcon</span>(<span class="kw">url</span>( URL )))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">head</span>( dat )</span></code></pre></div>
+<pre><code>##   gender age income edu.level years.prof.exp experience.np.create
+## 1 Female  54  79669  Graduate          11-15                   No
+## 2 Female  62  63474  Graduate            15+                   No
+## 3 Female  70  27887  Graduate            15+                  Yes
+## 4   Male  63  63474  Graduate            15+                  Yes
+## 5 Female  60 170832  Graduate            15+                  Yes
+## 6 Female  41  69531  Graduate           6-10                  Yes
+##   experience.np.form experience.np.other take.on.debt seed.funding
+## 1                 No                 Yes           $0           No
+## 2                Yes                 Yes           $0           No
+## 3                Yes                 Yes           $0           No
+## 4                 No                 Yes           $0           No
+## 5                Yes                 Yes           $0          Yes
+## 6                 No                  No           $0          Yes
+##   most.imp.fund.source
+## 1            Donations
+## 2            Gov Grant
+## 3            Donations
+## 4            Donations
+## 5           Corp Grant
+## 6            Gov Grant</code></pre>
+<p><br> <br></p>
+</div>
+</div>
+<div id="survey-question-1" class="section level1">
+<h1>Survey Question 1:</h1>
+<p>Comparing education levels of male and female entrepreneurs. Education levels of male &amp; female entrepreneurs. “What is the highest level of education you achieved?”</p>
+<p>Tables</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>a &lt;-<span class="st"> </span><span class="kw">table</span>( dat<span class="op">$</span>edu.level, dat<span class="op">$</span>gender )</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>a <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prop.table</span>( <span class="dt">margin=</span><span class="dv">1</span> ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pander</span>()</span></code></pre></div>
+<table style="width:51%;">
+<colgroup>
+<col width="26%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Female</th>
+<th align="center">Male</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>None</strong></td>
+<td align="center">0.47</td>
+<td align="center">0.53</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>High School</strong></td>
+<td align="center">0.4</td>
+<td align="center">0.6</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>Some College</strong></td>
+<td align="center">0.57</td>
+<td align="center">0.43</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>Bachelor</strong></td>
+<td align="center">0.6</td>
+<td align="center">0.4</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>Graduate</strong></td>
+<td align="center">0.52</td>
+<td align="center">0.48</td>
+</tr>
+</tbody>
+</table>
+<p>Chi Square Tests</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">chisq.test</span>( a, <span class="dt">simulate.p.value =</span> <span class="ot">TRUE</span> , <span class="dt">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
+##  replicates)
+## 
+## data:  a
+## X-squared = 4.3831, df = NA, p-value = 0.3644</code></pre>
+<div id="question-1" class="section level3">
+<h3>Question 1</h3>
+<p>The two factors chi square p value is less than 0.05, therefore they are correlated, and not independent. While we find that females on average have slightly higher levels of education, they are not statistically significant and therefore not expressly correlated.</p>
+<p><br> <br> <br> <br></p>
+</div>
+</div>
+<div id="survey-question-2" class="section level1">
+<h1>Survey Question 2:</h1>
+<p>Compare work experience for male and female entrepreneurs. “Do males or females have more professional* work experience?”</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>b &lt;-<span class="st"> </span><span class="kw">table</span>( dat<span class="op">$</span>years.prof.exp, dat<span class="op">$</span>gender )</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>b <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prop.table</span>( <span class="dt">margin=</span><span class="dv">1</span> ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pander</span>()</span></code></pre></div>
+<table style="width:42%;">
+<colgroup>
+<col width="16%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Female</th>
+<th align="center">Male</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>0</strong></td>
+<td align="center">0.73</td>
+<td align="center">0.27</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>1-2</strong></td>
+<td align="center">0.67</td>
+<td align="center">0.33</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>3-5</strong></td>
+<td align="center">0.62</td>
+<td align="center">0.38</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>6-10</strong></td>
+<td align="center">0.57</td>
+<td align="center">0.43</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>11-15</strong></td>
+<td align="center">0.58</td>
+<td align="center">0.42</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>15+</strong></td>
+<td align="center">0.53</td>
+<td align="center">0.47</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">chisq.test</span>( b, <span class="dt">simulate.p.value =</span> <span class="ot">TRUE</span> , <span class="dt">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
+##  replicates)
+## 
+## data:  b
+## X-squared = 4.0086, df = NA, p-value = 0.5785</code></pre>
+<p>The two factors chi square p value is greater than 0.05, therefore they are uncorrelated, and independent. The work experience of female entrepreneurs is on average greater and is statistically significant.</p>
+<p><br> <br> <br> <br></p>
+</div>
+<div id="survey-question-3" class="section level1">
+<h1>Survey Question 3:</h1>
+<p>Do females or males on average receive more seed funding?</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>c &lt;-<span class="st"> </span><span class="kw">table</span>( dat<span class="op">$</span>seed.funding, dat<span class="op">$</span>gender )</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>c <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prop.table</span>( <span class="dt">margin=</span><span class="dv">1</span> ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pander</span>()</span></code></pre></div>
+<table style="width:39%;">
+<colgroup>
+<col width="13%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Female</th>
+<th align="center">Male</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>No</strong></td>
+<td align="center">0.55</td>
+<td align="center">0.45</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>Yes</strong></td>
+<td align="center">0.54</td>
+<td align="center">0.46</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">chisq.test</span>( c, <span class="dt">simulate.p.value =</span> <span class="ot">TRUE</span> , <span class="dt">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
+##  replicates)
+## 
+## data:  c
+## X-squared = 0.033448, df = NA, p-value = 0.8494</code></pre>
+<p>The two factors chi square p value is greater than 0.05, therefore they are uncorrelated, and independent. Therefore we can determine that our data is statistically significant in finding that females receive seen funding more often than males.</p>
+<p><br> <br> <br> <br></p>
+</div>
+<div id="survey-question-4" class="section level1">
+<h1>Survey Question 4:</h1>
+<p>Are males or females more willing to take on debt to start a business?</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a>d &lt;-<span class="st"> </span><span class="kw">table</span>( dat<span class="op">$</span>take.on.debt, dat<span class="op">$</span>gender )</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>d <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prop.table</span>( <span class="dt">margin=</span><span class="dv">1</span> ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pander</span>()</span></code></pre></div>
+<table style="width:47%;">
+<colgroup>
+<col width="22%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Female</th>
+<th align="center">Male</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>$0</strong></td>
+<td align="center">0.57</td>
+<td align="center">0.43</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>$0k-$10k</strong></td>
+<td align="center">0.6</td>
+<td align="center">0.4</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>$10k-$25k</strong></td>
+<td align="center">0.39</td>
+<td align="center">0.61</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>$25k-$50k</strong></td>
+<td align="center">0.47</td>
+<td align="center">0.53</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>$50k+</strong></td>
+<td align="center">0.36</td>
+<td align="center">0.64</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">chisq.test</span>( d, <span class="dt">simulate.p.value =</span> <span class="ot">TRUE</span> , <span class="dt">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
+##  replicates)
+## 
+## data:  d
+## X-squared = 8.6158, df = NA, p-value = 0.06759</code></pre>
+<p>The two factors chi square p value is just greater than 0.05, therefore they are uncorrelated, and independent. Our data do suggest that males comparatively take on debt more often than their counterparts.</p>
+<p><br> <br> <br> <br></p>
+</div>
+<div id="survey-question-5" class="section level1">
+<h1>Survey Question 5:</h1>
+<p>Do males and females have different sources of funding that are most importasnt to their businesses?</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a>e &lt;-<span class="st"> </span><span class="kw">table</span>( dat<span class="op">$</span>most.imp.fund.source, dat<span class="op">$</span>gender )</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>e <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prop.table</span>( <span class="dt">margin=</span><span class="dv">1</span> ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pander</span>()</span></code></pre></div>
+<table style="width:57%;">
+<colgroup>
+<col width="31%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Female</th>
+<th align="center">Male</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>Donations</strong></td>
+<td align="center">0.51</td>
+<td align="center">0.49</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>Founder</strong></td>
+<td align="center">0.56</td>
+<td align="center">0.44</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>Earned Revenues</strong></td>
+<td align="center">0.66</td>
+<td align="center">0.34</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>Foundation Grant</strong></td>
+<td align="center">0.59</td>
+<td align="center">0.41</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>Gov Grant</strong></td>
+<td align="center">0.59</td>
+<td align="center">0.41</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>Member Fees</strong></td>
+<td align="center">0.46</td>
+<td align="center">0.54</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>Parent Org</strong></td>
+<td align="center">0.5</td>
+<td align="center">0.5</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>Angel</strong></td>
+<td align="center">0.52</td>
+<td align="center">0.48</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>Corp Grant</strong></td>
+<td align="center">0.67</td>
+<td align="center">0.33</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">chisq.test</span>( e, <span class="dt">simulate.p.value =</span> <span class="ot">TRUE</span> , <span class="dt">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
+##  replicates)
+## 
+## data:  e
+## X-squared = 8.8304, df = NA, p-value = 0.36</code></pre>
+<p>The two factors chi square p value is just greater than 0.05, therefore they are uncorrelated, and independent. Our data do suggest that in some areas there are statistically significant differences in funding sources by gender.</p>
+<p><br> <br> <br> <br></p>
+</div>
+<div id="survey-question-6" class="section level1">
+<h1>Survey question 6:</h1>
+<p>Does the average age of nonprofit founders differ by gender?</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="kw">chisq.test</span>( f, <span class="dt">simulate.p.value =</span> <span class="ot">TRUE</span> , <span class="dt">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
+##  replicates)
+## 
+## data:  f
+## X-squared = 98.545, df = NA, p-value = 5e-04</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="kw">t.test</span>( age <span class="op">~</span><span class="st"> </span>gender, <span class="dt">data=</span>dat )</span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  age by gender
+## t = -3.1749, df = 589.02, p-value = 0.001577
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -5.031881 -1.185709
+## sample estimates:
+## mean in group Female   mean in group Male 
+##             51.93948             55.04828</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a>get_pval_from_tval &lt;-<span class="st"> </span><span class="cf">function</span>( tvalue, n1, n2 )</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a>{</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a>  df &lt;-<span class="st"> </span><span class="kw">min</span>( <span class="dv">655</span>, <span class="dv">657</span> ) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>  <span class="co"># size of treated group and comparison</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true"></a>  pval &lt;-<span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">pt</span>( <span class="kw">abs</span>(tvalue), <span class="dt">df=</span>df, <span class="dt">lower.tail=</span><span class="ot">FALSE</span> )</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true"></a>  <span class="kw">return</span>( pval )</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true"></a>}</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true"></a><span class="kw">get_pval_from_tval</span>( <span class="dt">tvalue=</span><span class="op">-</span><span class="fl">3.1749</span>, <span class="dt">n1=</span><span class="dv">655</span>, <span class="dt">n2=</span><span class="dv">657</span> )</span></code></pre></div>
+<pre><code>## [1] 0.001569263</code></pre>
+<p>Our data suggest within a 95% confidence interval that the average age of male nonprofit entrepreneurs is slightly older than that of female nonprofit entrepreneurs. (Though our adjusted alpha suggests the groups are equivalent, more in Q8)</p>
+<p><br> <br> <br> <br></p>
+</div>
+<div id="survey-question-7" class="section level1">
+<h1>Survey Question 7:</h1>
+<p>Were the income levels between men and women entrepeneurs different at the time of inception?</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a><span class="kw">chisq.test</span>( g, <span class="dt">simulate.p.value =</span> <span class="ot">TRUE</span> , <span class="dt">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
+##  replicates)
+## 
+## data:  g
+## X-squared = 601.88, df = NA, p-value = 0.6869</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true"></a><span class="kw">t.test</span>( income <span class="op">~</span><span class="st"> </span>gender, <span class="dt">data=</span>dat )</span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  income by gender
+## t = -3.6353, df = 630.22, p-value = 0.0003003
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -20239.710  -6042.518
+## sample estimates:
+## mean in group Female   mean in group Male 
+##             67741.83             80882.95</code></pre>
+<p>The two factors chi square p value is just greater than 0.05, therefore they are uncorrelated, and independent. The differences in income between men and women at the time of starting a nonprofit was meaningfully statistically different and greater for males.</p>
+<p><br> <br> <br> <br></p>
+</div>
+<div id="analysis" class="section level1">
+<h1>Analysis</h1>
+<p>-Further investigation using Bonferroni’s corrected alpha could be of use concerning type 1 errors. -The lowest p-value across the contrasts was that of age. -The only statistically significant p-value was that of age, and after running a basic Bonferroni Correction on it, we cannot reject the nunll hypothesis and therefore must state that these entrepreneurs surveyed are statistically the same when considering gender.</p>
+<p>```</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
