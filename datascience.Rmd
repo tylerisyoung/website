@@ -48,7 +48,7 @@ library ("cowplot")
 
 Predictive Community Change based on Tax Revenue                                                              |  Dashboard: Interactive Car Accident User Investigation 
 :------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------:
-[Masters Group Project, ASU](https://r-class.github.io/cpp-528-spr-2021-group-04/)                                  |  [Accident Characteristics in Tempe, AZ](./tempedashboard.html)
+[Masters Group Project, ASU](https://r-class.github.io/cpp-528-spr-2021-group-04/)                            |  [Accident Characteristics in AZ - ShinyAPP](https://tylerisyoung.shinyapps.io/final-project-dashboard-Young/)
 ![](./images/Schoolproject01.jpg)                                                                             |  ![](./images/Schoolproject02.jpg)
                                                                                                               
 
