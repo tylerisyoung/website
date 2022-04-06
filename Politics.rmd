@@ -82,6 +82,8 @@ Article: [*Free to Speak, Navigating Free Speech since 1984*](./freetospeak.html
 <br>
 
 <!---  
+
+
   
 Article: [*The New Activism*](./joebidenandourlossinsensemakin.html)  (Coming Soon)
 
@@ -93,7 +95,7 @@ Article: [*The Motte & Bailey*](./joebidenandourlossinsensemakin.html)  (Coming 
 
 Article: [*What we should do, & Why we're not doing it*](./joebidenandourlossinsensemakin.html)  (Coming Soon)
 
---->
+
 
 </details>
 <br>
@@ -108,6 +110,8 @@ Text Message: [*77 Ways to Protect Yourself Online*](./77waystoprotectyourselfon
 <!---
 
 Text Message: [*Policing and Makhia Bryant*](./makhiabryant.html)   
+
+
 
 --->
 
