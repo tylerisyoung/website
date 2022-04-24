@@ -42,14 +42,14 @@ output:
 [***Politics***](./Politics.html)  
 </h4>
 
-<br>
- 
 
+<br>
  Essay: [The Artists Rebellion](./docs/Theartistsrebellion.html)   
- 
+<center>
  <br>
  ![](images/THE ARTISTS REBELLION.png)
  
- 
+ <br>
+ <iframe width="560" height="315" src="https://www.youtube.com/embed/3Yp1ob_T7_k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 

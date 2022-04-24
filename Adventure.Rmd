@@ -56,6 +56,9 @@ Article: [*Reviews*](./deepecolog.html) (Coming Soon)
 
 </details>
 </details>
- 
+ <center>
  <br>
  ![](images/TheArtofAdventure.png)
+ 
+<br>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Zq014Q96pzM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
