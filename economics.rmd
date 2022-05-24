@@ -34,9 +34,11 @@ output:
 <details><summary>***Investing***</summary>
 [ ](./n/a.html)  
 
+[*Bitcoin Technical Analysis (Ongonig)*](./bitcoinTA.html) 
+
 <!---
 
-[*Bitcoin*](./bitcoi.html) (Coming Soon) 
+
 
 [*Silver*](./bitcoi.html) (Coming Soon) 
 
@@ -58,7 +60,9 @@ output:
 
   <details><summary>***Macro***</summary>
   [ ](./n/a.html)  
-  
+
+[*Modern Monetary Theory - Slow at first, then all at once.*](./mmt.html)   
+
 <!---
 
 [*The Green New Deal Makes No Sense*](./bitcoi.html) (Coming Soon) 

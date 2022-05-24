@@ -21,8 +21,8 @@ output:
 <h6>
 ***B.S. Environmental Studies***
 ***UO '18,***  
-***M.S. Data Analytics***
-***ASU '22****
+***M.S. Data Analytics & Policy Evaluation***
+***ASU '22***
 </h6><h5>
 <br>
 **Currently:**
@@ -47,7 +47,7 @@ ________________________________________
 <br>
 
 <h5>
-**My name is Tyler, I’m an Environmentalist, a Journalist, and a Filmmaker. Currently in School for a masters in Data Analytics. I love prioritization, effective altruism, econometrics, and I especially enjoy when my work can have a positive impact. Recently founded Lighthearted Humans, a nonprofit marketing and production company. I aim to make the world a better place through creativity for a greater good. ** 
+**My name is Tyler, I'm interested in data analytics, policy, film, and journalism. I love working on prioritization, effective altruism, econometrics, and I recently founded Lighthearted Humans, a nonprofit marketing and production company to communicate these ideas and their optimal solutions. I aim to make the world a better place through creativity for a greater good.** 
 </h5>
 
 <br>

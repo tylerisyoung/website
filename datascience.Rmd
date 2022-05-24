@@ -17,7 +17,7 @@ output:
 <br>
 
 <h1>**Data Science**</h1>
-<h6>***A Collection of things I am learning & things I'm interested in.***</h6>
+<h6>***A collection of things I am learning & things I'm interested in.***</h6>
 *[github.com/Tylerisyoung](https://www.github.com/tylerisyoung)
 *
 

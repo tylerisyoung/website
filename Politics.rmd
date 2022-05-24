@@ -43,7 +43,7 @@ output:
 
 <br>
 
-Article: [*Joe Biden and our loss in Sensemaking*](./joebidenandourlossinsensemaking.html)    
+Article: [*Joe Biden and our loss in Sensemaking*](./JoeBidenandourlossinsensemaking.html)    
 <br>
 Article: [*Distributed Idea Suppression Complex*](./distributedideasuppressioncomplex.html)  
 <br>
