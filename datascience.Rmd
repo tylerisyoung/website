@@ -38,6 +38,17 @@ library ("cowplot")
 
 
 
+<font size="5">
+<p style="text-align: center;">Data Driven Journalism</p>
+</font>
+<br>
+
+Modern Monetary Theory - Slow at first, then all at once.                                                     |  Ongoing Technical Analysis of Financial Markets 
+:------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------:
+[Read Here:](./mmt.html)                                                                                      |  [Read Here:](./ongointa.html)
+![](./images/DOTPLOT_2.png)                                                                                   |  ![](./images/ONGOINGTA.jpg)
+                                         
+
 
 <br>
 
