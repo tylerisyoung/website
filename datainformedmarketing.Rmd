@@ -1,0 +1,69 @@
+---
+title: ""
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+    
+    css: styles.css
+
+
+---
+
+<br>
+<br>
+
+<h1>**Win-Win Data Informed Marketing - What Brands are Thinking**</h1> 
+<h6>
+***An article by Tyler Young.***
+</h6>
+
+*[Tylerisyoung.Substack.com](www.tylerisyoung.substack.com)*   
+*[Twitter.com/TylerisYoung](www.twitter.com/Tylerisyoung)*  
+ _________________________
+ <br>
+ 11/02/2021
+ <br>
+ 
+<h3>
+How win-win marketing shapes brand image, consumer behavior, and how it can be improved. 
+</h3>
+
+
+<br>
+
+
+
+In today's world where most of us are constantly online, we are bombarded with advertising at every turn. In the rare occurrences where there are no ads, one can usually find a direct subscription model where you are still being advertised to. It is rare to find a site or online space that does not provide any means of extracting value from its users explicitly or implicitly. This is the business model of our online world and we have largely chosen to accept it - or at least participate in exchange for what is often higher utility for us as users. The internet is now experiences primarily through social platforms precisely because it allows for marketing, users get a free service, and brands can fairly compete for market share, a theoretical win-win.
+
+Advertising is a two-sided coin that can be at times somewhat annoying for the user, a strict balance is necessary for brands to create awareness without creating annoyance. Luckily in today's world there are a million and one ways to advertise, brands like Apple [spending](https://medium.com/seedx-digital-marketing-guru/why-apple-spends-1-8-billion-on-advertising-38d3940270bf) $1.8bn on advertising look a bit silly when compared to a brand like Tesla who [spends](Tesla doesn't advertise, it innovates, which is why it is now so ...) $0 - yet the result is the same, both of these brands are industry standard for high end consumer technology. The differences matter, Apple has become the largest company, and by definition makes the shift towards becoming a value stock, while Tesla continues to innovate as fast as possible as a high-beta tech stock. They know their places in the field and compete to their advantages. Apple's advertising needs change slowly with their tech while Tesla's change with the wind. Most brands rely on cyclical iterations of marketing campaigns to remain relevant, useful, and in line with current consumer sentiment. While broad strategies are still necessary, the new technology available to us has meant that the whole industry has been undergoing a generational shift towards customer alignment insights that were not previously possible, for brands large and small, this data, information, knowledge, and wisdom that come from these insights all play a key role in generating alignment.
+
+**The Funnel**
+
+The first step in any marketing effort is the typical inverted pyramid describing brand awareness and interest, the pyramid allows those who are at different levels of closeness with the brand to be targeted with different specific interactions which can then better result into conversion and repeat customers. The ideal end goal for any advertising campaign is a successful and complete customer conversion where a new customer goes through the process of becoming aware, taking interest, evaluating with intent, being converted, becoming loyal, and even becoming fans* at which point fans often begin advocating on behalf of the marketer’s brand. This is a successful campaign, and while it can be achieved in many ways, it can certainly be improved by data availability and analysis. 
+
+Sentiment analysis is the process by which brands understand their own users, brands can spend months and even years trying to understand their very own customers, and some still fall short. Crystal describes how artificial intelligence can help with this process by creating a top-down marketing stack in a three step process; "Deconstructing the customers journey, Decomposing the marketing strategy into tactics, and Designing the Martech matrix." By these methods, marketers can more closely determine how any why customers buy or interact with their products and use that to their advantage in a way that allows users to have a better experience, and the marketers to gain repeat customers.
+
+**Marketing Design**
+
+Deconstructing the user experience for each layer of the interest funnel and specifying desired inputs, outputs, and performance metrics for each can help marketers build and track models of their customers behaviors over time.
+
+Decomposing desired outcomes and creating tactics to reach them is the fundamental plan of any business. Crystal claims that this is an area where automation can have huge impacts on business plans, and hands off growth techniques that can scale lead to economies of scale which most brands or businesses never reach. These tactics and use cases are only increasing in today's online world.
+
+Designing a fluid strategy that ensures technology investments have positive outcomes and are yielding beneficial results can be investigated by using the principles of the Martech Matrix, a classic marketing design that involves the basics of everything from advertising direct to consumer to sales promotions, media relations, and customer support.
+
+**Branding**
+
+These tactics and tools may take precious time and money, especially in a startup environment, but if used correctly, and in conjunction with one another can have huge implications for any business model and their brand generating a flywheel of sales and customer relationships we see with the most world-renowned brands today.
+
+Companies like Apple, Ray Ban, Whole Foods, Patagonia, Gucci, Chipotle and others have clearly mastered these aspects of customer acquisition, retention, and advocacy on behalf of their brands. By mastering these techniques laid out by Crystal, brands eventually become so synonymous with their products that the customers are not only happy to pay for the products, but often donate time, money, and encourage friends to do the same generating a positive feedback loop that both parties benefit from in the long run.
+
+References:
+
+Dua, Tanya. “Millennials Reveal the Top 100 Brands They Love.” _Business Insider_, Business Insider, 7 Sept. 2018, https://www.businessinsider.com/top-100-millennial-brands-2018-9.
+
+F. Mela, Carl, and Brian Cooper. “The Martech Matrix.” _Harvard Business Review_, 29 Oct. 2021, https://hbr.org/data-visuals/2021/07/the-martech-matrix.
+
+McClure, Crystal. “Data Informed DIKW Through Marketing.” _Youtube_, Dec. 2021, https://www.youtube.com/watch?v=rMD2JeztxCI.
