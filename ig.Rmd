@@ -24,10 +24,10 @@ output:
 ***Links***
 </h4>
 <h5>
-*[Website](www.tylerisyoung.com)*  
-*[Substack](www.tylerisyoung.substack.com)*   
-*[Twitter](www.twitter.com/Tylerisyoung)*  
-*[Youtube](https://www.youtube.com/tylerisyoung)*   
+*[Website](https://www.tylerisyoung.com)*  
+*[Substack](https://www.tylerisyoung.substack.com)*   
+*[Twitter](https://www.twitter.com/Tylerisyoung)*  
+*[Youtube](https://https://www.youtube.com/tylerisyoung)*   
 *[Data Science](https://www.tylerisyoung.com/datascience.html)* 
 </h5>
  _________________________
@@ -64,7 +64,7 @@ output:
 </h4>
 [Read: Modern Monetary Theory - Slow at first, then all at once.](./mmt.html)  
 [Read: Joe Biden and our loss in Sensemaking ](./JoeBidenandourlossinsensemaking.html)  
-[Read: Distributed Idea Supression Complex](./distributedideasupressioncomplex.html)*  
+[Read: Distributed Idea Supression Complex](./distributedideasupressioncomplex.html)  
 [Read: Mainstream Monitoring and Manipulation](./mainstreammonitoringandmanipulation.html)
 
 
@@ -93,6 +93,12 @@ output:
 
 
  _________________________
- <br>
+
+<br>
+<br>
+<center>
+![](images/tylerisyounglogo_small_tiny_2.png)
+
+
 
  </center>

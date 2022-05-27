@@ -51,7 +51,7 @@ ________________________________________
 </h5>
 
 <br>
-
+<br>
 
 
 ![](images/surf.jpg)
@@ -65,11 +65,13 @@ ________________________________________
 
 
 
-
-
+<br>
+<br>
+<br>
+<br>
 <br>
 <center>
-![](images/tiylogo_tiny.png)
+![](images/tylerisyounglogo_small_tiny_2.png)
 
 
 
