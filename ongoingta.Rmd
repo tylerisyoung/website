@@ -31,10 +31,11 @@ output:
 <h6>
 Zoom in on browser/mobile to see charts 
 <h6>
-</center>
+
 <br>
+
 Read: [Modern Monetary Theory - Slow at first, then all at once.](./mmt.html)  
-Read: [Bitcoin(soon)](./.html)
+</center>
 <br>  
 <h4>
 **The Macroeconomic Backdrop**  
