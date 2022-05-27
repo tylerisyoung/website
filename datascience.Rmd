@@ -42,6 +42,10 @@ library ("cowplot")
 <p style="text-align: center;">Data Driven Journalism</p>
 </font>
 <br>
+<center>
+Current Projects: [Here](./links.html)
+</center>
+<br>
 
 Modern Monetary Theory - Slow at first, then all at once.                                                     |  Ongoing Technical Analysis of Financial Markets 
 :------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------:
