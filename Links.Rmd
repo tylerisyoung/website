@@ -1,19 +1,104 @@
 ---
-title: "Resources"
-output: html_document
+title: ""
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+    
+    css: styles.css
+
+
 ---
+<br>
 
-### R and R-Studio
+<h1>**TylerisYoung**</h1>
 
-[R](http://www.r-project.org) is a free open-source programming language that can be used for statistical analysis, data-simulation, graphing, and lots of other stuff. Another free program is [R-studio](http://www.rstudio.com), that provides a nice graphic interface for R. Download R first, then download R-studio. Both can run on PCs, Macs or Linux. Students will be learning R in the stats labs using the lab manual []().
+<br>
+![](./images/selfie-modified_small.png)
+<br>
+<br>
 
-### Additional R resources
+<h4>
+***Links***
+</h4>
+<h5>
+*[Website](https://www.tylerisyoung.com)*  
+*[Substack](https://www.tylerisyoung.substack.com)*   
+*[Twitter](https://www.twitter.com/Tylerisyoung)*  
+*[Youtube](https://https://www.youtube.com/tylerisyoung)*   
+*[Data Science](https://www.tylerisyoung.com/datascience.html)* 
+</h5>
+ _________________________
+<br>
 
-1. Google is great, Google your problem
-2. [Stackoverflow](https://stackoverflow.com) is great, google will often take you there because someone has already asked your question, and someone else has answered, usually many people have answered your question many ways.
-3. Danielle Navarro wrote a [free Psych Stats textbook using R](https://compcogscisydney.org/learning-statistics-with-r/), it's worth checking out (some of our textbook are based on Danielle's)
-4. I am currently writing another stats textbook (incorporating some of the above). You can read it while it's being made right here [https://crumplab.github.io/statistics/](https://crumplab.github.io/statistics/), also check out the lab manual for more specific things about doing various stats in R (also in draft right now) [https://crumplab.github.io/statisticsLab/](https://crumplab.github.io/statisticsLab/)
-5. Daniell Navarro recently made this website for introducing R, it's great, check it out (also made using this R markdown process): [http://compcogscisydney.org/psyr/](http://compcogscisydney.org/psyr/)
-6. Check out my slightly older programming book that also introduces R [https://crumplab.github.io/programmingforpsych/](https://crumplab.github.io/programmingforpsych/)
-7. This is the definitive guide for all things R Markdown (you will find this very useful as you get better at this skill): [https://bookdown.org/yihui/rmarkdown/](https://bookdown.org/yihui/rmarkdown/)
+<h4>
+***Masters Thesis***
+</h4>
 
+[The United Nations Sustainable Development Goals within the Context of Climate Change, a technical and Philosophical Cost Benefit Analysis (Coming Soon)]()
+
+
+<br>
+
+<h4>
+***About Me***
+</h4>
+
+[Creator Film: Tyler Young](https://www.youtube.com/watch?v=upbaGKm1ofY&t=7s) 
+
+<br>
+
+<h4>
+***Projects***
+</h4>
+[Lighthearted Humans - Creativity for a greater good](www.lightheartedhumans.com)   
+[Ongoing (almost) Daily Technical Analysis of Financial Markets](./ongoingta.html)    
+
+<br>
+
+
+<h4>
+***Journalism***
+</h4>
+[Read: Modern Monetary Theory - Slow at first, then all at once.](./mmt.html)  
+[Read: Joe Biden and our loss in Sensemaking ](./JoeBidenandourlossinsensemaking.html)  
+[Read: Distributed Idea Supression Complex](./distributedideasupressioncomplex.html)  
+[Read: Mainstream Monitoring and Manipulation](./mainstreammonitoringandmanipulation.html)
+
+
+<br>
+
+***Adventure Films***
+</h4>
+
+[A Year in Ecuador, an Environmental Documentary (Long)](https://vimeo.com/341473027)  
+[Politics and Environmentalism in Ecuador Documentary (Long)](https://youtu.be/veequUBqgKA)  
+[Watchtower of Ecuador (short)](https://www.youtube.com/watch?v=ZbWKWzaExlk)  
+[Rafting the Deschutes](https://www.youtube.com/watch?v=X44Z_ywcGFs)
+[The Lost Coast](https://youtu.be/YUOhvFJArkw)
+
+<br>
+
+***Education Films***
+</h4>
+
+[The Artists Rebellion](https://www.youtube.com/watch?v=3Yp1ob_T7_k)  
+[Health as a Foundation](https://www.youtube.com/watch?v=MdYHgOKxjXY&t=84s)  
+[Climate Science & Activism](https://www.youtube.com/watch?v=J7p_TM6kFW4&t=4s)  
+[The Wisdom of Economics](https://www.youtube.com/watch?v=9iA52aN510Y&t=1s)  
+[The Politics of Organizing Society](https://www.youtube.com/watch?v=lS5vRjbHpBw&t=2s)  
+[The Art of Adventure](https://www.youtube.com/watch?v=Zq014Q96pzM&t=2s)  
+
+
+ _________________________
+
+<br>
+<br>
+<center>
+![](images/tylerisyounglogo_small_tiny_2.png)
+
+
+
+ </center>
