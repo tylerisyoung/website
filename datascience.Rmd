@@ -57,7 +57,7 @@ Modern Monetary Theory - Slow at first, then all at once.                       
 <br>
 
 <font size="5">
-<p style="text-align: center;">Projects</p>
+<p style="text-align: center;">Projects in R</p>
 </font>
 <br>
 
@@ -73,7 +73,7 @@ Predictive Community Change based on Tax Revenue                                
 <br>
 
 <font size="5">
-<p style="text-align: center;">Technical Statistics Masters Lab Work</p>
+<p style="text-align: center;">Technical Statistics Masters Lab Work in R</p>
 </font>
 <br>
 

@@ -37,7 +37,7 @@ output:
 ***Masters Thesis***
 </h4>
 
-[The United Nations Sustainable Development Goals within the Context of Climate Change, a technical and Philosophical Cost Benefit Analysis (Coming Soon)]()
+- [The United Nations Sustainable Development Goals within the Context of Climate Change, a technical and Philosophical Cost Benefit Analysis (Coming Soon)]()
 
 
 <br>
@@ -46,15 +46,15 @@ output:
 ***About Me***
 </h4>
 
-[Creator Film: Tyler Young](https://www.youtube.com/watch?v=upbaGKm1ofY&t=7s) 
+- [Creator Film: Tyler Young](https://www.youtube.com/watch?v=upbaGKm1ofY&t=7s) 
 
 <br>
 
 <h4>
 ***Projects***
 </h4>
-[Lighthearted Humans - Creativity for a greater good](www.lightheartedhumans.com)   
-[Ongoing (almost) Daily Technical Analysis of Financial Markets](./ongoingta.html)    
+- [Lighthearted Humans - Creativity for a greater good](www.lightheartedhumans.com)   
+- [Ongoing (almost) Daily Technical Analysis of Financial Markets](./ongoingta.html)    
 
 <br>
 
@@ -62,10 +62,10 @@ output:
 <h4>
 ***Journalism***
 </h4>
-[Read: Modern Monetary Theory - Slow at first, then all at once.](./mmt.html)  
-[Read: Joe Biden and our loss in Sensemaking ](./JoeBidenandourlossinsensemaking.html)  
-[Read: Distributed Idea Supression Complex](./distributedideasupressioncomplex.html)  
-[Read: Mainstream Monitoring and Manipulation](./mainstreammonitoringandmanipulation.html)
+- [Read: Modern Monetary Theory - Slow at first, then all at once.](./mmt.html)  
+- [Read: Joe Biden and our loss in Sensemaking ](./JoeBidenandourlossinsensemaking.html)  
+- [Read: Distributed Idea Supression Complex](./distributedideasupressioncomplex.html)  
+- [Read: Mainstream Monitoring and Manipulation](./mainstreammonitoringandmanipulation.html)
 
 
 <br>
@@ -73,23 +73,23 @@ output:
 ***Adventure Films***
 </h4>
 
-[A Year in Ecuador, an Environmental Documentary (Long)](https://vimeo.com/341473027)  
-[Politics and Environmentalism in Ecuador Documentary (Long)](https://youtu.be/veequUBqgKA)  
-[Watchtower of Ecuador (short)](https://www.youtube.com/watch?v=ZbWKWzaExlk)  
-[Rafting the Deschutes](https://www.youtube.com/watch?v=X44Z_ywcGFs)
-[The Lost Coast](https://youtu.be/YUOhvFJArkw)
+- [A Year in Ecuador, an Environmental Documentary (Long)](https://vimeo.com/341473027)  
+- [Politics and Environmentalism in Ecuador Documentary (Long)](https://youtu.be/veequUBqgKA)  
+- [Watchtower of Ecuador (short)](https://www.youtube.com/watch?v=ZbWKWzaExlk)  
+- [Rafting the Deschutes](https://www.youtube.com/watch?v=X44Z_ywcGFs)
+- [The Lost Coast](https://youtu.be/YUOhvFJArkw)
 
 <br>
 
 ***Education Films***
 </h4>
 
-[The Artists Rebellion](https://www.youtube.com/watch?v=3Yp1ob_T7_k)  
-[Health as a Foundation](https://www.youtube.com/watch?v=MdYHgOKxjXY&t=84s)  
-[Climate Science & Activism](https://www.youtube.com/watch?v=J7p_TM6kFW4&t=4s)  
-[The Wisdom of Economics](https://www.youtube.com/watch?v=9iA52aN510Y&t=1s)  
-[The Politics of Organizing Society](https://www.youtube.com/watch?v=lS5vRjbHpBw&t=2s)  
-[The Art of Adventure](https://www.youtube.com/watch?v=Zq014Q96pzM&t=2s)  
+- [The Artists Rebellion](https://www.youtube.com/watch?v=3Yp1ob_T7_k)  
+- [Health as a Foundation](https://www.youtube.com/watch?v=MdYHgOKxjXY&t=84s)  
+- [Climate Science & Activism](https://www.youtube.com/watch?v=J7p_TM6kFW4&t=4s)  
+- [The Wisdom of Economics](https://www.youtube.com/watch?v=9iA52aN510Y&t=1s)  
+- [The Politics of Organizing Society](https://www.youtube.com/watch?v=lS5vRjbHpBw&t=2s)  
+- [The Art of Adventure](https://www.youtube.com/watch?v=Zq014Q96pzM&t=2s)  
 
 
  _________________________
