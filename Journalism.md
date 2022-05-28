@@ -17,8 +17,8 @@ output:
 
 <h1>**Journalism**</h1> 
 <h6>
-***I'm writing in good faith about things I feel important.***  
-***Completely Independent.***
+***Peer Reviewed Opinions.***  
+***Views are my own.***
 </h6>
 
 *[Tylerisyoung.Substack.com](https://tylerisyoung.substack.com/?target=_blank)   
@@ -26,6 +26,53 @@ output:
  _________________________
  
  <br>
+ <h4>
+ <details><summary>[***List of All Articles***]()</summary>
+[ ](./n/a.html) 
+
+
+Article: [*Modern Monetary Theory - Slow at first, then all at once.*](./mmt.html)   
+
+Article: [*Deep Ecology*](./deepecology.html)   
+  
+Article: [*From Canada to Coos Bay, The Politics of a Pipeline*](./Fromcanadatocoosbay.html)  
+
+Article: [*Joe Biden and our loss in Sensemaking*](./JoeBidenandourlossinsensemaking.html)    
+
+Article: [*Distributed Idea Suppression Complex*](./distributedideasuppressioncomplex.html)  
+
+Article: [*Mainstream Monitoring and Manipulation*](./mainstreammonitoringandmanipulation.html)  
+
+Story: [*The REI Campaign*](./thereicampaign.html)    
+
+Story: [Cycling from Oregon to Mexico](https://www.lightheartedhumans.com/storytelling/2019/6/9/entry-003-cycling-from-oregon-to-mexico)
+
+Story: [A Year in Ecuador](./journalism/adventure/ayearinecuador.html)
+
+Story: [Rafting the Deschutes](https://www.lightheartedhumans.com/storytelling/2019/6/19/entry-005-rafting-the-deschutes-tyler-young)  
+
+
+
+
+
+<!---
+
+[*Silver*](./bitcoi.html) (Coming Soon) 
+
+[*Uranium*](./bitcoi.html) (Coming Soon) 
+
+[*NYSE Picks*](./bitcoi.html) (Coming Soon) 
+
+[*Emerging Markets*](./bitcoi.html) (Coming Soon) 
+
+[*Sharpe Ratio*](./bitcoi.html) (Coming Soon) 
+
+[*Portfolio Construction*](./bitcoi.html) (Coming Soon) 
+
+--->
+
+</details>
+</details>
  
 <h3>
 ***Topics:***  
@@ -40,7 +87,11 @@ output:
 [***Health***](./Health.html)  
   
 [***Politics***](./Politics.html)  
-</h4>
+
+<br>
+
+
+<br>
 
 
 <br>
