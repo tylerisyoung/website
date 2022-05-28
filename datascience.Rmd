@@ -43,7 +43,7 @@ library ("cowplot")
 </font>
 <br>
 <center>
-Current Projects: [Here](./links.html)
+Current Projects: [Here](./ig.html)
 </center>
 <br>
 
