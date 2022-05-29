@@ -31,19 +31,19 @@ output:
 [ ](./n/a.html) 
 
 
-Article: [*Modern Monetary Theory - Slow at first, then all at once.*](./mmt.html)   
+Article: [Modern Monetary Theory - Slow at first, then all at once.](./mmt.html)   
 
-Article: [*Deep Ecology*](./deepecology.html)   
-  
-Article: [*From Canada to Coos Bay, The Politics of a Pipeline*](./Fromcanadatocoosbay.html)  
+Article: [Politics, Critical Theory, and our loss of Sensemaking in 2020](./politicsandcriticaltheory.html)    
 
-Article: [*Joe Biden and our loss in Sensemaking*](./JoeBidenandourlossinsensemaking.html)    
+Article: [From Canada to Coos Bay, The Politics of a Pipeline](./Fromcanadatocoosbay.html) 
 
-Article: [*Distributed Idea Suppression Complex*](./distributedideasuppressioncomplex.html)  
+Article: [Distributed Idea Suppression Complex](./distributedideasuppressioncomplex.html)  
 
-Article: [*Mainstream Monitoring and Manipulation*](./mainstreammonitoringandmanipulation.html)  
+Article: [Mainstream Monitoring and Manipulation](./mainstreammonitoringandmanipulation.html)  
 
-Story: [*The REI Campaign*](./thereicampaign.html)    
+<br>
+
+Story: [The REI Campaign](./thereicampaign.html)    
 
 Story: [Cycling from Oregon to Mexico](https://www.lightheartedhumans.com/storytelling/2019/6/9/entry-003-cycling-from-oregon-to-mexico)
 
@@ -73,7 +73,7 @@ Story: [Rafting the Deschutes](https://www.lightheartedhumans.com/storytelling/2
 
 </details>
 </details>
- 
+<br> 
 <h3>
 ***Topics:***  
  </h3>

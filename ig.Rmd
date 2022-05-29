@@ -63,7 +63,7 @@ output:
 ***Journalism***
 </h4>
 - [Read: Modern Monetary Theory - Slow at first, then all at once.](./mmt.html)  
-- [Read: Joe Biden and our loss in Sensemaking ](./JoeBidenandourlossinsensemaking.html)  
+- [Read: Politics, Critical Theory, and our loss of Sensemaking in 2020](./politicsandcriticaltheory.html)  
 - [Read: Distributed Idea Supression Complex](./distributedideasupressioncomplex.html)  
 - [Read: Mainstream Monitoring and Manipulation](./mainstreammonitoringandmanipulation.html)
 
