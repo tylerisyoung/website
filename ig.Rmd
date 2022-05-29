@@ -37,7 +37,7 @@ output:
 ***Masters Thesis***
 </h4>
 
-- [The United Nations Sustainable Development Goals within the Context of Climate Change, a technical and Philosophical Cost Benefit Analysis (Coming Soon)]()
+- [The United Nations Sustainable Development Goals within the Context of Climate Change, a Technical and Philosophical Cost Benefit Analysis (Coming Soon)]()
 
 
 <br>
