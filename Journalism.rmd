@@ -27,7 +27,7 @@ output:
  
  <br>
  <h4>
- <details><summary>[***List of All Articles***]()</summary>
+ <details><summary>[***List of All Articles***]</summary>
 [ ](./n/a.html) 
 
 
