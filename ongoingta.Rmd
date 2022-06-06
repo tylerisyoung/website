@@ -52,6 +52,66 @@ Ongoing Technical Analysis
 
 
 ________________________________________________________________  
+<br>
+*6/6/2022*
+<br>    
+
+**Natural Gas prices spike, World Food Crisis Looms**  
+
+<br>
+
+Many countries are being threatened with immediate food shortages, not next year or next month, right now. The current situation involving Russia-Ukraine is greatly exasorbating the problem. Known as the "bread basket of the world" which also includes Belarus. These countries make up more than 1/4 of all global grain trade, and Russia have announced that they will restrict grain trade within "[Friendly countries](https://www.nbcnews.com/news/world/live-blog/russia-ukraine-war-live-updates-evacuations-launch-mariupol-talks-resume-n1293815/ncrd1293834)." 
+
+Furthermore, fertilizer is made through a process invented by Fritz Haber and Carl Bosch who is often credited alongside Norman Borlaug, inventor of genetic modification, for being the catalysts of the "[Green Revolution](https://en.wikipedia.org/wiki/Green_Revolution)" in the late 50's to which they  are credited with saving hundreds of millions of lives. Today, 50% of peoples food supply relies on both genetic modification of staple food crops which are pest and drought resistant, but also their growth is dependent on the Haber-Bosch process which uses nitrogen fixation to produce ammonia. Previously, many farmers would need to go through the season long process of planting nitrogen fixing plants to revive this necessary chemical. Today, it can be purchased in 1000LB+ quantities and applied at will. This is how we currently feed the world. Cheap fertilizers that contain ammonia are the reason the world population was able to move from 3 Billion people to nearly 8 Billion today. 
+
+
+Haber Bosch Process:
+{\displaystyle {\ce {N2 + 3 H2 -> 2 NH3}}\quad \Delta H^{\circ }=-91.8~{\text{kJ/mol}}}
+
+Historically fertilizers have been cheap, relying firstly on the recent boom in availability from the recent discovery of previously untappable oil reserves, this, alongside the deflationary pressures of technology evolution, lead to continually declining prices of methane (CH4) and ultimately the manufacturing process of fertilizers. 
+
+Secondly, fertilizers are made from nitrogen as we know, but also potassium and phosphorous, and Russia and Ukraine previously made up 28% of all global fertilizer supply. Given equal and consistent demand as farms tend to have, supply constraints will mean higher prices. 
+
+![](Journalism/Economics/ongoingta/6-6-2022_1.png)
+
+Recently, after Russia's foreign treasury reserve assets held internationally were seized in the first ever occurrence of this sort which pokes a hole in the supposedly unbiased petrodollar hegemony, Russia retaliated by forcing purchasers of Oil and Gas to procure Russian Rubles to make those purchases through Russian banks who were cut off from the SWIFT network. This new demand for Rubles has caused it to outperform the US dollar, gaining purchasing power, and leading to higher prices on Natural Gas, of which Europe gets 40% of its gas from Russia. 
+
+European citizens have been experiencing a condition known as being "energy poor" where the average middle class family has all the modern amenities that we have in the US for example, but cannot afford to heat their homes, or use a hot water heater due to the skyrocketing prices of natural gas, both over the last decade due to ratcheting carbon tax tightening as well as the European Central Bank's inflationary money printing, both causing prices to rise for end consumers.  
+
+
+On top of that, Europe has sanctioned  [fertilizers](https://www.politico.eu/article/eu-sanctions-higher-food-prices-potash/) and from Russia and Belarus, which will also lead to inflationary prices for end consumers. While France is the European country that has the closest to a carbonized energy grid, made up of mostly nuclear, Germany has recently decommissioned the last of the nuclear plants and replaced their energy with mostly coal and natural gas from Russia. The German society is now highly dependent on Russian gas, and a global divestment from fossil fuels in general means that there is not much more supply coming online for the next several years. 
+
+![](Journalism/Economics/ongoingta/6-6-2022_2.png)
+
+Together, this makes up the perfect storm  for higher input costs from lack of fertilizers, and direct blockade of supplies from Russia, and now other countries which refuse to export certain items like China who has been accumulating food stores for years, now [hoarding](https://asia.nikkei.com/Spotlight/Datawatch/China-hoards-over-half-the-world-s-grain-pushing-up-global-prices) half of the world's grain. Malaysia is [banning](https://www.scmp.com/week-asia/economics/article/3180039/malaysias-poultry-export-ban-when-will-it-end-how-have-people) the export of Chicken. Indonesia recently took to [banning](https://www.moneycontrol.com/news/opinion/indonesian-palm-oil-export-ban-set-to-raise-indian-inflation-8405201.html) the export of Palm oil due to a poor harvest, which drives the price of palm oil up. This price increase leads to more deforestation in the amazon and southern Asia where palm oil is the majority of export crops, but it also incentives wheat farmers in the US - another large wheat producer- to flip and plant more soybeans for soybean oil instead of wheat, again driving wheat prices higher. This is a problem because wheat is in basically all the processed foods. 
+
+![](Journalism/Economics/ongoingta/6-6-2022_3.jpg)
+
+Nationalization of goods, services and commodities makes for a self sufficient economy, but globalization and free trade make for cheaper goods and a more diverse and growing global economy which predominantly benefits developing nations, but we cannot have both. 
+
+What was previously an environmental win is now causing mass starvation. Those consumers who will not or cannot pay, will be forced to change their purchasing behavior and some will starve for lack of cheap food. Famines are created not by God, but by man. 
+
+The Food and Agricultural Organization price index tracking month over month and year over year changes shows every key agricultural product up significantly year over year as well as Cereal prices, which includes wheat, up by 30%. Every food that contains wheat will need to either rise by 30%, or the company selling it will need to choose to take what is for them hopefully* a temporary* loss to keep their customers.
+
+In a United Nations press [Release](https://www.un.org/press/en/2022/sc14894.doc.htm), Antonioi Guterres said, "“When war is waged, people go hungry...Most important of all, we need to end the war in Ukraine.” The security council quotes Antony J. Blinken, Secretary of State of the United States, "ecalling WFP and FAO estimates that people affected by food insecurity due to conflict would increase to an estimated 161 million in 2022, noted that the Russian Federation’s war in Ukraine could add another 40 million people to that total.  That country’s flagrant disregard of resolution 2417 (2018) is just the latest example of a Government using the hunger of civilians to advance its objectives.  The food supply for millions of Ukrainians and millions more around world “has quite literally been held hostage by the Russian military”, he said, noting 20 million tons of grain sit unused in Ukrainian silos as food prices skyrocket." 
+
+<br>
+Defense spending is both fine and desired, but war is bad for business, let's stop fighting and funding proxy wars that aren't on our soil. 
+<br>  
+***Analysis:***  
+<br>  
+There's no use hoping inflation will come down, and producers know this, the debt/GDP ratio shows us that it will continue for the rest of the decade unless the US chooses to default or cause a recession which is far worse than 1929 due the the amount of leverage across all markets. Officials will never choose either of these options, they will always choose inflation with short term periods of demand destruction as we're experiencing now. 
+
+Shadow Stats is a company currently tracking CPI inflation much more accurately than the massaged US government numbers, because they use the US government's former calculation methods instead of the new ones which were recently changed several times to fit the narrative. Currently Shadow Stats has inflation above 16%, much closer to prices in the real world. Wheat inflation is now 30% year over year.  
+
+The healthy and reasonable way to fix this is to cause short term demand destruction in financial markets and commodity futures today, while the economy is still relatively strong - raise interest rates to the rate of inflation - the Volker method. Instead of waiting for stagflation to continue, for a recession to get worse, and then attempting to raise rates into an economy already in a depression. The FED is out of options, and not only are they behind the curve, they are also late to the party, and too slow to act and because of this people will starve. 
+
+
+  
+<br>
+<br>
+<br>
+________________________________________________________________  
 **6/1/2022**
 <br>  
 ***Federal Reserve Begins Quantitative Tightening Today***  
@@ -76,6 +136,7 @@ ________________________________________________________________
 <br>
 <br>
 _________________________________________________________  
+
 <br>
 *5/31/2022*
 <br>    
