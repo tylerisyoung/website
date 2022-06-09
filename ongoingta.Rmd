@@ -28,12 +28,6 @@ output:
 <h4>
 **The Fundamentals**
 </h4>
-<h6>
-Zoom in on browser/mobile to see charts 
-<h6>
-
-<br>
-
 Read: [Modern Monetary Theory - Slow at first, then all at once.](./mmt.html)  
 </center>
 <br>  
@@ -51,12 +45,131 @@ Ongoing Technical Analysis
 <br>
 
 
+________________________________________________________________   
+
+<br> *6/9/2022* <br>    
+
+***Japanese Yen spirals against US dollar, the consequences of endless
+QE*** 
+<br>  
+
+Japan has been the canary in the coal mine for the last decade, helping us
+in the US and the rest of the western nations all participating in
+Quantitative Easing, how far can we go before trust in assets held on the
+central bank's balance sheet is lost? 
+
+Japan's debt/GDP ratio is nearly 200%, the highest of any nation in the
+world. 
+
+![](Journalism/Economics/ongoingta/6-9-2022_2.jpg)
+
+<br>
+
+<iframe
+src="https://data.worldbank.org/share/widget?end=2016&indicators=GC.DOD.TOTL.GD.ZS&locations=JP&start=1990&view=chart"
+width='450' height='300' frameBorder='0' scrolling="no" ></iframe>
+
+
+<br>
+
+With a debt/GDP ratio this high, the government technically owes money to
+itself through the central bank's deficit printing. The problem with
+having so much debt is the interest rates. Once interest rates begin to
+rise, so do interest payments needed to remain solvent. Without a robust
+and increasing GDP for taxpayer generated income for the government to
+fund the debt, the only option becomes - devalue the debt denominated in
+fiat currency which has no limitations to creation - inflate it away. 
+
+When the M2 money stock goes up, each dollar held by citizens and the
+government goes down when measured against other commodities, or other
+currencies which will remain stronger if they are not also printing more
+money, though the debt, taken out years, even decades ago remains the
+same. The debt positions can thus continually be serviced with newly
+created money that has a lesser value, and the longer a nation waits to
+pay off the debt, the cheaper it becomes. 
+
+A true sovereign debt crisis occurred in Greece when their debt was
+denominated in Euros, instead of their own former Greek currency, the
+drachma. Since the Greek centrral bank could not control the newly issued
+wupply of Euros, regulated by the ECB, we saw them enter a period of
+default where their debts needed to be written down in lieu of a western
+humanitarian crisis. 
+
+Central Banks like Japan, or the United States who can self fund have the
+advantage especially when interest rates are low, but when entering
+a period of tightening, and slower economic growth, or even stagflation as
+we are now, the only tool to create demand destruction and thus lower
+inflation would traditionally be - raising interest rates to the rate of
+inflation. 
+
+The problem with an inflationary environment is that to solve the problem
+of inflation, it is all but mandatory to cease the creation of more
+dollars. Volker of the FED solved this problem in the 70's by raising
+rates to match the rate of inflation which was above 10% at the time. The
+only problem with doing that now is that we have too much debt. 
+
+If the US or Japan raised rates this high, to 8-16% to match the current
+inflation rate, the governments would not be able to finance the interest
+payments on the debt, and would thus default. 
+
+But they can't print more money either, so it's necessary to rely on
+jawboning all markets into demand destruction without raising rates, and
+so far it's working. 
+
+If this is not effective enough, the US will need to follow Japan's lead,
+by implementing Yield Curve Control (YCC).
+
+The aim of YCC is to craft a particular shape to the yield rates on bonds
+issued by the government. When any entity including individuals are
+holding treasuries issued by the government, they should be expected to at
+least retain their value, furthermore, the longer duration of the bond,
+the higher the expected yield, but with inflation, this becomes a problem. 
+
+Therefore, it has become necessary for the Bank of Japan to participate
+in yield curve control, printing money to directly purchase bonds and prop
+up the market. In addition to this, the BOJ is also purchasing stocks on
+the open market as well, something previously unheard of. 
+
+This has a two pronged effect; firstly is staves off insolvency for Japan,
+for now, they are able to service their debt's on the balance sheet with
+new dollars, but secondly, it has eroded trust, and yield from all of
+their markets is gone leading investors to seek yield elsewhere. 
+
+If this persists, a debt driven deflationary spiral that leads to
+insolvency could follow, and it could be both abrupt, and catastrophic as
+it was for Greece who needed a bailout from the ECB. 
+
+Japan's 10 year yield has been below the US 10 year yield for a decade now
+leaving less access to liquidity for paying off debts, but also Japan's
+stock market has not reached a new all time high since 1990, in fact, it's
+still down 26% from that date. Money is fleeing the country and GDP will
+remain low, threatening insolvency indefinitely. 
+
+The Japanese Yen is loosing value compared to the dollar, but the Dollar
+is loosing value compared to commodities and will inevitably face the same
+fate if we continue the current regime. 
+
+<br> 
+
+![](Journalism/Economics/ongoingta/6-9-2022_1.jpg) <br> 
+
+<br> 
+
+![](Journalism/Economics/ongoingta/6-9-2022_3.jpg) 
+
+<br>
+
+![](Journalism/Economics/ongoingta/6-9-2022_4.jpg)
+  
+<br>
+<br> 
+<br> 
+
 ________________________________________________________________  
-<br>
-<br>
-<br>
-*6/7/2022*
-<br>    
+<br> 
+
+*6/7/2022* 
+<br> 
 ***Federal Reserve Releases Hilarious Hit Piece on Bitcoin***
 
 The FED has [released](https://fredblog.stlouisfed.org/2022/06/buying-eggs-with-bitcoins/) a chart comparing Bitcoin's purchasing power against the price of supermarket eggs. They suggest that this is the reason Bitcoin is not a good store of value. 
