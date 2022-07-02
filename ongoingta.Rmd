@@ -1,13 +1,13 @@
 ---
 title: ''
 output:
-  word_document: default
   html_document:
     theme: yeti
     sansfont: Georgia
     df_print: paged
     Highlight: Tango
     css: styles.css
+  word_document: default
 ---
 
 <br>
@@ -47,16 +47,104 @@ Ongoing Technical Analysis
 
 ________________________________________________________________   
 
+
+<br> *7/1/2022* <br>    
+
+***Atlanta Fed Confirms that we are about to enter a Recession***
+
+Most economists use the 10-2 year yield spread and curve to predict upcoming recessions, however the fed today is using the 10 year - 3 month spread. This is likely because it will be the last to flash the warning sign of recession and allow Biden to say things like "We have a very strong economy" as GDP continues to slow.  
+
+The NY Fed tells us that, "This model uses the slope of the yield curve, or “term spread,” to calculate the probability of a recession in the United States twelve months ahead. Here, the term spread is defined as the difference between 10-year and 3-month Treasury rates." 
+
+The only tool the Fed has to combat high inflation is raising interest rates, typically ABOVE the rate of inflation, as should have been done a year ago when the economy was stronger in order to avoid the stagflation we're seeing today. Higher interest rates mean a stronger dollar, and higher interest rates as term duration increases on bonds - a normal and healthy yield curve which rewards people for saving their money in cash longer. 
+
+The real rate of return when accounting for inflation on any of these bonds is currently several points in the negative due to price inflation, therefore the Fed needs to continue raising rates until inflation calms down from demand destruction and yields on risk free treasuries trends back towards sensible returns. Until this happens, we will continue to see other currencies fall in value compared to the US Dollar denominated hegemony - "The Dollar Milkshake".  
+
+The Fed is far behind the curve, and the government's interest payments on $30 Trillion dollars of debt and much more in foreign obligations, will ensure that the Fed remains behind the curve, actually favoring inflation that goes unnoticed in order to inflate away the debt, the only way out is through a hard landing, a deep recession, or returning to Quantitative Easing in order to simply kick the can down the road. This last option of QE is unfortunately not on the table at the moment because the money printing is what got us here in the first place.  
+
+<br>
+![](./Journalism/Economics/ongoingta/7-1-2022_1.png)
+<br>
+<br>
+![](./Journalism/Economics/ongoingta/7-1-2022_2.jpg)
+<br>
+<br>
+![](./Journalism/Economics/ongoingta/7-1-2022_3.jpg)  
+<br>
+________________________________________________________________  
+
+<br> *6/30/2022* <br>    
+
+***Energy Price Inflation Soars in Germany and around the World***
+
+Americans [owe](https://www.freedomsphoenix.com/News/326998-2022-06-12-americans-owe-22-billion-in-late-utility-bills-as-energy.htm) $22 billion in already late utility bills as energy costs in the US rise 34% YOY. 
+
+Europe, more directly affected by the Russia Ukraine War has it much worse, Germany specifically is has experienced a 6X increase in the cost of baseload power since 2020. They managed this by increasing their reliance on Russian oil and gas along with shortsighted energy policies and adherence to the ESG narrative at the expense of their own fragility.
+
+In 2020 Germany's percentage usage of renewables [was](https://foreignpolicy.com/2021/02/10/is-germany-making-too-much-renewable-energy/) 46%, largely coming from wind, solar, and hydro electric. The remainder of their energy was from coal, gas, oil, and nuclear. 
+
+Despite still struggling to meet their stringent carbon related policies, and despite the now soaring energy costs, Germany has recently upheld the pledge to continue with the shut down their remaining nuclear reactors by the end of 2022, a decision that was decided a decade prior, in the wake of the Fukishima disaster in Japan. 
+
+The German government has also pledged to phase out coal - but not until 2038. This series of moves has ensured that their baseload energy consumption is actually getting more carbon intensive, not less. These choices, alongside western imposed Russian sanctions which have increased natural gas prices globally leave the German's supply of baseload power insufficient for meeting modern expectations or demand. 
+
+Germany's Vice Chancellor [warned](https://wattsupwiththat.com/2022/06/26/germany-green-energy-crisis-warns-of-lehman-like-contagion/) of a "Lehman like" economic collapse due to their current energy policy, and we are seeing it play out in fast and slow motion. 
+
+Germany is extremely close to [rationing](https://www.businessinsider.co.za/germany-says-energy-crisis-may-trigger-lehman-like-contagion-2022-6) stores of natural gas, and suggesting it will start with hot water, a luxury some of those living in energy poverty have already forsaken despite their middle class incomes. Today, likely more than 23% of German people are suffering some form of ["Energy Poverty"](http://www.enpover.eu/en/energy-poverty) where a significant enough portion of their income goes towards energy, causing them to cut back on other necessities. 
+
+With prices so high, and natural gas stockpiles at record low levels, the German Government has [announced](https://www.telegraph.co.uk/business/2022/04/19/germany-wont-stop-buying-russian-gas-should-face-sanctions/) that they will re-establish the use of previously decommissioned coal-fired power plants. Coal is far easier to bring back online than nuclear, so any future hiccups will likely see expansion of this more carbon intense base energy. 
+
+German wholesale oil is up ~70% YOY, and even an end to the war wouldn't mean that western nations return to direct purchases from Russia, therefore these price increases are likely to remain.  
+
+Furthermore,UK newspaper The Telegraph [suggests](https://www.telegraph.co.uk/business/2022/04/19/germany-wont-stop-buying-russian-gas-should-face-sanctions/) that if Germans won't stop buying Russian gas, they too should face sanctions. 
+
+Lastly, Reuters reports that; Italy, Portugal, Slovakia, Bulgaria, and Romania have joined Germany's finance minister in opposing the 2035 mandate to ban the sale of new petrol and diesel cars. This move, is postponed would all but ensure that the EU does not meet it's target of reducing greenhouse gas emissions by 55% compared to 1990 levels before 2030. 
+
+Many across the globe will be priced out of the green energy revolution.
+
+<br>
+![](./Journalism/Economics/ongoingta/6-30-2022_1.jpg)
+<br>
+
+<br>
+![](./Journalism/Economics/ongoingta/6-30-2022_2.png)
+<br>
+
+<br>
+![](./Journalism/Economics/ongoingta/6-30-2022_3.png)
+<br>
+
+
+________________________________________________________________  
+
+
+<br> *6/18/2022* <br>    
+
+***Update to the Japan Crisis***
+
+Japan's Ponzi Scheme is running out of time. Japan has 12.8 Trillion on the BOJ's balance sheet and their current debt/GDP is nearly 200%.
+
+They have apparently reached their limit to perform Yield Curve Control in both the bond and stock market with newly printed treasuries which cannot find the buyers necessary to prop up the Yen's purchasing power against USD. A panic spike in selling lead to Bond yields jumping up above the governments mandated ability to continue QE driven purchases without becoming insolvent with a debt/gdp ratio too high. Market participants selling bonds lead to higher interest payments for a government that cannot afford it. 
+<br>
+![](./Journalism/Economics/ongoingta/6-18-2022_1.png)
+<br>
+![](Journalism/Economics/ongoingta/6-18-2022_2.png)
+<br>
+![](Journalism/Economics/ongoingta/6-18-2022_3.png)
+<br>
+
+
+________________________________________________________________  
+
 <br> *6/9/2022* <br>    
 
 ***Japanese Yen spirals against US dollar, the consequences of endless
 QE*** 
 <br>  
 
-Japan has been the canary in the coal mine for the last decade, helping us
-in the US and the rest of the western nations all participating in
-Quantitative Easing, how far can we go before trust in assets held on the
-central bank's balance sheet is lost? 
+Japan has been the canary in the coal mine for the last decade, forecasting where us
+in the US and western nations who are participating in
+Quantitative Easing might end up. Japan has apparently reached its limits in how far they can go before trust in assets held on the
+central bank's balance sheet is lost. 
 
 Japan's debt/GDP ratio is nearly 200%, the highest of any nation in the
 world. 

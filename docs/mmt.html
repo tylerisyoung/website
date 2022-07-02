@@ -11,27 +11,40 @@
 
 
 
-<title>mmt.utf8</title>
+<title>mmt.knit</title>
 
-<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -44,32 +57,8 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
+
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
@@ -80,10 +69,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -100,40 +85,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 45px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h2 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h3 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h4 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h5 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h6 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -161,7 +122,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -173,7 +134,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -184,10 +145,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -199,7 +173,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -266,7 +239,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -304,7 +277,7 @@ $(document).ready(function () {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -377,7 +350,7 @@ UNKNOWN TERRITORY
 <p>The United States is currently on the brink of insolvency because our upper bound on money printing is being tested as we speak. The inflation seen today is a result of the unprecedented increase in M2 money supply seen since 2020. It is not in large due to supply chain issues from Covid, or Putin, it is from printing 27% of all money that has ever existed out of thin air and spending it into the market while interest rates remain low to encourage even more borrowing. Today, our official national debt is $30 trillion, and the net interest payments are upwards of $400 Billion and continually increasing as our gross GDP is only $22 Billion, therefore our budget remains in a deficit and the DEBT/GDP ratio widens.</p>
 <p><iframe src="http://www.USADebtClock.com/us-debt-clock-widget.php" height="80" width="350" scrolling="no" frameborder="0"><br />
 </iframe></p>
-<p>The current running US annual spending is $6.1T while total tax revenue is $4.2T, leaving us with a budget deficit of $1.9T. The largest budget expendatures are Medicare &amp; Medicaid ($1.3T), Social Security ($1.2T), Defense Spending ($730B), and Net Interest on the debt itself ($430B).</p>
+<p>The current running US annual spending is $6.1T while total tax revenue is $4.2T, leaving us with a budget deficit of $1.9T. The largest budget expenditures are Medicare &amp; Medicaid ($1.3T), Social Security ($1.2T), Defense Spending ($730B), and Net Interest on the debt itself ($430B).</p>
 <p>The first three are obligations which the US cannot easily decrease, and it is further unfortunate that the entirety of social security and Medicaid obligations are held in funds mandated to purchase US treasuries which are currently returning negative real yields, a crisis yet to be atoned for. The last category, however, interest payments is the most critical when discussing MMT.</p>
 <p><img src="Journalism/Economics/mmt/debtCLOCK.jpg" /></p>
 <p>Interest on 30 trillion dollars is a lot, and the government is forced to pay whatever interest rates are set by the federal reserve. Currently the target FED funds rate is 0.75-1.00%. This is up from the 2020 low of 0.25%, and the long term target rate is ~2.5%. Much of the hiking is done through announcements and jawboning the market downward in displays of hawkishness to avoid actually raising rates which inevitably hurts markets, destroying demand.</p>
@@ -389,7 +362,7 @@ UNKNOWN TERRITORY
 <p>Many economists today peg the upper limit for interest rates around 3% before the party begins. The ECB is already dealing in negative rates and that chapter has yet to conclude. Japan is participating in their own experiment where the government deficit is forever growing, and the BOJ has begun yield curve control, preventing treasury yields from rising too high, and even turned to buying equities to prop up the market, the apparent result has been a perpetually increasing balance sheet at their central bank, a seemingly maxed out debt/GDP ratio for their economy, and their stock market indexes continue sideways, without growth, and certainly not outpacing inflation.</p>
 <p>The United states is also likely to engage in yield curve control prior to defaulting. Imagine if the S&amp;P 500 didn’t make a new all time high for 30 years, that’s where Japan’s at, and potentially where we’re collectively headed.</p>
 <p><img src="Journalism/Economics/mmt/BOJISSUES.jpg" /></p>
-<p>As rates rise, investors funds will be preferentially distributed to US markets seeking return instead of stagnation abroad, the ‘Dollar Milkshake’ is on the table until the sovreign debt bubble bursts. It may not come this cycle, or even next cycle, in fact it may not come at all, Venezuela, Turkey, Argentina, and Zimbabwe remind us that hyper-inflation is always an option. The humanitarian case may preferentially demand inflation over deflation, but only time will tell. For better or worse, the US will be the last domino to fall.</p>
+<p>As rates rise, investors funds will be preferentially distributed to US markets seeking return instead of stagnation abroad, the ‘Dollar Milkshake’ is on the table until the sovereign debt bubble bursts. It may not come this cycle, or even next cycle, in fact it may not come at all, Venezuela, Turkey, Argentina, and Zimbabwe remind us that hyper-inflation is always an option. The humanitarian case may preferentially demand inflation over deflation, but only time will tell. For better or worse, the US will be the last domino to fall.</p>
 <p><img src="Journalism/Economics/mmt/Venezuela.jpg" /></p>
 <p>This can all be summed up within the chart below, it’s beautiful yet terrifying, I know.</p>
 <p><img src="Journalism/Economics/mmt/MMT_ALLCHARTS.jpg" /></p>
@@ -406,7 +379,7 @@ UNKNOWN TERRITORY
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -424,7 +397,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>

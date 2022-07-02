@@ -18,7 +18,7 @@ library( "scales" )        # variable transforms, formatting tables
 library( "stargazer" )     # formatting regression output
 library( "dplyr" )         # data wrangling
 library( "pander" )        # nice tables
-library( "Wats" )          # time series plots
+#library( "Wats" )          # time series plots
 
 # GITHUB
 # devtools::install_github( repo="OuhscBbmc/Wats" )

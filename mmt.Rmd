@@ -121,7 +121,7 @@ The United States is currently on the brink of insolvency because our upper boun
  <iframe src="http://www.USADebtClock.com/us-debt-clock-widget.php" height="80" width="350" scrolling="no" frameborder="0">  
  </iframe>  
  
-The current running US annual spending is $6.1T while total tax revenue is $4.2T, leaving us with a budget deficit of $1.9T. The largest budget expendatures are Medicare & Medicaid ($1.3T), Social Security ($1.2T), Defense Spending ($730B), and Net Interest on the debt itself ($430B). 
+The current running US annual spending is $6.1T while total tax revenue is $4.2T, leaving us with a budget deficit of $1.9T. The largest budget expenditures are Medicare & Medicaid ($1.3T), Social Security ($1.2T), Defense Spending ($730B), and Net Interest on the debt itself ($430B). 
 
 The first three are obligations which the US cannot easily decrease, and it is further unfortunate that the entirety of social security and Medicaid obligations are held in funds mandated to purchase US treasuries which are currently returning negative real yields, a crisis yet to be atoned for. The last category, however, interest payments is the most critical when discussing MMT. 
 
@@ -147,7 +147,7 @@ The United states is also likely to engage in yield curve control prior to defau
 
 
 
-As rates rise, investors funds will be preferentially distributed to US markets seeking return instead of stagnation abroad, the 'Dollar Milkshake' is on the table until the sovreign debt bubble bursts. It may not come this cycle, or even next cycle, in fact it may not come at all, Venezuela, Turkey, Argentina, and Zimbabwe remind us that hyper-inflation is always an option. The humanitarian case may preferentially demand inflation over deflation, but only time will tell. For better or worse, the US will be the last domino to fall. 
+As rates rise, investors funds will be preferentially distributed to US markets seeking return instead of stagnation abroad, the 'Dollar Milkshake' is on the table until the sovereign debt bubble bursts. It may not come this cycle, or even next cycle, in fact it may not come at all, Venezuela, Turkey, Argentina, and Zimbabwe remind us that hyper-inflation is always an option. The humanitarian case may preferentially demand inflation over deflation, but only time will tell. For better or worse, the US will be the last domino to fall. 
 
 ![](./journalism/economics/mmt/Venezuela.jpg)
 

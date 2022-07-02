@@ -1,1 +1,16 @@
-base
+googleVis
+ggplot2
+gridExtra
+cowplot
+scales
+stargazer
+dplyr
+pander
+tidytext
+stringr
+tidyverse
+tibble
+tidyr
+readr
+purrr
+forcats

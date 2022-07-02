@@ -11,27 +11,40 @@
 
 
 
-<title>ongoingta.utf8</title>
+<title>ongoingta.knit</title>
 
-<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -44,32 +57,8 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
+
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
@@ -80,10 +69,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -100,40 +85,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 45px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h2 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h3 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h4 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h5 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h6 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -161,7 +122,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -173,7 +134,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -184,10 +145,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -199,7 +173,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -266,7 +239,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -304,7 +277,7 @@ $(document).ready(function () {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -327,12 +300,7 @@ _________________________</p>
 <h4>
 <strong>The Fundamentals</strong>
 </h4>
-<h6>
-Zoom in on browser/mobile to see charts
-<h6>
-<p><br></p>
-Read: <a href="./mmt.html">Modern Monetary Theory - Slow at first, then all at once.</a><br />
-
+Read: <a href="./mmt.html">Modern Monetary Theory - Slow at first, then all at once.</a>
 </center>
 <br><br />
 
@@ -346,9 +314,40 @@ Ongoing Technical Analysis
 </h4>
 <p><br></p>
 <hr />
+<p><br> <em>7/1/2022</em> <br></p>
+<p><strong><em>Atlanta Fed Confirms that we are about to enter a Recession</em></strong></p>
+<p>Most economists use the 10-2 year yield spread and curve to predict upcoming recessions, however the fed today is using the 10 year - 3 month spread. This is likely because it will be the last to flash the warning sign of recession and allow Biden to say things like “We have a very strong economy” as GDP continues to slow.</p>
+<p>The NY Fed tells us that, “This model uses the slope of the yield curve, or “term spread,” to calculate the probability of a recession in the United States twelve months ahead. Here, the term spread is defined as the difference between 10-year and 3-month Treasury rates."</p>
+<p>The only tool the Fed has to combat high inflation is raising interest rates, typically ABOVE the rate of inflation, as should have been done a year ago when the economy was stronger in order to avoid the stagflation we’re seeing today. Higher interest rates mean a stronger dollar, and higher interest rates as term duration increases on bonds - a normal and healthy yield curve which rewards people for saving their money in cash longer.</p>
+<p>The real rate of return when accounting for inflation on any of these bonds is currently several points in the negative due to price inflation, therefore the Fed needs to continue raising rates until inflation calms down from demand destruction and yields on risk free treasuries trends back towards sensible returns. Until this happens, we will continue to see other currencies fall in value compared to the US Dollar denominated hegemony - “The Dollar Milkshake”.</p>
+<p>The Fed is far behind the curve, and the government’s interest payments on $30 Trillion dollars of debt and much more in foreign obligations, will ensure that the Fed remains behind the curve, actually favoring inflation that goes unnoticed in order to inflate away the debt, the only way out is through a hard landing, a deep recession, or returning to Quantitative Easing in order to simply kick the can down the road. This last option of QE is unfortunately not on the table at the moment because the money printing is what got us here in the first place.</p>
+<p><br> <img src="Journalism/Economics/ongoingta/7-1-2022_1.png" /> <br> <br> <img src="Journalism/Economics/ongoingta/7-1-2022_2.jpg" /> <br> <br> <img src="Journalism/Economics/ongoingta/7-1-2022_3.jpg" /><br />
+<br> ________________________________________________________________</p>
+<p><br> <em>6/30/2022</em> <br></p>
+<p><strong><em>Energy Price Inflation Soars in Germany and around the World</em></strong></p>
+<p>Americans <a href="https://www.freedomsphoenix.com/News/326998-2022-06-12-americans-owe-22-billion-in-late-utility-bills-as-energy.htm">owe</a> $22 billion in already late utility bills as energy costs in the US rise 34% YOY.</p>
+<p>Europe, more directly affected by the Russia Ukraine War has it much worse, Germany specifically is has experienced a 6X increase in the cost of baseload power since 2020. They managed this by increasing their reliance on Russian oil and gas along with shortsighted energy policies and adherence to the ESG narrative at the expense of their own fragility.</p>
+<p>In 2020 Germany’s percentage usage of renewables <a href="https://foreignpolicy.com/2021/02/10/is-germany-making-too-much-renewable-energy/">was</a> 46%, largely coming from wind, solar, and hydro electric. The remainder of their energy was from coal, gas, oil, and nuclear.</p>
+<p>Despite still struggling to meet their stringent carbon related policies, and despite the now soaring energy costs, Germany has recently upheld the pledge to continue with the shut down their remaining nuclear reactors by the end of 2022, a decision that was decided a decade prior, in the wake of the Fukishima disaster in Japan.</p>
+<p>The German government has also pledged to phase out coal - but not until 2038. This series of moves has ensured that their baseload energy consumption is actually getting more carbon intensive, not less. These choices, alongside western imposed Russian sanctions which have increased natural gas prices globally leave the German’s supply of baseload power insufficient for meeting modern expectations or demand.</p>
+<p>Germany’s Vice Chancellor <a href="https://wattsupwiththat.com/2022/06/26/germany-green-energy-crisis-warns-of-lehman-like-contagion/">warned</a> of a “Lehman like” economic collapse due to their current energy policy, and we are seeing it play out in fast and slow motion.</p>
+<p>Germany is extremely close to <a href="https://www.businessinsider.co.za/germany-says-energy-crisis-may-trigger-lehman-like-contagion-2022-6">rationing</a> stores of natural gas, and suggesting it will start with hot water, a luxury some of those living in energy poverty have already forsaken despite their middle class incomes. Today, likely more than 23% of German people are suffering some form of <a href="http://www.enpover.eu/en/energy-poverty">“Energy Poverty”</a> where a significant enough portion of their income goes towards energy, causing them to cut back on other necessities.</p>
+<p>With prices so high, and natural gas stockpiles at record low levels, the German Government has <a href="https://www.telegraph.co.uk/business/2022/04/19/germany-wont-stop-buying-russian-gas-should-face-sanctions/">announced</a> that they will re-establish the use of previously decommissioned coal-fired power plants. Coal is far easier to bring back online than nuclear, so any future hiccups will likely see expansion of this more carbon intense base energy.</p>
+<p>German wholesale oil is up ~70% YOY, and even an end to the war wouldn’t mean that western nations return to direct purchases from Russia, therefore these price increases are likely to remain.</p>
+<p>Furthermore,UK newspaper The Telegraph <a href="https://www.telegraph.co.uk/business/2022/04/19/germany-wont-stop-buying-russian-gas-should-face-sanctions/">suggests</a> that if Germans won’t stop buying Russian gas, they too should face sanctions.</p>
+<p>Lastly, Reuters reports that; Italy, Portugal, Slovakia, Bulgaria, and Romania have joined Germany’s finance minister in opposing the 2035 mandate to ban the sale of new petrol and diesel cars. This move, is postponed would all but ensure that the EU does not meet it’s target of reducing greenhouse gas emissions by 55% compared to 1990 levels before 2030.</p>
+<p>Many across the globe will be priced out of the green energy revolution.</p>
+<p><br> <img src="Journalism/Economics/ongoingta/6-30-2022_1.jpg" /> <br></p>
+<p><br> <img src="Journalism/Economics/ongoingta/6-30-2022_2.png" /> <br></p>
+<p><br> <img src="Journalism/Economics/ongoingta/6-30-2022_3.png" /> <br></p>
+<hr />
+<p><br> <em>6/18/2022</em> <br></p>
+<p><strong><em>Update to the Japan Crisis</em></strong></p>
+<p>Japan’s Ponzi Scheme is running out of time. Japan has 12.8 Trillion on the BOJ’s balance sheet and their current debt/GDP is nearly 200%.</p>
+<p>They have apparently reached their limit to perform Yield Curve Control in both the bond and stock market with newly printed treasuries which cannot find the buyers necessary to prop up the Yen’s purchasing power against USD. A panic spike in selling lead to Bond yields jumping up above the governments mandated ability to continue QE driven purchases without becoming insolvent with a debt/gdp ratio too high. Market participants selling bonds lead to higher interest payments for a government that cannot afford it. <br> <img src="Journalism/Economics/ongoingta/6-18-2022_1.png" /> <br> <img src="Journalism/Economics/ongoingta/6-18-2022_2.png" /> <br> ________________________________________________________________</p>
 <p><br> <em>6/9/2022</em> <br></p>
 <p><strong><em>Japanese Yen spirals against US dollar, the consequences of endless QE</em></strong> <br></p>
-<p>Japan has been the canary in the coal mine for the last decade, helping us in the US and the rest of the western nations all participating in Quantitative Easing, how far can we go before trust in assets held on the central bank’s balance sheet is lost?</p>
+<p>Japan has been the canary in the coal mine for the last decade, forecasting where us in the US and western nations who are participating in Quantitative Easing might end up. Japan has apparently reached its limits in how far they can go before trust in assets held on the central bank’s balance sheet is lost.</p>
 <p>Japan’s debt/GDP ratio is nearly 200%, the highest of any nation in the world.</p>
 <p><img src="Journalism/Economics/ongoingta/6-9-2022_2.jpg" /></p>
 <p><br></p>
@@ -567,7 +566,7 @@ Base case is:</p>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -585,7 +584,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
