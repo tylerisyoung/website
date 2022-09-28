@@ -9,11 +9,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="" />
 
 
 <title>Control Variable Regression Models</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
@@ -56,6 +57,7 @@
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -119,13 +121,20 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -220,11 +229,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -363,13 +376,15 @@ $(document).ready(function () {
 </div>
 
 
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>( pander )     <span class="co"># formatting tables</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">library</span>( dplyr )      <span class="co"># data wrangling</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">library</span>( stargazer )  <span class="co"># regression tables</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>URL &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/DS4PS/cpp-523-fall-2019/master/labs/class-size-seed-1234.csv&quot;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>( URL )</span></code></pre></div>
-<div id="regression-models-teachers-class-size-caffine-exercise" class="section level1">
-<h1>Regression Models: Teachers &amp; Class Size / Caffine &amp; Exercise</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( pander )     <span class="co"># formatting tables</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( dplyr )      <span class="co"># data wrangling</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( stargazer )  <span class="co"># regression tables</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>URL <span class="ot">&lt;-</span> <span class="st">&quot;https://raw.githubusercontent.com/DS4PS/cpp-523-fall-2019/master/labs/class-size-seed-1234.csv&quot;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>( URL )</span></code></pre></div>
+<div id="regression-models-teachers-class-size-caffine-exercise"
+class="section level1">
+<h1>Regression Models: Teachers &amp; Class Size / Caffine &amp;
+Exercise</h1>
 <table style="width:47%;">
 <colgroup>
 <col width="11%" />
@@ -427,64 +442,94 @@ $(document).ready(function () {
 <div id="data" class="section level4">
 <h4>Data</h4>
 <ul>
-<li><strong>test</strong> - average classroom score on a standardized test<br />
+<li><strong>test</strong> - average classroom score on a standardized
+test<br />
 </li>
 <li><strong>csize</strong> - classroom size; number of students<br />
 </li>
-<li><strong>tqual</strong> - teacher quality evaluated by third party experts on a scale of 1 to 100</li>
-<li><strong>ses</strong> - socio economic status of students measured as median household income</li>
+<li><strong>tqual</strong> - teacher quality evaluated by third party
+experts on a scale of 1 to 100</li>
+<li><strong>ses</strong> - socio economic status of students measured as
+median household income</li>
 </ul>
 <p><img src="DSProj4_Regression_files/figure-html/unnamed-chunk-4-1.png" width="960" style="display: block; margin: auto;" /></p>
 </div>
 <div id="scatterpolot" class="section level4">
 <h4>Scatterpolot</h4>
-<p>Class Size (x-axis) and Test Score (y-axis). This will serve as a visual representation of our baseline model of the relationship between Class Size and Test Score.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">#plot( dat$csize, dat$test, </span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="co">#     xlab=&quot;Class Size&quot;, ylab=&quot;Test Scores&quot;,</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="co">#     main=&quot;Relationship Between Class Size and Test Scores&quot; )</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="co">#     abline( lm(test~csize,data=dat), col=&quot;firebrick&quot;, lwd=2 )</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="co"># CHANGE THE PLOT STYLE: </span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="co">#</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a><span class="co"># pch=19             # change point style</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a><span class="co"># cex=1.5            # change point size</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a><span class="co"># col=&quot;firebrick&quot;    # change color *points?*</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a><span class="co"># bty=&quot;n&quot;            # remove bounding box</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a><span class="co">#Also changed Abline to black so it was visible, </span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a><span class="co">#made others black instead.</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a><span class="kw">plot</span>( dat<span class="op">$</span>csize, dat<span class="op">$</span>test, <span class="dt">col=</span><span class="st">&quot;firebrick&quot;</span>, <span class="dt">pch=</span><span class="dv">19</span>, <span class="dt">bty=</span><span class="st">&quot;n&quot;</span>, <span class="dt">cex=</span><span class="fl">1.5</span>, <span class="dt">xlab=</span><span class="st">&quot;Class Size&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Test Scores&quot;</span>,<span class="dt">main=</span><span class="st">&quot;Relationship Between Class Size and Test Scores&quot;</span> )</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a><span class="kw">abline</span>( <span class="kw">lm</span>(test<span class="op">~</span>csize,<span class="dt">data=</span>dat), <span class="dt">col=</span><span class="st">&quot;black&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span> )</span></code></pre></div>
+<p>Class Size (x-axis) and Test Score (y-axis). This will serve as a
+visual representation of our baseline model of the relationship between
+Class Size and Test Score.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#plot( dat$csize, dat$test, </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#     xlab=&quot;Class Size&quot;, ylab=&quot;Test Scores&quot;,</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     main=&quot;Relationship Between Class Size and Test Scores&quot; )</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#     abline( lm(test~csize,data=dat), col=&quot;firebrick&quot;, lwd=2 )</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># CHANGE THE PLOT STYLE: </span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># pch=19             # change point style</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># cex=1.5            # change point size</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># col=&quot;firebrick&quot;    # change color *points?*</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># bty=&quot;n&quot;            # remove bounding box</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Also changed Abline to black so it was visible, </span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#made others black instead.</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>csize, dat<span class="sc">$</span>test, <span class="at">col=</span><span class="st">&quot;firebrick&quot;</span>, <span class="at">pch=</span><span class="dv">19</span>, <span class="at">bty=</span><span class="st">&quot;n&quot;</span>, <span class="at">cex=</span><span class="fl">1.5</span>, <span class="at">xlab=</span><span class="st">&quot;Class Size&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Test Scores&quot;</span>,<span class="at">main=</span><span class="st">&quot;Relationship Between Class Size and Test Scores&quot;</span> )</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="fu">lm</span>(test<span class="sc">~</span>csize,<span class="at">data=</span>dat), <span class="at">col=</span><span class="st">&quot;black&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span> )</span></code></pre></div>
 <p><img src="DSProj4_Regression_files/figure-html/unnamed-chunk-5-1.png" width="864" style="display: block; margin: auto;" /></p>
 </div>
-<div id="regression-plot-of-class-size-test-scores" class="section level4">
+<div id="regression-plot-of-class-size-test-scores"
+class="section level4">
 <h4>Regression &amp; Plot of Class size &amp; Test Scores</h4>
-<p><span class="math inline">\(test = b_0 + b_1 \cdot tqual + e1\)</span></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>model<span class="fl">.01</span> &lt;-<span class="st"> </span><span class="kw">lm</span>( test <span class="op">~</span><span class="st"> </span>tqual, <span class="dt">data=</span>dat )</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>e1.test.score &lt;-<span class="st"> </span>model<span class="fl">.01</span><span class="op">$</span>residual</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="kw">plot</span>( dat<span class="op">$</span>csize, e1.test.score )</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="kw">abline</span>( <span class="kw">lm</span>(e1.test.score<span class="op">~</span>dat<span class="op">$</span>csize), <span class="dt">col=</span><span class="st">&quot;firebrick&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span> )</span></code></pre></div>
+<p><span class="math inline">\(test = b_0 + b_1 \cdot tqual +
+e1\)</span></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>model<span class="fl">.01</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>( test <span class="sc">~</span> tqual, <span class="at">data=</span>dat )</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>e1.test.score <span class="ot">&lt;-</span> model<span class="fl">.01</span><span class="sc">$</span>residual</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>csize, e1.test.score )</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="fu">lm</span>(e1.test.score<span class="sc">~</span>dat<span class="sc">$</span>csize), <span class="at">col=</span><span class="st">&quot;firebrick&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span> )</span></code></pre></div>
 <p><img src="DSProj4_Regression_files/figure-html/unnamed-chunk-6-1.png" width="864" style="display: block; margin: auto;" /></p>
-<p>The strength of the relationship improved dramatically as we have removed any excess or unexplained residual variance from the test scores. <br> #### Regression of Test scoreson SES</p>
-<p><span class="math inline">\(test = b_0 + b_1 \cdot ses + e2\)</span></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>model<span class="fl">.02</span> &lt;-<span class="st"> </span><span class="kw">lm</span>( test <span class="op">~</span><span class="st"> </span>ses, <span class="dt">data=</span>dat )</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>e2.test.score &lt;-<span class="st"> </span>model<span class="fl">.02</span><span class="op">$</span>residual</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="kw">plot</span>( dat<span class="op">$</span>csize, e2.test.score )</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="kw">abline</span>( <span class="kw">lm</span>(e2.test.score<span class="op">~</span>dat<span class="op">$</span>csize), <span class="dt">col=</span><span class="st">&quot;firebrick&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span> )</span></code></pre></div>
-<p><img src="DSProj4_Regression_files/figure-html/unnamed-chunk-7-1.png" width="864" style="display: block; margin: auto;" /> The strength of the relationship is lost because class size and test score are highly correlated so when we use only the residuals and compare them with test scores, the slope falls flat. <br> #### Analysis</p>
-<p>These graphs demonstrate the effects of adding the control variables <strong>Teacher Quality</strong> and <strong>SES</strong> to the baseline model of the relationship between <strong>Class Size</strong> and <strong>Test Score</strong>. Conceptually, the control variable will improve a model by removing variance in the DV to make the estimate either more precise (smaller standard errors) or less bias (adjust the slope of the policy variable).</p>
-<p>Teacher Quality has partially reduced the unexplained portions of the outomes of test scores in our main model.</p>
-<p>Socio Economic Status has removed the explained portion of the variance as we can see in the slope from our second graph.</p>
+<p>The strength of the relationship improved dramatically as we have
+removed any excess or unexplained residual variance from the test
+scores. <br> #### Regression of Test scoreson SES</p>
+<p><span class="math inline">\(test = b_0 + b_1 \cdot ses +
+e2\)</span></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>model<span class="fl">.02</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>( test <span class="sc">~</span> ses, <span class="at">data=</span>dat )</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>e2.test.score <span class="ot">&lt;-</span> model<span class="fl">.02</span><span class="sc">$</span>residual</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>csize, e2.test.score )</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="fu">lm</span>(e2.test.score<span class="sc">~</span>dat<span class="sc">$</span>csize), <span class="at">col=</span><span class="st">&quot;firebrick&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span> )</span></code></pre></div>
+<p><img src="DSProj4_Regression_files/figure-html/unnamed-chunk-7-1.png" width="864" style="display: block; margin: auto;" />
+The strength of the relationship is lost because class size and test
+score are highly correlated so when we use only the residuals and
+compare them with test scores, the slope falls flat. <br> ####
+Analysis</p>
+<p>These graphs demonstrate the effects of adding the control variables
+<strong>Teacher Quality</strong> and <strong>SES</strong> to the
+baseline model of the relationship between <strong>Class Size</strong>
+and <strong>Test Score</strong>. Conceptually, the control variable will
+improve a model by removing variance in the DV to make the estimate
+either more precise (smaller standard errors) or less bias (adjust the
+slope of the policy variable).</p>
+<p>Teacher Quality has partially reduced the unexplained portions of the
+outomes of test scores in our main model.</p>
+<p>Socio Economic Status has removed the explained portion of the
+variance as we can see in the slope from our second graph.</p>
 <p><br></p>
-<p>To change the slope of this model, it would require the variable selected would need to be correlated with caffiene consumption. The stress index variable is the most closely correlated with caffiene consumptuion, therefore it should produce a slope of zero. If the items were uncorrelated, the slope would not change. <br></p>
+<p>To change the slope of this model, it would require the variable
+selected would need to be correlated with caffiene consumption. The
+stress index variable is the most closely correlated with caffiene
+consumptuion, therefore it should produce a slope of zero. If the items
+were uncorrelated, the slope would not change. <br></p>
 </div>
 </div>
 <div id="caffeine-and-exercise" class="section level1">
 <h1>Caffeine and Exercise</h1>
-<p>Policy Question: Which would result in a larger standard error associated with caffeine if removed from the model?</p>
-<p>Since Gym Time is not correlated with Stress Index, or Caffeine, it would produce a larger standard error if it were removed from our caffeine model. If it were left in, there would be a smaller standard error as uncorrelated variables create smaller standard errors.</p>
+<p>Policy Question: Which would result in a larger standard error
+associated with caffeine if removed from the model?</p>
+<p>Since Gym Time is not correlated with Stress Index, or Caffeine, it
+would produce a larger standard error if it were removed from our
+caffeine model. If it were left in, there would be a smaller standard
+error as uncorrelated variables create smaller standard errors.</p>
 <table style="text-align:center">
 <tr>
 <td colspan="2" style="border-bottom: 1px solid black">
@@ -635,7 +680,8 @@ Residual Std. Error
 <em>Note:</em>
 </td>
 <td style="text-align:right">
-<sup><em></sup>p&lt;0.1; <sup><strong></sup>p&lt;0.05; <sup></strong></em></sup>p&lt;0.01
+<sup><em></sup>p&lt;0.1; <sup><strong></sup>p&lt;0.05;
+<sup></strong></em></sup>p&lt;0.01
 </td>
 </tr>
 </table>

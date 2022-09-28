@@ -13,7 +13,7 @@
 
 <title>Film.knit</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -144,11 +144,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -294,7 +298,8 @@ $(document).ready(function () {
 </h6>
 <h6>
 </h6>
-<p><em><a href="https://www.youtube.com/tylerisyoung/?target=_blank">Youtube.com/tylerisyoung</a><br />
+<p><em><a
+href="https://www.youtube.com/tylerisyoung/?target=_blank">Youtube.com/tylerisyoung</a><br />
 </em> ___________________________</p>
 <p><br></p>
 <h1>
@@ -312,7 +317,9 @@ About me:<br />
 <iframe src="https://player.vimeo.com/video/418660821" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen>
 </iframe>
 <p>
-<a href="https://vimeo.com/418660821">Creator Film : Tyler Young</a> from <a href="https://vimeo.com/lightheartedhumans">lightheartedhumans</a>.
+<a href="https://vimeo.com/418660821">Creator Film : Tyler Young</a>
+from
+<a href="https://vimeo.com/lightheartedhumans">lightheartedhumans</a>.
 </p>
 </html>
 

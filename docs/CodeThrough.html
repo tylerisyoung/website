@@ -13,7 +13,7 @@
 
 <title>Google Visualization Codethrough</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -144,11 +144,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -293,22 +297,31 @@ $(document).ready(function () {
 <h6>
 <p><strong><em>A Code Through</em></strong></p>
 </h6>
-<p>*<a href="www.github.com/tylerisyoung">github.com/tylerisyoung</a><br />
+<p>*<a
+href="www.github.com/tylerisyoung">github.com/tylerisyoung</a><br />
 _________________________</p>
 <h5>
-<strong><em>“googleViz”(<a href="https://cran.r-project.org/web/packages/googleVis">CRAN</a>) allows users to quickly interface with and customize google’s graphical tools within R, and for those visualizations to be published on the web in an html format that allows for interactivity even within github pages. This package will also work with data from any .csv file. </em></strong>
+<strong><em>“googleViz”(<a
+href="https://cran.r-project.org/web/packages/googleVis">CRAN</a>)
+allows users to quickly interface with and customize google’s graphical
+tools within R, and for those visualizations to be published on the web
+in an html format that allows for interactivity even within github
+pages. This package will also work with data from any .csv file.
+</em></strong>
 </h5>
 </center>
 <hr />
 <p>Let’s Install it</p>
 <pre class="r"><code>install.packages(&quot;googleVis&quot;)</code></pre>
-<p>We can read over the documentation or execute the extensive demo by using</p>
+<p>We can read over the documentation or execute the extensive demo by
+using</p>
 <pre class="r"><code>??googleviz
 
 #or
 
 demo(googleVis) </code></pre>
-<p>Now lets load the library and visualize a few examples from the included data.</p>
+<p>Now lets load the library and visualize a few examples from the
+included data.</p>
 <pre class="r"><code>library(googleVis)</code></pre>
 <pre><code>## Creating a generic function for &#39;toJSON&#39; from package &#39;jsonlite&#39; in package &#39;googleVis&#39;</code></pre>
 <pre><code>## 
@@ -328,18 +341,16 @@ demo(googleVis) </code></pre>
 ## suppressPackageStartupMessages(library(googleVis))</code></pre>
 <pre class="r"><code>op &lt;- options(gvis.plot.tag=&quot;chart&quot;)</code></pre>
 <p><br> Population Chart with interactive pages</p>
-<pre class="r"><code>PopTable &lt;- gvisTable(Population, 
-                      formats=list(Population=&quot;#,###&quot;,
-                                   &#39;% of World Population&#39;=&#39;#.#%&#39;),
-                      options=list(page=&#39;enable&#39;))
+<pre class="r"><code>PopTable &lt;- gvisTable(Population, formats = list(Population = &quot;#,###&quot;, `% of World Population` = &quot;#.#%&quot;),
+    options = list(page = &quot;enable&quot;))
 plot(PopTable)</code></pre>
-<!-- Table generated in R 4.2.0 by googleVis 0.7.0 package -->
-<!-- Sat Jul  2 16:22:07 2022 -->
+<!-- Table generated in R 4.2.1 by googleVis 0.7.0 package -->
+<!-- Wed Sep 28 08:50:17 2022 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataTableID7ad758a6413 () {
+function gvisDataTableIDbee678b2be5 () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
@@ -2111,8 +2122,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartTableID7ad758a6413() {
-var data = gvisDataTableID7ad758a6413();
+function drawChartTableIDbee678b2be5() {
+var data = gvisDataTableIDbee678b2be5();
 var options = {};
 options["allowHtml"] = true;
 options["page"] = "enable";
@@ -2123,7 +2134,7 @@ options["page"] = "enable";
   dataFormat2.format(data, 3);
 
     var chart = new google.visualization.Table(
-    document.getElementById('TableID7ad758a6413')
+    document.getElementById('TableIDbee678b2be5')
     );
     chart.draw(data,options);
     
@@ -2147,9 +2158,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartTableID7ad758a6413);
+callbacks.push(drawChartTableIDbee678b2be5);
 })();
-function displayChartTableID7ad758a6413() {
+function displayChartTableIDbee678b2be5() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -2172,29 +2183,27 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID7ad758a6413"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableIDbee678b2be5"></script>
 <!-- divChart -->
-<div id="TableID7ad758a6413" style="width: 500; height: automatic;">
+<div id="TableIDbee678b2be5" style="width: 500; height: automatic;">
 
 </div>
-<p><br> <br> <br> The popular Sankey Chart with interactive labels and cursor highlighting</p>
-<pre class="r"><code>datSK &lt;- data.frame(From=c(rep(&quot;A&quot;,3), rep(&quot;B&quot;, 3)),
-                    To=c(rep(c(&quot;X&quot;, &quot;Y&quot;, &quot;Z&quot;),2)),
-                    Weight=c(5,7,6,2,9,4))
+<p><br> <br> <br> The popular Sankey Chart with interactive labels and
+cursor highlighting</p>
+<pre class="r"><code>datSK &lt;- data.frame(From = c(rep(&quot;A&quot;, 3), rep(&quot;B&quot;, 3)), To = c(rep(c(&quot;X&quot;, &quot;Y&quot;, &quot;Z&quot;),
+    2)), Weight = c(5, 7, 6, 2, 9, 4))
 
-Sankey &lt;- gvisSankey(datSK, from=&quot;From&quot;, to=&quot;To&quot;, weight=&quot;Weight&quot;,
-                     options=list(
-                       sankey=&quot;{link: {color: { fill: &#39;#d799ae&#39; } },
+Sankey &lt;- gvisSankey(datSK, from = &quot;From&quot;, to = &quot;To&quot;, weight = &quot;Weight&quot;, options = list(sankey = &quot;{link: {color: { fill: &#39;#d799ae&#39; } },
                             node: { color: { fill: &#39;#a61d4c&#39; },
                             label: { color: &#39;#871b47&#39; } }}&quot;))
 plot(Sankey)</code></pre>
-<!-- Sankey generated in R 4.2.0 by googleVis 0.7.0 package -->
-<!-- Sat Jul  2 16:22:07 2022 -->
+<!-- Sankey generated in R 4.2.1 by googleVis 0.7.0 package -->
+<!-- Wed Sep 28 08:50:18 2022 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataSankeyID7ad76a911651 () {
+function gvisDataSankeyIDbee624623a38 () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
@@ -2237,8 +2246,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartSankeyID7ad76a911651() {
-var data = gvisDataSankeyID7ad76a911651();
+function drawChartSankeyIDbee624623a38() {
+var data = gvisDataSankeyIDbee624623a38();
 var options = {};
 options["width"] = 400;
 options["height"] = 400;
@@ -2247,7 +2256,7 @@ options["sankey"] = {link: {color: { fill: '#d799ae' } },
                             label: { color: '#871b47' } }};
 
     var chart = new google.visualization.Sankey(
-    document.getElementById('SankeyID7ad76a911651')
+    document.getElementById('SankeyIDbee624623a38')
     );
     chart.draw(data,options);
     
@@ -2271,9 +2280,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartSankeyID7ad76a911651);
+callbacks.push(drawChartSankeyIDbee624623a38);
 })();
-function displayChartSankeyID7ad76a911651() {
+function displayChartSankeyIDbee624623a38() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -2296,29 +2305,27 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID7ad76a911651"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyIDbee624623a38"></script>
 <!-- divChart -->
-<div id="SankeyID7ad76a911651" style="width: 400; height: 400;">
+<div id="SankeyIDbee624623a38" style="width: 400; height: 400;">
 
 </div>
-<p><br> <br> <br> A simple histogram with interactive tags, a data.frame to be displayed as a histogram. Each column will be displayed as a histogram.</p>
+<p><br> <br> <br> A simple histogram with interactive tags, a data.frame
+to be displayed as a histogram. Each column will be displayed as a
+histogram.</p>
 <pre class="r"><code>set.seed(12345)
-datHist=data.frame(A=rpois(100, 20),
-                   B=rpois(100, 5),
-                   C=rpois(100, 50))
+datHist = data.frame(A = rpois(100, 20), B = rpois(100, 5), C = rpois(100, 50))
 
-Hist &lt;- gvisHistogram(datHist, options=list(
-  legend=&quot;{ position: &#39;top&#39;, maxLines: 2 }&quot;,
-  colors=&quot;[&#39;#5C3112&#39;, &#39;#3A5723&#39;, &#39;#871B47&#39;]&quot;,
-  width=400, height=360))
+Hist &lt;- gvisHistogram(datHist, options = list(legend = &quot;{ position: &#39;top&#39;, maxLines: 2 }&quot;,
+    colors = &quot;[&#39;#5C3112&#39;, &#39;#3A5723&#39;, &#39;#871B47&#39;]&quot;, width = 400, height = 360))
 plot(Hist)</code></pre>
-<!-- Histogram generated in R 4.2.0 by googleVis 0.7.0 package -->
-<!-- Sat Jul  2 16:22:07 2022 -->
+<!-- Histogram generated in R 4.2.1 by googleVis 0.7.0 package -->
+<!-- Wed Sep 28 08:50:18 2022 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataHistogramID7ad7775edaae () {
+function gvisDataHistogramIDbee63142aaf9 () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
@@ -2831,8 +2838,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartHistogramID7ad7775edaae() {
-var data = gvisDataHistogramID7ad7775edaae();
+function drawChartHistogramIDbee63142aaf9() {
+var data = gvisDataHistogramIDbee63142aaf9();
 var options = {};
 options["allowHtml"] = true;
 options["legend"] = { position: 'top', maxLines: 2 };
@@ -2841,7 +2848,7 @@ options["width"] = 400;
 options["height"] = 360;
 
     var chart = new google.visualization.Histogram(
-    document.getElementById('HistogramID7ad7775edaae')
+    document.getElementById('HistogramIDbee63142aaf9')
     );
     chart.draw(data,options);
     
@@ -2865,9 +2872,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartHistogramID7ad7775edaae);
+callbacks.push(drawChartHistogramIDbee63142aaf9);
 })();
-function displayChartHistogramID7ad7775edaae() {
+function displayChartHistogramIDbee63142aaf9() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -2890,31 +2897,24 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartHistogramID7ad7775edaae"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartHistogramIDbee63142aaf9"></script>
 <!-- divChart -->
-<div id="HistogramID7ad7775edaae" style="width: 400; height: 360;">
+<div id="HistogramIDbee63142aaf9" style="width: 400; height: 360;">
 
 </div>
-<p><br> <br> <br> Or even an annotation chart with interactive plot locations</p>
-<pre class="r"><code>Anno &lt;- gvisAnnotationChart(Stock, 
-                            datevar=&quot;Date&quot;,
-                            numvar=&quot;Value&quot;, 
-                            idvar=&quot;Device&quot;,
-                            titlevar=&quot;Title&quot;, 
-                            annotationvar=&quot;Annotation&quot;,
-                            options=list(
-                              width=600, height=350,
-                              fill=10, displayExactValues=TRUE,
-                              colors=&quot;[&#39;#0000ff&#39;,&#39;#00ff00&#39;]&quot;)
-)
+<p><br> <br> <br> Or even an annotation chart with interactive plot
+locations</p>
+<pre class="r"><code>Anno &lt;- gvisAnnotationChart(Stock, datevar = &quot;Date&quot;, numvar = &quot;Value&quot;, idvar = &quot;Device&quot;,
+    titlevar = &quot;Title&quot;, annotationvar = &quot;Annotation&quot;, options = list(width = 600,
+        height = 350, fill = 10, displayExactValues = TRUE, colors = &quot;[&#39;#0000ff&#39;,&#39;#00ff00&#39;]&quot;))
 plot(Anno)</code></pre>
-<!-- AnnotationChart generated in R 4.2.0 by googleVis 0.7.0 package -->
-<!-- Sat Jul  2 16:22:07 2022 -->
+<!-- AnnotationChart generated in R 4.2.1 by googleVis 0.7.0 package -->
+<!-- Wed Sep 28 08:50:18 2022 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataAnnotationChartID7ad71afeeeb1 () {
+function gvisDataAnnotationChartIDbee67d2025ec () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
@@ -2985,8 +2985,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartAnnotationChartID7ad71afeeeb1() {
-var data = gvisDataAnnotationChartID7ad71afeeeb1();
+function drawChartAnnotationChartIDbee67d2025ec() {
+var data = gvisDataAnnotationChartIDbee67d2025ec();
 var options = {};
 options["width"] = 600;
 options["height"] = 350;
@@ -2995,7 +2995,7 @@ options["displayExactValues"] = true;
 options["colors"] = ['#0000ff','#00ff00'];
 
     var chart = new google.visualization.AnnotationChart(
-    document.getElementById('AnnotationChartID7ad71afeeeb1')
+    document.getElementById('AnnotationChartIDbee67d2025ec')
     );
     chart.draw(data,options);
     
@@ -3019,9 +3019,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartAnnotationChartID7ad71afeeeb1);
+callbacks.push(drawChartAnnotationChartIDbee67d2025ec);
 })();
-function displayChartAnnotationChartID7ad71afeeeb1() {
+function displayChartAnnotationChartIDbee67d2025ec() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -3044,31 +3044,31 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartAnnotationChartID7ad71afeeeb1"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartAnnotationChartIDbee67d2025ec"></script>
 <!-- divChart -->
-<div id="AnnotationChartID7ad71afeeeb1" style="width: 600; height: 350;">
+<div id="AnnotationChartIDbee67d2025ec"
+style="width: 600; height: 350;">
 
 </div>
 <p><br> <br> <br> <br> <br> <br></p>
-Now a custom heatmap of life expectancy from the existing data with interactive state numbers
+Now a custom heatmap of life expectancy from the existing data with
+interactive state numbers
 </h2>
 <pre class="r"><code>require(datasets)
 states &lt;- data.frame(state.name, state.x77)
-exp &lt;- gvisGeoChart(states, &quot;state.name&quot;, &quot;Life.Exp&quot;,
-                          options=list(region=&quot;US&quot;, 
-                                       displayMode=&quot;regions&quot;, 
-                                       resolution=&quot;provinces&quot;,
-                                       width=600, height=400))
-# It is also possible to use &quot;icon=paste0 to use custom icons from icons.iconarchive.com
+exp &lt;- gvisGeoChart(states, &quot;state.name&quot;, &quot;Life.Exp&quot;, options = list(region = &quot;US&quot;,
+    displayMode = &quot;regions&quot;, resolution = &quot;provinces&quot;, width = 600, height = 400))
+# It is also possible to use &#39;icon=paste0 to use custom icons from
+# icons.iconarchive.com
 
 plot(exp)</code></pre>
-<!-- GeoChart generated in R 4.2.0 by googleVis 0.7.0 package -->
-<!-- Sat Jul  2 16:22:07 2022 -->
+<!-- GeoChart generated in R 4.2.1 by googleVis 0.7.0 package -->
+<!-- Wed Sep 28 08:50:18 2022 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataGeoChartID7ad74795db1c () {
+function gvisDataGeoChartIDbee617989b47 () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
@@ -3280,8 +3280,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartGeoChartID7ad74795db1c() {
-var data = gvisDataGeoChartID7ad74795db1c();
+function drawChartGeoChartIDbee617989b47() {
+var data = gvisDataGeoChartIDbee617989b47();
 var options = {};
 options["width"] = 600;
 options["height"] = 400;
@@ -3290,7 +3290,7 @@ options["displayMode"] = "regions";
 options["resolution"] = "provinces";
 
     var chart = new google.visualization.GeoChart(
-    document.getElementById('GeoChartID7ad74795db1c')
+    document.getElementById('GeoChartIDbee617989b47')
     );
     chart.draw(data,options);
     
@@ -3314,9 +3314,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartGeoChartID7ad74795db1c);
+callbacks.push(drawChartGeoChartIDbee617989b47);
 })();
-function displayChartGeoChartID7ad74795db1c() {
+function displayChartGeoChartIDbee617989b47() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -3339,14 +3339,20 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartGeoChartID7ad74795db1c"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartGeoChartIDbee617989b47"></script>
 <!-- divChart -->
-<div id="GeoChartID7ad74795db1c" style="width: 600; height: 400;">
+<div id="GeoChartIDbee617989b47" style="width: 600; height: 400;">
 
 </div>
 <p><br> <br> <br> <br></p>
-<p>Note: You will need an internet connection to load the graphical data as they require api access to run.</p>
-<p>Other links: Google Charts API: <a href="https://developers.google.com/chart/" class="uri">https://developers.google.com/chart/</a> Google Maps API Terms of Service: <a href="https://cloud.google.com/maps-platform/terms/" class="uri">https://cloud.google.com/maps-platform/terms/</a></p>
+<p>Note: You will need an internet connection to load the graphical data
+as they require api access to run.</p>
+<p>Other links: Google Charts API: <a
+href="https://developers.google.com/chart/"
+class="uri">https://developers.google.com/chart/</a> Google Maps API
+Terms of Service: <a
+href="https://cloud.google.com/maps-platform/terms/"
+class="uri">https://cloud.google.com/maps-platform/terms/</a></p>
 <center>
 HAPPY PLOTTING!
 </center>

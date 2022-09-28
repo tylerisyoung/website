@@ -14,7 +14,7 @@
 
 <title>Gender in Nonprofits - a Chi Squared test</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -55,6 +55,7 @@
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -118,13 +119,20 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -219,11 +227,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -356,19 +368,27 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Gender in Nonprofits - a Chi Squared test</h1>
+<h1 class="title toc-ignore">Gender in Nonprofits - a Chi Squared
+test</h1>
 <h4 class="author">Tyler Young</h4>
 
 </div>
 
 
-<div id="question-are-male-and-female-entrepeneurs-represented-differently-in-the-nonprofit-industry" class="section level1">
-<h1>Question: Are male and female entrepeneurs represented differently in the nonprofit industry?</h1>
-<div id="the-dataset-contains-ten-survey-questions-from-a-survey-of-nonprofit-entrepreneurs.-the-gender-variable-represents-our-study-groups-male-and-female." class="section level3">
-<h3>The dataset contains ten survey questions from a survey of nonprofit entrepreneurs. The gender variable represents our study groups, male and female.</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>URL &lt;-<span class="st"> &quot;https://github.com/DS4PS/cpp-524-sum-2020/blob/master/labs/data/female-np-entrepreneurs.rds?raw=true&quot;</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>dat &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">gzcon</span>(<span class="kw">url</span>( URL )))</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">head</span>( dat )</span></code></pre></div>
+<div
+id="question-are-male-and-female-entrepeneurs-represented-differently-in-the-nonprofit-industry"
+class="section level1">
+<h1>Question: Are male and female entrepeneurs represented differently
+in the nonprofit industry?</h1>
+<div
+id="the-dataset-contains-ten-survey-questions-from-a-survey-of-nonprofit-entrepreneurs.-the-gender-variable-represents-our-study-groups-male-and-female."
+class="section level3">
+<h3>The dataset contains ten survey questions from a survey of nonprofit
+entrepreneurs. The gender variable represents our study groups, male and
+female.</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>URL <span class="ot">&lt;-</span> <span class="st">&quot;https://github.com/DS4PS/cpp-524-sum-2020/blob/master/labs/data/female-np-entrepreneurs.rds?raw=true&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">gzcon</span>(<span class="fu">url</span>( URL )))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( dat )</span></code></pre></div>
 <pre><code>##   gender age income edu.level years.prof.exp experience.np.create
 ## 1 Female  54  79669  Graduate          11-15                   No
 ## 2 Female  62  63474  Graduate            15+                   No
@@ -395,10 +415,12 @@ $(document).ready(function () {
 </div>
 <div id="survey-question-1" class="section level1">
 <h1>Survey Question 1:</h1>
-<p>Comparing education levels of male and female entrepreneurs. Education levels of male &amp; female entrepreneurs. “What is the highest level of education you achieved?”</p>
+<p>Comparing education levels of male and female entrepreneurs.
+Education levels of male &amp; female entrepreneurs. “What is the
+highest level of education you achieved?”</p>
 <p>Tables</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>a &lt;-<span class="st"> </span><span class="kw">table</span>( dat<span class="op">$</span>edu.level, dat<span class="op">$</span>gender )</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>a <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prop.table</span>( <span class="dt">margin=</span><span class="dv">1</span> ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pander</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">table</span>( dat<span class="sc">$</span>edu.level, dat<span class="sc">$</span>gender )</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>a <span class="sc">%&gt;%</span> <span class="fu">prop.table</span>( <span class="at">margin=</span><span class="dv">1</span> ) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
 <table style="width:51%;">
 <colgroup>
 <col width="26%" />
@@ -441,7 +463,7 @@ $(document).ready(function () {
 </tbody>
 </table>
 <p>Chi Square Tests</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">chisq.test</span>( a, <span class="dt">simulate.p.value =</span> <span class="ot">TRUE</span> , <span class="dt">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>( a, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
 ##  replicates)
@@ -450,15 +472,19 @@ $(document).ready(function () {
 ## X-squared = 4.3831, df = NA, p-value = 0.3588</code></pre>
 <div id="question-1" class="section level3">
 <h3>Question 1</h3>
-<p>The two factors chi square p value is less than 0.05, therefore they are correlated, and not independent. While we find that females on average have slightly higher levels of education, they are not statistically significant and therefore not expressly correlated.</p>
+<p>The two factors chi square p value is less than 0.05, therefore they
+are correlated, and not independent. While we find that females on
+average have slightly higher levels of education, they are not
+statistically significant and therefore not expressly correlated.</p>
 <p><br> <br> <br> <br></p>
 </div>
 </div>
 <div id="survey-question-2" class="section level1">
 <h1>Survey Question 2:</h1>
-<p>Compare work experience for male and female entrepreneurs. “Do males or females have more professional* work experience?”</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>b &lt;-<span class="st"> </span><span class="kw">table</span>( dat<span class="op">$</span>years.prof.exp, dat<span class="op">$</span>gender )</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>b <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prop.table</span>( <span class="dt">margin=</span><span class="dv">1</span> ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pander</span>()</span></code></pre></div>
+<p>Compare work experience for male and female entrepreneurs. “Do males
+or females have more professional* work experience?”</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">table</span>( dat<span class="sc">$</span>years.prof.exp, dat<span class="sc">$</span>gender )</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>b <span class="sc">%&gt;%</span> <span class="fu">prop.table</span>( <span class="at">margin=</span><span class="dv">1</span> ) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
 <table style="width:42%;">
 <colgroup>
 <col width="16%" />
@@ -505,21 +531,24 @@ $(document).ready(function () {
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">chisq.test</span>( b, <span class="dt">simulate.p.value =</span> <span class="ot">TRUE</span> , <span class="dt">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>( b, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
 ##  replicates)
 ## 
 ## data:  b
 ## X-squared = 4.0086, df = NA, p-value = 0.5764</code></pre>
-<p>The two factors chi square p value is greater than 0.05, therefore they are uncorrelated, and independent. The work experience of female entrepreneurs is on average greater and is statistically significant.</p>
+<p>The two factors chi square p value is greater than 0.05, therefore
+they are uncorrelated, and independent. The work experience of female
+entrepreneurs is on average greater and is statistically
+significant.</p>
 <p><br> <br> <br> <br></p>
 </div>
 <div id="survey-question-3" class="section level1">
 <h1>Survey Question 3:</h1>
 <p>Do females or males on average receive more seed funding?</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>c &lt;-<span class="st"> </span><span class="kw">table</span>( dat<span class="op">$</span>seed.funding, dat<span class="op">$</span>gender )</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>c <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prop.table</span>( <span class="dt">margin=</span><span class="dv">1</span> ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pander</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">table</span>( dat<span class="sc">$</span>seed.funding, dat<span class="sc">$</span>gender )</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>c <span class="sc">%&gt;%</span> <span class="fu">prop.table</span>( <span class="at">margin=</span><span class="dv">1</span> ) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
 <table style="width:39%;">
 <colgroup>
 <col width="13%" />
@@ -546,21 +575,25 @@ $(document).ready(function () {
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">chisq.test</span>( c, <span class="dt">simulate.p.value =</span> <span class="ot">TRUE</span> , <span class="dt">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>( c, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
 ##  replicates)
 ## 
 ## data:  c
 ## X-squared = 0.033448, df = NA, p-value = 0.8558</code></pre>
-<p>The two factors chi square p value is greater than 0.05, therefore they are uncorrelated, and independent. Therefore we can determine that our data is statistically significant in finding that females receive seen funding more often than males.</p>
+<p>The two factors chi square p value is greater than 0.05, therefore
+they are uncorrelated, and independent. Therefore we can determine that
+our data is statistically significant in finding that females receive
+seen funding more often than males.</p>
 <p><br> <br> <br> <br></p>
 </div>
 <div id="survey-question-4" class="section level1">
 <h1>Survey Question 4:</h1>
-<p>Are males or females more willing to take on debt to start a business?</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a>d &lt;-<span class="st"> </span><span class="kw">table</span>( dat<span class="op">$</span>take.on.debt, dat<span class="op">$</span>gender )</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>d <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prop.table</span>( <span class="dt">margin=</span><span class="dv">1</span> ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pander</span>()</span></code></pre></div>
+<p>Are males or females more willing to take on debt to start a
+business?</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">table</span>( dat<span class="sc">$</span>take.on.debt, dat<span class="sc">$</span>gender )</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>d <span class="sc">%&gt;%</span> <span class="fu">prop.table</span>( <span class="at">margin=</span><span class="dv">1</span> ) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
 <table style="width:47%;">
 <colgroup>
 <col width="22%" />
@@ -602,21 +635,25 @@ $(document).ready(function () {
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">chisq.test</span>( d, <span class="dt">simulate.p.value =</span> <span class="ot">TRUE</span> , <span class="dt">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>( d, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
 ##  replicates)
 ## 
 ## data:  d
 ## X-squared = 8.6158, df = NA, p-value = 0.06689</code></pre>
-<p>The two factors chi square p value is just greater than 0.05, therefore they are uncorrelated, and independent. Our data do suggest that males comparatively take on debt more often than their counterparts.</p>
+<p>The two factors chi square p value is just greater than 0.05,
+therefore they are uncorrelated, and independent. Our data do suggest
+that males comparatively take on debt more often than their
+counterparts.</p>
 <p><br> <br> <br> <br></p>
 </div>
 <div id="survey-question-5" class="section level1">
 <h1>Survey Question 5:</h1>
-<p>Do males and females have different sources of funding that are most importasnt to their businesses?</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a>e &lt;-<span class="st"> </span><span class="kw">table</span>( dat<span class="op">$</span>most.imp.fund.source, dat<span class="op">$</span>gender )</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>e <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prop.table</span>( <span class="dt">margin=</span><span class="dv">1</span> ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pander</span>()</span></code></pre></div>
+<p>Do males and females have different sources of funding that are most
+importasnt to their businesses?</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">table</span>( dat<span class="sc">$</span>most.imp.fund.source, dat<span class="sc">$</span>gender )</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>e <span class="sc">%&gt;%</span> <span class="fu">prop.table</span>( <span class="at">margin=</span><span class="dv">1</span> ) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
 <table style="width:57%;">
 <colgroup>
 <col width="31%" />
@@ -678,27 +715,30 @@ $(document).ready(function () {
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">chisq.test</span>( e, <span class="dt">simulate.p.value =</span> <span class="ot">TRUE</span> , <span class="dt">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>( e, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
 ##  replicates)
 ## 
 ## data:  e
 ## X-squared = 8.8304, df = NA, p-value = 0.367</code></pre>
-<p>The two factors chi square p value is just greater than 0.05, therefore they are uncorrelated, and independent. Our data do suggest that in some areas there are statistically significant differences in funding sources by gender.</p>
+<p>The two factors chi square p value is just greater than 0.05,
+therefore they are uncorrelated, and independent. Our data do suggest
+that in some areas there are statistically significant differences in
+funding sources by gender.</p>
 <p><br> <br> <br> <br></p>
 </div>
 <div id="survey-question-6" class="section level1">
 <h1>Survey question 6:</h1>
 <p>Does the average age of nonprofit founders differ by gender?</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="kw">chisq.test</span>( f, <span class="dt">simulate.p.value =</span> <span class="ot">TRUE</span> , <span class="dt">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>( f, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
 ##  replicates)
 ## 
 ## data:  f
 ## X-squared = 98.545, df = NA, p-value = 5e-04</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="kw">t.test</span>( age <span class="op">~</span><span class="st"> </span>gender, <span class="dt">data=</span>dat )</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>( age <span class="sc">~</span> gender, <span class="at">data=</span>dat )</span></code></pre></div>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
@@ -710,29 +750,33 @@ $(document).ready(function () {
 ## sample estimates:
 ## mean in group Female   mean in group Male 
 ##             51.93948             55.04828</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a>get_pval_from_tval &lt;-<span class="st"> </span><span class="cf">function</span>( tvalue, n1, n2 )</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a>{</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a>  df &lt;-<span class="st"> </span><span class="kw">min</span>( <span class="dv">655</span>, <span class="dv">657</span> ) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>  <span class="co"># size of treated group and comparison</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true"></a>  pval &lt;-<span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">pt</span>( <span class="kw">abs</span>(tvalue), <span class="dt">df=</span>df, <span class="dt">lower.tail=</span><span class="ot">FALSE</span> )</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true"></a>  <span class="kw">return</span>( pval )</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true"></a>}</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true"></a></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true"></a><span class="kw">get_pval_from_tval</span>( <span class="dt">tvalue=</span><span class="op">-</span><span class="fl">3.1749</span>, <span class="dt">n1=</span><span class="dv">655</span>, <span class="dt">n2=</span><span class="dv">657</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>get_pval_from_tval <span class="ot">&lt;-</span> <span class="cf">function</span>( tvalue, n1, n2 )</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">min</span>( <span class="dv">655</span>, <span class="dv">657</span> ) <span class="sc">-</span> <span class="dv">1</span>  <span class="co"># size of treated group and comparison</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  pval <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pt</span>( <span class="fu">abs</span>(tvalue), <span class="at">df=</span>df, <span class="at">lower.tail=</span><span class="cn">FALSE</span> )</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>( pval )</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">get_pval_from_tval</span>( <span class="at">tvalue=</span><span class="sc">-</span><span class="fl">3.1749</span>, <span class="at">n1=</span><span class="dv">655</span>, <span class="at">n2=</span><span class="dv">657</span> )</span></code></pre></div>
 <pre><code>## [1] 0.001569263</code></pre>
-<p>Our data suggest within a 95% confidence interval that the average age of male nonprofit entrepreneurs is slightly older than that of female nonprofit entrepreneurs. (Though our adjusted alpha suggests the groups are equivalent, more in Q8)</p>
+<p>Our data suggest within a 95% confidence interval that the average
+age of male nonprofit entrepreneurs is slightly older than that of
+female nonprofit entrepreneurs. (Though our adjusted alpha suggests the
+groups are equivalent, more in Q8)</p>
 <p><br> <br> <br> <br></p>
 </div>
 <div id="survey-question-7" class="section level1">
 <h1>Survey Question 7:</h1>
-<p>Were the income levels between men and women entrepeneurs different at the time of inception?</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a><span class="kw">chisq.test</span>( g, <span class="dt">simulate.p.value =</span> <span class="ot">TRUE</span> , <span class="dt">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<p>Were the income levels between men and women entrepeneurs different
+at the time of inception?</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>( g, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
 ##  replicates)
 ## 
 ## data:  g
 ## X-squared = 601.88, df = NA, p-value = 0.6753</code></pre>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true"></a><span class="kw">t.test</span>( income <span class="op">~</span><span class="st"> </span>gender, <span class="dt">data=</span>dat )</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>( income <span class="sc">~</span> gender, <span class="at">data=</span>dat )</span></code></pre></div>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
@@ -744,12 +788,21 @@ $(document).ready(function () {
 ## sample estimates:
 ## mean in group Female   mean in group Male 
 ##             67741.83             80882.95</code></pre>
-<p>The two factors chi square p value is just greater than 0.05, therefore they are uncorrelated, and independent. The differences in income between men and women at the time of starting a nonprofit was meaningfully statistically different and greater for males.</p>
+<p>The two factors chi square p value is just greater than 0.05,
+therefore they are uncorrelated, and independent. The differences in
+income between men and women at the time of starting a nonprofit was
+meaningfully statistically different and greater for males.</p>
 <p><br> <br> <br> <br></p>
 </div>
 <div id="analysis" class="section level1">
 <h1>Analysis</h1>
-<p>-Further investigation using Bonferroni’s corrected alpha could be of use concerning type 1 errors. -The lowest p-value across the contrasts was that of age. -The only statistically significant p-value was that of age, and after running a basic Bonferroni Correction on it, we cannot reject the nunll hypothesis and therefore must state that these entrepreneurs surveyed are statistically the same when considering gender.</p>
+<p>-Further investigation using Bonferroni’s corrected alpha could be of
+use concerning type 1 errors. -The lowest p-value across the contrasts
+was that of age. -The only statistically significant p-value was that of
+age, and after running a basic Bonferroni Correction on it, we cannot
+reject the nunll hypothesis and therefore must state that these
+entrepreneurs surveyed are statistically the same when considering
+gender.</p>
 <p>```</p>
 </div>
 

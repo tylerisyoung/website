@@ -13,7 +13,7 @@
 
 <title>77waystoprotectyourselfonline.knit</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -144,11 +144,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -290,15 +294,27 @@ $(document).ready(function () {
 <strong>Makhia Bryant</strong>
 </h1>
 <h6>
-<strong><em>A text message to a friend on gun violence and policing.</em></strong>
+<strong><em>A text message to a friend on gun violence and
+policing.</em></strong>
 </h6>
 <p>04/22/2021 <br></p>
 <p>Everywhere is Nowhere</p>
-<p>If you have the desire to become fully anonymous and untraceable, it would be best to use an untraceable linux iso like Tails, the very operating system Edward Snowden</p>
-<p><a href="https://news.softpedia.com/news/Edward-Snowden-Used-the-Tails-Linux-Distro-to-Stay-Hidden-438074.shtml">uses</a>. The next best thing might be to de-google your life, as Google is the most pervasive tracking software out there. Gmail, YouTube, Maps, Docs, Apps, let alone many of our usernames to everything, it can be overwhelming even conceptualizing a life without google, but it can be done, and arguably should be done. However, that is not our mission today. Today we will provide 77 ways to bolster your online and offline experience from both a security and a privacy perspective.</p>
+<p>If you have the desire to become fully anonymous and untraceable, it
+would be best to use an untraceable linux iso like Tails, the very
+operating system Edward Snowden</p>
+<p><a
+href="https://news.softpedia.com/news/Edward-Snowden-Used-the-Tails-Linux-Distro-to-Stay-Hidden-438074.shtml">uses</a>.
+The next best thing might be to de-google your life, as Google is the
+most pervasive tracking software out there. Gmail, YouTube, Maps, Docs,
+Apps, let alone many of our usernames to everything, it can be
+overwhelming even conceptualizing a life without google, but it can be
+done, and arguably should be done. However, that is not our mission
+today. Today we will provide 77 ways to bolster your online and offline
+experience from both a security and a privacy perspective.</p>
 <p>Level: Beginner</p>
 <p>Computer</p>
-<p>All suggestions will apply to both Apple and Windows based Operating systems though apple has a better track record here.</p>
+<p>All suggestions will apply to both Apple and Windows based Operating
+systems though apple has a better track record here.</p>
 <p>1 - Use a privacy browser like Brave</p>
 <p>2 - Use an anti tracking extension</p>
 <p>3 - Use an adblocker</p>
@@ -324,7 +340,8 @@ $(document).ready(function () {
 <p>23 - Disable bluetooth when not using</p>
 <p>24 - Use a hardware wallet for crypto assets</p>
 <p>Mobile</p>
-<p>All suggestions will apply to both apple and android though apple has a better track record here.</p>
+<p>All suggestions will apply to both apple and android though apple has
+a better track record here.</p>
 <p>34 - Use a passcode</p>
 <p>35 - Lock when not in use</p>
 <p>36 - Call your carrier and have them prevent sim swapping</p>

@@ -13,7 +13,7 @@
 
 <title>Health.knit</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -144,11 +144,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -292,8 +296,10 @@ $(document).ready(function () {
 <h6>
 <strong><em>Feel better, Live better.</em></strong>
 </h6>
-<p><em><a href="https://tylerisyoung.substack.com/?target=_blank">Tylerisyoung.Substack.com</a><br />
-<a href="https://twitter.com/Tylerisyoung/?tagets=_blank">Twitter.com/TylerisYoung</a></em><br />
+<p><em><a
+href="https://tylerisyoung.substack.com/?target=_blank">Tylerisyoung.Substack.com</a><br />
+<a
+href="https://twitter.com/Tylerisyoung/?tagets=_blank">Twitter.com/TylerisYoung</a></em><br />
 _________________________</p>
 <br> <br>
 <h4>
@@ -407,7 +413,8 @@ Article: [*Spike Protein*](./deepecolog.html) (Coming Soon)
 </h4>
 <center>
 <p><br> <img src="images/healthasafoundation.png" /></p>
-<p><br> <iframe width="560" height="315" src="https://www.youtube.com/embed/MdYHgOKxjXY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<p><br>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/MdYHgOKxjXY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
 
 
 

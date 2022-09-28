@@ -13,7 +13,7 @@
 
 <title>ongoingta.knit</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -144,11 +144,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -287,27 +291,33 @@ $(document).ready(function () {
 
 <p><br> <br></p>
 <h2>
-<strong>Ongoing Technical Analysis of Financial markets and Crypto</strong>
+<strong>Ongoing Technical Analysis of Financial markets and
+Crypto</strong>
 </h2>
 <h6>
-<br> <strong><em>For sure financial advice - More on Substack &amp; Twitter</em></strong>
+<br> <strong><em>For sure financial advice - More on Substack &amp;
+Twitter</em></strong>
 </h6>
-<p><em><a href="www.tylerisyoung.substack.com">Tylerisyoung.Substack.com</a></em><br />
-<em><a href="www.twitter.com/Tylerisyoung">Twitter.com/TylerisYoung</a></em><br />
+<p><em><a
+href="www.tylerisyoung.substack.com">Tylerisyoung.Substack.com</a></em><br />
+<em><a
+href="www.twitter.com/Tylerisyoung">Twitter.com/TylerisYoung</a></em><br />
 _________________________</p>
 <center>
 <br>
 <h4>
 <strong>The Fundamentals</strong>
 </h4>
-Read: <a href="./mmt.html">Modern Monetary Theory - Slow at first, then all at once.</a>
+Read: <a href="./mmt.html">Modern Monetary Theory - Slow at first, then
+all at once.</a>
 </center>
 <br><br />
 
 <h4>
 <strong>The Macroeconomic Backdrop</strong>
 </h4>
-<p>The macroeconomics problem displayed in a single chart: <img src="Journalism/Economics/ongoingta/MMT_ALLCHARTS.jpg" /></p>
+<p>The macroeconomics problem displayed in a single chart: <img
+src="Journalism/Economics/ongoingta/MMT_ALLCHARTS.jpg" /></p>
 <h4>
 <br> <br><br />
 Ongoing Technical Analysis
@@ -315,59 +325,218 @@ Ongoing Technical Analysis
 <p><br></p>
 <hr />
 <p><br> <em>7/1/2022</em> <br></p>
-<p><strong><em>Atlanta Fed Confirms that we are about to enter a Recession</em></strong></p>
-<p>Most economists use the 10-2 year yield spread and curve to predict upcoming recessions, however the fed today is using the 10 year - 3 month spread. This is likely because it will be the last to flash the warning sign of recession and allow Biden to say things like “We have a very strong economy” as GDP continues to slow.</p>
-<p>The NY Fed tells us that, “This model uses the slope of the yield curve, or “term spread,” to calculate the probability of a recession in the United States twelve months ahead. Here, the term spread is defined as the difference between 10-year and 3-month Treasury rates."</p>
-<p>The only tool the Fed has to combat high inflation is raising interest rates, typically ABOVE the rate of inflation, as should have been done a year ago when the economy was stronger in order to avoid the stagflation we’re seeing today. Higher interest rates mean a stronger dollar, and higher interest rates as term duration increases on bonds - a normal and healthy yield curve which rewards people for saving their money in cash longer.</p>
-<p>The real rate of return when accounting for inflation on any of these bonds is currently several points in the negative due to price inflation, therefore the Fed needs to continue raising rates until inflation calms down from demand destruction and yields on risk free treasuries trends back towards sensible returns. Until this happens, we will continue to see other currencies fall in value compared to the US Dollar denominated hegemony - “The Dollar Milkshake”.</p>
-<p>The Fed is far behind the curve, and the government’s interest payments on $30 Trillion dollars of debt and much more in foreign obligations, will ensure that the Fed remains behind the curve, actually favoring inflation that goes unnoticed in order to inflate away the debt, the only way out is through a hard landing, a deep recession, or returning to Quantitative Easing in order to simply kick the can down the road. This last option of QE is unfortunately not on the table at the moment because the money printing is what got us here in the first place.</p>
-<p><br> <img src="Journalism/Economics/ongoingta/7-1-2022_1.png" /> <br> <br> <img src="Journalism/Economics/ongoingta/7-1-2022_2.jpg" /> <br> <br> <img src="Journalism/Economics/ongoingta/7-1-2022_3.jpg" /><br />
-<br> ________________________________________________________________</p>
+<p><strong><em>Atlanta Fed Confirms that we are about to enter a
+Recession</em></strong></p>
+<p>Most economists use the 10-2 year yield spread and curve to predict
+upcoming recessions, however the fed today is using the 10 year - 3
+month spread. This is likely because it will be the last to flash the
+warning sign of recession and allow Biden to say things like “We have a
+very strong economy” as GDP continues to slow.</p>
+<p>The NY Fed tells us that, “This model uses the slope of the yield
+curve, or “term spread,” to calculate the probability of a recession in
+the United States twelve months ahead. Here, the term spread is defined
+as the difference between 10-year and 3-month Treasury rates.”</p>
+<p>The only tool the Fed has to combat high inflation is raising
+interest rates, typically ABOVE the rate of inflation, as should have
+been done a year ago when the economy was stronger in order to avoid the
+stagflation we’re seeing today. Higher interest rates mean a stronger
+dollar, and higher interest rates as term duration increases on bonds -
+a normal and healthy yield curve which rewards people for saving their
+money in cash longer.</p>
+<p>The real rate of return when accounting for inflation on any of these
+bonds is currently several points in the negative due to price
+inflation, therefore the Fed needs to continue raising rates until
+inflation calms down from demand destruction and yields on risk free
+treasuries trends back towards sensible returns. Until this happens, we
+will continue to see other currencies fall in value compared to the US
+Dollar denominated hegemony - “The Dollar Milkshake”.</p>
+<p>The Fed is far behind the curve, and the government’s interest
+payments on $30 Trillion dollars of debt and much more in foreign
+obligations, will ensure that the Fed remains behind the curve, actually
+favoring inflation that goes unnoticed in order to inflate away the
+debt, the only way out is through a hard landing, a deep recession, or
+returning to Quantitative Easing in order to simply kick the can down
+the road. This last option of QE is unfortunately not on the table at
+the moment because the money printing is what got us here in the first
+place.</p>
+<p><br> <img src="Journalism/Economics/ongoingta/7-1-2022_1.png" />
+<br> <br> <img src="Journalism/Economics/ongoingta/7-1-2022_2.jpg" />
+<br> <br> <img
+src="Journalism/Economics/ongoingta/7-1-2022_3.jpg" /><br />
+<br>
+________________________________________________________________</p>
 <p><br> <em>6/30/2022</em> <br></p>
-<p><strong><em>Energy Price Inflation Soars in Germany and around the World</em></strong></p>
-<p>Americans <a href="https://www.freedomsphoenix.com/News/326998-2022-06-12-americans-owe-22-billion-in-late-utility-bills-as-energy.htm">owe</a> $22 billion in already late utility bills as energy costs in the US rise 34% YOY.</p>
-<p>Europe, more directly affected by the Russia Ukraine War has it much worse, Germany specifically is has experienced a 6X increase in the cost of baseload power since 2020. They managed this by increasing their reliance on Russian oil and gas along with shortsighted energy policies and adherence to the ESG narrative at the expense of their own fragility.</p>
-<p>In 2020 Germany’s percentage usage of renewables <a href="https://foreignpolicy.com/2021/02/10/is-germany-making-too-much-renewable-energy/">was</a> 46%, largely coming from wind, solar, and hydro electric. The remainder of their energy was from coal, gas, oil, and nuclear.</p>
-<p>Despite still struggling to meet their stringent carbon related policies, and despite the now soaring energy costs, Germany has recently upheld the pledge to continue with the shut down their remaining nuclear reactors by the end of 2022, a decision that was decided a decade prior, in the wake of the Fukishima disaster in Japan.</p>
-<p>The German government has also pledged to phase out coal - but not until 2038. This series of moves has ensured that their baseload energy consumption is actually getting more carbon intensive, not less. These choices, alongside western imposed Russian sanctions which have increased natural gas prices globally leave the German’s supply of baseload power insufficient for meeting modern expectations or demand.</p>
-<p>Germany’s Vice Chancellor <a href="https://wattsupwiththat.com/2022/06/26/germany-green-energy-crisis-warns-of-lehman-like-contagion/">warned</a> of a “Lehman like” economic collapse due to their current energy policy, and we are seeing it play out in fast and slow motion.</p>
-<p>Germany is extremely close to <a href="https://www.businessinsider.co.za/germany-says-energy-crisis-may-trigger-lehman-like-contagion-2022-6">rationing</a> stores of natural gas, and suggesting it will start with hot water, a luxury some of those living in energy poverty have already forsaken despite their middle class incomes. Today, likely more than 23% of German people are suffering some form of <a href="http://www.enpover.eu/en/energy-poverty">“Energy Poverty”</a> where a significant enough portion of their income goes towards energy, causing them to cut back on other necessities.</p>
-<p>With prices so high, and natural gas stockpiles at record low levels, the German Government has <a href="https://www.telegraph.co.uk/business/2022/04/19/germany-wont-stop-buying-russian-gas-should-face-sanctions/">announced</a> that they will re-establish the use of previously decommissioned coal-fired power plants. Coal is far easier to bring back online than nuclear, so any future hiccups will likely see expansion of this more carbon intense base energy.</p>
-<p>German wholesale oil is up ~70% YOY, and even an end to the war wouldn’t mean that western nations return to direct purchases from Russia, therefore these price increases are likely to remain.</p>
-<p>Furthermore,UK newspaper The Telegraph <a href="https://www.telegraph.co.uk/business/2022/04/19/germany-wont-stop-buying-russian-gas-should-face-sanctions/">suggests</a> that if Germans won’t stop buying Russian gas, they too should face sanctions.</p>
-<p>Lastly, Reuters reports that; Italy, Portugal, Slovakia, Bulgaria, and Romania have joined Germany’s finance minister in opposing the 2035 mandate to ban the sale of new petrol and diesel cars. This move, is postponed would all but ensure that the EU does not meet it’s target of reducing greenhouse gas emissions by 55% compared to 1990 levels before 2030.</p>
-<p>Many across the globe will be priced out of the green energy revolution.</p>
-<p><br> <img src="Journalism/Economics/ongoingta/6-30-2022_1.jpg" /> <br></p>
-<p><br> <img src="Journalism/Economics/ongoingta/6-30-2022_2.png" /> <br></p>
-<p><br> <img src="Journalism/Economics/ongoingta/6-30-2022_3.png" /> <br></p>
+<p><strong><em>Energy Price Inflation Soars in Germany and around the
+World</em></strong></p>
+<p>Americans <a
+href="https://www.freedomsphoenix.com/News/326998-2022-06-12-americans-owe-22-billion-in-late-utility-bills-as-energy.htm">owe</a>
+$22 billion in already late utility bills as energy costs in the US rise
+34% YOY.</p>
+<p>Europe, more directly affected by the Russia Ukraine War has it much
+worse, Germany specifically is has experienced a 6X increase in the cost
+of baseload power since 2020. They managed this by increasing their
+reliance on Russian oil and gas along with shortsighted energy policies
+and adherence to the ESG narrative at the expense of their own
+fragility.</p>
+<p>In 2020 Germany’s percentage usage of renewables <a
+href="https://foreignpolicy.com/2021/02/10/is-germany-making-too-much-renewable-energy/">was</a>
+46%, largely coming from wind, solar, and hydro electric. The remainder
+of their energy was from coal, gas, oil, and nuclear.</p>
+<p>Despite still struggling to meet their stringent carbon related
+policies, and despite the now soaring energy costs, Germany has recently
+upheld the pledge to continue with the shut down their remaining nuclear
+reactors by the end of 2022, a decision that was decided a decade prior,
+in the wake of the Fukishima disaster in Japan.</p>
+<p>The German government has also pledged to phase out coal - but not
+until 2038. This series of moves has ensured that their baseload energy
+consumption is actually getting more carbon intensive, not less. These
+choices, alongside western imposed Russian sanctions which have
+increased natural gas prices globally leave the German’s supply of
+baseload power insufficient for meeting modern expectations or
+demand.</p>
+<p>Germany’s Vice Chancellor <a
+href="https://wattsupwiththat.com/2022/06/26/germany-green-energy-crisis-warns-of-lehman-like-contagion/">warned</a>
+of a “Lehman like” economic collapse due to their current energy policy,
+and we are seeing it play out in fast and slow motion.</p>
+<p>Germany is extremely close to <a
+href="https://www.businessinsider.co.za/germany-says-energy-crisis-may-trigger-lehman-like-contagion-2022-6">rationing</a>
+stores of natural gas, and suggesting it will start with hot water, a
+luxury some of those living in energy poverty have already forsaken
+despite their middle class incomes. Today, likely more than 23% of
+German people are suffering some form of <a
+href="http://www.enpover.eu/en/energy-poverty">“Energy Poverty”</a>
+where a significant enough portion of their income goes towards energy,
+causing them to cut back on other necessities.</p>
+<p>With prices so high, and natural gas stockpiles at record low levels,
+the German Government has <a
+href="https://www.telegraph.co.uk/business/2022/04/19/germany-wont-stop-buying-russian-gas-should-face-sanctions/">announced</a>
+that they will re-establish the use of previously decommissioned
+coal-fired power plants. Coal is far easier to bring back online than
+nuclear, so any future hiccups will likely see expansion of this more
+carbon intense base energy.</p>
+<p>German wholesale oil is up ~70% YOY, and even an end to the war
+wouldn’t mean that western nations return to direct purchases from
+Russia, therefore these price increases are likely to remain.</p>
+<p>Furthermore,UK newspaper The Telegraph <a
+href="https://www.telegraph.co.uk/business/2022/04/19/germany-wont-stop-buying-russian-gas-should-face-sanctions/">suggests</a>
+that if Germans won’t stop buying Russian gas, they too should face
+sanctions.</p>
+<p>Lastly, Reuters reports that; Italy, Portugal, Slovakia, Bulgaria,
+and Romania have joined Germany’s finance minister in opposing the 2035
+mandate to ban the sale of new petrol and diesel cars. This move, is
+postponed would all but ensure that the EU does not meet it’s target of
+reducing greenhouse gas emissions by 55% compared to 1990 levels before
+2030.</p>
+<p>Many across the globe will be priced out of the green energy
+revolution.</p>
+<p><br> <img src="Journalism/Economics/ongoingta/6-30-2022_1.jpg" />
+<br></p>
+<p><br> <img src="Journalism/Economics/ongoingta/6-30-2022_2.png" />
+<br></p>
+<p><br> <img src="Journalism/Economics/ongoingta/6-30-2022_3.png" />
+<br></p>
 <hr />
 <p><br> <em>6/18/2022</em> <br></p>
 <p><strong><em>Update to the Japan Crisis</em></strong></p>
-<p>Japan’s Ponzi Scheme is running out of time. Japan has 12.8 Trillion on the BOJ’s balance sheet and their current debt/GDP is nearly 200%.</p>
-<p>They have apparently reached their limit to perform Yield Curve Control in both the bond and stock market with newly printed treasuries which cannot find the buyers necessary to prop up the Yen’s purchasing power against USD. A panic spike in selling lead to Bond yields jumping up above the governments mandated ability to continue QE driven purchases without becoming insolvent with a debt/gdp ratio too high. Market participants selling bonds lead to higher interest payments for a government that cannot afford it. <br> <img src="Journalism/Economics/ongoingta/6-18-2022_1.png" /> <br> <img src="Journalism/Economics/ongoingta/6-18-2022_2.png" /> <br> ________________________________________________________________</p>
+<p>Japan’s Ponzi Scheme is running out of time. Japan has 12.8 Trillion
+on the BOJ’s balance sheet and their current debt/GDP is nearly
+200%.</p>
+<p>They have apparently reached their limit to perform Yield Curve
+Control in both the bond and stock market with newly printed treasuries
+which cannot find the buyers necessary to prop up the Yen’s purchasing
+power against USD. A panic spike in selling lead to Bond yields jumping
+up above the governments mandated ability to continue QE driven
+purchases without becoming insolvent with a debt/gdp ratio too high.
+Market participants selling bonds lead to higher interest payments for a
+government that cannot afford it. <br> <img
+src="Journalism/Economics/ongoingta/6-18-2022_1.png" /> <br> <img
+src="Journalism/Economics/ongoingta/6-18-2022_2.png" /> <br> <img
+src="Journalism/Economics/ongoingta/6-18-2022_3.png" /> <br></p>
+<hr />
 <p><br> <em>6/9/2022</em> <br></p>
-<p><strong><em>Japanese Yen spirals against US dollar, the consequences of endless QE</em></strong> <br></p>
-<p>Japan has been the canary in the coal mine for the last decade, forecasting where us in the US and western nations who are participating in Quantitative Easing might end up. Japan has apparently reached its limits in how far they can go before trust in assets held on the central bank’s balance sheet is lost.</p>
-<p>Japan’s debt/GDP ratio is nearly 200%, the highest of any nation in the world.</p>
+<p><strong><em>Japanese Yen spirals against US dollar, the consequences
+of endless QE</em></strong> <br></p>
+<p>Japan has been the canary in the coal mine for the last decade,
+forecasting where us in the US and western nations who are participating
+in Quantitative Easing might end up. Japan has apparently reached its
+limits in how far they can go before trust in assets held on the central
+bank’s balance sheet is lost.</p>
+<p>Japan’s debt/GDP ratio is nearly 200%, the highest of any nation in
+the world.</p>
 <p><img src="Journalism/Economics/ongoingta/6-9-2022_2.jpg" /></p>
 <p><br></p>
 <iframe src="https://data.worldbank.org/share/widget?end=2016&amp;indicators=GC.DOD.TOTL.GD.ZS&amp;locations=JP&amp;start=1990&amp;view=chart" width="450" height="300" frameBorder="0" scrolling="no">
 </iframe>
 <p><br></p>
-<p>With a debt/GDP ratio this high, the government technically owes money to itself through the central bank’s deficit printing. The problem with having so much debt is the interest rates. Once interest rates begin to rise, so do interest payments needed to remain solvent. Without a robust and increasing GDP for taxpayer generated income for the government to fund the debt, the only option becomes - devalue the debt denominated in fiat currency which has no limitations to creation - inflate it away.</p>
-<p>When the M2 money stock goes up, each dollar held by citizens and the government goes down when measured against other commodities, or other currencies which will remain stronger if they are not also printing more money, though the debt, taken out years, even decades ago remains the same. The debt positions can thus continually be serviced with newly created money that has a lesser value, and the longer a nation waits to pay off the debt, the cheaper it becomes.</p>
-<p>A true sovereign debt crisis occurred in Greece when their debt was denominated in Euros, instead of their own former Greek currency, the drachma. Since the Greek centrral bank could not control the newly issued wupply of Euros, regulated by the ECB, we saw them enter a period of default where their debts needed to be written down in lieu of a western humanitarian crisis.</p>
-<p>Central Banks like Japan, or the United States who can self fund have the advantage especially when interest rates are low, but when entering a period of tightening, and slower economic growth, or even stagflation as we are now, the only tool to create demand destruction and thus lower inflation would traditionally be - raising interest rates to the rate of inflation.</p>
-<p>The problem with an inflationary environment is that to solve the problem of inflation, it is all but mandatory to cease the creation of more dollars. Volker of the FED solved this problem in the 70’s by raising rates to match the rate of inflation which was above 10% at the time. The only problem with doing that now is that we have too much debt.</p>
-<p>If the US or Japan raised rates this high, to 8-16% to match the current inflation rate, the governments would not be able to finance the interest payments on the debt, and would thus default.</p>
-<p>But they can’t print more money either, so it’s necessary to rely on jawboning all markets into demand destruction without raising rates, and so far it’s working.</p>
-<p>If this is not effective enough, the US will need to follow Japan’s lead, by implementing Yield Curve Control (YCC).</p>
-<p>The aim of YCC is to craft a particular shape to the yield rates on bonds issued by the government. When any entity including individuals are holding treasuries issued by the government, they should be expected to at least retain their value, furthermore, the longer duration of the bond, the higher the expected yield, but with inflation, this becomes a problem.</p>
-<p>Therefore, it has become necessary for the Bank of Japan to participate in yield curve control, printing money to directly purchase bonds and prop up the market. In addition to this, the BOJ is also purchasing stocks on the open market as well, something previously unheard of.</p>
-<p>This has a two pronged effect; firstly is staves off insolvency for Japan, for now, they are able to service their debt’s on the balance sheet with new dollars, but secondly, it has eroded trust, and yield from all of their markets is gone leading investors to seek yield elsewhere.</p>
-<p>If this persists, a debt driven deflationary spiral that leads to insolvency could follow, and it could be both abrupt, and catastrophic as it was for Greece who needed a bailout from the ECB.</p>
-<p>Japan’s 10 year yield has been below the US 10 year yield for a decade now leaving less access to liquidity for paying off debts, but also Japan’s stock market has not reached a new all time high since 1990, in fact, it’s still down 26% from that date. Money is fleeing the country and GDP will remain low, threatening insolvency indefinitely.</p>
-<p>The Japanese Yen is loosing value compared to the dollar, but the Dollar is loosing value compared to commodities and will inevitably face the same fate if we continue the current regime.</p>
+<p>With a debt/GDP ratio this high, the government technically owes
+money to itself through the central bank’s deficit printing. The problem
+with having so much debt is the interest rates. Once interest rates
+begin to rise, so do interest payments needed to remain solvent. Without
+a robust and increasing GDP for taxpayer generated income for the
+government to fund the debt, the only option becomes - devalue the debt
+denominated in fiat currency which has no limitations to creation -
+inflate it away.</p>
+<p>When the M2 money stock goes up, each dollar held by citizens and the
+government goes down when measured against other commodities, or other
+currencies which will remain stronger if they are not also printing more
+money, though the debt, taken out years, even decades ago remains the
+same. The debt positions can thus continually be serviced with newly
+created money that has a lesser value, and the longer a nation waits to
+pay off the debt, the cheaper it becomes.</p>
+<p>A true sovereign debt crisis occurred in Greece when their debt was
+denominated in Euros, instead of their own former Greek currency, the
+drachma. Since the Greek centrral bank could not control the newly
+issued wupply of Euros, regulated by the ECB, we saw them enter a period
+of default where their debts needed to be written down in lieu of a
+western humanitarian crisis.</p>
+<p>Central Banks like Japan, or the United States who can self fund have
+the advantage especially when interest rates are low, but when entering
+a period of tightening, and slower economic growth, or even stagflation
+as we are now, the only tool to create demand destruction and thus lower
+inflation would traditionally be - raising interest rates to the rate of
+inflation.</p>
+<p>The problem with an inflationary environment is that to solve the
+problem of inflation, it is all but mandatory to cease the creation of
+more dollars. Volker of the FED solved this problem in the 70’s by
+raising rates to match the rate of inflation which was above 10% at the
+time. The only problem with doing that now is that we have too much
+debt.</p>
+<p>If the US or Japan raised rates this high, to 8-16% to match the
+current inflation rate, the governments would not be able to finance the
+interest payments on the debt, and would thus default.</p>
+<p>But they can’t print more money either, so it’s necessary to rely on
+jawboning all markets into demand destruction without raising rates, and
+so far it’s working.</p>
+<p>If this is not effective enough, the US will need to follow Japan’s
+lead, by implementing Yield Curve Control (YCC).</p>
+<p>The aim of YCC is to craft a particular shape to the yield rates on
+bonds issued by the government. When any entity including individuals
+are holding treasuries issued by the government, they should be expected
+to at least retain their value, furthermore, the longer duration of the
+bond, the higher the expected yield, but with inflation, this becomes a
+problem.</p>
+<p>Therefore, it has become necessary for the Bank of Japan to
+participate in yield curve control, printing money to directly purchase
+bonds and prop up the market. In addition to this, the BOJ is also
+purchasing stocks on the open market as well, something previously
+unheard of.</p>
+<p>This has a two pronged effect; firstly is staves off insolvency for
+Japan, for now, they are able to service their debt’s on the balance
+sheet with new dollars, but secondly, it has eroded trust, and yield
+from all of their markets is gone leading investors to seek yield
+elsewhere.</p>
+<p>If this persists, a debt driven deflationary spiral that leads to
+insolvency could follow, and it could be both abrupt, and catastrophic
+as it was for Greece who needed a bailout from the ECB.</p>
+<p>Japan’s 10 year yield has been below the US 10 year yield for a
+decade now leaving less access to liquidity for paying off debts, but
+also Japan’s stock market has not reached a new all time high since
+1990, in fact, it’s still down 26% from that date. Money is fleeing the
+country and GDP will remain low, threatening insolvency
+indefinitely.</p>
+<p>The Japanese Yen is loosing value compared to the dollar, but the
+Dollar is loosing value compared to commodities and will inevitably face
+the same fate if we continue the current regime.</p>
 <p><br></p>
 <p><img src="Journalism/Economics/ongoingta/6-9-2022_1.jpg" /> <br></p>
 <p><br></p>
@@ -377,70 +546,356 @@ Ongoing Technical Analysis
 <p><br> <br> <br></p>
 <hr />
 <p><br></p>
-<p><em>6/7/2022</em> <br> <strong><em>Federal Reserve Releases Hilarious Hit Piece on Bitcoin</em></strong></p>
-<p>The FED has <a href="https://fredblog.stlouisfed.org/2022/06/buying-eggs-with-bitcoins/">released</a> a chart comparing Bitcoin’s purchasing power against the price of supermarket eggs. They suggest that this is the reason Bitcoin is not a good store of value.</p>
-<p>This is the chart presented. <br> <img src="Journalism/Economics/ongoingta/6-7-2022_1.jpg" /> <br> It only takes a moment to realize that the data is completely cherry picked from the last two years, and if you choose to drag the view options back to the inception of Bitcoin in 2009, their very same chart simply tells the opposite story.</p>
-<p>If you were to have held Bitcoin instead of US dollars for nearly any period of Bitcoin’s existence, your purchasing power measured in eggs would have only increased, and significantly. <br> <img src="Journalism/Economics/ongoingta/6-7-2022_2.jpg" /> <br></p>
-<p>The US dollar has lost 95% of it’s purchasing power against commodities, goods, and services over the last several decades. It is interesting however that the FED finds the need to attempt to make these silly comparisons.</p>
-<p><br> <br> <br> ________________________________________________________________</p>
+<p><em>6/7/2022</em> <br> <strong><em>Federal Reserve Releases Hilarious
+Hit Piece on Bitcoin</em></strong></p>
+<p>The FED has <a
+href="https://fredblog.stlouisfed.org/2022/06/buying-eggs-with-bitcoins/">released</a>
+a chart comparing Bitcoin’s purchasing power against the price of
+supermarket eggs. They suggest that this is the reason Bitcoin is not a
+good store of value.</p>
+<p>This is the chart presented. <br> <img
+src="Journalism/Economics/ongoingta/6-7-2022_1.jpg" /> <br> It only
+takes a moment to realize that the data is completely cherry picked from
+the last two years, and if you choose to drag the view options back to
+the inception of Bitcoin in 2009, their very same chart simply tells the
+opposite story.</p>
+<p>If you were to have held Bitcoin instead of US dollars for nearly any
+period of Bitcoin’s existence, your purchasing power measured in eggs
+would have only increased, and significantly. <br> <img
+src="Journalism/Economics/ongoingta/6-7-2022_2.jpg" /> <br></p>
+<p>The US dollar has lost 95% of it’s purchasing power against
+commodities, goods, and services over the last several decades. It is
+interesting however that the FED finds the need to attempt to make these
+silly comparisons.</p>
+<p><br> <br> <br>
+________________________________________________________________</p>
 <p><br> <em>6/6/2022</em> <br></p>
-<p><strong>Natural Gas prices spike, World Food Crisis Looms</strong></p>
+<p><strong>Natural Gas prices spike, World Food Crisis
+Looms</strong></p>
 <p><br></p>
-<p>Many countries are being threatened with immediate food shortages, not next year or next month, right now. The current situation involving Russia-Ukraine is greatly exacerbating the problem. Known as the “bread basket of the world” which also includes Belarus. These countries make up more than 1/4 of all global grain trade, and Russia have announced that they will restrict grain trade within “<a href="https://www.nbcnews.com/news/world/live-blog/russia-ukraine-war-live-updates-evacuations-launch-mariupol-talks-resume-n1293815/ncrd1293834">Friendly countries</a>.” <br> <img src="Journalism/Economics/ongoingta/6-6-2022_7.jpg" /> *Note: This is 2017 data, pre pandemic, pre money printing from the FED, and before war in Ukraine, unfortunately it only get’s worse from here. <br> Furthermore, fertilizer is made through a process invented by Fritz Haber and Carl Bosch who is often credited alongside Norman Borlaug, inventor of genetic modification, for being the catalysts of the “<a href="https://en.wikipedia.org/wiki/Green_Revolution">Green Revolution</a>” in the late 50’s to which they are credited with saving hundreds of millions of lives. Today, 50% of peoples food supply relies on both genetic modification of staple food crops which are pest and drought resistant, but also their growth is dependent on the Haber-Bosch process which uses nitrogen fixation to produce ammonia. Previously, many farmers would need to go through the season long process of planting nitrogen fixing plants to revive this necessary chemical. Today, it can be purchased in 1000LB+ quantities and applied at will. This is how we currently feed the world. Cheap fertilizers that contain ammonia are the reason the world population was able to move from 3 Billion people to nearly 8 Billion today.</p>
-<p><br> Haber Bosch Process: {H^{}=-91.8~{}} <br> Historically fertilizers have been cheap, relying firstly on the recent boom in availability from the recent discovery of previously untappable oil reserves, this, alongside the deflationary pressures of technology evolution, lead to continually declining prices of methane (CH4) and ultimately the manufacturing process of fertilizers.</p>
-<p>Secondly, fertilizers are made from nitrogen as we know, but also potassium and phosphorous, and Russia and Ukraine previously made up 28% of all global fertilizer supply. Given equal and consistent demand as farms tend to have, supply constraints will mean higher prices. <br> <img src="Journalism/Economics/ongoingta/6-6-2022_1.png" /> <br> Recently, after Russia’s foreign treasury reserve assets held internationally were seized in the first ever occurrence of this sort which pokes a hole in the supposedly unbiased petrodollar hegemony, Russia retaliated by forcing purchasers of Oil and Gas to procure Russian Rubles to make those purchases through Russian banks who were cut off from the SWIFT network. This new demand for Rubles has caused it to outperform the US dollar, gaining purchasing power, and leading to higher prices on Natural Gas, of which Europe gets 40% of its gas from Russia.</p>
-<p>European citizens have been experiencing a condition known as being “energy poor” where the average middle class family has all the modern amenities that we have in the US for example, but cannot afford to heat their homes, or use a hot water heater due to the skyrocketing prices of natural gas, both over the last decade due to ratcheting carbon tax tightening as well as the European Central Bank’s inflationary money printing, both causing prices to rise for end consumers.</p>
-<p>On top of that, Europe has sanctioned <a href="https://www.politico.eu/article/eu-sanctions-higher-food-prices-potash/">fertilizers</a> and from Russia and Belarus, which will also lead to inflationary prices for end consumers. While France is the European country that has the closest to a carbonized energy grid, made up of mostly nuclear, Germany has recently decommissioned the last of the nuclear plants and replaced their energy with mostly coal and natural gas from Russia. The German society is now highly dependent on Russian gas, and a global divestment from fossil fuels in general means that there is not much more supply coming online for the next several years. <br> <img src="Journalism/Economics/ongoingta/6-6-2022_2.png" /> <br> Together, this makes up the perfect storm for higher input costs from lack of fertilizers, and direct blockade of supplies from Russia, and now other countries which refuse to export certain items like China who has been accumulating food stores for years, now <a href="https://asia.nikkei.com/Spotlight/Datawatch/China-hoards-over-half-the-world-s-grain-pushing-up-global-prices">hoarding</a> half of the world’s grain. Malaysia is <a href="https://www.scmp.com/week-asia/economics/article/3180039/malaysias-poultry-export-ban-when-will-it-end-how-have-people">banning</a> the export of Chicken. Indonesia recently took to <a href="https://www.moneycontrol.com/news/opinion/indonesian-palm-oil-export-ban-set-to-raise-indian-inflation-8405201.html">banning</a> the export of Palm oil due to a poor harvest, which drives the price of palm oil up. This price increase leads to more deforestation in the amazon and southern Asia where palm oil is the majority of export crops, but it also incentives wheat farmers in the US - another large wheat producer- to flip and plant more soybeans for soybean oil instead of wheat, again driving wheat prices higher. India <a href="https://news.yahoo.com/us-urges-india-reverse-ban-083311676.html">bans</a> the export of wheat. This is a problem because wheat is in basically all the processed foods.</p>
-<p>Joe Biden has been making the rounds to world leaders hoping to convince them to increase supply and drive down prices. He offered India $4 billion to export more wheat which they rejected. He asked Saudi Arabia to export more oil which they said they couldn’t do due to already tight supply constraints. We have such a significant problem that America’s past actions and alliances can be ignored in the search for more oil. We formerly accused Nicolas Maduro of both election fraud, then later drug trafficking in order to attempt to <a href="https://theintercept.com/2019/02/02/venezuela-us-trump-sanctions/">install</a> the US-friendly Juan Guaido who never fully assumed <a href="https://www.bloomberg.com/news/articles/2021-09-02/why-venezuela-s-two-presidents-are-ready-to-talk-quicktake">power.</a> Recently, Biden reached out to Maduro to try to procure more Venezuelan oil that should have originally been destined for our largest refinery owned by the Koch brothers in Corpus Christi, Texas. However, The political blowback of a nation supposedly aligned with Russian interests was nearly enough to shut down these talks, but it looks like we don’t actually care about politics or what we used to call Russian aliance, because it looks like Venezuelan oil may begin to be imported soon. This is all a result of US involvement in the Russia Ukraine war when we banned Russian oil imports to America.</p>
-<p>We have no oil, we’ve released all of our strategic reserves, and we dont have the wells, refineries, or infrastructure to bring supply online to meet demand, therefore price must rise. Chevron’s CEO has <a href="https://www.msn.com/en-us/money/markets/chevrons-ceo-says-no-more-us-oil-refineries-what-should-energy-investors-do/ar-AAY6k1N?li=BBnbfcL">said</a> that he does not see any new oil refineries ever coming back to the US. This is in part due to the horrendous permitting and regulation process which can take time measured in years, and money measured in the millions, only to get approval, even nearly finish construction, costing billions, to then have the project held up in court for another several years and threaten its very completion. This is what happened to the Mountain Valley Pipeline in Appalacia which contains our largest natural gas reserves, and the Jordan Cove LNG pipeline in Oregon which developers <a href="https://www.oregonlive.com/business/2021/12/jordan-cove-developers-abandon-plans-for-pipeline-coos-bay-lng-terminal.html">abandoned.</a> These projects are now sunk costs worth billions on investors balance sheets, definitively scaring away any new investors.</p>
-<p>The environmental movement has a process of blocking new fossil fuel infrastructure that can sometimes be very effective. petitions, protests, court appeals, biodiversity, larger environmental concerns, damage from spills, air, noise, and unethical pollution, these things are all excellent and effective tactics that the environmental movement uses to block new fossil fuel infrastructure. The majority of the public is simultaneously on the side of the environmentalists wanting to make the world a batter place, but also desiring lower costs for gasoline at the fuel pump. The pendulum has swung too far.</p>
-<p>The realities of economics and commodity inflation have already caught up with us and if we continue to invest in new fossil fuel infrastructure, oil prices will increase and remain high due to constrained supply. Of course, we also need to optimize out investments in green tech as well because many of the environmentalists concerns are warranted. Hoowever, renewables largely do not have the tech or the cost effectiveness to outcompete oil in most places, the cost of EV’s and the chips that run them are only going up due to all the supply shortages caused by quantitative easing which is necessary to keep the US from a debt driven collapse.</p>
-<p>These intricate complexities only lead to regressive outcomes hurting those who cannot afford green tech, while also demonizing them for their supposed dirty emissions in what is quickly becoming a class divide driven by inflation and market manipulation from the Federal Reserve. We need to tackle climate change, but we don’t need to go overboard, and what we’re doing right now is not necessary even according to the IPCC and the IEA who don’t see any concerning tipping points until we reach a global temperature over 4 degrees celsius, which they project us to remain well under. Optimal policy is difficult, and the current two sidedness and bias towards extremity in order to gain moderate results is not helping. <br> <img src="Journalism/Economics/ongoingta/6-6-2022_3.jpg" /> <br> Reshoring of goods, services and commodities into our borders makes for a self sufficient economy, but globalization and free trade make for cheaper goods and a more diverse and growing global economy which predominantly benefits developing nations, but we cannot have both sides of the extreme. Privatization also matters, Venezuela is rich in oil, but poor in their Bolivar’s exchange rate, nationalization does not work when the government is allowed to continually operate at a loss, hyperinflation has arrived for Venezuela, and will continue to increase across the world as energy runs the show and the economy.</p>
-<p>What was previously a perceived environmental win of slowing investment in fossil fuel infrastructure is now causing mass starvation for wage earners across the globe who cannot keep up with food price inflation. Those consumers who will not or cannot pay, will be forced to change their purchasing behavior and some will starve or become malnourished for lack of cheap and healthy food. Famines are created not by God, but by man.</p>
-<p>The Food and Agricultural Organization price index tracking month over month and year over year changes shows every key agricultural product up significantly year over year as well as Cereal prices, which includes wheat, up by 30%. Every food that contains wheat will need to either rise by 30%, or the company selling it will need to choose to take what is for them hopefully* a temporary* loss to keep their customers.</p>
-<p>In a United Nations press <a href="https://www.un.org/press/en/2022/sc14894.doc.htm">Release</a>, Antonio Gutierrez said, ““When war is waged, people go hungry…Most important of all, we need to end the war in Ukraine.” The security council quotes Antony J. Blinken, Secretary of State of the United States, “Recalling WFP and FAO estimates that people affected by food insecurity due to conflict would increase to an estimated 161 million in 2022, noted that the Russian Federation’s war in Ukraine could add another 40 million people to that total. That country’s flagrant disregard of resolution 2417 (2018) is just the latest example of a Government using the hunger of civilians to advance its objectives. The food supply for millions of Ukrainians and millions more around world “has quite literally been held hostage by the Russian military”, he said, noting 20 million tons of grain sit unused in Ukrainian silos as food prices skyrocket."</p>
+<p>Many countries are being threatened with immediate food shortages,
+not next year or next month, right now. The current situation involving
+Russia-Ukraine is greatly exacerbating the problem. Known as the “bread
+basket of the world” which also includes Belarus. These countries make
+up more than 1/4 of all global grain trade, and Russia have announced
+that they will restrict grain trade within “<a
+href="https://www.nbcnews.com/news/world/live-blog/russia-ukraine-war-live-updates-evacuations-launch-mariupol-talks-resume-n1293815/ncrd1293834">Friendly
+countries</a>.” <br> <img
+src="Journalism/Economics/ongoingta/6-6-2022_7.jpg" /> *Note: This is
+2017 data, pre pandemic, pre money printing from the FED, and before war
+in Ukraine, unfortunately it only get’s worse from here. <br>
+Furthermore, fertilizer is made through a process invented by Fritz
+Haber and Carl Bosch who is often credited alongside Norman Borlaug,
+inventor of genetic modification, for being the catalysts of the “<a
+href="https://en.wikipedia.org/wiki/Green_Revolution">Green
+Revolution</a>” in the late 50’s to which they are credited with saving
+hundreds of millions of lives. Today, 50% of peoples food supply relies
+on both genetic modification of staple food crops which are pest and
+drought resistant, but also their growth is dependent on the Haber-Bosch
+process which uses nitrogen fixation to produce ammonia. Previously,
+many farmers would need to go through the season long process of
+planting nitrogen fixing plants to revive this necessary chemical.
+Today, it can be purchased in 1000LB+ quantities and applied at will.
+This is how we currently feed the world. Cheap fertilizers that contain
+ammonia are the reason the world population was able to move from 3
+Billion people to nearly 8 Billion today.</p>
+<p><br> Haber Bosch Process: {H^{}=-91.8~{}} <br> Historically
+fertilizers have been cheap, relying firstly on the recent boom in
+availability from the recent discovery of previously untappable oil
+reserves, this, alongside the deflationary pressures of technology
+evolution, lead to continually declining prices of methane (CH4) and
+ultimately the manufacturing process of fertilizers.</p>
+<p>Secondly, fertilizers are made from nitrogen as we know, but also
+potassium and phosphorous, and Russia and Ukraine previously made up 28%
+of all global fertilizer supply. Given equal and consistent demand as
+farms tend to have, supply constraints will mean higher prices. <br>
+<img src="Journalism/Economics/ongoingta/6-6-2022_1.png" /> <br>
+Recently, after Russia’s foreign treasury reserve assets held
+internationally were seized in the first ever occurrence of this sort
+which pokes a hole in the supposedly unbiased petrodollar hegemony,
+Russia retaliated by forcing purchasers of Oil and Gas to procure
+Russian Rubles to make those purchases through Russian banks who were
+cut off from the SWIFT network. This new demand for Rubles has caused it
+to outperform the US dollar, gaining purchasing power, and leading to
+higher prices on Natural Gas, of which Europe gets 40% of its gas from
+Russia.</p>
+<p>European citizens have been experiencing a condition known as being
+“energy poor” where the average middle class family has all the modern
+amenities that we have in the US for example, but cannot afford to heat
+their homes, or use a hot water heater due to the skyrocketing prices of
+natural gas, both over the last decade due to ratcheting carbon tax
+tightening as well as the European Central Bank’s inflationary money
+printing, both causing prices to rise for end consumers.</p>
+<p>On top of that, Europe has sanctioned <a
+href="https://www.politico.eu/article/eu-sanctions-higher-food-prices-potash/">fertilizers</a>
+and from Russia and Belarus, which will also lead to inflationary prices
+for end consumers. While France is the European country that has the
+closest to a carbonized energy grid, made up of mostly nuclear, Germany
+has recently decommissioned the last of the nuclear plants and replaced
+their energy with mostly coal and natural gas from Russia. The German
+society is now highly dependent on Russian gas, and a global divestment
+from fossil fuels in general means that there is not much more supply
+coming online for the next several years. <br> <img
+src="Journalism/Economics/ongoingta/6-6-2022_2.png" /> <br> Together,
+this makes up the perfect storm for higher input costs from lack of
+fertilizers, and direct blockade of supplies from Russia, and now other
+countries which refuse to export certain items like China who has been
+accumulating food stores for years, now <a
+href="https://asia.nikkei.com/Spotlight/Datawatch/China-hoards-over-half-the-world-s-grain-pushing-up-global-prices">hoarding</a>
+half of the world’s grain. Malaysia is <a
+href="https://www.scmp.com/week-asia/economics/article/3180039/malaysias-poultry-export-ban-when-will-it-end-how-have-people">banning</a>
+the export of Chicken. Indonesia recently took to <a
+href="https://www.moneycontrol.com/news/opinion/indonesian-palm-oil-export-ban-set-to-raise-indian-inflation-8405201.html">banning</a>
+the export of Palm oil due to a poor harvest, which drives the price of
+palm oil up. This price increase leads to more deforestation in the
+amazon and southern Asia where palm oil is the majority of export crops,
+but it also incentives wheat farmers in the US - another large wheat
+producer- to flip and plant more soybeans for soybean oil instead of
+wheat, again driving wheat prices higher. India <a
+href="https://news.yahoo.com/us-urges-india-reverse-ban-083311676.html">bans</a>
+the export of wheat. This is a problem because wheat is in basically all
+the processed foods.</p>
+<p>Joe Biden has been making the rounds to world leaders hoping to
+convince them to increase supply and drive down prices. He offered India
+$4 billion to export more wheat which they rejected. He asked Saudi
+Arabia to export more oil which they said they couldn’t do due to
+already tight supply constraints. We have such a significant problem
+that America’s past actions and alliances can be ignored in the search
+for more oil. We formerly accused Nicolas Maduro of both election fraud,
+then later drug trafficking in order to attempt to <a
+href="https://theintercept.com/2019/02/02/venezuela-us-trump-sanctions/">install</a>
+the US-friendly Juan Guaido who never fully assumed <a
+href="https://www.bloomberg.com/news/articles/2021-09-02/why-venezuela-s-two-presidents-are-ready-to-talk-quicktake">power.</a>
+Recently, Biden reached out to Maduro to try to procure more Venezuelan
+oil that should have originally been destined for our largest refinery
+owned by the Koch brothers in Corpus Christi, Texas. However, The
+political blowback of a nation supposedly aligned with Russian interests
+was nearly enough to shut down these talks, but it looks like we don’t
+actually care about politics or what we used to call Russian aliance,
+because it looks like Venezuelan oil may begin to be imported soon. This
+is all a result of US involvement in the Russia Ukraine war when we
+banned Russian oil imports to America.</p>
+<p>We have no oil, we’ve released all of our strategic reserves, and we
+dont have the wells, refineries, or infrastructure to bring supply
+online to meet demand, therefore price must rise. Chevron’s CEO has <a
+href="https://www.msn.com/en-us/money/markets/chevrons-ceo-says-no-more-us-oil-refineries-what-should-energy-investors-do/ar-AAY6k1N?li=BBnbfcL">said</a>
+that he does not see any new oil refineries ever coming back to the US.
+This is in part due to the horrendous permitting and regulation process
+which can take time measured in years, and money measured in the
+millions, only to get approval, even nearly finish construction, costing
+billions, to then have the project held up in court for another several
+years and threaten its very completion. This is what happened to the
+Mountain Valley Pipeline in Appalacia which contains our largest natural
+gas reserves, and the Jordan Cove LNG pipeline in Oregon which
+developers <a
+href="https://www.oregonlive.com/business/2021/12/jordan-cove-developers-abandon-plans-for-pipeline-coos-bay-lng-terminal.html">abandoned.</a>
+These projects are now sunk costs worth billions on investors balance
+sheets, definitively scaring away any new investors.</p>
+<p>The environmental movement has a process of blocking new fossil fuel
+infrastructure that can sometimes be very effective. petitions,
+protests, court appeals, biodiversity, larger environmental concerns,
+damage from spills, air, noise, and unethical pollution, these things
+are all excellent and effective tactics that the environmental movement
+uses to block new fossil fuel infrastructure. The majority of the public
+is simultaneously on the side of the environmentalists wanting to make
+the world a batter place, but also desiring lower costs for gasoline at
+the fuel pump. The pendulum has swung too far.</p>
+<p>The realities of economics and commodity inflation have already
+caught up with us and if we continue to invest in new fossil fuel
+infrastructure, oil prices will increase and remain high due to
+constrained supply. Of course, we also need to optimize out investments
+in green tech as well because many of the environmentalists concerns are
+warranted. Hoowever, renewables largely do not have the tech or the cost
+effectiveness to outcompete oil in most places, the cost of EV’s and the
+chips that run them are only going up due to all the supply shortages
+caused by quantitative easing which is necessary to keep the US from a
+debt driven collapse.</p>
+<p>These intricate complexities only lead to regressive outcomes hurting
+those who cannot afford green tech, while also demonizing them for their
+supposed dirty emissions in what is quickly becoming a class divide
+driven by inflation and market manipulation from the Federal Reserve. We
+need to tackle climate change, but we don’t need to go overboard, and
+what we’re doing right now is not necessary even according to the IPCC
+and the IEA who don’t see any concerning tipping points until we reach a
+global temperature over 4 degrees celsius, which they project us to
+remain well under. Optimal policy is difficult, and the current two
+sidedness and bias towards extremity in order to gain moderate results
+is not helping. <br> <img
+src="Journalism/Economics/ongoingta/6-6-2022_3.jpg" /> <br> Reshoring of
+goods, services and commodities into our borders makes for a self
+sufficient economy, but globalization and free trade make for cheaper
+goods and a more diverse and growing global economy which predominantly
+benefits developing nations, but we cannot have both sides of the
+extreme. Privatization also matters, Venezuela is rich in oil, but poor
+in their Bolivar’s exchange rate, nationalization does not work when the
+government is allowed to continually operate at a loss, hyperinflation
+has arrived for Venezuela, and will continue to increase across the
+world as energy runs the show and the economy.</p>
+<p>What was previously a perceived environmental win of slowing
+investment in fossil fuel infrastructure is now causing mass starvation
+for wage earners across the globe who cannot keep up with food price
+inflation. Those consumers who will not or cannot pay, will be forced to
+change their purchasing behavior and some will starve or become
+malnourished for lack of cheap and healthy food. Famines are created not
+by God, but by man.</p>
+<p>The Food and Agricultural Organization price index tracking month
+over month and year over year changes shows every key agricultural
+product up significantly year over year as well as Cereal prices, which
+includes wheat, up by 30%. Every food that contains wheat will need to
+either rise by 30%, or the company selling it will need to choose to
+take what is for them hopefully* a temporary* loss to keep their
+customers.</p>
+<p>In a United Nations press <a
+href="https://www.un.org/press/en/2022/sc14894.doc.htm">Release</a>,
+Antonio Gutierrez said, ““When war is waged, people go hungry…Most
+important of all, we need to end the war in Ukraine.” The security
+council quotes Antony J. Blinken, Secretary of State of the United
+States, “Recalling WFP and FAO estimates that people affected by food
+insecurity due to conflict would increase to an estimated 161 million in
+2022, noted that the Russian Federation’s war in Ukraine could add
+another 40 million people to that total. That country’s flagrant
+disregard of resolution 2417 (2018) is just the latest example of a
+Government using the hunger of civilians to advance its objectives. The
+food supply for millions of Ukrainians and millions more around world
+“has quite literally been held hostage by the Russian military”, he
+said, noting 20 million tons of grain sit unused in Ukrainian silos as
+food prices skyrocket.”</p>
 <p><br></p>
-<p><br> Defense spending is both fine and desired, but war is bad for business, let’s stop fighting and funding proxy wars that aren’t on our soil. <br></p>
-<p><img src="Journalism/Economics/ongoingta/6-6-2022_4.jpg" /> <img src="Journalism/Economics/ongoingta/6-6-2022_6.jpg" /></p>
+<p><br> Defense spending is both fine and desired, but war is bad for
+business, let’s stop fighting and funding proxy wars that aren’t on our
+soil. <br></p>
+<p><img src="Journalism/Economics/ongoingta/6-6-2022_4.jpg" /> <img
+src="Journalism/Economics/ongoingta/6-6-2022_6.jpg" /></p>
 <p><br><br />
-There’s no use hoping inflation will come down, and producers know this, the debt/GDP ratio shows us that it will continue for the rest of the decade unless the US chooses to default or cause a recession which is far worse than 1929 due the the amount of leverage across all markets. Officials will never choose either of these options, they will always choose inflation with short term periods of demand destruction as we’re experiencing now. Macroeconomist Luke Gromen calls this “Peak Cheap Oil.”</p>
-<p>Shadow Stats is a company currently tracking CPI inflation much more accurately than the massaged US government numbers, they do this by using the US government’s former calculation methods instead of the new ones which were recently changed several times to fit the narrative. Currently Shadow Stats has inflation above 16%, much closer to prices in the real world. Wheat inflation is now 30% year over year.</p>
-<p>The healthy and reasonable way to fix this is to cause short term demand destruction in financial markets and commodity futures today, while the economy is still relatively strong and raise interest rates to the rate of inflation - the Volker method. This alongside a significant reduction in federal expenditure is necessary for the economy to recover in real terms, instead of waiting for stagflation to continue, for a recession to get worse, and only then attempting to raise rates into an economy already in a depression. If the FED doesn’t pivot within the year, this is where we’re headed. The FED is out of options, and not only are they behind the curve, they are also late to the party and too slow to act, and because of this people will starve.</p>
-<p><br> <br> <br> ________________________________________________________________<br />
+There’s no use hoping inflation will come down, and producers know this,
+the debt/GDP ratio shows us that it will continue for the rest of the
+decade unless the US chooses to default or cause a recession which is
+far worse than 1929 due the the amount of leverage across all markets.
+Officials will never choose either of these options, they will always
+choose inflation with short term periods of demand destruction as we’re
+experiencing now. Macroeconomist Luke Gromen calls this “Peak Cheap
+Oil.”</p>
+<p>Shadow Stats is a company currently tracking CPI inflation much more
+accurately than the massaged US government numbers, they do this by
+using the US government’s former calculation methods instead of the new
+ones which were recently changed several times to fit the narrative.
+Currently Shadow Stats has inflation above 16%, much closer to prices in
+the real world. Wheat inflation is now 30% year over year.</p>
+<p>The healthy and reasonable way to fix this is to cause short term
+demand destruction in financial markets and commodity futures today,
+while the economy is still relatively strong and raise interest rates to
+the rate of inflation - the Volker method. This alongside a significant
+reduction in federal expenditure is necessary for the economy to recover
+in real terms, instead of waiting for stagflation to continue, for a
+recession to get worse, and only then attempting to raise rates into an
+economy already in a depression. If the FED doesn’t pivot within the
+year, this is where we’re headed. The FED is out of options, and not
+only are they behind the curve, they are also late to the party and too
+slow to act, and because of this people will starve.</p>
+<p><br> <br> <br>
+________________________________________________________________<br />
 <strong>6/1/2022</strong> <br><br />
-<strong><em>Federal Reserve Begins Quantitative Tightening Today</em></strong><br />
+<strong><em>Federal Reserve Begins Quantitative Tightening
+Today</em></strong><br />
 <br></p>
 <ul>
-<li><p>The Fed will begin selling UST’s and MBS’s. There are many reasons for markets to buy US Treasuries, they are universal pristine collateral across the world, but when the Fed begins selling Mortgage Backed Securities, there becomes more supply of them, less demand for their use as collateral, and there is only one buyer - pension funds forced to purchase them by mandate to “reduce risk.” MBS interest rates will increase as selling occurs and price goes down, and the housing market will stall over time. The real risk comes when these investments have negative real yields against inflation and pension funds begin to fail unless they can adjust the regulations in order to find better yields.</p></li>
-<li><p>We only have one period of QT to base our expectations off in 2018, and we are now tightening into a slowing economy, interestingly enough the S&amp;P actually was flat/went up slightly during the last period of tightening.</p></li>
-<li><p>Let’s see how far they get before something breaks. Last time that happened was 2019 when it took a liquidity event in the reverse repo market to abruptly end QT and reverse course to QE infinity.Covid provided excellent cover for this, and climate change will provide the next.</p></li>
-<li><p>As M2 money supply increases, so does counter party risk on banks balance sheets. If all the banks are holding are promises of payment, trust can erode quickly. These banks are now (apparently) so concerned that their formerly pristine assets - US treasuries and Mortgage backed securities - will fail, potentially overnight, as happened in 2008 that they are placing ever increasing amounts of risk on the balance sheet of the Federal Reserve in the overnight repo market. The government will print more money before they become insolvent.</p></li>
+<li><p>The Fed will begin selling UST’s and MBS’s. There are many
+reasons for markets to buy US Treasuries, they are universal pristine
+collateral across the world, but when the Fed begins selling Mortgage
+Backed Securities, there becomes more supply of them, less demand for
+their use as collateral, and there is only one buyer - pension funds
+forced to purchase them by mandate to “reduce risk.” MBS interest rates
+will increase as selling occurs and price goes down, and the housing
+market will stall over time. The real risk comes when these investments
+have negative real yields against inflation and pension funds begin to
+fail unless they can adjust the regulations in order to find better
+yields.</p></li>
+<li><p>We only have one period of QT to base our expectations off in
+2018, and we are now tightening into a slowing economy, interestingly
+enough the S&amp;P actually was flat/went up slightly during the last
+period of tightening.</p></li>
+<li><p>Let’s see how far they get before something breaks. Last time
+that happened was 2019 when it took a liquidity event in the reverse
+repo market to abruptly end QT and reverse course to QE infinity.Covid
+provided excellent cover for this, and climate change will provide the
+next.</p></li>
+<li><p>As M2 money supply increases, so does counter party risk on banks
+balance sheets. If all the banks are holding are promises of payment,
+trust can erode quickly. These banks are now (apparently) so concerned
+that their formerly pristine assets - US treasuries and Mortgage backed
+securities - will fail, potentially overnight, as happened in 2008 that
+they are placing ever increasing amounts of risk on the balance sheet of
+the Federal Reserve in the overnight repo market. The government will
+print more money before they become insolvent.</p></li>
 </ul>
 <p><br><br />
 <img src="Journalism/Economics/ongoingta/6-1-2022_1.png" /> <br><br />
 <img src="Journalism/Economics/ongoingta/6-1-2022_2.png" /> <br><br />
 <img src="Journalism/Economics/ongoingta/6-1-2022_3.jpg" /></p>
-<p><br> <br> <br> _________________________________________________________</p>
+<p><br> <br> <br>
+_________________________________________________________</p>
 <p><br> <em>5/31/2022</em> <br></p>
 <p><strong>Biden’s Plan to Combat Inflation</strong><br />
-<br> Biden wrote an op-ed for the Wall St Journal where he <a href="https://www.wsj.com/articles/my-plan-for-fighting-inflation-joe-biden-gas-prices-economy-unemployment-jobs-covid-11653940654">announces</a> his three step plan to fight inflation. This is just after his <a href="https://www.whitehouse.gov/briefing-room/statements-releases/2022/05/10/the-biden-harris-inflation-plan-lowering-costs-and-lowering-the-deficit/">previous plan</a> released just days ago.</p>
+<br> Biden wrote an op-ed for the Wall St Journal where he <a
+href="https://www.wsj.com/articles/my-plan-for-fighting-inflation-joe-biden-gas-prices-economy-unemployment-jobs-covid-11653940654">announces</a>
+his three step plan to fight inflation. This is just after his <a
+href="https://www.whitehouse.gov/briefing-room/statements-releases/2022/05/10/the-biden-harris-inflation-plan-lowering-costs-and-lowering-the-deficit/">previous
+plan</a> released just days ago.</p>
 <ul>
 <li><em>The New Plan:</em><br />
 </li>
 <li><ol style="list-style-type: decimal">
-<li>“First, the Federal Reserve has a primary responsibility to control inflation. My predecessor demeaned the Fed, and past presidents have sought to influence its decisions inappropriately during periods of elevated inflation. I won’t do this. I have appointed highly qualified people from both parties to lead that institution. I agree with their assessment that fighting inflation is our top economic challenge right now.”</li>
+<li>“First, the Federal Reserve has a primary responsibility to control
+inflation. My predecessor demeaned the Fed, and past presidents have
+sought to influence its decisions inappropriately during periods of
+elevated inflation. I won’t do this. I have appointed highly qualified
+people from both parties to lead that institution. I agree with their
+assessment that fighting inflation is our top economic challenge right
+now.”</li>
 </ol></li>
 </ul>
 <p><br></p>
 <ul>
 <li><ol start="2" style="list-style-type: decimal">
-<li>“Second, we need to take every practical step to make things more affordable for families during this moment of economic uncertainty—and to boost the productive capacity of our economy over time. The price at the pump is elevated in large part because Russian oil, gas and refining capacity are off the market. We can’t let up on our global effort to punish Mr. Putin for what he’s done, and we must mitigate these effects for American consumers. That is why I led the largest release from global oil reserves in history. Congress could help right away by passing clean energy tax credits and investments that I have proposed. A dozen CEOs of America’s largest utility companies told me earlier this year that my plan would reduce the average family’s annual utility bills by $500 and accelerate our transition from energy produced by autocrats. We can also reduce the cost of everyday goods by fixing broken supply chains, improving infrastructure, and cracking down on the exorbitant fees that foreign ocean freight companies charge to move products. My Housing Supply Action Plan will make housing more affordable by building more than a million more units, closing the housing shortfall in the next five years. We can reduce the price of prescription drugs by giving Medicare the power to negotiate with pharmaceutical companies and capping the cost of insulin. And we can lower the cost of child and elder care to help parents get back to work. I’ve done what I can on my own to help working families during this challenging time—and will keep acting to lower costs where I can—but now Congress needs to act too.”</li>
+<li>“Second, we need to take every practical step to make things more
+affordable for families during this moment of economic uncertainty—and
+to boost the productive capacity of our economy over time. The price at
+the pump is elevated in large part because Russian oil, gas and refining
+capacity are off the market. We can’t let up on our global effort to
+punish Mr. Putin for what he’s done, and we must mitigate these effects
+for American consumers. That is why I led the largest release from
+global oil reserves in history. Congress could help right away by
+passing clean energy tax credits and investments that I have proposed. A
+dozen CEOs of America’s largest utility companies told me earlier this
+year that my plan would reduce the average family’s annual utility bills
+by $500 and accelerate our transition from energy produced by autocrats.
+We can also reduce the cost of everyday goods by fixing broken supply
+chains, improving infrastructure, and cracking down on the exorbitant
+fees that foreign ocean freight companies charge to move products. My
+Housing Supply Action Plan will make housing more affordable by building
+more than a million more units, closing the housing shortfall in the
+next five years. We can reduce the price of prescription drugs by giving
+Medicare the power to negotiate with pharmaceutical companies and
+capping the cost of insulin. And we can lower the cost of child and
+elder care to help parents get back to work. I’ve done what I can on my
+own to help working families during this challenging time—and will keep
+acting to lower costs where I can—but now Congress needs to act
+too.”</li>
 </ol></li>
 </ul>
 <p><br></p>
 <ul>
 <li><ol start="3" style="list-style-type: decimal">
-<li>“Third, we need to keep reducing the federal deficit, which will help ease price pressures. Last week the nonpartisan Congressional Budget Office projected that the deficit will fall by $1.7 trillion this year—the largest reduction in history. That will leave the deficit as a share of the economy lower than prepandemic levels and lower than CBO projected for this year before the American Rescue Plan passed. This deficit progress wasn’t preordained. In addition to winding down emergency programs responsibly, about half the reduction is driven by an increase in revenue—as my economic policies powered a rapid recovery.”</li>
+<li>“Third, we need to keep reducing the federal deficit, which will
+help ease price pressures. Last week the nonpartisan Congressional
+Budget Office projected that the deficit will fall by $1.7 trillion this
+year—the largest reduction in history. That will leave the deficit as a
+share of the economy lower than prepandemic levels and lower than CBO
+projected for this year before the American Rescue Plan passed. This
+deficit progress wasn’t preordained. In addition to winding down
+emergency programs responsibly, about half the reduction is driven by an
+increase in revenue—as my economic policies powered a rapid
+recovery.”</li>
 </ol></li>
 </ul>
 <p><br></p>
@@ -448,112 +903,301 @@ There’s no use hoping inflation will come down, and producers know this, the d
 <li><em>In other words:</em><br />
 </li>
 <li><ol style="list-style-type: decimal">
-<li>Blame the FED, Trump, Russia, and define the oil industry as “autocrats” - the high inflation, it’s not Biden’s fault.</li>
+<li>Blame the FED, Trump, Russia, and define the oil industry as
+“autocrats” - the high inflation, it’s not Biden’s fault.</li>
 </ol></li>
 </ul>
 <p><br></p>
 <ul>
 <li><ol start="2" style="list-style-type: decimal">
-<li>Reiterate that even though we continue to choose to sanction Russian oil and gas, like Europe who’s <a href="https://www.zerohedge.com/geopolitical/vilches-europes-mad-ban-russian-oil">heading towards</a> the largest energy shortfall in decades, forcing the public to spend higher and higher percentages of their income on energy (causing the especially vulnerable and elderly to literally freeze to death if they can’t afford heat - a real and increasing problem) This is framed as something we need to do it to ‘stick it to Putin.’ Next, release all US strategic oil reserves to artificially bring down price - temporarily, (this was <a href="https://www.reuters.com/markets/commodities/us-strategic-petroleum-reserve-drops-lowest-level-since-1987-2022-05-16/">already done</a>, reserves are now at decades long lows) then pass green energy tax credits and spend more money to further investments in the space. Then spend more money to fix supply chains and improve infrastructure. Then begin “cracking down on the exorbitant fees that foreign ocean freight companies charge to move products,” (here come the price controls). Then build a million homes. Then give pharmaceutical companies the ability to negotiate, but also “cap the cost of insulin.” (There they are)</li>
+<li>Reiterate that even though we continue to choose to sanction Russian
+oil and gas, like Europe who’s <a
+href="https://www.zerohedge.com/geopolitical/vilches-europes-mad-ban-russian-oil">heading
+towards</a> the largest energy shortfall in decades, forcing the public
+to spend higher and higher percentages of their income on energy
+(causing the especially vulnerable and elderly to literally freeze to
+death if they can’t afford heat - a real and increasing problem) This is
+framed as something we need to do it to ‘stick it to Putin.’ Next,
+release all US strategic oil reserves to artificially bring down price -
+temporarily, (this was <a
+href="https://www.reuters.com/markets/commodities/us-strategic-petroleum-reserve-drops-lowest-level-since-1987-2022-05-16/">already
+done</a>, reserves are now at decades long lows) then pass green energy
+tax credits and spend more money to further investments in the space.
+Then spend more money to fix supply chains and improve infrastructure.
+Then begin “cracking down on the exorbitant fees that foreign ocean
+freight companies charge to move products,” (here come the price
+controls). Then build a million homes. Then give pharmaceutical
+companies the ability to negotiate, but also “cap the cost of insulin.”
+(There they are)</li>
 </ol></li>
 </ul>
 <p><br></p>
 <ul>
 <li><ol start="3" style="list-style-type: decimal">
-<li>Reduce the federal deficit which is supposedly will contract by $1.7T (That is, if we compare Year over year numbers to the last two years when we printed more than 25% of M2 money supply, causing a massive federal deficit, it’s easy to see how the “deficit shortfall” will come down, even while net deficit will go up)</li>
+<li>Reduce the federal deficit which is supposedly will contract by
+$1.7T (That is, if we compare Year over year numbers to the last two
+years when we printed more than 25% of M2 money supply, causing a
+massive federal deficit, it’s easy to see how the “deficit shortfall”
+will come down, even while net deficit will go up)</li>
 </ol></li>
 </ul>
 <p><br></p>
 <ul>
 <li><p><em>Analysis:</em><br />
-The problem is that despite the negative connotation, Biden is right - Oil companies are autocrats, they have ultimate control over global energy markets and thus the economies of the world, there are very few things which are more important to our way of life than oil. A reduction in production and consumption of oil and natural gas (or higher prices) means more crop shortages, fertilizer shortages, supply chain issues, mass starvation and malnutrition especially in the third world, decreased economic activity globally, higher unemployment everywhere, individual savings evaporate, wealth inequality is exacerbated, etc. We need oil to run the world, and lots of it. Cheap oil makes everyone better off.</p>
-<p>Furthermore, if climate change were to enter the conversation, one needs to ask; what is the carbon footprint of spending and sending 40 Billion to Ukraine in our funding of the newest proxy war started immediately after the last. All thew way back in a 2011 interview, Julian Assange <a href="https://www.londontimes.live/state-of-affairs/julian-assange-speaking-in-2011-the-goal-is-an-endless-war-not-a-successful-war/">states</a>, “The goal is to use Afghanistan to wash money out of the tax bases of the US and Europe through Afghanistan and back into the hands of a transnational security elite. The goal is an endless war, not a successful war.” Nothing has changed, additionally, EV’s are nowhere near cost effective enough for global transportation and they won’t be so globally until at least the mid 2030’s when the majority of developed nations have gone through a generation of EV cars and they can filter through the used markets into developing nations. Green energy and heating production is not efficient enough in most locations and won’t be for some time, tax credits are nice incentives and it’s yet to be seen if the average consumer will save $500/year on their energy bill as Biden says. The rest of his plan involves spending more money that GDP is not bringing in as we head into another negative quarter of growth, which will thus increase the deficit. Inflation is always a monetary phenomenon, spending more money will make inflation worse, not better. The same goes for his previous plan mentioned above, every single line item (many taken from build back better) will involve spending massive amounts of money, multiple trillions, created by the Treasury, adding to the federal deficit - which is the primary cause if inflation.</p>
-<p>The way to solve consumer price inflation is to bolster the actual GDP output of the economy, create more literal goods and services without creating more dollars - More goods being chased by fewer dollars drives inflation down. That’s the fun way, the alternative is demand destruction by economic recession, if no one has money to buy anything, demand also goes down. That’s unfortunately where we’re at while simultaneously placing higher taxes and price controls on the very producers who are capable of solving the problem (oil companies etc.) While some of the proposals in the long run (decades) could bring down inflation - now is not the time to increase deficit spending, the time would have been when (real) GDP was strong, when interest rates and (real yields) had already been (much) higher for years, spend when you have the money, not when you don’t.</p></li>
+The problem is that despite the negative connotation, Biden is right -
+Oil companies are autocrats, they have ultimate control over global
+energy markets and thus the economies of the world, there are very few
+things which are more important to our way of life than oil. A reduction
+in production and consumption of oil and natural gas (or higher prices)
+means more crop shortages, fertilizer shortages, supply chain issues,
+mass starvation and malnutrition especially in the third world,
+decreased economic activity globally, higher unemployment everywhere,
+individual savings evaporate, wealth inequality is exacerbated, etc. We
+need oil to run the world, and lots of it. Cheap oil makes everyone
+better off.</p>
+<p>Furthermore, if climate change were to enter the conversation, one
+needs to ask; what is the carbon footprint of spending and sending 40
+Billion to Ukraine in our funding of the newest proxy war started
+immediately after the last. All thew way back in a 2011 interview,
+Julian Assange <a
+href="https://www.londontimes.live/state-of-affairs/julian-assange-speaking-in-2011-the-goal-is-an-endless-war-not-a-successful-war/">states</a>,
+“The goal is to use Afghanistan to wash money out of the tax bases of
+the US and Europe through Afghanistan and back into the hands of a
+transnational security elite. The goal is an endless war, not a
+successful war.” Nothing has changed, additionally, EV’s are nowhere
+near cost effective enough for global transportation and they won’t be
+so globally until at least the mid 2030’s when the majority of developed
+nations have gone through a generation of EV cars and they can filter
+through the used markets into developing nations. Green energy and
+heating production is not efficient enough in most locations and won’t
+be for some time, tax credits are nice incentives and it’s yet to be
+seen if the average consumer will save $500/year on their energy bill as
+Biden says. The rest of his plan involves spending more money that GDP
+is not bringing in as we head into another negative quarter of growth,
+which will thus increase the deficit. Inflation is always a monetary
+phenomenon, spending more money will make inflation worse, not better.
+The same goes for his previous plan mentioned above, every single line
+item (many taken from build back better) will involve spending massive
+amounts of money, multiple trillions, created by the Treasury, adding to
+the federal deficit - which is the primary cause if inflation.</p>
+<p>The way to solve consumer price inflation is to bolster the actual
+GDP output of the economy, create more literal goods and services
+without creating more dollars - More goods being chased by fewer dollars
+drives inflation down. That’s the fun way, the alternative is demand
+destruction by economic recession, if no one has money to buy anything,
+demand also goes down. That’s unfortunately where we’re at while
+simultaneously placing higher taxes and price controls on the very
+producers who are capable of solving the problem (oil companies etc.)
+While some of the proposals in the long run (decades) could bring down
+inflation - now is not the time to increase deficit spending, the time
+would have been when (real) GDP was strong, when interest rates and
+(real yields) had already been (much) higher for years, spend when you
+have the money, not when you don’t.</p></li>
 </ul>
 <p><br></p>
 <ul>
 <li><em>Conclusion</em><br />
-Spending now only digs the grave of the debt driven deflationary spiral deeper once it does arrive, we no longer have high interest rates as a tool to combat inflation, the deficit is too high and will drive the US to insolvency, but I imagine they intend to inflate the bubble a few more times before that happens, the 2019 repo crisis is evidence enough of that sentiment. It’s getting harder and harder to ignore the missteps at every turn, and incompetence is often indistinguishable from malice.</li>
+Spending now only digs the grave of the debt driven deflationary spiral
+deeper once it does arrive, we no longer have high interest rates as a
+tool to combat inflation, the deficit is too high and will drive the US
+to insolvency, but I imagine they intend to inflate the bubble a few
+more times before that happens, the 2019 repo crisis is evidence enough
+of that sentiment. It’s getting harder and harder to ignore the missteps
+at every turn, and incompetence is often indistinguishable from
+malice.</li>
 </ul>
-<p><br> <img src="Journalism/Economics/ongoingta/5-31-2022_1.png" /> <br> <img src="Journalism/Economics/ongoingta/5-31-2022_4.png" /> <br> <img src="Journalism/Economics/ongoingta/5-31-2022_2.jpg" /> <br> <img src="Journalism/Economics/ongoingta/5-31-2022_3.png" /> <br></p>
-<p><br> <br> <br> ________________________________________________________________<br />
+<p><br> <img src="Journalism/Economics/ongoingta/5-31-2022_1.png" />
+<br> <img src="Journalism/Economics/ongoingta/5-31-2022_4.png" /> <br>
+<img src="Journalism/Economics/ongoingta/5-31-2022_2.jpg" /> <br> <img
+src="Journalism/Economics/ongoingta/5-31-2022_3.png" /> <br></p>
+<p><br> <br> <br>
+________________________________________________________________<br />
 <br> <br> <br> <em>5/29/2022</em> <br></p>
 <p><strong>Traditional Markets</strong></p>
 <ul>
-<li><p>Gavin Newsom <a href="https://www.gov.ca.gov/2022/03/23/governor-newsom-proposes-11-billion-relief-package-for-californians-facing-higher-gas-prices/">suggests</a> $11bn in stimulus to combat gas price inflation - lol. Inflation is always a monetary phenomenon - more money in the system chasing the same goods results in higher prices. Next on the list of things not to do will come price controls. Taxes on energy and necessities are always regressive as seen in Europe and well covered by Zero Hedge and Doomberg. CA has the highest taxes on gas, hurting those that can least afford it most, as does inflation.</p></li>
-<li><p>Running to take Newsom’s spot as governor, Micheal Shellenberger has a much better understanding of the economy and energy markets as described in his own <a href="https://substack.com/profile/2255433-michael-shellenberger">Substack.</a> I wish him luck in his candidacy.</p></li>
-<li><p>China’s small-medium banks are insolvent? - Customers unable to access funds for a month. Lots of turmoil due to ridiculous lock downs, occams razor pivoting towards China will not open up until Europe is in official recession. US and Europe already in recession, but the time it’s acknowledged, it will be nearly over if it still likely ends with a fed pivot. <a href="https://www.reuters.com/markets/asia/chinese-depositors-left-dark-three-local-banks-freeze-deposits-2022-05-18/">via Reuters</a></p></li>
-<li><p>China is <a href="https://www.bloomberg.com/news/articles/2022-05-20/china-cuts-borrowing-costs-by-record-to-boost-loan-demand">loosening</a> by record amounts to make up for weak (or collapsing) housing market in China who does a lot more adjustable rate loans. (Evergrande’s toxic balance sheet?) China needs citizens taking new loans so they’re cutting rates, debt driven systems need more debt and inflationary bailouts. Current system is tight and desperate for new money.</p></li>
-<li><p>Oil likely to rally further (short term) with Strategic Reserve depleted, moreso if China re-opens, in this stagflationary environment, price inflation will continue even if YOY numbers go down slightly. Longer term, demand destruction may prevail alongside low growth to bring down oil prices.</p></li>
-<li><p>Bear market rally confirmed in traditional markets, back to risk on, temporary and short term mean reversion setting up for potential or likely lower lows in line with the high time frame mean reversion after decade long bubble in risk.</p></li>
-<li><p>Fed announces only two more hikes, then data dependent, Powell is great at letting the markets know what should be expected.</p></li>
-<li><p>Redfin <a href="https://www.redfin.com/news/housing-market-update-price-drops-surge-to-19pct/">reporting</a> 1/5 home sellers drop prices last month</p></li>
-<li><p>Redfin “The monthly mortgage payment on the median asking price home declined slightly from a record high to $2,425 at the current 5.1% mortgage rate. This was up 42% from $1,708 a year earlier, when mortgage rates were 2.95%…Pending home sales were down 5.4% year over year.”</p></li>
-<li><p>Fed Raising rates resulting in huge mortgage rate increase, highest since 2008, bond prices set to rally as safe haven compared to real estate.</p></li>
-<li><p>University of Michigan “home buying conditions” are the worst they’ve been since the 1980’s - <a href="https://www.zerohedge.com/personal-finance/umich-sentiment-tumbles-accelerates-may-home-buying-confidence-collapse">Zero Hedge</a></p></li>
+<li><p>Gavin Newsom <a
+href="https://www.gov.ca.gov/2022/03/23/governor-newsom-proposes-11-billion-relief-package-for-californians-facing-higher-gas-prices/">suggests</a>
+$11bn in stimulus to combat gas price inflation - lol. Inflation is
+always a monetary phenomenon - more money in the system chasing the same
+goods results in higher prices. Next on the list of things not to do
+will come price controls. Taxes on energy and necessities are always
+regressive as seen in Europe and well covered by Zero Hedge and
+Doomberg. CA has the highest taxes on gas, hurting those that can least
+afford it most, as does inflation.</p></li>
+<li><p>Running to take Newsom’s spot as governor, Micheal Shellenberger
+has a much better understanding of the economy and energy markets as
+described in his own <a
+href="https://substack.com/profile/2255433-michael-shellenberger">Substack.</a>
+I wish him luck in his candidacy.</p></li>
+<li><p>China’s small-medium banks are insolvent? - Customers unable to
+access funds for a month. Lots of turmoil due to ridiculous lock downs,
+occams razor pivoting towards China will not open up until Europe is in
+official recession. US and Europe already in recession, but the time
+it’s acknowledged, it will be nearly over if it still likely ends with a
+fed pivot. <a
+href="https://www.reuters.com/markets/asia/chinese-depositors-left-dark-three-local-banks-freeze-deposits-2022-05-18/">via
+Reuters</a></p></li>
+<li><p>China is <a
+href="https://www.bloomberg.com/news/articles/2022-05-20/china-cuts-borrowing-costs-by-record-to-boost-loan-demand">loosening</a>
+by record amounts to make up for weak (or collapsing) housing market in
+China who does a lot more adjustable rate loans. (Evergrande’s toxic
+balance sheet?) China needs citizens taking new loans so they’re cutting
+rates, debt driven systems need more debt and inflationary bailouts.
+Current system is tight and desperate for new money.</p></li>
+<li><p>Oil likely to rally further (short term) with Strategic Reserve
+depleted, moreso if China re-opens, in this stagflationary environment,
+price inflation will continue even if YOY numbers go down slightly.
+Longer term, demand destruction may prevail alongside low growth to
+bring down oil prices.</p></li>
+<li><p>Bear market rally confirmed in traditional markets, back to risk
+on, temporary and short term mean reversion setting up for potential or
+likely lower lows in line with the high time frame mean reversion after
+decade long bubble in risk.</p></li>
+<li><p>Fed announces only two more hikes, then data dependent, Powell is
+great at letting the markets know what should be expected.</p></li>
+<li><p>Redfin <a
+href="https://www.redfin.com/news/housing-market-update-price-drops-surge-to-19pct/">reporting</a>
+1/5 home sellers drop prices last month</p></li>
+<li><p>Redfin “The monthly mortgage payment on the median asking price
+home declined slightly from a record high to $2,425 at the current 5.1%
+mortgage rate. This was up 42% from $1,708 a year earlier, when mortgage
+rates were 2.95%…Pending home sales were down 5.4% year over
+year.”</p></li>
+<li><p>Fed Raising rates resulting in huge mortgage rate increase,
+highest since 2008, bond prices set to rally as safe haven compared to
+real estate.</p></li>
+<li><p>University of Michigan “home buying conditions” are the worst
+they’ve been since the 1980’s - <a
+href="https://www.zerohedge.com/personal-finance/umich-sentiment-tumbles-accelerates-may-home-buying-confidence-collapse">Zero
+Hedge</a></p></li>
 </ul>
 <p><br> <br> <strong>Crypto Markets</strong></p>
 <ul>
-<li><p>BTC playing catch up over the weekend, riskiest of risk assets will lag. Eventual decoupling will result in BTC being risk off, but this still seems like a distant future.</p></li>
-<li><p>BTC Peak Fear and greed index recently reached 8 (now 10) - Extreme fear, good long term buy indicator despite potential further downside.</p></li>
-<li><p>Alt/BTC pair is likely to continue to bleed until BTC shows monthly strength, BTC maxi’s always have a good point.</p></li>
+<li><p>BTC playing catch up over the weekend, riskiest of risk assets
+will lag. Eventual decoupling will result in BTC being risk off, but
+this still seems like a distant future.</p></li>
+<li><p>BTC Peak Fear and greed index recently reached 8 (now 10) -
+Extreme fear, good long term buy indicator despite potential further
+downside.</p></li>
+<li><p>Alt/BTC pair is likely to continue to bleed until BTC shows
+monthly strength, BTC maxi’s always have a good point.</p></li>
 </ul>
 <p><br></p>
 <p><strong>Charts</strong></p>
-<p><img src="Journalism/Economics/ongoingta/5-29-2022_1.jpg" /> <br></p>
-<p><img src="Journalism/Economics/ongoingta/5-29-2022_3.jpg" /> <br></p>
-<p><img src="Journalism/Economics/ongoingta/5-29-2022_4.png" /> <br></p>
-<p><img src="Journalism/Economics/ongoingta/5-29-2022_5.jpg" /> <br></p>
-<p><img src="Journalism/Economics/ongoingta/5-29-2022_2.jpg" /> <br></p>
-<p><br> <br> <br> ________________________________________________________________<br />
+<p><img src="Journalism/Economics/ongoingta/5-29-2022_1.jpg" />
+<br></p>
+<p><img src="Journalism/Economics/ongoingta/5-29-2022_3.jpg" />
+<br></p>
+<p><img src="Journalism/Economics/ongoingta/5-29-2022_4.png" />
+<br></p>
+<p><img src="Journalism/Economics/ongoingta/5-29-2022_5.jpg" />
+<br></p>
+<p><img src="Journalism/Economics/ongoingta/5-29-2022_2.jpg" />
+<br></p>
+<p><br> <br> <br>
+________________________________________________________________<br />
 <br> <em>5/27/2022</em> <br></p>
 <ul>
-<li><p>Traditional markets are having a nice rally after solid support at S&amp;P:3900, now above 4100. Still low call volume.</p></li>
+<li><p>Traditional markets are having a nice rally after solid support
+at S&amp;P:3900, now above 4100. Still low call volume.</p></li>
 <li><p>Volatility will likely remain high for several weeks.</p></li>
-<li><p>Consumer savings accounts shredded, American’s are not able to adjust spending to keep up with newly higher prices. - chart from Zero hedge.</p></li>
-<li><p>BTC Down, everything else up, correlation with risk is breaking, but not in the fun direction. Price action closes hourly low below the range low, Longs getting trimmed until clarity in PA. BTC is the most risky of risk on assets, will potentially rally last under a bear market rally.</p></li>
-<li><p>BTC dominance likely to continue to stay flat or rise whether we go up or down, Alts have been rekt with no end in sight, good prices, but no strength in BTC means alts could drop another 60%+ from here.</p></li>
-<li><p>Lumber futures are down big at peak building season, houses should be being built but no one’s buying wood, long term housing shortage will continue until prices fall significantly.</p></li>
-<li><p>NYT changes tune on Ukraine war - Ukraine can’t win. (While typing I defaulted to writing “we can’t win” - American’s don’t want or need another proxy war.)</p></li>
-<li><p>Voter turnout hits record numbers in Georgia as Dems switch sides leading to massive positive swing for Republicans, could foreshadow future problems for Dems as many have already been forecasting, potentially even more reason for a FED pivot prior to November.</p></li>
+<li><p>Consumer savings accounts shredded, American’s are not able to
+adjust spending to keep up with newly higher prices. - chart from Zero
+hedge.</p></li>
+<li><p>BTC Down, everything else up, correlation with risk is breaking,
+but not in the fun direction. Price action closes hourly low below the
+range low, Longs getting trimmed until clarity in PA. BTC is the most
+risky of risk on assets, will potentially rally last under a bear market
+rally.</p></li>
+<li><p>BTC dominance likely to continue to stay flat or rise whether we
+go up or down, Alts have been rekt with no end in sight, good prices,
+but no strength in BTC means alts could drop another 60%+ from
+here.</p></li>
+<li><p>Lumber futures are down big at peak building season, houses
+should be being built but no one’s buying wood, long term housing
+shortage will continue until prices fall significantly.</p></li>
+<li><p>NYT changes tune on Ukraine war - Ukraine can’t win. (While
+typing I defaulted to writing “we can’t win” - American’s don’t want or
+need another proxy war.)</p></li>
+<li><p>Voter turnout hits record numbers in Georgia as Dems switch sides
+leading to massive positive swing for Republicans, could foreshadow
+future problems for Dems as many have already been forecasting,
+potentially even more reason for a FED pivot prior to November.</p></li>
 </ul>
 <p><br></p>
-<p><img src="Journalism/Economics/ongoingta/5-27-2022_1.jpg" /> <br></p>
-<p><img src="./Journalism/Economics/ongoingta/5-27-2022_2.jpg" /> <br> <img src="Journalism/Economics/ongoingta/5-27-2022_6.jpg" /> <br> <img src="Journalism/Economics/ongoingta/5-27-2022_3.jpg" /> <br> <img src="Journalism/Economics/ongoingta/5-27-2022_4.jpg" /> <br> <img src="Journalism/Economics/ongoingta/5-27-2022_5.jpg" /> <br></p>
+<p><img src="Journalism/Economics/ongoingta/5-27-2022_1.jpg" />
+<br></p>
+<p><img src="./Journalism/Economics/ongoingta/5-27-2022_2.jpg" /> <br>
+<img src="Journalism/Economics/ongoingta/5-27-2022_6.jpg" /> <br> <img
+src="Journalism/Economics/ongoingta/5-27-2022_3.jpg" /> <br> <img
+src="Journalism/Economics/ongoingta/5-27-2022_4.jpg" /> <br> <img
+src="Journalism/Economics/ongoingta/5-27-2022_5.jpg" /> <br></p>
 <hr />
 <p><em>5/25/2022</em> <br><br />
 <strong>Short term outlook:</strong></p>
 <ul>
-<li><p>DXY and US10YR threatening to roll over (a point for the bulls, finally)</p></li>
-<li><p>S&amp;P &amp; QQQ (&amp;BTC) looking at a bear market rally, possibly 7-15% from bottom</p></li>
-<li><p>BTC target 35k then possibly run the 25K lows if bottom falls out of tradfi</p></li>
-<li><p>Ideally 10 year falls for the right reason (inflation expectations down) rather than the wrong reason (growth expectations down)</p></li>
-<li><p>Call option volume remains low, all markets still waiting for buyers despite massively oversold conditions</p></li>
+<li><p>DXY and US10YR threatening to roll over (a point for the bulls,
+finally)</p></li>
+<li><p>S&amp;P &amp; QQQ (&amp;BTC) looking at a bear market rally,
+possibly 7-15% from bottom</p></li>
+<li><p>BTC target 35k then possibly run the 25K lows if bottom falls out
+of tradfi</p></li>
+<li><p>Ideally 10 year falls for the right reason (inflation
+expectations down) rather than the wrong reason (growth expectations
+down)</p></li>
+<li><p>Call option volume remains low, all markets still waiting for
+buyers despite massively oversold conditions</p></li>
 </ul>
 <p><strong>Longer term outlook:</strong><br />
 Base case is:</p>
 <ul>
 <li><p>Possible bounce here</p></li>
-<li><p>Possible lower lows after - lots of entities looking for exit liquidity and a rotation out of growth to value and commodities for what is potentially a commodity driven stagflationary supercycle - this would not be great but it’s potentially unavoidable (though with more QE, growth will come back as well)</p></li>
+<li><p>Possible lower lows after - lots of entities looking for exit
+liquidity and a rotation out of growth to value and commodities for what
+is potentially a commodity driven stagflationary supercycle - this would
+not be great but it’s potentially unavoidable (though with more QE,
+growth will come back as well)</p></li>
 <li><p>Possible rally into November midterms,</p></li>
-<li><p>Fed may sell Mortgage backed securities back into the market despite rapid rise in rates, housing will take a hit regardless</p></li>
-<li><p>Fed hiking could stop Q4 2022 (Currently market is pricing in later 2023 or 2024 - but they won’t get that far) at which point when the hiking stops, the low will already be in, markets are forward looking and will recover far before the economy does.</p></li>
-<li><p>Economy looking at higher unemployment, lower wage growth, higher consumer credit to come, increased home sales and defaults, etc. real stagflation driven mainly by monetary QE, but also sanctions, and supply chains, all with no real painless solution that isn’t more governmental jobs programs/Universal basic income/ socialized losses to subsidize government errors etc.</p></li>
-<li><p>They will try to inflate the long term debt bubble a few more times before they let it pop and try to implement CBDC’s as the savior, by this time BTC will be in the “early majority” stage of the adoption curve and by enough people learning about the faults BTC corrects in the monetary system, traditional finance will become fractured towards a dual system solution, one forever inflating, one forever deflating.</p></li>
+<li><p>Fed may sell Mortgage backed securities back into the market
+despite rapid rise in rates, housing will take a hit regardless</p></li>
+<li><p>Fed hiking could stop Q4 2022 (Currently market is pricing in
+later 2023 or 2024 - but they won’t get that far) at which point when
+the hiking stops, the low will already be in, markets are forward
+looking and will recover far before the economy does.</p></li>
+<li><p>Economy looking at higher unemployment, lower wage growth, higher
+consumer credit to come, increased home sales and defaults, etc. real
+stagflation driven mainly by monetary QE, but also sanctions, and supply
+chains, all with no real painless solution that isn’t more governmental
+jobs programs/Universal basic income/ socialized losses to subsidize
+government errors etc.</p></li>
+<li><p>They will try to inflate the long term debt bubble a few more
+times before they let it pop and try to implement CBDC’s as the savior,
+by this time BTC will be in the “early majority” stage of the adoption
+curve and by enough people learning about the faults BTC corrects in the
+monetary system, traditional finance will become fractured towards a
+dual system solution, one forever inflating, one forever
+deflating.</p></li>
 </ul>
 <p><br></p>
-<p><img src="Journalism/Economics/ongoingta/5-25-2022_1.jpg" /> <br></p>
-<p><img src="Journalism/Economics/ongoingta/5-25-2022_2.jpg" /> <br> _________________________________________________________<br />
+<p><img src="Journalism/Economics/ongoingta/5-25-2022_1.jpg" />
+<br></p>
+<p><img src="Journalism/Economics/ongoingta/5-25-2022_2.jpg" /> <br>
+_________________________________________________________<br />
 <strong>5/24/2022</strong> <br><br />
 - Bear market rally in QQQ less obvious<br />
-- Was Friday rally enough to calm these extreme oversold conditions?<br />
+- Was Friday rally enough to calm these extreme oversold
+conditions?<br />
 - Larger uncertainty now<br />
-- Still bullish on long term price trend and eventual FED pivot, possibly before NOV midterms, but short term pain seems imminent</p>
+- Still bullish on long term price trend and eventual FED pivot,
+possibly before NOV midterms, but short term pain seems imminent</p>
 <p><br></p>
-<p><img src="Journalism/Economics/ongoingta/5-24-2022_1.jpg" /> <br> <img src="Journalism/Economics/ongoingta/5-24-2022_2.jpg" /> <br> <img src="./Journalism/Economics/ongoingta/5-24-2022_3.jpg" /></p>
+<p><img src="Journalism/Economics/ongoingta/5-24-2022_1.jpg" /> <br>
+<img src="Journalism/Economics/ongoingta/5-24-2022_2.jpg" /> <br> <img
+src="./Journalism/Economics/ongoingta/5-24-2022_3.jpg" /></p>
 <p><br> _________________________________________________________<br />
 <strong>5/23/2022</strong> <br><br />
-- Possible bounce here, then we’ll see. Markets on edge, everything oversold but still waiting for buyers.</p>
+- Possible bounce here, then we’ll see. Markets on edge, everything
+oversold but still waiting for buyers.</p>
 <p><img src="Journalism/Economics/ongoingta/5-23-2022_1.jpg" /></p>
 <p><br> <br></p>
 

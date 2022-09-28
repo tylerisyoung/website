@@ -13,7 +13,7 @@
 
 <title>ig.knit</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -144,11 +144,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -295,10 +299,14 @@ $(document).ready(function () {
 </h4>
 <h5>
 <em><a href="https://www.tylerisyoung.com">Website</a></em><br />
-<em><a href="https://www.tylerisyoung.substack.com">Substack</a></em><br />
-<em><a href="https://www.twitter.com/Tylerisyoung">Twitter</a></em><br />
-<em><a href="https://https://www.youtube.com/tylerisyoung">Youtube</a></em><br />
-<em><a href="https://www.tylerisyoung.com/datascience.html">Data Science</a></em>
+<em><a
+href="https://www.tylerisyoung.substack.com">Substack</a></em><br />
+<em><a
+href="https://www.twitter.com/Tylerisyoung">Twitter</a></em><br />
+<em><a
+href="https://https://www.youtube.com/tylerisyoung">Youtube</a></em><br />
+<em><a href="https://www.tylerisyoung.com/datascience.html">Data
+Science</a></em>
 </h5>
 <hr />
 <p><br></p>
@@ -306,65 +314,87 @@ $(document).ready(function () {
 <strong><em>Masters Thesis</em></strong>
 </h4>
 <ul>
-<li><a href="">The United Nations Sustainable Development Goals within the Context of Climate Change, a Technical and Philosophical Cost Benefit Analysis (Coming Soon)</a></li>
+<li><a href="">The United Nations Sustainable Development Goals within
+the Context of Climate Change, a Technical and Philosophical Cost
+Benefit Analysis (Coming Soon)</a></li>
 </ul>
 <p><br></p>
 <h4>
 <strong><em>About Me</em></strong>
 </h4>
 <ul>
-<li><a href="https://www.youtube.com/watch?v=upbaGKm1ofY&amp;t=7s">Creator Film: Tyler Young</a></li>
+<li><a
+href="https://www.youtube.com/watch?v=upbaGKm1ofY&amp;t=7s">Creator
+Film: Tyler Young</a></li>
 </ul>
 <p><br></p>
 <h4>
 <strong><em>Projects</em></strong>
 </h4>
 <ul>
-<li><a href="www.lightheartedhumans.com">Lighthearted Humans - Creativity for a greater good</a><br />
+<li><a href="www.lightheartedhumans.com">Lighthearted Humans -
+Creativity for a greater good</a><br />
 </li>
-<li><a href="./ongoingta.html">Ongoing (almost) Daily Technical Analysis of Financial Markets</a></li>
+<li><a href="./ongoingta.html">Ongoing (almost) Daily Technical Analysis
+of Financial Markets</a></li>
 </ul>
 <p><br></p>
 <h4>
 <strong><em>Journalism</em></strong>
 </h4>
 <ul>
-<li><a href="./mmt.html">Read: Modern Monetary Theory - Slow at first, then all at once.</a><br />
+<li><a href="./mmt.html">Read: Modern Monetary Theory - Slow at first,
+then all at once.</a><br />
 </li>
-<li><a href="./politicsandcriticaltheory.html">Read: Politics, Critical Theory, and our loss of Sensemaking in 2020</a><br />
+<li><a href="./politicsandcriticaltheory.html">Read: Politics, Critical
+Theory, and our loss of Sensemaking in 2020</a><br />
 </li>
-<li><a href="./distributedideasupressioncomplex.html">Read: Distributed Idea Supression Complex</a><br />
+<li><a href="./distributedideasupressioncomplex.html">Read: Distributed
+Idea Supression Complex</a><br />
 </li>
-<li><a href="./mainstreammonitoringandmanipulation.html">Read: Mainstream Monitoring and Manipulation</a></li>
+<li><a href="./mainstreammonitoringandmanipulation.html">Read:
+Mainstream Monitoring and Manipulation</a></li>
 </ul>
 <p><br></p>
 <strong><em>Adventure Films</em></strong>
 </h4>
 <ul>
-<li><a href="https://vimeo.com/341473027">A Year in Ecuador, an Environmental Documentary (Long)</a><br />
+<li><a href="https://vimeo.com/341473027">A Year in Ecuador, an
+Environmental Documentary (Long)</a><br />
 </li>
-<li><a href="https://youtu.be/veequUBqgKA">Politics and Environmentalism in Ecuador Documentary (Long)</a><br />
+<li><a href="https://youtu.be/veequUBqgKA">Politics and Environmentalism
+in Ecuador Documentary (Long)</a><br />
 </li>
-<li><a href="https://www.youtube.com/watch?v=ZbWKWzaExlk">Watchtower of Ecuador (short)</a><br />
+<li><a href="https://www.youtube.com/watch?v=ZbWKWzaExlk">Watchtower of
+Ecuador (short)</a><br />
 </li>
-<li><a href="https://www.youtube.com/watch?v=X44Z_ywcGFs">Rafting the Deschutes</a></li>
+<li><a href="https://www.youtube.com/watch?v=X44Z_ywcGFs">Rafting the
+Deschutes</a></li>
 <li><a href="https://youtu.be/YUOhvFJArkw">The Lost Coast</a></li>
 </ul>
 <p><br></p>
 <strong><em>Education Films</em></strong>
 </h4>
 <ul>
-<li><a href="https://www.youtube.com/watch?v=3Yp1ob_T7_k">The Artists Rebellion</a><br />
+<li><a href="https://www.youtube.com/watch?v=3Yp1ob_T7_k">The Artists
+Rebellion</a><br />
 </li>
-<li><a href="https://www.youtube.com/watch?v=MdYHgOKxjXY&amp;t=84s">Health as a Foundation</a><br />
+<li><a
+href="https://www.youtube.com/watch?v=MdYHgOKxjXY&amp;t=84s">Health as a
+Foundation</a><br />
 </li>
-<li><a href="https://www.youtube.com/watch?v=J7p_TM6kFW4&amp;t=4s">Climate Science &amp; Activism</a><br />
+<li><a
+href="https://www.youtube.com/watch?v=J7p_TM6kFW4&amp;t=4s">Climate
+Science &amp; Activism</a><br />
 </li>
-<li><a href="https://www.youtube.com/watch?v=9iA52aN510Y&amp;t=1s">The Wisdom of Economics</a><br />
+<li><a href="https://www.youtube.com/watch?v=9iA52aN510Y&amp;t=1s">The
+Wisdom of Economics</a><br />
 </li>
-<li><a href="https://www.youtube.com/watch?v=lS5vRjbHpBw&amp;t=2s">The Politics of Organizing Society</a><br />
+<li><a href="https://www.youtube.com/watch?v=lS5vRjbHpBw&amp;t=2s">The
+Politics of Organizing Society</a><br />
 </li>
-<li><a href="https://www.youtube.com/watch?v=Zq014Q96pzM&amp;t=2s">The Art of Adventure</a></li>
+<li><a href="https://www.youtube.com/watch?v=Zq014Q96pzM&amp;t=2s">The
+Art of Adventure</a></li>
 </ul>
 <hr />
 <br> <br>

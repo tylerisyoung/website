@@ -13,7 +13,7 @@
 
 <title>AdventureFilms.knit</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -144,11 +144,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -290,27 +294,45 @@ $(document).ready(function () {
 <strong>Adventure Films &amp; Documentaries</strong>
 </h1>
 <h6>
-<strong><em>Ecuador, Lost Coast, Smith Rock, Deschutes River, The Enchantments, Eclipse</em></strong>
+<strong><em>Ecuador, Lost Coast, Smith Rock, Deschutes River, The
+Enchantments, Eclipse</em></strong>
 </h6>
-<p><em><a href="https://www.youtube.com/tylerisyoung/?target=_blank">Youtube.com/tylerisyoung</a><br />
+<p><em><a
+href="https://www.youtube.com/tylerisyoung/?target=_blank">Youtube.com/tylerisyoung</a><br />
 </em> ____________________________</p>
 <p><br> <br></p>
 <iframe src="https://player.vimeo.com/video/341473027" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen>
 </iframe>
 <p>
-<a href="https://vimeo.com/341473027">A year in Ecuador : An Environmental Documentary</a> from <a href="https://vimeo.com/lightheartedhumans">lightheartedhumans</a> on <a href="https://vimeo.com">Vimeo</a>.
+<a href="https://vimeo.com/341473027">A year in Ecuador : An
+Environmental Documentary</a> from
+<a href="https://vimeo.com/lightheartedhumans">lightheartedhumans</a> on
+<a href="https://vimeo.com">Vimeo</a>.
 </p>
 <p><br></p>
-<p><br> <iframe width="560" height="315" src="https://www.youtube.com/embed/ZbWKWzaExlk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> <br></p>
-<p><br> <iframe width="560" height="315" src="https://www.youtube.com/embed/YUOhvFJArkw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> <br></p>
-<p><br> <iframe width="560" height="315" src="https://www.youtube.com/embed/CSwuTXZW2sk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> <br></p>
-<br> <iframe src="https://player.vimeo.com/video/318633228" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+<p><br>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZbWKWzaExlk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<br></p>
+<p><br>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/YUOhvFJArkw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<br></p>
+<p><br>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/CSwuTXZW2sk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<br></p>
+<br>
+<iframe src="https://player.vimeo.com/video/318633228" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
 <p>
-<a href="https://vimeo.com/318633228">Rafting the Deschutes River</a> from <a href="https://vimeo.com/tylerisyoung">TylerisYoung</a> on <a href="https://vimeo.com">Vimeo</a>.
+<a href="https://vimeo.com/318633228">Rafting the Deschutes River</a>
+from <a href="https://vimeo.com/tylerisyoung">TylerisYoung</a> on
+<a href="https://vimeo.com">Vimeo</a>.
 </p>
 <p><br></p>
-<p><br> <iframe width="560" height="315" src="https://www.youtube.com/embed/CAZ9rqBjp7o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> <br></p>
-<p><br> <iframe width="560" height="315" src="https://www.youtube.com/embed/Ra9WC87YT_k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> <br></p>
+<p><br>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/CAZ9rqBjp7o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<br></p>
+<p><br>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Ra9WC87YT_k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<br></p>
 
 
 

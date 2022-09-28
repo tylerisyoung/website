@@ -13,7 +13,7 @@
 
 <title>thoughtsonavaccine.knit</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -144,11 +144,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -290,18 +294,91 @@ $(document).ready(function () {
 <strong>Thoughts on the Vaccine</strong>
 </h1>
 <h6>
-<strong><em>A text message to a friend who has already been infected.</em></strong>
+<strong><em>A text message to a friend who has already been
+infected.</em></strong>
 </h6>
 <p>04/27/2021 <br></p>
-<p>I know you’re going to get the vaccine because you’re not me and don’t like to poke holes in peoples world views in hopes of getting them to see the magical rainbow. But here is what I will likely do if I am infected, and what I will say to people when they think they’re doing a public service by nagging me to get it.</p>
-<p>I don’t think there’s any evidence to suggest that the infection response antibodies are any more or less effective at fighting the same or new variants when compared to the vaccine antibodies, and all studies point to those having been infected won’t be infected with the current variants again for some time. (Hence the new guidelines)</p>
-<p>The individual body’s antibodies response is similar either way depending on vaccination vs infection, and while some suggest that the response is more intense from vaccine, they are both seemingly equally effective at preventing the infection which is the desired outcome.</p>
-<p>The only reason to get a vaccine after having contracted the virus is two fold 1) a completely new variant emerges which current antibodies are not effective at tackling (which has not been the case yet) and 2) After some months we have better data as to how long the antibodies last which is likely several months, maybe many years, and those who have been infected should get a vaccine as effectively a booster shot to induce the immune response for more antibodies thus prolonging your retainment of the ability to fight off infection. Even then, the second dose, not the first would be the one that’s necessary to get as you’ve already gone through the whole process of the first.</p>
-<p>I would even go so far as to suggest that under the circumstance that you’re only allowed to get one vaccine it is better for both your own personal health risk, and society wide health, to save your first and presumably only vaccine done until the optimal time when your antibodies begin to wane and become less effective at some time several months or longer in the future from now. (SARS original antibodies/T/B cells have lasted in 90+ % of those infected until now - 17 years &amp; counting) &amp; all of the larger studies I’ve seen on reinfection suggest that almost all people are not contracting it twice, but is does appear to be possible for a small number of people 1-5%? In line with this, if you or anyone who has happened to have covid-19 is a part of this 1-5%, it would be beneficial for you to use the vaccine as a booster style shot. Getting your one dose of vaccine now piling antibodies on your already highly active antibodies has little to no effect at any outcome in particular.</p>
-<p>The only argument for getting the vaccine in your case as of now as far as I know would be to appease people that have no understanding of what is going on, and/or do not want to take any responsibility of independently thinking which is most people including those that work for the medical industry and the government.</p>
-<p>This is my understanding of the accurate literature that is out there, (keep in mind, every major journal publication knowingly has published false information, and repressed other information to “fit thew narrative” and yes, I can prove that and intend to, but would rather write the bitcoin article first so that I can change my friends and families lives for the better, faster, the whole media manipulation thing takes time for people to come around to)</p>
-<p>But as far as covid goes, I admittedly have not been keeping up with it like I used to and intend to polish this line of consideration prior to <em>not getting the vaccine on purpose</em> which may only be for a time as I’m sure it will be mandatory for any number of reasons which I am okay with generally for things that are indeed quite serious like sars og with a death rate of 9-13% or mers with 35% or yellow fever at 20-50%, though don’t think it should necessarily be implemented for something that has a death rate of less than 1% and a hospitalization rate/serious infection rate of less than 5% almost all of which are affecting the old and unhealthy. It’s something that needs to be discussed and is super important considering the ease with which government and health organizations have colluded to lie to the public to get their desired outcomes while potentially violating our constitutional rights.</p>
-<p>This may be overwhelming as far as a text message is concerned, but why is the nightly news and every media influencer not advocating to get a new Gallup poll on what death rate precisely we should be implementing mandatory vaccinations prior to visiting another country like we have with yellow fever, or what hospitalization rate precisely is required before we do a mandatory stay at home order, shut down business?, mandate masks or other paraphernalia? How much time should pass before informing the public, I learned about the virus and it’s potential in January, literally months before the general public was aware of it or anything happened on a government level. What’s the process there? What exactly should Donald Trump have done that would have been a better response to the virus? Why exactly are Americans having marginally worse outcomes compared to most other countries, does it have to do with our diet, out health, our poor communication skills and policy tactics? Why are these questions not being sorted , and why am I the only one talking about them? I do not know.</p>
+<p>I know you’re going to get the vaccine because you’re not me and
+don’t like to poke holes in peoples world views in hopes of getting them
+to see the magical rainbow. But here is what I will likely do if I am
+infected, and what I will say to people when they think they’re doing a
+public service by nagging me to get it.</p>
+<p>I don’t think there’s any evidence to suggest that the infection
+response antibodies are any more or less effective at fighting the same
+or new variants when compared to the vaccine antibodies, and all studies
+point to those having been infected won’t be infected with the current
+variants again for some time. (Hence the new guidelines)</p>
+<p>The individual body’s antibodies response is similar either way
+depending on vaccination vs infection, and while some suggest that the
+response is more intense from vaccine, they are both seemingly equally
+effective at preventing the infection which is the desired outcome.</p>
+<p>The only reason to get a vaccine after having contracted the virus is
+two fold 1) a completely new variant emerges which current antibodies
+are not effective at tackling (which has not been the case yet) and 2)
+After some months we have better data as to how long the antibodies last
+which is likely several months, maybe many years, and those who have
+been infected should get a vaccine as effectively a booster shot to
+induce the immune response for more antibodies thus prolonging your
+retainment of the ability to fight off infection. Even then, the second
+dose, not the first would be the one that’s necessary to get as you’ve
+already gone through the whole process of the first.</p>
+<p>I would even go so far as to suggest that under the circumstance that
+you’re only allowed to get one vaccine it is better for both your own
+personal health risk, and society wide health, to save your first and
+presumably only vaccine done until the optimal time when your antibodies
+begin to wane and become less effective at some time several months or
+longer in the future from now. (SARS original antibodies/T/B cells have
+lasted in 90+ % of those infected until now - 17 years &amp; counting)
+&amp; all of the larger studies I’ve seen on reinfection suggest that
+almost all people are not contracting it twice, but is does appear to be
+possible for a small number of people 1-5%? In line with this, if you or
+anyone who has happened to have covid-19 is a part of this 1-5%, it
+would be beneficial for you to use the vaccine as a booster style shot.
+Getting your one dose of vaccine now piling antibodies on your already
+highly active antibodies has little to no effect at any outcome in
+particular.</p>
+<p>The only argument for getting the vaccine in your case as of now as
+far as I know would be to appease people that have no understanding of
+what is going on, and/or do not want to take any responsibility of
+independently thinking which is most people including those that work
+for the medical industry and the government.</p>
+<p>This is my understanding of the accurate literature that is out
+there, (keep in mind, every major journal publication knowingly has
+published false information, and repressed other information to “fit
+thew narrative” and yes, I can prove that and intend to, but would
+rather write the bitcoin article first so that I can change my friends
+and families lives for the better, faster, the whole media manipulation
+thing takes time for people to come around to)</p>
+<p>But as far as covid goes, I admittedly have not been keeping up with
+it like I used to and intend to polish this line of consideration prior
+to <em>not getting the vaccine on purpose</em> which may only be for a
+time as I’m sure it will be mandatory for any number of reasons which I
+am okay with generally for things that are indeed quite serious like
+sars og with a death rate of 9-13% or mers with 35% or yellow fever at
+20-50%, though don’t think it should necessarily be implemented for
+something that has a death rate of less than 1% and a hospitalization
+rate/serious infection rate of less than 5% almost all of which are
+affecting the old and unhealthy. It’s something that needs to be
+discussed and is super important considering the ease with which
+government and health organizations have colluded to lie to the public
+to get their desired outcomes while potentially violating our
+constitutional rights.</p>
+<p>This may be overwhelming as far as a text message is concerned, but
+why is the nightly news and every media influencer not advocating to get
+a new Gallup poll on what death rate precisely we should be implementing
+mandatory vaccinations prior to visiting another country like we have
+with yellow fever, or what hospitalization rate precisely is required
+before we do a mandatory stay at home order, shut down business?,
+mandate masks or other paraphernalia? How much time should pass before
+informing the public, I learned about the virus and it’s potential in
+January, literally months before the general public was aware of it or
+anything happened on a government level. What’s the process there? What
+exactly should Donald Trump have done that would have been a better
+response to the virus? Why exactly are Americans having marginally worse
+outcomes compared to most other countries, does it have to do with our
+diet, out health, our poor communication skills and policy tactics? Why
+are these questions not being sorted , and why am I the only one talking
+about them? I do not know.</p>
 
 
 

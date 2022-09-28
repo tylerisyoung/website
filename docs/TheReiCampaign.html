@@ -13,7 +13,7 @@
 
 <title>TheReiCampaign.knit</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -144,11 +144,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -292,23 +296,86 @@ $(document).ready(function () {
 <h6>
 <strong><em>An article by Tyler Young.</em></strong>
 </h6>
-<p><em><a href="www.tylerisyoung.substack.com">Tylerisyoung.Substack.com</a></em><br />
-<em><a href="www.twitter.com/Tylerisyoung">Twitter.com/TylerisYoung</a></em><br />
+<p><em><a
+href="www.tylerisyoung.substack.com">Tylerisyoung.Substack.com</a></em><br />
+<em><a
+href="www.twitter.com/Tylerisyoung">Twitter.com/TylerisYoung</a></em><br />
 _________________________ <br> 06/20/2018 <br></p>
 <h3>
-We convinced* REI to divest their corporate holdings from the fossil fuel industry.
+We convinced* REI to divest their corporate holdings from the fossil
+fuel industry.
 </h3>
 <p><br></p>
-<p>As a senior at the University of Oregon, I partnered with fellow senior Asha Rao, and attorney Alice Warner with support from th student group Cascadia Action Network, in an attempt to convince a brand we have all historically loved and supported to divest their money from the fossil fuel industry. We eventually got a petition with 30,000 signatures and were invited to sit down with REI executives.</p>
-<p>The divestment movement with roots from apartheid in South Africa has proven to effectively put pressure on the most valuable asset of any corporation or nationstate; their finances. We started a movement called “Opt4Climate.”</p>
-<p><strong><em>“Opt 4 Climate is an organization of REI members who are also climate activists. We care about the world and think that one of our favorite brands should too, so join us in helping convince REI that the divestment of our cooperative from fossil fuel companies, and the big banks that fund them is a viable solution that directly helps climate change.”</em></strong></p>
-<p>Climate change is simultaneously threatening communities, individuals human rights, and more importantly, our ecosystems which we rely on (and hike in). REI currently has investments in big banks like U.S. Bank, and Wells Fargo which are funding the fossil fuel industries driving climate change. These banks have been placed on a list entitled Mazaska Talks (money talks) published by a group of Indigenous activists which formed after the standing rock protest over water rights, and this list shows the banks which are directly funding the fossil fuel industry and driving climate change. Environmental watchdog giants like The Rainforest Action Network are simultaneously calling for the same thing. <img src="images/Journalism/Rei/MazaskaTalks.png" alt="image" /> Opt 4 Climate says, “Banking is stewardship, too. REI’s banking practices fly in the face of its claim to put environmental purpose above profit and prevent REI from reaching its goal to become carbon-neutral by 2020.”</p>
-<p>We targeted REI based on claims like, “our co-op’s health depends on the environment’s health.” REI certainly promotes itself as a very eco-friendly brand though consumeristic at its core. While this is true, it was not lost on our small activist group that while the REI cooperative has become somewhat prepackaged, and sterile, they are certainly good at what they do in terms of encouraging people to get outdoors which in turn, promotes a greater respect for the environment in which we all live, breathe, and play. This sort of adventure based advertising has lead to campaigns like REI’s #OPTOUTSIDE which has since taken off to become an instagram favorite among avid hikers, cyclists, kayakers, and general go getters. And this is where Opt 4 Climate got their name, encouraging people to think about their impact with the #OPT4CLIMATE hashtag and we have encouraged our supporters to post photos with their cell phones or the linked image to show their support for REI to divest their money into banks that are better for the environment.</p>
+<p>As a senior at the University of Oregon, I partnered with fellow
+senior Asha Rao, and attorney Alice Warner with support from th student
+group Cascadia Action Network, in an attempt to convince a brand we have
+all historically loved and supported to divest their money from the
+fossil fuel industry. We eventually got a petition with 30,000
+signatures and were invited to sit down with REI executives.</p>
+<p>The divestment movement with roots from apartheid in South Africa has
+proven to effectively put pressure on the most valuable asset of any
+corporation or nationstate; their finances. We started a movement called
+“Opt4Climate.”</p>
+<p><strong><em>“Opt 4 Climate is an organization of REI members who are
+also climate activists. We care about the world and think that one of
+our favorite brands should too, so join us in helping convince REI that
+the divestment of our cooperative from fossil fuel companies, and the
+big banks that fund them is a viable solution that directly helps
+climate change.”</em></strong></p>
+<p>Climate change is simultaneously threatening communities, individuals
+human rights, and more importantly, our ecosystems which we rely on (and
+hike in). REI currently has investments in big banks like U.S. Bank, and
+Wells Fargo which are funding the fossil fuel industries driving climate
+change. These banks have been placed on a list entitled Mazaska Talks
+(money talks) published by a group of Indigenous activists which formed
+after the standing rock protest over water rights, and this list shows
+the banks which are directly funding the fossil fuel industry and
+driving climate change. Environmental watchdog giants like The
+Rainforest Action Network are simultaneously calling for the same thing.
+<img src="images/Journalism/Rei/MazaskaTalks.png" alt="image" /> Opt 4
+Climate says, “Banking is stewardship, too. REI’s banking practices fly
+in the face of its claim to put environmental purpose above profit and
+prevent REI from reaching its goal to become carbon-neutral by
+2020.”</p>
+<p>We targeted REI based on claims like, “our co-op’s health depends on
+the environment’s health.” REI certainly promotes itself as a very
+eco-friendly brand though consumeristic at its core. While this is true,
+it was not lost on our small activist group that while the REI
+cooperative has become somewhat prepackaged, and sterile, they are
+certainly good at what they do in terms of encouraging people to get
+outdoors which in turn, promotes a greater respect for the environment
+in which we all live, breathe, and play. This sort of adventure based
+advertising has lead to campaigns like REI’s #OPTOUTSIDE which has since
+taken off to become an instagram favorite among avid hikers, cyclists,
+kayakers, and general go getters. And this is where Opt 4 Climate got
+their name, encouraging people to think about their impact with the
+#OPT4CLIMATE hashtag and we have encouraged our supporters to post
+photos with their cell phones or the linked image to show their support
+for REI to divest their money into banks that are better for the
+environment.</p>
 <center>
-<img src="images/Journalism/Rei/opt4climate.jpeg" alt="image" /> <br> <img src="images/Journalism/Rei/opt4climate_4.jpg" alt="image" />
+<img src="images/Journalism/Rei/opt4climate.jpeg" alt="image" /> <br>
+<img src="images/Journalism/Rei/opt4climate_4.jpg" alt="image" />
 </center>
-<p>On our former website we provided education on a variety of topics including climate data like James Hansen’s plea to remain below 350 parts per million of CO2 in the atmosphere, well below the UN target to remain under 450ppm which is roughly 2 degrees celsius, a number we are approaching rather quickly as they also mention the most recent climatic data at Mauna Loa, Hawaii which has placed the current concentration at 411PPM.</p>
-<p>In addition to our successes on social media, the Opt 4 Climate team sat down with REI executives including the head of marketing, and HR, and key staff members at their headquarters in Seattle to discuss divestment. In the end, while the brand did not make any commitments to our team, they were receptive to new ideas, they claimed that they would likely offer a “greener” fund for all employee pensions, and felt their longterm values aligned with the campaign overall. Those following along only wish the apparently eco-friendly outdoor brand would move a bit faster, and be a bit more bold. Overall, it is reassuring that environmentalists like you and I aren’t allowing brands to greenwash their practices as blatantly as just a few years ago. While REI is better off than most, there’s always room for improvement.</p>
+<p>On our former website we provided education on a variety of topics
+including climate data like James Hansen’s plea to remain below 350
+parts per million of CO2 in the atmosphere, well below the UN target to
+remain under 450ppm which is roughly 2 degrees celsius, a number we are
+approaching rather quickly as they also mention the most recent climatic
+data at Mauna Loa, Hawaii which has placed the current concentration at
+411PPM.</p>
+<p>In addition to our successes on social media, the Opt 4 Climate team
+sat down with REI executives including the head of marketing, and HR,
+and key staff members at their headquarters in Seattle to discuss
+divestment. In the end, while the brand did not make any commitments to
+our team, they were receptive to new ideas, they claimed that they would
+likely offer a “greener” fund for all employee pensions, and felt their
+longterm values aligned with the campaign overall. Those following along
+only wish the apparently eco-friendly outdoor brand would move a bit
+faster, and be a bit more bold. Overall, it is reassuring that
+environmentalists like you and I aren’t allowing brands to greenwash
+their practices as blatantly as just a few years ago. While REI is
+better off than most, there’s always room for improvement.</p>
 <center>
 <p><img src="images/Journalism/Rei/cascadiaactionnetwork.jpg" /><br />
 <br></p>
@@ -318,7 +385,9 @@ We convinced* REI to divest their corporate holdings from the fossil fuel indust
 <h3>
 <strong><em>2020 UPDATE</em></strong>
 </h3>
-<strong><em>REI annouces that they are more committed to the climate than ever before, though some may argue it’s the same song and dance…</em></strong>
+<strong><em>REI annouces that they are more committed to the climate
+than ever before, though some may argue it’s the same song and
+dance…</em></strong>
 <center>
 <img src="images/Journalism/Rei/opt4climate_3.jpg" />
 </center>

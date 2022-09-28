@@ -13,7 +13,7 @@
 
 <title>Bitcoin.knit</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -144,11 +144,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -292,8 +296,10 @@ $(document).ready(function () {
 <h6>
 <strong><em>A practical overview</em></strong>
 </h6>
-<em><a href="www.tylerisyoung.substack.com">Tylerisyoung.Substack.com</a></em><br />
-<em><a href="www.twitter.com/Tylerisyoung">Twitter.com/TylerisYoung</a></em><br />
+<em><a
+href="www.tylerisyoung.substack.com">Tylerisyoung.Substack.com</a></em><br />
+<em><a
+href="www.twitter.com/Tylerisyoung">Twitter.com/TylerisYoung</a></em><br />
 _________________________ <br> 04/12/2018 <br><br />
 
 <center>
@@ -302,20 +308,46 @@ _________________________ <br> 04/12/2018 <br><br />
 <p><br> <br></p>
 <center>
 <h3>
-<em>Why you’re still early to the party, &amp; how to invest to change your own life while simultaneously helping others</em>
+<em>Why you’re still early to the party, &amp; how to invest to change
+your own life while simultaneously helping others</em>
 </h3>
 </center>
 <p><br></p>
-<p>None of this is financial advice, I am not an investment adviser, but I definitely do recommend putting your trust in random people on the internet.</p>
+<p>None of this is financial advice, I am not an investment adviser, but
+I definitely do recommend putting your trust in random people on the
+internet.</p>
 <p>WHY BITCOIN: Bitcoin is going to the moon, end of story.</p>
-<p>Bitcoin is not money, it is an asset. Everyone from world leaders to the central bank and federal reserve agree, but what is an asset? Well we know that Gold is an asset, Silver is an asset, beautiful works of art, our cars are an asset, our groceries, our health, assets are everywhere and they all have a few things in common: It is possible to definitively and provably own them, they have value to the economy, and that value can be exchanged i.e.transferred to a different owner or used up in some way. Some assets are better than others for certain applications, choosing to use a premium fuel vs a lower fuel grade; The benefits and tradeoffs of short term use case and consumer good type assets are seemingly clear; Save money at the pump vs Introducing a few additional cleaning solvents into your engine as you possibly should every few thousand miles in the hopes of it lasting longer. However when it comes to financial assets the tradeoff is less clear, should I buy silver or gold? <em><a href="reddit.com/r/wallstreetsilver">(Hint: You should buy silver! )</a></em> <em><a href="./silver.html">&amp; Why I chose Silver.</a></em> They both have a physical existence, they are both easily accepted and converted back to cash, and they both have real world use cases which include industrial production, gold tooth crowns, use in solar cells, and much more, therefore the only way to determine their value, and thus their exchange rate with fiat dollars backed by central governments is to consider what buyers are willing to pay for such an asset. The current price of gold is</p>
+<p>Bitcoin is not money, it is an asset. Everyone from world leaders to
+the central bank and federal reserve agree, but what is an asset? Well
+we know that Gold is an asset, Silver is an asset, beautiful works of
+art, our cars are an asset, our groceries, our health, assets are
+everywhere and they all have a few things in common: It is possible to
+definitively and provably own them, they have value to the economy, and
+that value can be exchanged i.e.transferred to a different owner or used
+up in some way. Some assets are better than others for certain
+applications, choosing to use a premium fuel vs a lower fuel grade; The
+benefits and tradeoffs of short term use case and consumer good type
+assets are seemingly clear; Save money at the pump vs Introducing a few
+additional cleaning solvents into your engine as you possibly should
+every few thousand miles in the hopes of it lasting longer. However when
+it comes to financial assets the tradeoff is less clear, should I buy
+silver or gold? <em><a href="reddit.com/r/wallstreetsilver">(Hint: You
+should buy silver! )</a></em> <em><a href="./silver.html">&amp; Why I
+chose Silver.</a></em> They both have a physical existence, they are
+both easily accepted and converted back to cash, and they both have real
+world use cases which include industrial production, gold tooth crowns,
+use in solar cells, and much more, therefore the only way to determine
+their value, and thus their exchange rate with fiat dollars backed by
+central governments is to consider what buyers are willing to pay for
+such an asset. The current price of gold is</p>
 <!-- TradingView Widget BEGIN -->
 <div class="tradingview-widget-container">
 <div id="tradingview_eaa16">
 
 </div>
 <div class="tradingview-widget-copyright">
-<a href="https://www.tradingview.com/symbols/TVC-GOLD/" rel="noopener" target="_blank"><span class="blue-text">GOLD Chart</span></a> by TradingView
+<a href="https://www.tradingview.com/symbols/TVC-GOLD/" rel="noopener" target="_blank"><span
+class="blue-text">GOLD Chart</span></a> by TradingView
 </div>
 <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 <script type="text/javascript">
@@ -343,7 +375,8 @@ _________________________ <br> 04/12/2018 <br><br />
 
 </div>
 <div class="tradingview-widget-copyright">
-<a href="https://www.tradingview.com/symbols/TVC-SILVER/" rel="noopener" target="_blank"><span class="blue-text">SILVER Chart</span></a> by TradingView
+<a href="https://www.tradingview.com/symbols/TVC-SILVER/" rel="noopener" target="_blank"><span
+class="blue-text">SILVER Chart</span></a> by TradingView
 </div>
 <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 <script type="text/javascript">
@@ -365,27 +398,117 @@ _________________________ <br> 04/12/2018 <br><br />
   </script>
 </div>
 <!-- TradingView Widget END -->
-<p>stansberry research: "best 8 qualities of an asset: durable, portable, fungible, verifieable, divisible, scarce, established history, and censorship resistant. These are the best ones</p>
-<p>FURTHERMORE, Bitcoin is not just an asset as gold is, bitconi is also a network, and a protocall. Bitcoin network is all those things, you can run a secutiry node, or a vaqlidator node is is ^ Decentralized, permissionless, global, immutable, scarce, auditable, instantly transferrible, is not siezeable, highly divisible. Thenb the asset itself; secure, easily divisible, is deflationary because there is a max supply of 21 million which will be reached in (date_) yet also we know it is possible to loose bitcoin, lost gone forever, about (%) is already gone, it’s transferable, transparent, and you van verify it yourself on your smartphone or any computer even by running a node (authenticatable), we have never had an asset like this, this is empowering to billions of people who deal with corrupt governemnts and money systenms, it is antifragile due to the decentralized adoption,</p>
-<p>then the protocall: the protocall is a systematic way of syncronizing the network and the networks transactions to the underlying asset itself this is a better, faster, way of doing what visa does every day without needing to trust visa. Bitcoin is a trust network,m and I for one trust the blockchain more than I trust the governemtn or visa.</p>
-<p>third world countries can do micro loans on bitcoin instead of on kiva (software hoskinson talks about?) and the government does nt need to be involved this will take global commerce to the next level.</p>
+<p>stansberry research: “best 8 qualities of an asset: durable,
+portable, fungible, verifieable, divisible, scarce, established history,
+and censorship resistant. These are the best ones</p>
+<p>FURTHERMORE, Bitcoin is not just an asset as gold is, bitconi is also
+a network, and a protocall. Bitcoin network is all those things, you can
+run a secutiry node, or a vaqlidator node is is ^ Decentralized,
+permissionless, global, immutable, scarce, auditable, instantly
+transferrible, is not siezeable, highly divisible. Thenb the asset
+itself; secure, easily divisible, is deflationary because there is a max
+supply of 21 million which will be reached in (date_) yet also we know
+it is possible to loose bitcoin, lost gone forever, about (%) is already
+gone, it’s transferable, transparent, and you van verify it yourself on
+your smartphone or any computer even by running a node
+(authenticatable), we have never had an asset like this, this is
+empowering to billions of people who deal with corrupt governemnts and
+money systenms, it is antifragile due to the decentralized adoption,</p>
+<p>then the protocall: the protocall is a systematic way of syncronizing
+the network and the networks transactions to the underlying asset itself
+this is a better, faster, way of doing what visa does every day without
+needing to trust visa. Bitcoin is a trust network,m and I for one trust
+the blockchain more than I trust the governemtn or visa.</p>
+<p>third world countries can do micro loans on bitcoin instead of on
+kiva (software hoskinson talks about?) and the government does nt need
+to be involved this will take global commerce to the next level.</p>
 <p>My portfolio:</p>
-<p>After a few months of dollar cost averaging into the market, and making a few trades prior to realizing the full reckoning of capital gains tax, this is my current portfolio from largest to smallest holdings. Keep in mind some of these have gone down, and some have doubled tripled, or more in price since the time of purchase.</p>
-<p>03/12/2021 - Relatively happy with my positions at the moment. I used my BTC to buy BNB which ended up being a good idea, though I’d like to buy more BTC with USD as I continue to buy the dips. I regret buying some of the smaller positions in coins on Uninswap before I fully understood “gas fees” which can cost over $80 per transaction at the moment for any Etherium ERC-20 tokens. I should have just left those in Etherium if I wasn’t buying enough, and should have bought the ones I could with ACH/USD through a different exchange that had some of them like crypto.com which I now continue to buy DOT/ADA through, rather than exchange ETH for (YFI/CRV etc.) which was a taxable event.</p>
-<p>Largest to smallest: ADA VGX ETH VET DOT LINK AAVE SUSHI BNB LTC BTC XTZ ALGO COMP DOGE YFI CRV UNI</p>
+<p>After a few months of dollar cost averaging into the market, and
+making a few trades prior to realizing the full reckoning of capital
+gains tax, this is my current portfolio from largest to smallest
+holdings. Keep in mind some of these have gone down, and some have
+doubled tripled, or more in price since the time of purchase.</p>
+<p>03/12/2021 - Relatively happy with my positions at the moment. I used
+my BTC to buy BNB which ended up being a good idea, though I’d like to
+buy more BTC with USD as I continue to buy the dips. I regret buying
+some of the smaller positions in coins on Uninswap before I fully
+understood “gas fees” which can cost over $80 per transaction at the
+moment for any Etherium ERC-20 tokens. I should have just left those in
+Etherium if I wasn’t buying enough, and should have bought the ones I
+could with ACH/USD through a different exchange that had some of them
+like crypto.com which I now continue to buy DOT/ADA through, rather than
+exchange ETH for (YFI/CRV etc.) which was a taxable event.</p>
+<p>Largest to smallest: ADA VGX ETH VET DOT LINK AAVE SUSHI BNB LTC BTC
+XTZ ALGO COMP DOGE YFI CRV UNI</p>
 <p>Investing Guidelines &amp; Overview:</p>
 <p>MY STRATEGY:</p>
-<p>BUYING IN: Paying short term capital gains sucks, so lets avoid that as much as possible. Purchasing a crypto asset with USD from an ACH transfer from a bank is not a taxable event until realized, so it’s a good idea to buy and hold every asset for more than a year. If you choose to dollar cost average into the market (you should) during a bear market, it makes sense to first do this within a Roth IRA that allows you to hold crypto like itrustcapital.com. These purchases themselves will not be taxed, and they cann grow tax free until your retirement, so it’s probably a good idea to max that out as an individual with $6,000/yr. After that, it is likely best to continue cost averaging into the market either through an exchange like binannce.us (which I like), Blockfi.com (which I like), coinbase.com (use Coinbase Pro if at all), or crypto.com( which I use for a few alt coins unavailable elsewhere), or Voyager.com, celsius.network, and Gemini.com are also good options which I have not tried.</p>
+<p>BUYING IN: Paying short term capital gains sucks, so lets avoid that
+as much as possible. Purchasing a crypto asset with USD from an ACH
+transfer from a bank is not a taxable event until realized, so it’s a
+good idea to buy and hold every asset for more than a year. If you
+choose to dollar cost average into the market (you should) during a bear
+market, it makes sense to first do this within a Roth IRA that allows
+you to hold crypto like itrustcapital.com. These purchases themselves
+will not be taxed, and they cann grow tax free until your retirement, so
+it’s probably a good idea to max that out as an individual with
+$6,000/yr. After that, it is likely best to continue cost averaging into
+the market either through an exchange like binannce.us (which I like),
+Blockfi.com (which I like), coinbase.com (use Coinbase Pro if at all),
+or crypto.com( which I use for a few alt coins unavailable elsewhere),
+or Voyager.com, celsius.network, and Gemini.com are also good options
+which I have not tried.</p>
 <p>HODLING:</p>
-<p>Market cycle holding: After purchasing your internet coins through ACH(cheaper) or debit card, you can leave them on these exchanges which is sometimes considered bad form from hacks which have taken place in the past. You can also transfer them to a more long term wallet like a “Ledger.” I prefer to keep my bluechip coins in Blockfi and earn aroud 5-8.6% interest on them depending on the coin.</p>
-<p>Long Term Holdig: My long term hold currently is just my Roth IRA. The beauty of some of them (including itrust capital which I use) is that right on their website at any time, I can swap BTC-ETH-USD-GOLD-DOT-SILVER etc. all without paying any tax on that trade aside from a 1% fee. This is a perfect method to help dollar cost out of the market (into USD) without paying taxes on every trade. So when the bull market begins to near its peak (but hopefully it sees its traditional 60% corrections!) you can begin to pull your money out to buy the dips and dollar cost average back in once the reaccumulation phase begins again. Or you could simple leave everything in BTC/ETH/DOT/ADA and never worry about it until you retire, that works too.</p>
-<p>As far as long term holding on my money in wallets and on exchanges, I try to hold the coins I buy for a year to avoid the ~40% capital gains tax rate here in CA, and I leave them in a place that earns me interest. If it happens that I would like to cost average out through a few weeks or months of what I consider to be a market cycle top, I will simply swap BTC etc. for USDC (not tether) which is tied to the US dollar, and leave that USDC ready to swap back to BTC etc. when I want to cost average back into the market. I like Blockfi for doing this, but as I understand, Voyager, Celsius, Gemini, etc. also offer similar things possibly with marginnally better rates.</p>
-<p>CASHING OUT: Don’t do it! Just kidding, diversification of profits is key, especially when your portfolio has 10X’ed in a year or two. When you want to take profits from USDC -&gt; USD or BTC -&gt; USD just use whatever service you use to buy crypto via ACH and transfer it to your bank account. There may be some up front fees but it will work, and will be captured on the blockchain for tax purposes when you link your Binance, Blockfi, Coinbase etc. to a service like Cointracker.com for your taxes.</p>
-<p>TAXES: This is generally for US Residents, and in refrence to myself, living in California. The IRS loves it’s taxes &amp; your state has a local tax rate in addition to the federal tax rate of ___ because bitcoin and other currencies are considered “property,” and therefore are able to be taxed under capital gains during a taxable event.</p>
-<p>Taxable events: Trading Crypto -&gt; Fiat(USD) (Like transfering to your bank) Purchasing goods with crypto Trading one crypto for another (trading BTC for ETH or ETH for LTC)</p>
-<p>Income Tax Events: Recieving Crypto as Income for work Staking Activities Mining Activities Airdrops Defi Lending Interest</p>
+<p>Market cycle holding: After purchasing your internet coins through
+ACH(cheaper) or debit card, you can leave them on these exchanges which
+is sometimes considered bad form from hacks which have taken place in
+the past. You can also transfer them to a more long term wallet like a
+“Ledger.” I prefer to keep my bluechip coins in Blockfi and earn aroud
+5-8.6% interest on them depending on the coin.</p>
+<p>Long Term Holdig: My long term hold currently is just my Roth IRA.
+The beauty of some of them (including itrust capital which I use) is
+that right on their website at any time, I can swap
+BTC-ETH-USD-GOLD-DOT-SILVER etc. all without paying any tax on that
+trade aside from a 1% fee. This is a perfect method to help dollar cost
+out of the market (into USD) without paying taxes on every trade. So
+when the bull market begins to near its peak (but hopefully it sees its
+traditional 60% corrections!) you can begin to pull your money out to
+buy the dips and dollar cost average back in once the reaccumulation
+phase begins again. Or you could simple leave everything in
+BTC/ETH/DOT/ADA and never worry about it until you retire, that works
+too.</p>
+<p>As far as long term holding on my money in wallets and on exchanges,
+I try to hold the coins I buy for a year to avoid the ~40% capital gains
+tax rate here in CA, and I leave them in a place that earns me interest.
+If it happens that I would like to cost average out through a few weeks
+or months of what I consider to be a market cycle top, I will simply
+swap BTC etc. for USDC (not tether) which is tied to the US dollar, and
+leave that USDC ready to swap back to BTC etc. when I want to cost
+average back into the market. I like Blockfi for doing this, but as I
+understand, Voyager, Celsius, Gemini, etc. also offer similar things
+possibly with marginnally better rates.</p>
+<p>CASHING OUT: Don’t do it! Just kidding, diversification of profits is
+key, especially when your portfolio has 10X’ed in a year or two. When
+you want to take profits from USDC -&gt; USD or BTC -&gt; USD just use
+whatever service you use to buy crypto via ACH and transfer it to your
+bank account. There may be some up front fees but it will work, and will
+be captured on the blockchain for tax purposes when you link your
+Binance, Blockfi, Coinbase etc. to a service like Cointracker.com for
+your taxes.</p>
+<p>TAXES: This is generally for US Residents, and in refrence to myself,
+living in California. The IRS loves it’s taxes &amp; your state has a
+local tax rate in addition to the federal tax rate of ___ because
+bitcoin and other currencies are considered “property,” and therefore
+are able to be taxed under capital gains during a taxable event.</p>
+<p>Taxable events: Trading Crypto -&gt; Fiat(USD) (Like transfering to
+your bank) Purchasing goods with crypto Trading one crypto for another
+(trading BTC for ETH or ETH for LTC)</p>
+<p>Income Tax Events: Recieving Crypto as Income for work Staking
+Activities Mining Activities Airdrops Defi Lending Interest</p>
 <p>Captured Losses of up to $3000 can be written off.</p>
-<p>Taxes Made Easy: I personally use www.Cointracker.com I add all my wallets, &amp; upload Csv’s from a few of me accounts then have a personalized tax form I can ammend to a service like turbo tax or with an accounntant.</p>
+<p>Taxes Made Easy: I personally use www.Cointracker.com I add all my
+wallets, &amp; upload Csv’s from a few of me accounts then have a
+personalized tax form I can ammend to a service like turbo tax or with
+an accounntant.</p>
 <p><br></p>
 
 

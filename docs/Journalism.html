@@ -13,7 +13,7 @@
 
 <title>Journalism.knit</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -144,11 +144,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -293,8 +297,10 @@ $(document).ready(function () {
 <strong><em>Peer Reviewed Opinions.</em></strong><br />
 <strong><em>Views are my own.</em></strong>
 </h6>
-<p><em><a href="https://tylerisyoung.substack.com/?target=_blank">Tylerisyoung.Substack.com</a><br />
-<a href="https://twitter.com/Tylerisyoung/?tagets=_blank">Twitter.com/TylerisYoung</a></em><br />
+<p><em><a
+href="https://tylerisyoung.substack.com/?target=_blank">Tylerisyoung.Substack.com</a><br />
+<a
+href="https://twitter.com/Tylerisyoung/?tagets=_blank">Twitter.com/TylerisYoung</a></em><br />
 _________________________</p>
 <br>
 <h4>
@@ -303,16 +309,28 @@ _________________________</p>
 [<strong><em>List of All Articles</em></strong>]
 </summary>
 <p><a href="./n/a.html"></a></p>
-<p>Article: <a href="./mmt.html">Modern Monetary Theory - Slow at first, then all at once.</a></p>
-<p>Article: <a href="./politicsandcriticaltheory.html">Politics, Critical Theory, and our loss of Sensemaking in 2020</a></p>
-<p>Article: <a href="./Fromcanadatocoosbay.html">From Canada to Coos Bay, The Politics of a Pipeline</a></p>
-<p>Article: <a href="./distributedideasuppressioncomplex.html">Distributed Idea Suppression Complex</a></p>
-<p>Article: <a href="./mainstreammonitoringandmanipulation.html">Mainstream Monitoring and Manipulation</a></p>
+<p>Article: <a href="./mmt.html">Modern Monetary Theory - Slow at first,
+then all at once.</a></p>
+<p>Article: <a href="./politicsandcriticaltheory.html">Politics,
+Critical Theory, and our loss of Sensemaking in 2020</a></p>
+<p>Article: <a href="./Fromcanadatocoosbay.html">From Canada to Coos
+Bay, The Politics of a Pipeline</a></p>
+<p>Article: <a
+href="./distributedideasuppressioncomplex.html">Distributed Idea
+Suppression Complex</a></p>
+<p>Article: <a
+href="./mainstreammonitoringandmanipulation.html">Mainstream Monitoring
+and Manipulation</a></p>
 <p><br></p>
 <p>Story: <a href="./thereicampaign.html">The REI Campaign</a></p>
-<p>Story: <a href="https://www.lightheartedhumans.com/storytelling/2019/6/9/entry-003-cycling-from-oregon-to-mexico">Cycling from Oregon to Mexico</a></p>
-<p>Story: <a href="./journalism/adventure/ayearinecuador.html">A Year in Ecuador</a></p>
-<p>Story: <a href="https://www.lightheartedhumans.com/storytelling/2019/6/19/entry-005-rafting-the-deschutes-tyler-young">Rafting the Deschutes</a></p>
+<p>Story: <a
+href="https://www.lightheartedhumans.com/storytelling/2019/6/9/entry-003-cycling-from-oregon-to-mexico">Cycling
+from Oregon to Mexico</a></p>
+<p>Story: <a href="./journalism/adventure/ayearinecuador.html">A Year in
+Ecuador</a></p>
+<p>Story: <a
+href="https://www.lightheartedhumans.com/storytelling/2019/6/19/entry-005-rafting-the-deschutes-tyler-young">Rafting
+the Deschutes</a></p>
 <!---
 
 [*Silver*](./bitcoi.html) (Coming Soon) 
@@ -336,18 +354,23 @@ _________________________</p>
 
 </h3>
 <h4>
-<p><a href="./economics.html"><strong><em>Economics</em></strong></a></p>
-<p><a href="./Environment.html"><strong><em>Environment</em></strong></a></p>
-<p><a href="./Adventure.html"><strong><em>Adventure</em></strong></a></p>
+<p><a
+href="./economics.html"><strong><em>Economics</em></strong></a></p>
+<p><a
+href="./Environment.html"><strong><em>Environment</em></strong></a></p>
+<p><a
+href="./Adventure.html"><strong><em>Adventure</em></strong></a></p>
 <p><a href="./Health.html"><strong><em>Health</em></strong></a></p>
 <p><a href="./Politics.html"><strong><em>Politics</em></strong></a></p>
 <p><br></p>
 <p><br></p>
-<br> Essay: <a href="./docs/Theartistsrebellion.html">The Artists Rebellion</a><br />
+<br> Essay: <a href="./docs/Theartistsrebellion.html">The Artists
+Rebellion</a><br />
 
 <center>
 <p><br> <img src="images/THE%20ARTISTS%20REBELLION.png" /></p>
-<p><br> <iframe width="560" height="315" src="https://www.youtube.com/embed/3Yp1ob_T7_k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<p><br>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3Yp1ob_T7_k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
 
 
 

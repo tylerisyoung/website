@@ -13,7 +13,7 @@
 
 <title>AYearInEcuador.knit</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -144,11 +144,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -290,10 +294,13 @@ $(document).ready(function () {
 <strong>A Year in Ecuador</strong>
 </h1>
 <h6>
-<strong><em>A Story, Photographs, and Films by Tyler Young.</em></strong>
+<strong><em>A Story, Photographs, and Films by Tyler
+Young.</em></strong>
 </h6>
-<p><em><a href="www.tylerisyoung.substack.com">Tylerisyoung.Substack.com</a></em><br />
-<em><a href="www.twitter.com/Tylerisyoung">Twitter.com/TylerisYoung</a></em><br />
+<p><em><a
+href="www.tylerisyoung.substack.com">Tylerisyoung.Substack.com</a></em><br />
+<em><a
+href="www.twitter.com/Tylerisyoung">Twitter.com/TylerisYoung</a></em><br />
 _________________________ <br> 06/01/2017 <br></p>
 <img src="images/Stories/Ecuador/Ecuador_1.jpg" />
 <center>
@@ -304,14 +311,40 @@ I spent a year in Ecuador filming for a documentary
 <p>In Partnership With AUM FILMS:</p>
 <p><img src="images/Stories/Ecuador/Ecuador_2.jpg" /></p>
 </center>
-<p><br> In partnership with AUM Films, and Kip Anderson who starred in and directed the films “What the Health,” and “Cowspiracy,” I went to the Ecuadorian Amazon with four young and ambitious environmentalists, and we set out to make a film. We didn’t know what we were getting into, but we were sure that it needed to include our wonderous journey through a foreign place, the locals, the beauty and biodiversity that was constantly surrounding us, the environmental concerns of the region, and most importantly, it needed to be a testament to our growth as tourists, environmentalists, and as humans. This is our story.</p>
+<p><br> In partnership with AUM Films, and Kip Anderson who starred in
+and directed the films “What the Health,” and “Cowspiracy,” I went to
+the Ecuadorian Amazon with four young and ambitious environmentalists,
+and we set out to make a film. We didn’t know what we were getting into,
+but we were sure that it needed to include our wonderous journey through
+a foreign place, the locals, the beauty and biodiversity that was
+constantly surrounding us, the environmental concerns of the region, and
+most importantly, it needed to be a testament to our growth as tourists,
+environmentalists, and as humans. This is our story.</p>
 <br>
 <center>
 <img src="images/Stories/Ecuador/Ecuador_4.jpeg" alt="drawing" width="800"/>
 </center>
 <p><br></p>
-<p>For a country smaller than Arizona, it is amazing how much biodiversity is contained within the flourishing country of Ecuador on the western coast of South America. It is one of the most biologically diverse countries in the world, and home to thousands of endemic species sprawling from the Galapagos to the Amazon. The dry coastal plains are home to Darwin’s Finches, blue footed boobies, papayas, and countless variants of delicious fruits. Moving up towards the Andes is the cloud forest which remains covered with beautiful butterflies, toucans, and yet to be discovered orchid species in a now diverse field pioneered by anthropologist and botanist, Richard Schultes. The snow capped Andes and the capital of Quito are a subtle reminder of the Spanish conquest centuries prior, though many indigenous people have remained happily in their way of life sustaining farming off the land through slash and burn practices, herding llamas, and drinking the maize based Chicha.</p>
-<p>Then there is the Amazon, where I spent most of my time. A place so ominous that people make jokes about it, their jaws drop when I tell them I spent more than 8 months there in my hammock. They ask if I am doing okay after catching Dengue Fever, and they say they could never do it. I tell them I wasn’t sure that I could either, but life is about pushing yourself, finding your limits then asking, “Why stop there?”</p>
+<p>For a country smaller than Arizona, it is amazing how much
+biodiversity is contained within the flourishing country of Ecuador on
+the western coast of South America. It is one of the most biologically
+diverse countries in the world, and home to thousands of endemic species
+sprawling from the Galapagos to the Amazon. The dry coastal plains are
+home to Darwin’s Finches, blue footed boobies, papayas, and countless
+variants of delicious fruits. Moving up towards the Andes is the cloud
+forest which remains covered with beautiful butterflies, toucans, and
+yet to be discovered orchid species in a now diverse field pioneered by
+anthropologist and botanist, Richard Schultes. The snow capped Andes and
+the capital of Quito are a subtle reminder of the Spanish conquest
+centuries prior, though many indigenous people have remained happily in
+their way of life sustaining farming off the land through slash and burn
+practices, herding llamas, and drinking the maize based Chicha.</p>
+<p>Then there is the Amazon, where I spent most of my time. A place so
+ominous that people make jokes about it, their jaws drop when I tell
+them I spent more than 8 months there in my hammock. They ask if I am
+doing okay after catching Dengue Fever, and they say they could never do
+it. I tell them I wasn’t sure that I could either, but life is about
+pushing yourself, finding your limits then asking, “Why stop there?”</p>
 <br>
 <center>
 Film &amp; Photos by Tyler Young.
@@ -322,7 +355,9 @@ Film &amp; Photos by Tyler Young.
 </center>
 <br>
 <center>
-<img src="images/Stories/Ecuador/Ecuador_6.jpeg" alt="drawing" width="300"/> <img src="images/Stories/Ecuador/Ecuador_7.jpeg" alt="drawing" width="300"/> <img src="images/Stories/Ecuador/Ecuador_8.jpg" alt="drawing" width="300"/>
+<img src="images/Stories/Ecuador/Ecuador_6.jpeg" alt="drawing" width="300"/>
+<img src="images/Stories/Ecuador/Ecuador_7.jpeg" alt="drawing" width="300"/>
+<img src="images/Stories/Ecuador/Ecuador_8.jpg" alt="drawing" width="300"/>
 </center>
 <p><br></p>
 <br> <br> <br>
@@ -331,7 +366,9 @@ Film &amp; Photos by Tyler Young.
 <strong>Film: A Year in Ecuador</strong>
 </h2>
 <strong><em>(22:01)</em></strong><br />
-<br> <a href="https://vimeo.com/341473027"><img src="images/Stories/Ecuador/Ecuadorthumbnail.jpg" alt="IMAGE ALT TEXT HERE" /></a>
+<br> <a href="https://vimeo.com/341473027"><img
+src="images/Stories/Ecuador/Ecuadorthumbnail.jpg"
+alt="IMAGE ALT TEXT HERE" /></a>
 </center>
 <p><br> <br> <br> <br></p>
 <center>
@@ -339,7 +376,8 @@ Film &amp; Photos by Tyler Young.
 </center>
 <p><br></p>
 <center>
-<img src="images/Stories/Ecuador/Ecuador_10.jpg" alt="drawing" width="400"/> <img src="images/Stories/Ecuador/Ecuador_11.jpg" alt="drawing" width="400"/>
+<img src="images/Stories/Ecuador/Ecuador_10.jpg" alt="drawing" width="400"/>
+<img src="images/Stories/Ecuador/Ecuador_11.jpg" alt="drawing" width="400"/>
 </center>
 <p><br></p>
 <p><br> <br></p>
@@ -349,14 +387,17 @@ Film &amp; Photos by Tyler Young.
 <strong>Film: Watchtower of Ecuador</strong>
 </h2>
 <strong><em>(5:07)</em></strong><br />
-<br> <a href="https://www.youtube.com/watch?v=ZbWKWzaExlk&amp;t=3s"><img src="images/Stories/Ecuador/Ecuadorthumbnail_3.jpg" alt="IMAGE ALT TEXT HERE" /></a>
+<br> <a href="https://www.youtube.com/watch?v=ZbWKWzaExlk&amp;t=3s"><img
+src="images/Stories/Ecuador/Ecuadorthumbnail_3.jpg"
+alt="IMAGE ALT TEXT HERE" /></a>
 </center>
 <p><br></p>
 <p><br> <br> <br> <br></p>
 <br>
 <center>
 <img src="images/Stories/Ecuador/Ecuador_12.jpeg" alt="drawing" width="800"/><br />
-<br> <img src="images/Stories/Ecuador/Ecuador_13.jpeg" alt="drawing" width="800"/>
+<br>
+<img src="images/Stories/Ecuador/Ecuador_13.jpeg" alt="drawing" width="800"/>
 </center>
 <p><br></p>
 <p><br> <br></p>
@@ -366,11 +407,15 @@ Film &amp; Photos by Tyler Young.
 <strong>Film: Behinnd the Scenes, A Local Perspective</strong>
 </h2>
 <p><strong><em>(28:53)</em></strong><br />
-<br> <a href="https://www.youtube.com/watch?v=veequUBqgKA&amp;list=PL2Vk3ziX2J7soct97302TT9d-ZZGGq1zL&amp;index=3"><img src="images/Stories/Ecuador/EcuadorThumbnail_2.jpg" alt="IMAGE ALT TEXT HERE" /></a> <br></p>
+<br> <a
+href="https://www.youtube.com/watch?v=veequUBqgKA&amp;list=PL2Vk3ziX2J7soct97302TT9d-ZZGGq1zL&amp;index=3"><img
+src="images/Stories/Ecuador/EcuadorThumbnail_2.jpg"
+alt="IMAGE ALT TEXT HERE" /></a> <br></p>
 <p><br></p>
 <br>
 <center>
-<img src="images/Stories/Ecuador/Ecuador_14.jpg" alt="drawing" width="300"/> <img src="images/Stories/Ecuador/Ecuador_15.jpeg" alt="drawing" width="300"/>
+<img src="images/Stories/Ecuador/Ecuador_14.jpg" alt="drawing" width="300"/>
+<img src="images/Stories/Ecuador/Ecuador_15.jpeg" alt="drawing" width="300"/>
 </center>
 <p><br></p>
 <br>
@@ -379,7 +424,8 @@ Film &amp; Photos by Tyler Young.
 </center>
 <br>
 <center>
-<img src="images/Stories/Ecuador/Ecuador_17.jpeg" alt="drawing" width="400"/> <img src="images/Stories/Ecuador/Ecuador_18.jpeg" alt="drawing" width="400"/>
+<img src="images/Stories/Ecuador/Ecuador_17.jpeg" alt="drawing" width="400"/>
+<img src="images/Stories/Ecuador/Ecuador_18.jpeg" alt="drawing" width="400"/>
 </center>
 <p><br></p>
 <center>
@@ -392,7 +438,10 @@ Enjoy!
 <center>
 <br>
 <center>
-<img src="images/Stories/Ecuador/Ecuador_20.jpg" title="fig:" alt="image" />
+<div class="figure">
+<img src="images/Stories/Ecuador/Ecuador_20.jpg" alt="" />
+<p class="caption">image</p>
+</div>
 </center>
 <p><br></p>
 <center>

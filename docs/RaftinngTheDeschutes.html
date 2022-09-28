@@ -13,7 +13,7 @@
 
 <title>RaftinngTheDeschutes.knit</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -144,11 +144,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -292,8 +296,10 @@ $(document).ready(function () {
 <h6>
 <strong><em>White Water To The Gills</em></strong>
 </h6>
-<em><a href="www.tylerisyoung.substack.com">Tylerisyoung.Substack.com</a></em><br />
-<em><a href="www.twitter.com/Tylerisyoung">Twitter.com/TylerisYoung</a></em><br />
+<em><a
+href="www.tylerisyoung.substack.com">Tylerisyoung.Substack.com</a></em><br />
+<em><a
+href="www.twitter.com/Tylerisyoung">Twitter.com/TylerisYoung</a></em><br />
 _________________________ <br> 04/12/2018 <br><br />
 
 <center>
@@ -306,47 +312,93 @@ _________________________ <br> 04/12/2018 <br><br />
 </h3>
 </center>
 <p><br></p>
-<p>We were being guided by Ethan Wyman down the Deschutes River, Oregon. It was lovely. Sunrise hikes, rafting all day, and sunset walks before campfires. The 7 of us were having a great time. 1 heavy gear raft, 1 floaty boat, and 2 kayaks, We had it all!</p>
+<p>We were being guided by Ethan Wyman down the Deschutes River, Oregon.
+It was lovely. Sunrise hikes, rafting all day, and sunset walks before
+campfires. The 7 of us were having a great time. 1 heavy gear raft, 1
+floaty boat, and 2 kayaks, We had it all!</p>
 <br>
 <center>
 <img src="images/Stories/RaftingTheDeschutes/Deschutes_2.jpeg" alt="drawing" width="600"/>
 </center>
 <p><br></p>
-<p>After some time on the river, as you might expect, there were rocks that were really better if avoided, but it was doable, we decided to head straight through the center, splitting the first two rocks then a hard right to avoid the next few. Ethan and Kelsey went first on the gear raft to set up rope support if necessary, then it was myself, Graham and Artesia following close behind in a boat with no seatbelts to help.</p>
+<p>After some time on the river, as you might expect, there were rocks
+that were really better if avoided, but it was doable, we decided to
+head straight through the center, splitting the first two rocks then a
+hard right to avoid the next few. Ethan and Kelsey went first on the
+gear raft to set up rope support if necessary, then it was myself,
+Graham and Artesia following close behind in a boat with no seatbelts to
+help.</p>
 <br> <br>
 <center>
-<img src="images/Stories/RaftingTheDeschutes/Deschutes_3.jpg" alt="drawing" width="300"/> <img src="images/Stories/RaftingTheDeschutes/Deschutes_4.jpeg" alt="drawing" width="300"/>
+<img src="images/Stories/RaftingTheDeschutes/Deschutes_3.jpg" alt="drawing" width="300"/>
+<img src="images/Stories/RaftingTheDeschutes/Deschutes_4.jpeg" alt="drawing" width="300"/>
 </center>
 <p><br> <br></p>
-<p>As we’re splitting down the first set of rapids which have a bit of a wild drop between the two rocks, Artesia was out, overboard! Graham and I finished through the rapid to look back, Artesia pops her head up yelling, Graham and I immediately started back paddling for her, she drifted to us and I grabbed her hand, she said “My knee is fucked.”</p>
+<p>As we’re splitting down the first set of rapids which have a bit of a
+wild drop between the two rocks, Artesia was out, overboard! Graham and
+I finished through the rapid to look back, Artesia pops her head up
+yelling, Graham and I immediately started back paddling for her, she
+drifted to us and I grabbed her hand, she said “My knee is fucked.”</p>
 <p><br> <br></p>
 <center>
 <img src="images/Stories/RaftingTheDeschutes/Deschutes_5.jpg" alt="drawing" width="800"/><br />
-<br> <img src="images/Stories/RaftingTheDeschutes/Deschutes_6.jpeg" alt="drawing" width="800"/>
+<br>
+<img src="images/Stories/RaftingTheDeschutes/Deschutes_6.jpeg" alt="drawing" width="800"/>
 </center>
 <p><br> <br></p>
-<p>We were floating downriver and I began to pull her up, she said she would stay in the water for a moment to recover, and we just floated along for now, things were calm, she made it to the boat, she didn’t go under, we were going to be fine.</p>
+<p>We were floating downriver and I began to pull her up, she said she
+would stay in the water for a moment to recover, and we just floated
+along for now, things were calm, she made it to the boat, she didn’t go
+under, we were going to be fine.</p>
 <p><br> <br></p>
 <center>
-<img src="images/Stories/RaftingTheDeschutes/Deschutes_7.jpg" alt="drawing" width="400"/> <img src="images/Stories/RaftingTheDeschutes/Deschutes_8.jpg" alt="drawing" width="400"/>
+<img src="images/Stories/RaftingTheDeschutes/Deschutes_7.jpg" alt="drawing" width="400"/>
+<img src="images/Stories/RaftingTheDeschutes/Deschutes_8.jpg" alt="drawing" width="400"/>
 </center>
 <p><br> <br></p>
-<p>Suddenly, we hear Ethan yelling, I look over at him and he is standing up in his boat waving his arms frantically towards the sky saying “UP UP UP UP!” I look downriver and we’re headed dead center for a day ender. Graham leans over and we yank her up into the center of the boat. We begin paddling as if there’s nothing else ever to do, it’s only the two of us, Artesia’s paddle was lost in the shuffle.</p>
+<p>Suddenly, we hear Ethan yelling, I look over at him and he is
+standing up in his boat waving his arms frantically towards the sky
+saying “UP UP UP UP!” I look downriver and we’re headed dead center for
+a day ender. Graham leans over and we yank her up into the center of the
+boat. We begin paddling as if there’s nothing else ever to do, it’s only
+the two of us, Artesia’s paddle was lost in the shuffle.</p>
 <p><br> <br></p>
 <center>
 <img src="images/Stories/RaftingTheDeschutes/Deschutes_9.jpg" alt="drawing" width="800"/>
 </center>
 <p><br> <br></p>
-<p>The rush of the river was loud but I heard nothing, the rock was quickly approaching and we were making no headway. Our boat was sideways. Graham would hit first… we got one two three strokes but not in rhythm, and not in time, when I paddle we turn left, with Graham it’s back right. We continue on forward toward the protruding grey and black mass of rock that’s sharp volcanic basalt. We hit one, a stroke together and we move, we realized, and then we hit another, making headway but not fast enough, it was too late, I gave up paddling, we braced for impact, still sideways as we were.</p>
+<p>The rush of the river was loud but I heard nothing, the rock was
+quickly approaching and we were making no headway. Our boat was
+sideways. Graham would hit first… we got one two three strokes but not
+in rhythm, and not in time, when I paddle we turn left, with Graham it’s
+back right. We continue on forward toward the protruding grey and black
+mass of rock that’s sharp volcanic basalt. We hit one, a stroke together
+and we move, we realized, and then we hit another, making headway but
+not fast enough, it was too late, I gave up paddling, we braced for
+impact, still sideways as we were.</p>
 <br> <br>
 <center>
 <img src="images/Stories/RaftingTheDeschutes/Deschutes_10.jpg" alt="drawing" width="800"/>
 </center>
 <p><br> <br></p>
-<p>The noise grew in my head, I heard the rushing of water getting louder and louder as it rushed around the rock in its path, just a few feet away, the rapid began pulling us in, we were at its mercy. The water hitting the rock rushed and rushed around, splitting the path in two and our boat hit the new stream of flowing water from the rock, it pulled us down Into it, accelerating more, the back of the boat drifted first and immediately dragged, flipping Graham upstream and me down. Artesia in the center trying to get into a better position before we collide. Our boat does a 180, and now I’m facing the rock, but the boat keeps spinning as it catches the strong undercurrent. This new current, a new direction flowing strongly in all ways around the rock and bringing us with it, I could have leaned out and touched it, but I didn’t dare. We floated past in what seemed like magic, the day ender was behind us once and for all.</p>
+<p>The noise grew in my head, I heard the rushing of water getting
+louder and louder as it rushed around the rock in its path, just a few
+feet away, the rapid began pulling us in, we were at its mercy. The
+water hitting the rock rushed and rushed around, splitting the path in
+two and our boat hit the new stream of flowing water from the rock, it
+pulled us down Into it, accelerating more, the back of the boat drifted
+first and immediately dragged, flipping Graham upstream and me down.
+Artesia in the center trying to get into a better position before we
+collide. Our boat does a 180, and now I’m facing the rock, but the boat
+keeps spinning as it catches the strong undercurrent. This new current,
+a new direction flowing strongly in all ways around the rock and
+bringing us with it, I could have leaned out and touched it, but I
+didn’t dare. We floated past in what seemed like magic, the day ender
+was behind us once and for all.</p>
 <br> <br>
 <center>
-<img src="images/Stories/RaftingTheDeschutes/Deschutes_11.jpeg" alt="drawing" width="400"/> <img src="images/Stories/RaftingTheDeschutes/Deschutes_12.jpg" alt="drawing" width="400"/><br />
+<img src="images/Stories/RaftingTheDeschutes/Deschutes_11.jpeg" alt="drawing" width="400"/>
+<img src="images/Stories/RaftingTheDeschutes/Deschutes_12.jpg" alt="drawing" width="400"/><br />
 <br><br />
 <img src="images/Stories/RaftingTheDeschutes/Deschutes_13.jpg" alt="drawing" width="600"/>
 </center>

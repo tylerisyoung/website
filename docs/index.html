@@ -13,7 +13,7 @@
 
 <title>index.knit</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -144,11 +144,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -293,26 +297,45 @@ $(document).ready(function () {
 Creativity, Data Science &amp; Prioritization for a Greater Good.
 </h6>
 <h6>
-<strong><em>B.S. Environmental Studies</em></strong> <strong><em>UO ’18,</em></strong><br />
-<strong><em>M.S. Data Analytics &amp; Policy Evaluation</em></strong> <strong><em>ASU ’22</em></strong>
+<strong><em>B.S. Environmental Studies</em></strong> <strong><em>UO
+’18,</em></strong><br />
+<strong><em>M.S. Data Analytics &amp; Policy Evaluation</em></strong>
+<strong><em>ASU ’22</em></strong>
 </h6>
 <h5>
 <br> <strong>Currently:</strong>
 </h5>
 <h6>
-<strong>Founder &amp; Creative Director - Lighthearted Humans</strong><br />
+<strong>Founder &amp; Creative Director - Lighthearted
+Humans</strong><br />
 <strong>Video Production - California Academy of Sciences</strong>
 </h6>
-<p>Social: <em> <a href="http://youtube.com/tylerisyoung/?target=_blank">Youtube</a> , <a href="https://www.instagram.com/tylerisyoung/?target=_blank">Instagram</a> , <a href="https://www.twitter.com/Tylerisyoung/?target=_blank">Twitter</a> , <a href="https://www.github.com/tylerisyoung/?target=_blank">GitHub</a> , <a href="https://tylerisyoung.substack.com/people/8775252-tylerisyoung">Substack</a> , <a href="mailto:Tyleralexanderyoung@gmail.com/?target=_blank%5D">Email</a> </em></p>
+<p>Social: <em> <a
+href="http://youtube.com/tylerisyoung/?target=_blank">Youtube</a> , <a
+href="https://www.instagram.com/tylerisyoung/?target=_blank">Instagram</a>
+, <a
+href="https://www.twitter.com/Tylerisyoung/?target=_blank">Twitter</a> ,
+<a href="https://www.github.com/tylerisyoung/?target=_blank">GitHub</a>
+, <a
+href="https://tylerisyoung.substack.com/people/8775252-tylerisyoung">Substack</a>
+, <a
+href="mailto:Tyleralexanderyoung@gmail.com/?target=_blank%5D">Email</a>
+</em></p>
 <hr />
 <p><br></p>
 <h5>
-<strong>My name is Tyler, I’m interested in data analytics, policy, film, and journalism. I love working on prioritization, effective altruism, econometrics, and I recently founded Lighthearted Humans, a nonprofit marketing and production company to communicate these ideas and their optimal solutions. I aim to make the world a better place through creativity for a greater good.</strong>
+<strong>My name is Tyler, I’m interested in data analytics, policy,
+film, and journalism. I love working on prioritization, effective
+altruism, econometrics, and I recently founded Lighthearted Humans, a
+nonprofit marketing and production company to communicate these ideas
+and their optimal solutions. I aim to make the world a better place
+through creativity for a greater good.</strong>
 </h5>
 <p><br> <br></p>
 <p><img src="images/surf.jpg" /></p>
 <h6>
-<strong><em>This website was created by Tyler Young in Rstudio, more info on Github.</em></strong>
+<strong><em>This website was created by Tyler Young in Rstudio, more
+info on Github.</em></strong>
 </h6>
 <br> <br> <br> <br> <br>
 <center>
