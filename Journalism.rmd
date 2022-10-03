@@ -30,6 +30,7 @@ output:
  <details><summary>[***List of All Articles***]</summary>
 [ ](./n/a.html) 
 
+Article: [Gendered and Racialized Buzzwords](./GenderedandRacializedBuzzwords.html)  
 
 Article: [Modern Monetary Theory - Slow at first, then all at once.](./mmt.html)   
 

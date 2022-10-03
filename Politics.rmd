@@ -45,6 +45,8 @@ output:
 
 Article: [*Politics, Critical Theory, and our loss of Sensemaking in 2020*](./politicsandcriticaltheory.html)    
 <br>
+Article: [Gendered and Racialized Buzzwords](./GenderedandRacializedBuzzwords.html)  
+<br>
 Article: [*Distributed Idea Suppression Complex*](./distributedideasuppressioncomplex.html)  
 <br>
 Article: [*Mainstream Monitoring and Manipulation*](./mainstreammonitoringandmanipulation.html)  
