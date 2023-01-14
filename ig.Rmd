@@ -54,7 +54,7 @@ output:
 ***Projects***
 </h4>
 - [Lighthearted Humans - Creativity for a greater good](www.lightheartedhumans.com)   
-- [Ongoing (almost) Daily Technical Analysis of Financial Markets](./ongoingta.html)    
+- [Ongoing Technical Analysis of Financial Markets & Geopolitics](./ongoingta.html)    
 
 <br>
 
