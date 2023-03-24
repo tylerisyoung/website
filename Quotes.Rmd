@@ -1,0 +1,133 @@
+---
+title: ""
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+    
+    css: styles.css
+
+
+---
+
+<br>
+<br>
+
+<h1>**Quotes**</h1> 
+<h6>
+***Couldn't have said it better myself.***
+</h6>
+
+ <br>
+
+
+<h4>**Short Quotes**</h4> 
+
+<br>
+<br>
+
+"When freedom is outlawed, only outlaws will be free” <br>- Tom Robbins 
+<br>
+<br>
+"Who is John Galt?" <br> 
+- Ayn Rand  <br>
+<br>
+"The price good men pay for indifference to public affairs is to be rules by evil" <br>
+- Plato  <br>
+<br>
+"When stupidity is considered patriotism, it is unsafe to be intelligent" <br>
+- Isaac Asimov  <br>
+<br>
+"A license is when the government takes away your right to do something, and then sells it back to you" <br>
+- Anon <br>  
+<br>
+Thinking is difficult, that's why most people judge" <br> 
+- Carl Jung <br> 
+<br>
+"Become a cynic; You're always either correct, or pleasantly surprised" <br>
+- Diogenes <br> 
+<br>
+"When you see corruption being rewarded and honesty becoming a self-sacrifice,you may know that your society is doomed" <br>
+— Ayn Rand  <br>
+<br>
+"We are what we repeatedly do. Excellence, then, is not an act, but a habit" <br>
+- Will Durant <br> 
+<br>
+"There is a level of cowardice lower than that of the conformist: The fashionable non-conformist"<br>
+- Ayn Rand <br>  
+<br>
+"It is becoming harder and harder to know what is true" <br>
+- Lex Friedman  <br> 
+<br>
+"Avoid negative people. They have a problem with every solution" <br>
+- Albert Einstein <br>  
+<br>
+"The object of life is not to be on the side of the majority, but to escape finding oneself in the ranks of the insane" <br>
+- Marcus Aurelius  <br>
+<br>
+If the freedom of speech is taken away then dumb and silent we may be led, like sheep to slaughter"<br>
+- George Washington  <br> 
+<br>
+"I ask you to judge me by the enemies I have made." <br>
+- Franklin Delano Roosevelt  <br>
+<br>
+"All tyranny begins with the desire to coerce others for the greater good."<br>
+- Naval<br>  
+<br>
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<h4>**Long Quotes**</h4> 
+
+<br>
+
+Post Modernism
+
+"As the aughts turned to the 2010s, and hipsters’ Generation Z offspring became my students, I noticed a distinct shift in the way many of them spoke. My Gen Z students didn’t just “like” something; they were “obsessed” with it. Doing something bad wasn’t just bad, it was “an epic fail.” If something was curious or abnormal, it was referred to as being “not a thing,” and inversely, if something was pleasant or enjoyable, it could be described as being “everything.” 
+
+At first I mostly viewed this as benign teen slang, until I started noticing that my students applied these ironic exaggerations to their conceptions of themselves as learners. Common statements such as, “I’m a little confused,” “I don’t really get it,” or “This one part is kind of hard for me,” all devolved into absolute statements: “I’m totally lost” or “It’s literally impossible.” Previously, maybe three out of four students would push past that initial discomfort that we all feel when learning something new. Suddenly, that ratio had completely flipped. What was this new attitude that so many of my students had simultaneously acquired? Had I just been getting old, and perhaps aged out of the playground known as modernity? In fact, I think it was actually postmodernity that I was struggling to make sense of.
+
+Postmodernism, as it would come to be known, began in 1960s France as a philosophical and artistic reaction to liberal humanism. Since then, it has gradually spread from the French Academy to now holding influence over the broader contemporary culture in the United States. Michel Foucalt, the French philosopher who is widely considered to be the father of postmodernism, gave a series of lectures in the U.S. on “Truth and Subjectivity” that were immensely popular. Time magazine’s 1981 profile on Foucault, which described his following as “a growing cult,” was prominently featured in the magazine’s Education section. As of 2019, he was the most highly cited scholar in all of academia, according to Google Scholar. 
+
+Postmodernism is a complicated field of philosophy, but its defining feature is its questioning of the existence of objective truth. It is useful, of course, for us to question faulty beliefs that we may have prematurely accepted as objective truth. Trusting the merits of scientific discoveries only makes sense if the scientific method is applied to itself. But many postmodernists feel that there is no such thing as knowledge at all. Opinions exist, and nothing else. Whereas in modernity we generally aimed to discover a singular truth (what “is”) based on empiricism and objectivity, the postmodernist aims to discover multiple truths (what “can be”) based on lived experience and subjectivity. This might be an interesting way to consider reality on occasion, but when subjectivity is viewed as what reality is, it immediately stalls the mechanisms of learning.
+
+- [Jesse A. Hartman](https://fairforall.substack.com/p/postmodernism-impede-learning) 
+
+
+<br>
+<br>
+
+Societal Decay
+
+"German word of the day is Wohlstandsverwahrlosung, a state of decay that results from having it too easy for too long, leading you to selfishly compare your own petty grievances &mediocre accomplishments to the pain &struggle of people who know the meaning of real problems."
+
+- [Helene von Bismarck](https://twitter.com/HeleneBismarck/status/1505254663087661059)
+
+
+<br>
+<br>
+
+On Penguins
+
+"When I begin to think at all, I get into such states of disgust and fury at the way the mob is going on that I choke; and have to go to the British Museum and look at Penguins till I get cool. I find Penguins at present the only comfort in life. One feels everything in the world so sympathetically ridiculous, one can't be angry when one looks at a Penguin." 
+
+- John Ruskin 
+
+
+<br>
+<br>
+
+Give em hell
+
+"While delivering a speech during his 1948 presidential campaign, a supporter yelled out "Give 'em Hell, Harry!" Truman replied, "I don't give them Hell. I just tell the truth about them, and they think it's Hell." Let that be our motto.
+
+- [Dr. Robert Malone](https://twitter.com/RWMaloneMD/status/1458937088724897793) 
+
+<br>

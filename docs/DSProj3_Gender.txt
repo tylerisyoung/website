@@ -1,0 +1,273 @@
+---
+title: "Gender in Nonprofits - a Chi Squared test"
+author: "Tyler Young"
+date: ""
+output:
+  html_document: 
+    theme: cosmo
+    highlight: haddock
+---
+
+
+# Question: Are male and female entrepeneurs represented differently in the nonprofit industry?
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library( dplyr )
+library( pander )
+library( ggplot2 )
+library( tidyverse )
+
+
+
+```
+
+### The dataset contains ten survey questions from a survey of nonprofit entrepreneurs. The gender variable represents our study groups, male and female.
+
+
+
+```{r}
+URL <- "https://github.com/DS4PS/cpp-524-sum-2020/blob/master/labs/data/female-np-entrepreneurs.rds?raw=true"
+dat <- readRDS(gzcon(url( URL )))
+head( dat )
+```
+
+
+<br>
+<br>
+
+
+# Survey Question 1:  
+Comparing education levels of male and female entrepreneurs. Education levels of male & female entrepreneurs. "What is the highest level of education you achieved?"
+
+Tables
+
+```{r}
+a <- table( dat$edu.level, dat$gender )
+a %>% prop.table( margin=1 ) %>% round(2) %>% pander()
+
+```
+
+Chi Square Tests
+
+```{r}
+
+chisq.test( a, simulate.p.value = TRUE , B = 10000 )
+
+```
+
+
+### Question 1 
+The two factors chi square p value is less than 0.05, therefore they are correlated, and not independent. While we find that females on average have slightly higher levels of education, they are not statistically significant and therefore not expressly correlated. 
+
+
+<br>
+<br>
+<br>
+<br>
+
+
+# Survey Question 2:  
+Compare work experience for male and female entrepreneurs. "Do males or females have more professional* work experience?"
+
+
+
+```{r}
+b <- table( dat$years.prof.exp, dat$gender )
+b %>% prop.table( margin=1 ) %>% round(2) %>% pander()
+
+```
+
+
+
+
+```{r}
+chisq.test( b, simulate.p.value = TRUE , B = 10000 )
+
+```
+
+ 
+The two factors chi square p value is greater than 0.05, therefore they are uncorrelated, and independent. The work experience of female entrepreneurs is on average greater and is statistically significant.
+
+<br>
+<br>
+<br>
+<br>
+
+# Survey Question 3:  
+Do females or males on average receive more seed funding?
+
+
+```{r}
+c <- table( dat$seed.funding, dat$gender )
+c %>% prop.table( margin=1 ) %>% round(2) %>% pander()
+
+```
+
+
+
+
+
+
+```{r}
+chisq.test( c, simulate.p.value = TRUE , B = 10000 )
+
+
+```
+
+The two factors chi square p value is greater than 0.05, therefore they are uncorrelated, and independent. Therefore we can determine that our data is statistically significant in finding that females receive seen funding more often than males. 
+
+
+<br>
+<br>
+<br>
+<br>
+
+# Survey Question 4:  
+Are males or females more willing to take on debt to start a business?
+
+```{r}
+
+d <- table( dat$take.on.debt, dat$gender )
+d %>% prop.table( margin=1 ) %>% round(2) %>% pander()
+
+```
+
+
+
+```{r}
+chisq.test( d, simulate.p.value = TRUE , B = 10000 )
+
+```
+
+
+The two factors chi square p value is just greater than 0.05, therefore they are uncorrelated, and independent. Our data do suggest that males comparatively take on debt more often than their counterparts. 
+
+<br>
+<br>
+<br>
+<br>
+
+# Survey Question 5:  
+Do males and females have different sources of funding that are most importasnt to their businesses?
+
+
+```{r}
+e <- table( dat$most.imp.fund.source, dat$gender )
+e %>% prop.table( margin=1 ) %>% round(2) %>% pander()
+
+```
+
+
+
+
+
+```{r}
+chisq.test( e, simulate.p.value = TRUE , B = 10000 )
+
+```
+The two factors chi square p value is just greater than 0.05, therefore they are uncorrelated, and independent. Our data do suggest that in some areas there are statistically significant differences in funding sources by gender. 
+
+<br>
+<br>
+<br>
+<br>
+
+# Survey question 6:  
+Does the average age of nonprofit founders differ by gender? 
+
+
+```{r include=FALSE}
+f <- table( dat$age, dat$gender )
+f %>% prop.table( margin=1 ) %>% round(2) %>% pander()
+
+```
+
+
+
+
+
+```{r}
+chisq.test( f, simulate.p.value = TRUE , B = 10000 )
+
+```
+
+
+
+
+
+```{r}
+t.test( age ~ gender, data=dat )
+
+
+
+```
+
+
+
+```{r}
+get_pval_from_tval <- function( tvalue, n1, n2 )
+{
+  df <- min( 655, 657 ) - 1  # size of treated group and comparison
+  pval <- 2 * pt( abs(tvalue), df=df, lower.tail=FALSE )
+  return( pval )
+}
+
+get_pval_from_tval( tvalue=-3.1749, n1=655, n2=657 )
+
+
+```
+
+Our data suggest within a 95% confidence interval that the average age of male nonprofit entrepreneurs is slightly older than that of female nonprofit entrepreneurs. (Though our adjusted alpha suggests the groups are equivalent, more in Q8)
+
+<br>
+<br>
+<br>
+<br>
+
+# Survey Question 7:  
+Were the income levels between men and women entrepeneurs different at the time of inception?
+
+
+
+```{r include=FALSE}
+g <- table( dat$income, dat$gender )
+g %>% prop.table( margin=1 ) %>% round(2) %>% pander()
+
+```
+
+
+
+
+
+```{r}
+chisq.test( g, simulate.p.value = TRUE , B = 10000 )
+
+```
+
+
+
+
+
+```{r}
+t.test( income ~ gender, data=dat )
+
+
+```
+
+The two factors chi square p value is just greater than 0.05, therefore they are uncorrelated, and independent. The differences in income between men and women at the time of starting a nonprofit was  meaningfully statistically different and greater for males.  
+
+
+<br>
+<br>
+<br>
+<br>
+
+# Analysis
+-Further investigation using Bonferroni's corrected alpha could be of use concerning type 1 errors. 
+-The lowest p-value across the contrasts was that of age. 
+-The only statistically significant p-value was that of age, and after running a basic Bonferroni Correction on it, we cannot reject the nunll hypothesis and therefore must state that these entrepreneurs surveyed  are statistically the same when considering gender.  
+
+```

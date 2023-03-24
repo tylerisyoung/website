@@ -89,6 +89,8 @@ Story: [Rafting the Deschutes](https://www.lightheartedhumans.com/storytelling/2
   
 [***Politics***](./Politics.html)  
 
+[***Quotes***](./Quotes.html)
+
 <br>
 
 
