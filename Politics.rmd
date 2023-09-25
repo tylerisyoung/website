@@ -30,7 +30,7 @@ output:
 <br>
 <h5>
 <center>
-***“Fascism should rightly be called Corporatism, as it is the merger of corporate and government power.”      
+***“Fascism should rightly be called Corporatism; as it is the merger of corporate and government power.”      
 - Benito Mussolini***
 </center>
 </h5>
