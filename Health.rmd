@@ -32,7 +32,9 @@ output:
 [ ](./n/a.html)  
 
 <br>
+Collection: [*Sauna Information*](./sauna.html) 
 
+<br>
 <details><summary>***Diet***</summary>
 [ ](./n/a.html)  
 
@@ -89,7 +91,8 @@ Article: [*Sugars*](./deepecolog.html) (Coming Soon)
 
 <details><summary>***Exercise***</summary>
 [ ](./n/a.html)  
-
+<br>
+Collection: [*Sauna Information*](./sauna.html) 
 <!---
 Article: [*Workouts*](./deepecolog.html) (Coming Soon)
 --->

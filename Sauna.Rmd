@@ -1,0 +1,116 @@
+---
+title: ""
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+    
+    css: styles.css
+
+
+---
+
+<br>
+<br>
+
+<h1>**The Sauna Collection **</h1> 
+<h6>
+***Literature Review***
+</h6>
+
+*[Tylerisyoung.Substack.com](www.tylerisyoung.substack.com)*   
+*[Twitter.com/TylerisYoung](www.twitter.com/Tylerisyoung)*  
+ _________________________
+ <br>
+ 09/25/2023
+ <br>
+ 
+<h3>
+Saunas are great!
+</h3>
+
+
+<br>
+All articles can be found for free with open access by using the DOI on *[SciHub.se](www.Scihub.se)*
+
+
+<br>
+2001 Hannuksela & Ellahham - "[Benefits and Risks of Sauna Bathing](https://linkinghub.elsevier.com/retrieve/pii/S0002934300006719)"  
+
+- ***Lung Congestion*** - "Sauna bathing decreases pulmonary congestion and increases the vital capacity, tidal volume, minute ventilation, and forced expiratory volume of the lungs (9,62). Patients with asthma or chronic bronchitis report that sauna bathing improves their breathing (62). Twelve patients with obstructive pulmonary disease who took sauna as a part of their rehabilitation program also demonstrated improved lung function (63)."
+
+- ***Hypertension*** - "Winterfeld et al (29,30,44) investigated the effects of regular sauna bathing on blood pressure and found that a 3-month period of biweekly sauna bathing lowered mean blood pressure from 166/101 to 143/92 mm Hg in 46 hypertensive patients (44) and from 162/110 to 139/92 mm Hg in 180 patients (29). Similar results were seen after a 3-year period (30). However, these studies were not randomized, and patient selection criteria were not described."
+
+- ***Heart Failure*** - “Chronic Heart Failure Sauna generally has been contraindicated for patients with chronic heart failure. However, sauna was well tolerated and improved hemodynamics in patients with chronic heart failure after a single sauna exposure in 32 patients (49) and after a 4-week period of sauna bathing (5 days per week) in 56 patients (50). Left ventricularejection fraction increased from 24% 6 7% to 31% 6 9% and left ventricular end-diastolic dimension decreased from 66 6 6mmto626 5 mm after the 4-week period (50). The sauna used in these investigations was not a typical (Finnish) sauna but an experimental infrared-ray dry sauna in which the temperature was relatively low (608C), and the patients stayed in the supine position. Larger randomized studies need to be performed to confirm the findings.”
+
+
+<br>
+2018 Hussain & Cohen - "[Clinical Effects of Regular Dry Sauna Bathing: A Systematic review](https://www.hindawi.com/journals/ecam/2018/1857413/)"  
+
+- ***Systematic Review*** - "Many health benefits are claimed by individuals and facilities promoting sauna bathing; however the medical evidence to support these claims is not well established. This paper aims to systematically review recent research on the effects of repeated dry sauna interventions on human health. Methods. A systematic search was made of medical databases for studies reporting on the health effects of regular dry sauna bathing on humans from 2000 onwards"
+
+- ***Discussion*** - " Thefindingsofthisreviewsuggest frequent dry sauna bathing improves a variety of subjective and objective health parameters and that frequent Finnish sauna bathing is associated with improved outcomes such as reduced overall mortality and reduced incidence of cardiovascular events and dementia, at least in men [38, 39]. The most established clinical benefits of sauna bathing are associated with cardiovascular disease, yet there is also evidence to suggest that saunas, either Finnish-style or infrared, may benefit people with rheumatic diseases such as fibromyalgia, rheumatoid arthritis, and ankylosing spondylitis, as well as patients with chronic fatigue and pain syndromes, chronic obstructive pulmonary disease, and allergic rhinitis. Sauna bathing may also improve exercise performance in athletes, skin moisture barrier properties, and quality of life and is not associated with serious adverse events. There is not yet enough evidence to distinguish any particular health differences between repeat Finnish-style and repeat infrared sauna bathing."
+
+- ***Conclusion*** - "Regular infrared and/or Finnish sauna bathing has the potential to provide many beneficial health effects, especially for those with cardiovascular-related and rheumatological disease, as well as athletes seeking improved exercise performance. The mechanisms for these effects may include increased bioavailability of NO (nitric oxide) to vascular endothelium, heat shock protein-mediated metabolic activation, immune and hormonal pathway alterations, enhanced excretions of toxicants through increased sweating, and other hormetic stress responses."
+
+<br>
+2015 Karause et al. - "[Heat shock proteins and heat therapy for type 2 diabetes: pros and cons](http://journals.lww.com/00075197-201507000-00010)"  
+
+(Sauna & Hot tub)
+
+- ***Heat Shock Proteins*** - "Heat therapy is a promising and inexpensive tool for the treatment of obesity and diabetes. We proposed that transient increments in nitric oxide and heat shock protein 70 levels may explain the benefits of heat therapy. We suggest that heat therapy (sauna: 80–1008C; hot tub: at 408C) for 15 min, three times a week, for 3 months, is a safe method to test its efficiency."
+
+- ***Risk Factors*** - "People with hypertension are commonly warned to check with a physician before using a hot tub, but there is little literature on which to base this advice. However, there are some cardiovascular contraindications for the use of heat therapy, such as severe aortic stenosis, unstable angina pectoris, recent myocardial infarction, decompensated heart failure, and cardiac arrhythmia [1]. Finally, in people with diabetes and using insulin administration, heat therapy may induce the risk of ketoacidosis [1] because plasma concentrations of several counter-regulatory hormones, including growth hormone and glucagon, are increased by exposure to hyperthermia [1] and the risk of hypoglycemia due to enhanced insulin absorption [1]." 
+
+- ***Conclusions & Suggestions*** - "Heat therapy is a promising and inexpensive tool for the treatment of obesity and diabetes. We proposed that transient increments in nitric oxide and heat shock protein 70 levels may explain the benefits of heat therapy. We suggest that heat therapy (sauna: 80–10C; hot tub: at 40C) for 15 min, three times a week, for 3 months, is a safe method to test its efficiency."
+<br>
+2006 Kukkonen-Harjula & Katriina - "[Health effects and risks of sauna bathing](https://www.tandfonline.com/doi/full/10.3402/ijch.v65i3.18102)"  
+
+- ***Risks*** - "Sauna was well tolerated and posed no health risks to healthy people from childhood to old age. Baths did not appear to be particularly risky to patients with hypertension, coronary heart disease and congestive heart failure, when they were medicated and in a stable condition. Excepting toxemia cases, no adverse effects of bathing during pregnancy were found, and baths were not teratogenic. In musculoskeletal disorders, baths may relieve pain. Medication in general was of no concern during a bath, apart from antihypertensive medication, which may predispose to orthostatic hypotension after bathing."
+
+
+- ***Improvements post heart failure*** - "A further study compared the effects of two weeks’ sauna bathing in patients with cardiac failure (28). Endothelium-mediated vasodilation was enhanced, in addition to a decreased left ventricular end-diastolic dimension and decreased circulating concentrations of brain natriuretic peptide. Symptoms were improved in most patients (2). An improvement in impaired vascular endothelial function after two weeks’ bathing was also seen in men with cardiovascular risk factors, but without cardiac failure (29). In a randomized controlled study, patients with heart failure underwent sauna bathing on five days weekly for 2 weeks (30). Compared with the non-treated group, premature ventricular contractions decreased and heart rate variability increased, which might have prognostic significance." 
+
+- ***Depression*** - "here is some recent Japanese evidence that sauna bathing might be beneficial in depressed, or fatigued persons. In a randomized controlled study, non-obese patients with mild depression underwent sauna-like exposure on five days weekly for two weeks (35). Compared with the control group, somatic complaints, hunger and relaxation scores improved, while concentrations of plasma ghrelin, an orexigenic hormone, and daily energy intake, increased." 
+
+
+
+
+
+<br>
+2018 Laukkanen - "[Cardiovascular and Other Health Benefits of Sauna Bathing: A Review of the Evidence](https://www.mayoclinicproceedings.org/article/S0025-6196(18)30275-1/fulltext)"  
+
+- ***Introduction*** - "Sauna bathing, an activity that has been a tradition in Finland for thousands of years and mainly used for the purposes of pleasure and relaxation, is becoming increasingly popular in many other populations. Emerging evidence suggests that beyond its use for pleasure, sauna bathing may be linked to several health benefits, which include reduction in the risk of vascular diseases such as high blood pressure, cardiovascular disease, and neurocognitive diseases; nonvascular conditions such as pulmonary diseases; mortality; as well as amelioration of conditions such as arthritis, headache, and flu. The beneficial effects of sauna bathing on these outcomes have been linked to its effect on circulatory, cardiovascular, and immune functions. It has been postulated that regular sauna bathing may improve cardiovascular function via improved endothelium-dependent dilatation, reduced arterial stiffness, modulation of the autonomic nervous system, beneficial changes in circulating lipid profiles, and lowering of systemic blood pressure."
+
+- ***Article Highlights*** - "Finnish sauna bathing, which is characterized by exposure to high environmental temperature (80C-100C) for a brief period, has traditionally been used for the purposes of pleasure and relaxation. / Beyond pleasure and relaxation, emerging evidence suggests that sauna bathing has several health benefits, which include reduction in the risk of vascular diseases such as high blood pressure, cardiovascular disease (CVD), stroke, and neurocognitive diseases; nonvascular conditions such as pulmonary diseases including common flu; mortality; treatment of specific skin conditions; as well as pain in conditions such as rheumatic diseases and headache. / The physiological responses produced by an ordinary sauna bath correspond to those produced by moderate- or high-intensity physical activity such as walking. / The beneficial effects of sauna baths on CVD and mortality may be mediated via reduction in blood pressure, improvement in endothelial function, reduction in oxidative stress and inflammation, beneficial modulation of the autonomic nervous system, improved lipid profile and arterial compliance, and improvement in the cardiorespiratory system. /   Sauna bathing is a safe activity and can even be used in patients with stable CVD, provided it is used sensibly for an appropriate period of time. 
+
+- ***Neurodegenerative Prevention*** - "Neurocognitive Disease The etiology of neurocognitive disease is multifactorial, with impaired cardiovascular function, inflammation, and oxidative stress postulated as being major contributors in its pathogenesis in addition to high systemic BP with elevated levels of common cardiovascular risk factors.20,21 Emerging recent evidence suggests that sauna exposure may have protective effects on neurocognitive disease. In a population-based prospective cohort study by Laukkanen et al16 conducted in 2315 apparently healthy Finnish men aged 42 to 60 years at baseline, men who had 4 to 7 sauna sessions/wk compared with those who had 1 sauna session/wk had a 66% and 65% reduced risk of dementia and Alzheimer disease, respectively. Whether sauna exposure exerts its neurocognitive protective effects via mediation in the pathways contributing to these diseases or it is just an enjoyable activity that prevents or delays the development of these memory diseases is not clearly understood."
+
+- ***Other Health Benefits*** - Sauna bathing has been linked to an improvement in pain and symptoms associated with musculoskeletal disorders such as osteoarthritis, rheumatoid arthritis, and fibromyalgia.25,26 Having sauna baths also improves headache disorders. In an RCT by Kanji et al,27 37 people with chronic tension-type headache were randomized to regular sauna bathing or advice and education for a period of 8 weeks, and sauna therapy was found to substantially improve headache intensity. Although there is some evidence from a Japanese study that thermal therapy improved the symptoms of patients with mild depression,28 to our knowledge, no study has as yet reported the effects of Finnish sauna bathing on depression. However, we have recently shown that men who had 4 to 7 sauna sessions/wk had a 78% reduced risk of developing psychosis in the future as compared with men who had only 1 sauna session/wk (J.A. Laukkanen, PhD, unpublished data, February 7, 2018)."
+
+<br>
+2018 Laukkanen - "[Sauna bathing and systemic inflammation](http://link.springer.com/10.1007/s10654-017-0335-y)"
+
+- ***Chronic Inflammation*** - "We aimed to investigate whether frequency of sauna bathing is associated with the levels of serum C-reactive protein. C-reactive protein is a leading blood marker of systemic inflammation. The study consisted of 2084 men (42–60 years) without acute or chronic inflammation. A total of 533 (25.6%), 1368 (65.6%), and 183 (8.8%) participants reported having a sauna bath once a week, 2–3 times, and 4–7 times per week; mean serum C-reactive protein levels were 2.41 (standard deviation 2.91), 2.00 (2.41), 1.65 (1.63) mmol/L, respectively. In a multivariable analysis adjusted for baseline age, body mass index, systolic blood pressure, smoking, type 2 diabetes, previous myocardial infarction, and serum low density lipoprotein cholesterol, alcohol consumption and physical activity, there was a significant inverse association between the frequency of sauna bathing and the level of C-reactive protein...This cross-sectional study suggests that sauna bathing, an activity which promotes relaxation and well-being, may be a recommendable public health intervention related to the reduced levels of systemic inflammatory markers." 
+
+
+<br>
+2015 Laukkanen et al. - "[Association Between Sauna Bathing and Fatal Cardiovascular and All-Cause Mortality Events](http://archinte.jamanetwork.com/article.aspx?doi=10.1001/jamainternmed.2014.8187)"  
+
+- ***Objective*** - "To investigate the association of frequency and duration of sauna bathing with the risk of sudden cardiac death (SCD), fatal coronary heart disease (CHD), fatal cardiovascular disease (CVD), and all-cause mortality."
+
+- ***Design*** - "We performed a prospective cohort study (Finnish Kuopio Ischemic Heart Disease Risk Factor Study) of a population-based sample of 2315 middle-aged (age range, 42-60 years) men from Eastern Finland. Baseline examinations were conducted from March 1, 1984, through December 31, 1989."
+
+- ***Results*** - "During a median follow-up of 20.7 years (interquartile range, 18.1-22.6 years), 190 SCDs, 281 fatal CHDs, 407 fatal CVDs, and 929 all-cause mortality events occurred. A total of 601, 1513, and 201 participants reported having a sauna bathing session 1 time per week, 2 to 3 times per week, and 4 to 7 times per week, respectively. The numbers (percentages) of SCDs were 61 (10.1%), 119 (7.8%), and 10 (5.0%) in the 3 groups of the frequency of sauna bathing. The respective numbers were 89 (14.9%), 175 (11.5%), and 17 (8.5%) for fatal CHDs; 134 (22.3%), 249 (16.4%), and 24 (12.0%) for fatal CVDs; and 295 (49.1%), 572 (37.8%), and 62 (30.8%) for all-cause mortality events. After adjustment for CVD risk factors, compared with men with 1 sauna bathing session per week, the hazard ratio of SCD was 0.78 (95% CI, 0.57-1.07) for 2 to 3 sauna bathing sessions per week and 0.37 (95% CI, 0.18-0.75) for 4 to 7 sauna bathing sessions per week (P for trend = .005). Similar associations were found with CHD, CVD, and all-cause mortality (P for trend .005). Compared with men having a sauna bathing session of less than 11 minutes, the adjusted hazard ratio for SCD was 0.93 (95% CI, 0.67-1.28) for sauna bathing sessions of 11 to 19 minutes and 0.48 (95% CI, 0.31-0.75) for sessions lasting more than 19 minutes (P for trend = .002); significant inverse associations were also observed for fatal CHDs and fatal CVDs (P for trend .03) but not for all-cause mortality events."
+
+- ***Conclusions*** - "Increased frequency of sauna bathing is associated with a reduced risk of SCD, CHD, CVD, and all-cause mortality. Further studies are warranted to establish the potential mechanism that links sauna bathing and cardiovascular health." 
+
+
+<br>
+
+
+<br>
+-Tyler   
+@TylerisYoung

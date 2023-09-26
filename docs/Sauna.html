@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Sauna.knit</title>
+
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="Lightheartedhumans.html">Lighthearted Humans</a>
+</li>
+<li>
+  <a href="Film.html">Film</a>
+</li>
+<li>
+  <a href="Photography.html">Photography</a>
+</li>
+<li>
+  <a href="Journalism.html">Journalism</a>
+</li>
+<li>
+  <a href="datascience.html">Data Science</a>
+</li>
+<li>
+  <a href="Contact.html">Contact</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+
+</div>
+
+
+<p><br> <br></p>
+<h1>
+<strong>The Sauna Collection </strong>
+</h1>
+<h6>
+<strong><em>Literature Review</em></strong>
+</h6>
+<p><em><a
+href="www.tylerisyoung.substack.com">Tylerisyoung.Substack.com</a></em><br />
+<em><a
+href="www.twitter.com/Tylerisyoung">Twitter.com/TylerisYoung</a></em><br />
+_________________________ <br> 09/25/2023 <br></p>
+<h3>
+Saunas are great!
+</h3>
+<p><br> All articles can be found for free with open access by using the
+DOI on <em><a href="www.Scihub.se">SciHub.se</a></em></p>
+<p><br> 2001 Hannuksela &amp; Ellahham - “<a
+href="https://linkinghub.elsevier.com/retrieve/pii/S0002934300006719">Benefits
+and Risks of Sauna Bathing</a>”</p>
+<ul>
+<li><p><strong><em>Lung Congestion</em></strong> - “Sauna bathing
+decreases pulmonary congestion and increases the vital capacity, tidal
+volume, minute ventilation, and forced expiratory volume of the lungs
+(9,62). Patients with asthma or chronic bronchitis report that sauna
+bathing improves their breathing (62). Twelve patients with obstructive
+pulmonary disease who took sauna as a part of their rehabilitation
+program also demonstrated improved lung function (63).”</p></li>
+<li><p><strong><em>Hypertension</em></strong> - “Winterfeld et al
+(29,30,44) investigated the effects of regular sauna bathing on blood
+pressure and found that a 3-month period of biweekly sauna bathing
+lowered mean blood pressure from 166/101 to 143/92 mm Hg in 46
+hypertensive patients (44) and from 162/110 to 139/92 mm Hg in 180
+patients (29). Similar results were seen after a 3-year period (30).
+However, these studies were not randomized, and patient selection
+criteria were not described.”</p></li>
+<li><p><strong><em>Heart Failure</em></strong> - “Chronic Heart Failure
+Sauna generally has been contraindicated for patients with chronic heart
+failure. However, sauna was well tolerated and improved hemodynamics in
+patients with chronic heart failure after a single sauna exposure in 32
+patients (49) and after a 4-week period of sauna bathing (5 days per
+week) in 56 patients (50). Left ventricularejection fraction increased
+from 24% 6 7% to 31% 6 9% and left ventricular end-diastolic dimension
+decreased from 66 6 6mmto626 5 mm after the 4-week period (50). The
+sauna used in these investigations was not a typical (Finnish) sauna but
+an experimental infrared-ray dry sauna in which the temperature was
+relatively low (608C), and the patients stayed in the supine position.
+Larger randomized studies need to be performed to confirm the
+findings.”</p></li>
+</ul>
+<p><br> 2018 Hussain &amp; Cohen - “<a
+href="https://www.hindawi.com/journals/ecam/2018/1857413/">Clinical
+Effects of Regular Dry Sauna Bathing: A Systematic review</a>”</p>
+<ul>
+<li><p><strong><em>Systematic Review</em></strong> - “Many health
+benefits are claimed by individuals and facilities promoting sauna
+bathing; however the medical evidence to support these claims is not
+well established. This paper aims to systematically review recent
+research on the effects of repeated dry sauna interventions on human
+health. Methods. A systematic search was made of medical databases for
+studies reporting on the health effects of regular dry sauna bathing on
+humans from 2000 onwards”</p></li>
+<li><p><strong><em>Discussion</em></strong> - ”
+Thefindingsofthisreviewsuggest frequent dry sauna bathing improves a
+variety of subjective and objective health parameters and that frequent
+Finnish sauna bathing is associated with improved outcomes such as
+reduced overall mortality and reduced incidence of cardiovascular events
+and dementia, at least in men [38, 39]. The most established clinical
+benefits of sauna bathing are associated with cardiovascular disease,
+yet there is also evidence to suggest that saunas, either Finnish-style
+or infrared, may benefit people with rheumatic diseases such as
+fibromyalgia, rheumatoid arthritis, and ankylosing spondylitis, as well
+as patients with chronic fatigue and pain syndromes, chronic obstructive
+pulmonary disease, and allergic rhinitis. Sauna bathing may also improve
+exercise performance in athletes, skin moisture barrier properties, and
+quality of life and is not associated with serious adverse events. There
+is not yet enough evidence to distinguish any particular health
+differences between repeat Finnish-style and repeat infrared sauna
+bathing.”</p></li>
+<li><p><strong><em>Conclusion</em></strong> - “Regular infrared and/or
+Finnish sauna bathing has the potential to provide many beneficial
+health effects, especially for those with cardiovascular-related and
+rheumatological disease, as well as athletes seeking improved exercise
+performance. The mechanisms for these effects may include increased
+bioavailability of NO (nitric oxide) to vascular endothelium, heat shock
+protein-mediated metabolic activation, immune and hormonal pathway
+alterations, enhanced excretions of toxicants through increased
+sweating, and other hormetic stress responses.”</p></li>
+</ul>
+<p><br> 2015 Karause et al. - “<a
+href="http://journals.lww.com/00075197-201507000-00010">Heat shock
+proteins and heat therapy for type 2 diabetes: pros and cons</a>”</p>
+<p>(Sauna &amp; Hot tub)</p>
+<ul>
+<li><p><strong><em>Heat Shock Proteins</em></strong> - “Heat therapy is
+a promising and inexpensive tool for the treatment of obesity and
+diabetes. We proposed that transient increments in nitric oxide and heat
+shock protein 70 levels may explain the benefits of heat therapy. We
+suggest that heat therapy (sauna: 80–1008C; hot tub: at 408C) for 15
+min, three times a week, for 3 months, is a safe method to test its
+efficiency.”</p></li>
+<li><p><strong><em>Risk Factors</em></strong> - “People with
+hypertension are commonly warned to check with a physician before using
+a hot tub, but there is little literature on which to base this advice.
+However, there are some cardiovascular contraindications for the use of
+heat therapy, such as severe aortic stenosis, unstable angina pectoris,
+recent myocardial infarction, decompensated heart failure, and cardiac
+arrhythmia [1]. Finally, in people with diabetes and using insulin
+administration, heat therapy may induce the risk of ketoacidosis [1]
+because plasma concentrations of several counter-regulatory hormones,
+including growth hormone and glucagon, are increased by exposure to
+hyperthermia [1] and the risk of hypoglycemia due to enhanced insulin
+absorption [1].”</p></li>
+<li><p><strong><em>Conclusions &amp; Suggestions</em></strong> - “Heat
+therapy is a promising and inexpensive tool for the treatment of obesity
+and diabetes. We proposed that transient increments in nitric oxide and
+heat shock protein 70 levels may explain the benefits of heat therapy.
+We suggest that heat therapy (sauna: 80–10C; hot tub: at 40C) for 15
+min, three times a week, for 3 months, is a safe method to test its
+efficiency.” <br> 2006 Kukkonen-Harjula &amp; Katriina - “<a
+href="https://www.tandfonline.com/doi/full/10.3402/ijch.v65i3.18102">Health
+effects and risks of sauna bathing</a>”</p></li>
+<li><p><strong><em>Risks</em></strong> - “Sauna was well tolerated and
+posed no health risks to healthy people from childhood to old age. Baths
+did not appear to be particularly risky to patients with hypertension,
+coronary heart disease and congestive heart failure, when they were
+medicated and in a stable condition. Excepting toxemia cases, no adverse
+effects of bathing during pregnancy were found, and baths were not
+teratogenic. In musculoskeletal disorders, baths may relieve pain.
+Medication in general was of no concern during a bath, apart from
+antihypertensive medication, which may predispose to orthostatic
+hypotension after bathing.”</p></li>
+<li><p><strong><em>Improvements post heart failure</em></strong> - “A
+further study compared the effects of two weeks’ sauna bathing in
+patients with cardiac failure (28). Endothelium-mediated vasodilation
+was enhanced, in addition to a decreased left ventricular end-diastolic
+dimension and decreased circulating concentrations of brain natriuretic
+peptide. Symptoms were improved in most patients (2). An improvement in
+impaired vascular endothelial function after two weeks’ bathing was also
+seen in men with cardiovascular risk factors, but without cardiac
+failure (29). In a randomized controlled study, patients with heart
+failure underwent sauna bathing on five days weekly for 2 weeks (30).
+Compared with the non-treated group, premature ventricular contractions
+decreased and heart rate variability increased, which might have
+prognostic significance.”</p></li>
+<li><p><strong><em>Depression</em></strong> - “here is some recent
+Japanese evidence that sauna bathing might be beneficial in depressed,
+or fatigued persons. In a randomized controlled study, non-obese
+patients with mild depression underwent sauna-like exposure on five days
+weekly for two weeks (35). Compared with the control group, somatic
+complaints, hunger and relaxation scores improved, while concentrations
+of plasma ghrelin, an orexigenic hormone, and daily energy intake,
+increased.”</p></li>
+</ul>
+<p><br> 2018 Laukkanen - “<a
+href="https://www.mayoclinicproceedings.org/article/S0025-6196(18)30275-1/fulltext">Cardiovascular
+and Other Health Benefits of Sauna Bathing: A Review of the
+Evidence</a>”</p>
+<ul>
+<li><p><strong><em>Introduction</em></strong> - “Sauna bathing, an
+activity that has been a tradition in Finland for thousands of years and
+mainly used for the purposes of pleasure and relaxation, is becoming
+increasingly popular in many other populations. Emerging evidence
+suggests that beyond its use for pleasure, sauna bathing may be linked
+to several health benefits, which include reduction in the risk of
+vascular diseases such as high blood pressure, cardiovascular disease,
+and neurocognitive diseases; nonvascular conditions such as pulmonary
+diseases; mortality; as well as amelioration of conditions such as
+arthritis, headache, and flu. The beneficial effects of sauna bathing on
+these outcomes have been linked to its effect on circulatory,
+cardiovascular, and immune functions. It has been postulated that
+regular sauna bathing may improve cardiovascular function via improved
+endothelium-dependent dilatation, reduced arterial stiffness, modulation
+of the autonomic nervous system, beneficial changes in circulating lipid
+profiles, and lowering of systemic blood pressure.”</p></li>
+<li><p><strong><em>Article Highlights</em></strong> - “Finnish sauna
+bathing, which is characterized by exposure to high environmental
+temperature (80C-100C) for a brief period, has traditionally been used
+for the purposes of pleasure and relaxation. / Beyond pleasure and
+relaxation, emerging evidence suggests that sauna bathing has several
+health benefits, which include reduction in the risk of vascular
+diseases such as high blood pressure, cardiovascular disease (CVD),
+stroke, and neurocognitive diseases; nonvascular conditions such as
+pulmonary diseases including common flu; mortality; treatment of
+specific skin conditions; as well as pain in conditions such as
+rheumatic diseases and headache. / The physiological responses produced
+by an ordinary sauna bath correspond to those produced by moderate- or
+high-intensity physical activity such as walking. / The beneficial
+effects of sauna baths on CVD and mortality may be mediated via
+reduction in blood pressure, improvement in endothelial function,
+reduction in oxidative stress and inflammation, beneficial modulation of
+the autonomic nervous system, improved lipid profile and arterial
+compliance, and improvement in the cardiorespiratory system. / Sauna
+bathing is a safe activity and can even be used in patients with stable
+CVD, provided it is used sensibly for an appropriate period of
+time.</p></li>
+<li><p><strong><em>Neurodegenerative Prevention</em></strong> -
+“Neurocognitive Disease The etiology of neurocognitive disease is
+multifactorial, with impaired cardiovascular function, inflammation, and
+oxidative stress postulated as being major contributors in its
+pathogenesis in addition to high systemic BP with elevated levels of
+common cardiovascular risk factors.20,21 Emerging recent evidence
+suggests that sauna exposure may have protective effects on
+neurocognitive disease. In a population-based prospective cohort study
+by Laukkanen et al16 conducted in 2315 apparently healthy Finnish men
+aged 42 to 60 years at baseline, men who had 4 to 7 sauna sessions/wk
+compared with those who had 1 sauna session/wk had a 66% and 65% reduced
+risk of dementia and Alzheimer disease, respectively. Whether sauna
+exposure exerts its neurocognitive protective effects via mediation in
+the pathways contributing to these diseases or it is just an enjoyable
+activity that prevents or delays the development of these memory
+diseases is not clearly understood.”</p></li>
+<li><p><strong><em>Other Health Benefits</em></strong> - Sauna bathing
+has been linked to an improvement in pain and symptoms associated with
+musculoskeletal disorders such as osteoarthritis, rheumatoid arthritis,
+and fibromyalgia.25,26 Having sauna baths also improves headache
+disorders. In an RCT by Kanji et al,27 37 people with chronic
+tension-type headache were randomized to regular sauna bathing or advice
+and education for a period of 8 weeks, and sauna therapy was found to
+substantially improve headache intensity. Although there is some
+evidence from a Japanese study that thermal therapy improved the
+symptoms of patients with mild depression,28 to our knowledge, no study
+has as yet reported the effects of Finnish sauna bathing on depression.
+However, we have recently shown that men who had 4 to 7 sauna
+sessions/wk had a 78% reduced risk of developing psychosis in the future
+as compared with men who had only 1 sauna session/wk (J.A. Laukkanen,
+PhD, unpublished data, February 7, 2018).”</p></li>
+</ul>
+<p><br> 2018 Laukkanen - “<a
+href="http://link.springer.com/10.1007/s10654-017-0335-y">Sauna bathing
+and systemic inflammation</a>”</p>
+<ul>
+<li><strong><em>Chronic Inflammation</em></strong> - “We aimed to
+investigate whether frequency of sauna bathing is associated with the
+levels of serum C-reactive protein. C-reactive protein is a leading
+blood marker of systemic inflammation. The study consisted of 2084 men
+(42–60 years) without acute or chronic inflammation. A total of 533
+(25.6%), 1368 (65.6%), and 183 (8.8%) participants reported having a
+sauna bath once a week, 2–3 times, and 4–7 times per week; mean serum
+C-reactive protein levels were 2.41 (standard deviation 2.91), 2.00
+(2.41), 1.65 (1.63) mmol/L, respectively. In a multivariable analysis
+adjusted for baseline age, body mass index, systolic blood pressure,
+smoking, type 2 diabetes, previous myocardial infarction, and serum low
+density lipoprotein cholesterol, alcohol consumption and physical
+activity, there was a significant inverse association between the
+frequency of sauna bathing and the level of C-reactive protein…This
+cross-sectional study suggests that sauna bathing, an activity which
+promotes relaxation and well-being, may be a recommendable public health
+intervention related to the reduced levels of systemic inflammatory
+markers.”</li>
+</ul>
+<p><br> 2015 Laukkanen et al. - “<a
+href="http://archinte.jamanetwork.com/article.aspx?doi=10.1001/jamainternmed.2014.8187">Association
+Between Sauna Bathing and Fatal Cardiovascular and All-Cause Mortality
+Events</a>”</p>
+<ul>
+<li><p><strong><em>Objective</em></strong> - “To investigate the
+association of frequency and duration of sauna bathing with the risk of
+sudden cardiac death (SCD), fatal coronary heart disease (CHD), fatal
+cardiovascular disease (CVD), and all-cause mortality.”</p></li>
+<li><p><strong><em>Design</em></strong> - “We performed a prospective
+cohort study (Finnish Kuopio Ischemic Heart Disease Risk Factor Study)
+of a population-based sample of 2315 middle-aged (age range, 42-60
+years) men from Eastern Finland. Baseline examinations were conducted
+from March 1, 1984, through December 31, 1989.”</p></li>
+<li><p><strong><em>Results</em></strong> - “During a median follow-up of
+20.7 years (interquartile range, 18.1-22.6 years), 190 SCDs, 281 fatal
+CHDs, 407 fatal CVDs, and 929 all-cause mortality events occurred. A
+total of 601, 1513, and 201 participants reported having a sauna bathing
+session 1 time per week, 2 to 3 times per week, and 4 to 7 times per
+week, respectively. The numbers (percentages) of SCDs were 61 (10.1%),
+119 (7.8%), and 10 (5.0%) in the 3 groups of the frequency of sauna
+bathing. The respective numbers were 89 (14.9%), 175 (11.5%), and 17
+(8.5%) for fatal CHDs; 134 (22.3%), 249 (16.4%), and 24 (12.0%) for
+fatal CVDs; and 295 (49.1%), 572 (37.8%), and 62 (30.8%) for all-cause
+mortality events. After adjustment for CVD risk factors, compared with
+men with 1 sauna bathing session per week, the hazard ratio of SCD was
+0.78 (95% CI, 0.57-1.07) for 2 to 3 sauna bathing sessions per week and
+0.37 (95% CI, 0.18-0.75) for 4 to 7 sauna bathing sessions per week (P
+for trend = .005). Similar associations were found with CHD, CVD, and
+all-cause mortality (P for trend .005). Compared with men having a sauna
+bathing session of less than 11 minutes, the adjusted hazard ratio for
+SCD was 0.93 (95% CI, 0.67-1.28) for sauna bathing sessions of 11 to 19
+minutes and 0.48 (95% CI, 0.31-0.75) for sessions lasting more than 19
+minutes (P for trend = .002); significant inverse associations were also
+observed for fatal CHDs and fatal CVDs (P for trend .03) but not for
+all-cause mortality events.”</p></li>
+<li><p><strong><em>Conclusions</em></strong> - “Increased frequency of
+sauna bathing is associated with a reduced risk of SCD, CHD, CVD, and
+all-cause mortality. Further studies are warranted to establish the
+potential mechanism that links sauna bathing and cardiovascular
+health.”</p></li>
+</ul>
+<p><br></p>
+<p><br> -Tyler<br />
+<span class="citation">@TylerisYoung</span></p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
