@@ -55,7 +55,7 @@ Story: [Rafting the Deschutes](https://www.lightheartedhumans.com/storytelling/2
 
 <br>
 
-Collection: [*Sauna Information*](./Sauna.html) 
+Collection: [Sauna Information](./Sauna.html) 
 
 
 
@@ -79,6 +79,17 @@ Collection: [*Sauna Information*](./Sauna.html)
 </details>
 <br> 
 <h3>
+
+<br>
+ <h4>
+ <details><summary>[***Link Collections***]</summary>
+[ ](./n/a.html)   
+Link Collections: [All Collections](./Linkcollections.html)  
+</details>
+</details>
+<br> 
+<h3>
+
 ***Topics:***  
  </h3>
  <h4>
