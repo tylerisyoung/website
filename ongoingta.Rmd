@@ -13,10 +13,10 @@ output:
 <br>
 <br>
 
-<h2>**Ongoing Technical Analysis of Financial markets and Crypto**</h2> 
+<h2>**Ongoing Technical and Political Analysis of Financial Markets**</h2> 
 <h6>
 <br>
-***For sure financial advice - More on Substack & Twitter***
+***This is definitely financial advice - More on Substack & Twitter***
 </h6>
 
 *[Tylerisyoung.Substack.com](www.tylerisyoung.substack.com)*   
@@ -34,7 +34,7 @@ Read: [Modern Monetary Theory - Slow at first, then all at once.](./mmt.html)
 <h4>
 **The Macroeconomic Backdrop**  
 </h4>
-The macroeconomics problem displayed in a single chart:
+The macroeconomic problem displayed in a single chart:
 ![](./Journalism/Economics/ongoingta/MMT_ALLCHARTS.jpg)
 
 <h4>
@@ -45,6 +45,235 @@ Ongoing Technical Analysis
 <br>
 
 
+
+
+<br>
+
+
+<br> *1/21/2024* <br>    
+
+***The New Western World is at a Crossroads: Freedom or Force***
+
+<br>
+
+*In reference to the Special address by Javier Milei, President of Argentina | Davos 2024 | World Economic Forum*
+
+[LINK to Speech at the WEF](https://www.weforum.org/events/world-economic-forum-annual-meeting-2024/sessions/special-address-by-javier-milei-president-of-argentina/)
+
+Argentina is a country that has experienced great financial turmoil over the last several decades. Going through rounds of prosperity, disparity, debt, default, inflation, and is now one of the most recent examples of hyperinflation and a debt spiral similar to that which the US is staring down the barrel of itself. 
+
+The newly elected president Javier Milei recently gave a speech to the World Economic Forum at Davos. 
+
+
+His key points:
+
+- This was intentionally his first foreign trip and speech after the election.
+
+- He as the most recent democratically elected leader of Argentina claims that  a new spirit has been introduced to Argentina in which the people are calling for  free enterprise and rule of law.
+
+- He gives a warning to a danger the Western World is knowingly or unknowingly facing as its leaders are increasingly coopted by a vision that leads to socialism.
+
+- Argentina's former prosperity under freedom and its return impoverishment under collectivism.
+
+- He notes Capitalism's key role in actual equitable growth, contrasting with stagnation before the industrial revolution. 
+
+- Capitalism's impact on poverty reduction is at this point very clear, free market capitalism credited as the instrument to end hunger, poverty, and extreme poverty. 
+
+- Per capita GDP multiplied by over 15 times since the Industrial Revolution.
+
+- He give a clear and concise critique of the leftwing argument against capitalism on moral grounds, advocating for social justice.
+
+- He rejects social justice as an end that is intrinsically unfair and violent, financed coercively through mandatory taxes misused by bureaucracy and committee.
+
+- There is a clear emphasis on the market as a discovery process, finding optimizatoin and positive impact through successful businesses which has been prooven time and again. 
+
+- He gives an introduction to libertarianism, defined as unrestricted respect for others' life, liberty, property and pursuit of happiness - As intended in the constitution of the United States who has lost its way. 
+
+- He contends that Capitalists ought to be portrayed as social benefactors and heroes, contributing to a measurable increase in general and entirely voluntary well-being.
+
+- He gives a dire warning that the West is in danger of too drastically undermining its former libertarian values by formerly respected political and economic institutions.
+
+- He also gives a critique of modern monetary theory, accusing disingenuous economists of inadvertently serving state intervention and socialism.
+
+- He concludes with an identification of new and evasive social battles introduced by knowing or unknowing socialists, such as gender and racial conflicts. 
+
+- Finally, he gives a call to action for Western countries to return to the path of prosperity through economic freedom, limited government, and respect for private property and notes that from this day forward, Argentinia will remain a staunch and unconditional Ally that will stand for a "A staunch and long living freedom damnit!"
+
+
+
+This speech was met with applause from the crowd and likely surprised many including Claus Schwab who introduced the new and provokative president of argentina: Javier Milei. 
+
+
+In a recent interview with a former mainstream news host, Evolutionary Biologist Bret Weinstein echoes the Argentinian President's speech saying, "If people somehow put aside the obvious danger in their ability to earn and maybe to their lives in saying what needs to be said, then we greatly outnumber those we are pitted against. They are ferociously powerful, but I would also point out this interesting error; So I call the force we are up against: Goliath, so that I can remember what the battle is. Goliath made a terrible mistake and it made it most egregiously during covid, which is it took all of the competent people took all of the courageous people, and it shoved them out of the institutions where they were hanging on, and created in so doing, The Dream Team. It created every player you could possibly want on your team to fight some historic battle against a terrible evil. All of those people are now at least somewhat awake, and they've now been picked on by the same enemy, and yeah alright, we're out gunned, it has a tremendous amount of power, but we've got all of the people who know how to think. So I hate to say it, or maybe I like to say it, I don"t think it's a slam dunk, but I like out odds. 
+
+
+
+
+
+
+<br>
+
+<br>
+<br> *11/10/2023* <br>    
+
+***How And Why The US Cannot Afford To Fight Two Proxy Wars***
+
+<br>
+
+*A Monetary Issue*
+
+Those supporting war for any reason often discount the deaths of many more across the world for strictly monetary reasons. Governments do not have unlimited money, and we are now seeing the effects of this through rampant consumer price inflation and unpayable debt. 
+
+The US cannot afford to fight two proxy wars because our debt/GDP ratio in 2020 was 130%, and is currently 120%. This is well beyond the established 'tipping point' for a sovereign debt crisis. 
+
+Debt has interest which requires paying even if the principle does not decline, and this becomes an issue at the point when the debt is so high that interest payments have a negative effect on GDP growth. This can be measured. 
+
+The World Bank published a paper in 2010 stating that each additional percentage point added to the debt has an equal and opposite reaction to a nations GDP. For each point added to debt, GDP declines by 0.017 percent. This applies to nations who have a Debt/GDP ratio higher than 77%. ([Caner, Mehmet & Grennes, 2010](https://documents1.worldbank.org/curated/en/509771468337915456/pdf/WPS5391.pdf)) 
+
+
+
+```{r, eval=TRUE}
+#Debt to GDP Ratio 130% subtracted from 77% tipping point, to get the total percent negatively affecting GDP times the 0.17 multiplier from the world bank.  
+(130-77)*.017
+```
+
+The US topping out at 130% meant that interest payments on this debt caused USGDP to decrease cumulatively by .9%. 
+
+On average, the US economy and GDP increases by anywhere from 2-3% year over year, so that means that the Federal Reserve's decision to keep interest rates low and perform Quantitative Easing in 2020 printing an additional 1/3 of all the currency currently in circulation and the US Treasury issuing the corresponding bonds meant that these institutions who supposedly have the average American's best interest in mind both caused [record inflation ](https://www.shadowstats.com/alternate_data/inflation-charts) as well as nearly a 1% decline in the economy simply by increasing the debt ceiling and adding to the debt. 
+
+The World Bank states that "If debt explosions move debt ratios above the threshold and keep them there...economic growth is likely to suffer... The most extreme case is Nicaragua, where the average annual real growth rate could have been 4.7 percent higher had debt been at the 64 percent debt threshold for developing countries. High indebtedness was responsible for an annual loss of 4.7 percentage points of real GDP growth, equivalent to a 264 percentage point loss over the 28 years of the study. This example illustrates the high costs of persistent violations of debt threshold levels."
+
+![](./Journalism/Economics/ongoingta/10-28-23_6.png)
+
+
+The Nicaraguan government has been facing a debt spiral since the  "Lost Decade" of the 1980's when Latin American countries were unable to service their foreign debt.  
+
+The World Bank and International Monetary Fund bailed them out in the early 2000's, however there is no one who would be able to bail out the *$*33 Trillion of debt and *$*181 Trillion of unfunded liabilities owned by US Government, and furthermore, this could collapse the global economy leading to millions more entering poverty and food insecurity. This is the issue.  
+
+Each time any nation's debt/GDP exceeds 120% without fail, throughout all of history, this nation will either default on its debts, or experience hyper inflation. Any further defecit spending will only accelerate the debt driven inflationary or deflationary cycle, our government bureaucracy and foreign aid budgets will eventually need to either be cut back in an extreme way, or we will continue to experience growing inflation and/or global monerary collapse. Theoretically, we can pick our poison, though both will cost lives and therefore we should prioritize our path to minimize deaths and despair.  
+
+![](./Journalism/Economics/ongoingta/10-28-23_7.png)
+
+![](./Journalism/Economics/ongoingta/10-28-23_1.png)
+
+
+*The Debt Spiral*
+
+
+Debt matters; We can only print money so long as the rest of the world believes our dollars are worth something, and the US dollar has lost 95% of its value in the last 100 years, and Modern Monetary Theory does not work, as previously discussed [here](./mmt.html). 
+
+![](./Journalism/Economics/ongoingta/10-28-23_2.jpg)
+
+
+In short:  
+- US GDP is $27.6 Trillion
+- US National Debt is $32.3 Trillion
+- US Unfunded Liabilities  are $181 Trillion 
+
+The unfunded liabilities like social security, pensions, medicare and medicaid are significant for two reasons; First because they are completely unfunded and the government has no cash reserves or program in place to pay them over time, these payments must come out of each years current budget at an increasing percentage of GDP. Second that the majority of them have a component of Cost of Living Adjustments (COLA) which largely tracks Consumer Price Inflation (CPI) so even when the official massaged numbers come out, means that increasing inflation will always increase our liabilities as well, contributing further towards the unpayable debt spiral. 
+
+Total liabilities are therefore ~$200+ Trillion, and rising simultaneously with inflation. 
+
+Ideally a growing nation takes out some loans to make improvements, and you can then use the resulting growing economy to service the debt, these principle amounts as well as interest payments would be funded via citizen tax revenue, though taxes can only be raised so high... Even if there was an unjust means of the federal government confiscating 100% of GDP through taxation (an effective 100% tax rate), in effect, it would still take more than 10 years to pay the $200 Trillion off without accounting for the COLA. 
+
+Additionally, taxing billionaires will not help at all either, and in principle, billionaires are by necessity more efficient in spending their money as they must spend it through their own business, or others businesses in addition to any frivolous spending back into the economy employing real people, rather than wasting that money on inflated government expenditures and contracts like the famous *$*1280 mugs purchased for the US Airforce - After a recent audit, it was discovered that the Airforce is spending *$*1,280 per coffee cup. Admittedly these cups were a self heating type of coffee cup, similar to the ones found on amazon today for *$*20. This type of monetary waste of the collective US Taxpayer dollars, both lowering GDP and causing inflation is only possible by the federal government. 
+
+The issue with this much defecit spending quickly becomes not "How will we pay it back?" but simply "Can we even afford to pay the interest on the debt that we owe to other nations who own our US treasuries?"
+
+China and Saudi Arabia were formerly the largest buyers of US treasury bonds, and both have stopped their buying programs because they have lost confidence in the US government's ability to pay them in a currency that has not been devalued through inflation. Both nations are buying far more gold and other commodities now instead leading to a debt spiral in the US and a renewed Multipolarity in the world.  
+
+*Debt Spiral Endgame*
+
+Inflation is a monetary phenomenon - The more money we print into the economy, the higher inflation rises. The only way to "fight inflation" is for the federal reserve to raise interest rates, and cause unemployment. These two things effectively tighten the purse strings of average consumers and slow down spending and monetary velocity over time, in short, lowering inflation. 
+
+![](./Journalism/Economics/ongoingta/10-28-23_1.png)  
+
+![](./Journalism/Economics/ongoingta/10-28-23_5.png)
+
+
+![](./Journalism/Economics/ongoingta/10-28-23_4.png)
+![](./Journalism/Economics/ongoingta/10-28-23_3.png)
+
+![](./Journalism/Economics/ongoingta/10-28-23_2.jpg)
+
+
+<iframe src="//www.classtools.net/Venn/202310-gRm6WP" style="position:relative;top:0;left:0;width:1400px;height:700px;overflow:none;border:none"></iframe>
+
+<br>
+
+
+*War Spending vs Poverty Alleviation*
+
+
+For better or worse, there are many reasons for war, there are plenty of alliances, treaties, resources and unjust killings, and at times we may want to support our side or the other, though we need to collectively understand what's at stake and decide what we would like to prioritize. Wars are not without cost, and fixing the money both fixes the world, and ultimately saves more lives. 
+
+
+The US Congress has already [spent](https://www.nytimes.com/2023/10/06/us/politics/ukraine-aid-congress.html) *$*113 Billion on aid to Ukraine. For the 330 Million Americans, this is nearly *$*350 per American. This is also 1.8% of the US Governments *$*6.3 Trillion dollar budget, and nearly 0.5% of the 25 Trillion total GDP. 
+
+Adding another war in the middle east to the tab, likely more doubling this expenditure to nearly 4% of the US budget is unattainable since we cannot even currently afford to fund the government, or service our debts as it is. By necessity we will need to issue more treasuries, and print more money, causing exponentially increasing inflation (and further decreases in GDP according to the world bank) in order to fund these wars, adding to the debt spiral. 
+
+The US has spent by far the most money in Ukraine compared to those nations who are much closer regionally, geopolitically and who possibly have more incentive to contend with Russia than we do, though the reasons for war vary, what we want to answer is how many lives can we save, and which investments save the most lives?
+
+
+By any metric war is expensive, and alleviating poverty is cheap. The best investments on the United Nations Sustainable Development Goals return thousands of dollars pre dollar invested when valued in the World Bank's standardized Disability Adjusted Life Years (DALY's). Many will say that you cannot put a value on human life, and they are correct, but avoiding assigning value does not save any lives either, and we tend to value the things we can measure. 
+
+World Bank DALY calculation: Disability Adjusted Life Year (DALY) = Years of Life Lost (YLL) + Years of Life Lose due to Disability (YLD). 
+
+That way, we can directly compare investment projects like considering whether to fund an HIV education, testing and treatment center, or to fund a Teberculosis prevention program through free drug distribution. By comparing the estimated reach and numbers of lives saved from each, we can review which is the better investment. 
+
+
+As assessed by the Copenhagen Concensus Center when considering the United Nations Sustainable Development Goals, or every *$*1 invested in  Tuberculosis treatments for those who cannot afford, it will return *$*43 and can result in millions of lives saved. For every *$*1 invested in universal access to contraception, it will return *$*120, and save millions more, these are near the top of the list of best possible investments for humanity, and these will result in a positive effect on GDP, but what are the best ones? 
+
+The best investments dollar for dollar are implementing the proposed global free trade agreements, like the Full Doha Program, which will result in *$*2011 dollars of return on investment as measured in DALY's for every *$*1 spent. Wasting money on taxes and tariffs famously hurts all countries involved and are merely political theater. Statistically, these are the best way to save human lives (Copenhagen Consensus Center, 2016).
+
+War, for any reason, does not make the list. There are of course many things that could be said about the necessity of fighting the world wars, and there is an argument to be made there, however there is often no metric of measurement. What we do have, is the metrics and measurements of the US fiscal budget, defecit, and inevitable outcomes affected by interest rates, treasury yields, and domestic and international GDP. These things are worth considering before funding any new wars, because the US dollar as the global currency is quickly losing its value to inflation, while simultaneously loosing its grip on global hegemony. As these happen, and a Multipolar world arises swinging the balance of power towards more fiscally responsible nations,  or those with commodities & resources, namely China and Russia. In this scenario, the US could still benefit if done wisely, though if we continue down the current path, global GDP and well being will be affected negatively, global resources will be constrained, and global poverty will rise. 
+
+Economist Gregory Mankiw is credited with calculating the famous quote from the movie *"The Big Short"* when Brad Pitt's character says "40,000 people die for every 1% that unemployment goes up." In reference to America alone, the number is generally true, and significantly larger for third world countries. Millions loose their jobs, income streams, housing, food sources and more when global GDP drops of slows at all. 
+
+
+*Total Costs of War* 
+
+The total number of people killed in both Ukraine & Russia is nearly 500,000 people. These lives were taken from fighting aged men, and this is particularly destructive to societies let alone when measured in DALYS resulting in millions of life years lost, and a bill for taking them. 
+
+While we cannot measure the potential lives saved, we can compare this with the "No War" scenario.   
+
+So for a total of *$*113bn in Ukraine aid, and sacrificing nearly 1% of US GDP growth to inflation during the same year, what could this*$*113bn have bought us instead?  
+
+This question is remarkably similar to the Copenhagen Concensus Center's final recommendation in their published work featuring 5 of the world's top economists, four of whom were nobel laureates, titled: How to spend *$*75 Billion To Make the World a Better Place* The aim of this final chapter was to priority rank the best investments to advance global welfare particularly in developing nations.  
+
+In the books conclusion, writing alongside Bjorn Lomborg, director of the Copenhagen Concensus Center, an institution which performs this exact task for governments like Haiti, India, Malawi, Ghana, Bangladesh, and a group of African Nations, The Author, Bjorn Lomborg alongside three of the world's top economists, including Finn Kydland from The University of California Santa Barbara who won a Nobel prize in economics, Tom Schelling, a professor at the University of Maryland who also won a Nobel prize in economics, Nancy Stokey, former Harvard professor, and current professor in mathematical economics at the University of Chicago, together they implore the concerned parties, governments, international bodies, NGO's and all stakeholders to take steps to take towards prioritization over the next several years as we get closer to the United Nations target year of achieving the Sustainable Development Goals to 2030.
+  
+The following priority goals are the product of the expert panel of more than 80 different authors and contributors brought together by the CCC to tackle such a daunting task for the world. Their analysis suggests that an over weighed funding of these interventions would provide the best value for money in terms of fulfilling the aims of the Sustainable Development Goals. 
+
+  
+Rank Ordered List of Priority Goals
+1. Bundled interventions to reduce undernutrition in preschoolers (to fight hunger and improve education)
+2. Expanding the subsidy for malaria combination treatment
+3. Expanded childhood immunization coverage
+4. Deworming of schoolchildren, to improve educational and health outcomes
+5 Expanding tuberculosis treatment
+6. R&D to increase yield enhancements, to de- crease hunger, fight biodiversity destruction, and lessen the effects of climate change
+7. Investing in effective early warning systems to protect populations against natural disaster
+8. Strengthening surgical capacity
+9. Hepatitis B immunization
+10. Using low-cost drugs in the case of acute heart attacks in poorer nations (these are already available in developed countries) 11. Salt reduction campaign to reduce chronic disease.
+12. Geoengineering R&D into the feasibility of solar radiation management 
+13. Conditional Cash Transfers for School Attendance 
+14. Accelerated HIV Vaccine R&D
+15. Extended field trial of information campaigns on the benefits of schooling 
+16. Borehole and public hand-pump intervention
+ 
+Any number of these goals having been solved would easily provide more return to human wellfare than would the war in Ukraine, or another war in the middle east. Let's keep this in mind as we move  closer to a nation that sees supporting war as the virtuous thing to do. 
+
+
+
+
+
+
+
+
+<br>
+<br>
 
 
 ________________________________________________________________   
