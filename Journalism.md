@@ -26,6 +26,10 @@ output:
  _________________________
  
  <br>
+ 
+ - [Ongoing Technical Analysis of Financial Markets & Geopolitics](./ongoingta.html)    
+ <br>
+ 
  <h4>
  <details><summary>[***List of All Articles***]</summary>
 [ ](./n/a.html) 
