@@ -27,7 +27,7 @@ output:
  
  <br>
  
- - [Ongoing Technical Analysis of Financial Markets & Geopolitics](./ongoingta.html)    
+[Ongoing Technical Analysis of Financial Markets & Geopolitics](./ongoingta.html)    
  <br>
  
  <h4>
