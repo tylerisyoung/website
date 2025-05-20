@@ -51,7 +51,7 @@ output:
 <br>
 
 <h4>
-***Projects***
+***Ongoing Projects***
 </h4>
 - [Lighthearted Humans - Creativity for a greater good](www.lightheartedhumans.com)   
 - [Ongoing Technical Analysis of Financial Markets & Geopolitics](./ongoingta.html)    
