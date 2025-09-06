@@ -8,99 +8,78 @@ output:
     highlight: haddock
 ---
 
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-library ( dplyr )
-library ( pander )
-library( tidytext )
-library (stringr )
-
+library(dplyr)
+library(pander)
+library(tidytext)
+library(stringr)
 ```
-
 
 ```{r}
-#IRS 1023 DATA
-#Load data 
-URL <- "https://github.com/DS4PS/cpp-527-spr-2020/blob/master/labs/data/IRS-1023-EZ-MISSIONS.rds?raw=true"
+# IRS 1023 DATA
+# Correct raw GitHub URL
+# No longer functioning? URL <-"https://raw.githubusercontent.com/DS4PS/pe4ps-textbook/master/data/org-mission-statements.rds"
+dat <- readRDS("/Users/Tyler/Desktop/thatsallfolks/TIY/website_v1/WebsiteAssets/Data/IRS-1023-EZ-MISSIONS.rds")
 
-dat <- readRDS(gzcon(url( URL )))
+# Load the RDS directly (don't need now )
+#dat <- readRDS(url(URL))
 
-head( dat[ c("orgname","codedef01","mission") ] ) %>% pander()
+# Quick check
+head(dat[c("orgname","codedef01","mission")])
+
 
 ```
 
-# Part 1: Patterns 
+# Part 1: Patterns
 ```{r, eval=FALSE}
-#Example Pattern
-grep(  pattern="some.reg.ex", x="mission statements", value=TRUE )
-```
-# Missions with Numbers 
-```{r}
-#Missions with numbers
-grep( pattern="[0-9]", x=dat$mission, value=TRUE ) %>% head() %>% pander()
-
+# Example Pattern
+grep(pattern="some.reg.ex", x="mission statements", value=TRUE)
 ```
 
+# Missions with Numbers
 ```{r}
-# Sum of missions with numbers
-grepl( "[0-9]", dat$mission ) %>% sum()
-```
-<h2>
-1. Filter by: Starts with "to"
-</h2>
-```{r}
-#How many begin with "to"
-filter_to <- grep( "to" , x=dat$mission, value=TRUE )
-head(filter_to, 6 ) %>% pander()
+grep(pattern="[0-9]", x=dat$mission, value=TRUE) %>% head() %>% pander()
 ```
 
 ```{r}
-filter_to <- grepl( "to" , x=dat$mission ) 
-sum(filter_to)
+grepl("[0-9]", dat$mission) %>% sum()
 ```
 
-<h2>
-2. Filter by: blank mission statements
-</h2>
-
+## 1. Filter by: Starts with "to"
 ```{r}
-#Orgs by number which have blank missino statements
-filter_blank <- grep("^[[:space:]]*$",x=dat$mission)
-#subset(dat,!grepl("^[[:space:]]*$", mission))
-#dat[which(dat$mission!=""),]
-head(filter_blank , 6 )
-#returns first 6 
+filter_to <- grep("^to", x=dat$mission, value=TRUE)
+head(filter_to, 6) %>% pander()
 ```
 
 ```{r}
-#Sum of blank mission statement orgs
-filter_blank <- grep("^[[:space:]]*$",x=dat$mission)
-sum(filter_blank)
+sum(grepl("^to", dat$mission))
 ```
-<h2>
-3. Filter by: Mission statements with trailing whitespace
-</h2>
-```{r}
-#Identify trailing whitespace
-filter_blank_end <- grepl("[[:space:]]+$", x=dat$mission) #Blankk space at all?
-#filter_spaces_after <- grep("[[:space:]]+$", dat$mission) # Blank space after 
 
+## 2. Filter by: blank mission statements
+```{r}
+filter_blank <- grep("^[[:space:]]*$", x=dat$mission)
+head(filter_blank, 6)
+```
+
+```{r}
+sum(grepl("^[[:space:]]*$", dat$mission))
+```
+
+## 3. Filter by: Mission statements with trailing whitespace
+```{r}
+filter_blank_end <- grepl("[[:space:]]+$", x=dat$mission)
 sum(filter_blank_end)
-
 ```
-Trim Trailing Whitespace:
+
 ```{r}
-#Trim trainling whitespace
-trim_final_spaces <- function (x=dat$mission) sub("\\s+$", "", x)
+trim_final_spaces <- function(x=dat$mission) sub("\\s+$", "", x)
 trim_final_spaces() %>% head(6) %>% pander()
-
 ```
-<h2>
-3. Filter by: How many missions have a dollar sign
-</h2>
+
+## 4. Filter by: Missions with a dollar sign
 ```{r}
-filter_dollar <- grepl( "$" , x=dat$mission ) 
+filter_dollar <- grepl("\\$", x=dat$mission)
 sum(filter_dollar)
 ```

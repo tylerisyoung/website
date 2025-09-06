@@ -35,7 +35,7 @@ dataTS <- readRDS(gzcon(url( URL )))
 <br>
 
 # Policy Question: 
-#### Does adding more bussed to a public transportation like increase ridership in a city? 
+#### Does adding more busses to a public transportation like increase ridership in a city? 
 
 
 #### Load Data

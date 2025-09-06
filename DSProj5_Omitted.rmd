@@ -29,8 +29,15 @@ library( stargazer )  # regression tables
 
 
 ```{r}
-URL <- "https://raw.githubusercontent.com/DS4PS/cpp-523-fall-2019/master/labs/data/predicting-subjective-wellbeing.csv"
-dat <- read.csv( URL, stringsAsFactors=F )
+# CHANGING FROM: 
+#URL <- "https://raw.githubusercontent.com/DS4PS/cpp-523-fall-2019/master/labs/data/predicting-subjective-wellbeing.csv"
+#dat <- read.csv( URL, stringsAsFactors=F )
+
+#TO
+
+dat <- read.csv("/Users/Tyler/Desktop/thatsallfolks/TIY/Website_V1/WebsiteAssets/Data/predicting-subjective-wellbeing.csv",
+                stringsAsFactors = FALSE)
+head(dat)
 ```
 
 
