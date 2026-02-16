@@ -14,7 +14,7 @@
 
 <title>Gender in Nonprofits - a Chi Squared test</title>
 
-<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -52,6 +52,7 @@
   }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -264,8 +265,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -273,16 +274,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -386,9 +380,9 @@ class="section level3">
 <h3>The dataset contains ten survey questions from a survey of nonprofit
 entrepreneurs. The gender variable represents our study groups, male and
 female.</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>URL <span class="ot">&lt;-</span> <span class="st">&quot;https://github.com/DS4PS/cpp-524-sum-2020/blob/master/labs/data/female-np-entrepreneurs.rds?raw=true&quot;</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">gzcon</span>(<span class="fu">url</span>( URL )))</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( dat )</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>URL <span class="ot">&lt;-</span> <span class="st">&quot;https://github.com/DS4PS/cpp-524-sum-2020/blob/master/labs/data/female-np-entrepreneurs.rds?raw=true&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">gzcon</span>(<span class="fu">url</span>( URL )))</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">head</span>( dat )</span></code></pre></div>
 <pre><code>##   gender age income edu.level years.prof.exp experience.np.create
 ## 1 Female  54  79669  Graduate          11-15                   No
 ## 2 Female  62  63474  Graduate            15+                   No
@@ -419,8 +413,8 @@ female.</h3>
 Education levels of male &amp; female entrepreneurs. “What is the
 highest level of education you achieved?”</p>
 <p>Tables</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">table</span>( dat<span class="sc">$</span>edu.level, dat<span class="sc">$</span>gender )</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>a <span class="sc">%&gt;%</span> <span class="fu">prop.table</span>( <span class="at">margin=</span><span class="dv">1</span> ) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">table</span>( dat<span class="sc">$</span>edu.level, dat<span class="sc">$</span>gender )</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>a <span class="sc">%&gt;%</span> <span class="fu">prop.table</span>( <span class="at">margin=</span><span class="dv">1</span> ) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
 <table style="width:51%;">
 <colgroup>
 <col width="26%" />
@@ -463,7 +457,7 @@ highest level of education you achieved?”</p>
 </tbody>
 </table>
 <p>Chi Square Tests</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>( a, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">chisq.test</span>( a, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
 ##  replicates)
@@ -483,8 +477,8 @@ statistically significant and therefore not expressly correlated.</p>
 <h1>Survey Question 2:</h1>
 <p>Compare work experience for male and female entrepreneurs. “Do males
 or females have more professional* work experience?”</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">table</span>( dat<span class="sc">$</span>years.prof.exp, dat<span class="sc">$</span>gender )</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>b <span class="sc">%&gt;%</span> <span class="fu">prop.table</span>( <span class="at">margin=</span><span class="dv">1</span> ) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">table</span>( dat<span class="sc">$</span>years.prof.exp, dat<span class="sc">$</span>gender )</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>b <span class="sc">%&gt;%</span> <span class="fu">prop.table</span>( <span class="at">margin=</span><span class="dv">1</span> ) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
 <table style="width:42%;">
 <colgroup>
 <col width="16%" />
@@ -531,7 +525,7 @@ or females have more professional* work experience?”</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>( b, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">chisq.test</span>( b, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
 ##  replicates)
@@ -547,8 +541,8 @@ significant.</p>
 <div id="survey-question-3" class="section level1">
 <h1>Survey Question 3:</h1>
 <p>Do females or males on average receive more seed funding?</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">table</span>( dat<span class="sc">$</span>seed.funding, dat<span class="sc">$</span>gender )</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>c <span class="sc">%&gt;%</span> <span class="fu">prop.table</span>( <span class="at">margin=</span><span class="dv">1</span> ) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">table</span>( dat<span class="sc">$</span>seed.funding, dat<span class="sc">$</span>gender )</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>c <span class="sc">%&gt;%</span> <span class="fu">prop.table</span>( <span class="at">margin=</span><span class="dv">1</span> ) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
 <table style="width:39%;">
 <colgroup>
 <col width="13%" />
@@ -575,7 +569,7 @@ significant.</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>( c, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">chisq.test</span>( c, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
 ##  replicates)
@@ -592,8 +586,8 @@ seen funding more often than males.</p>
 <h1>Survey Question 4:</h1>
 <p>Are males or females more willing to take on debt to start a
 business?</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">table</span>( dat<span class="sc">$</span>take.on.debt, dat<span class="sc">$</span>gender )</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>d <span class="sc">%&gt;%</span> <span class="fu">prop.table</span>( <span class="at">margin=</span><span class="dv">1</span> ) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">table</span>( dat<span class="sc">$</span>take.on.debt, dat<span class="sc">$</span>gender )</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>d <span class="sc">%&gt;%</span> <span class="fu">prop.table</span>( <span class="at">margin=</span><span class="dv">1</span> ) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
 <table style="width:47%;">
 <colgroup>
 <col width="22%" />
@@ -635,7 +629,7 @@ business?</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>( d, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">chisq.test</span>( d, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
 ##  replicates)
@@ -652,8 +646,8 @@ counterparts.</p>
 <h1>Survey Question 5:</h1>
 <p>Do males and females have different sources of funding that are most
 importasnt to their businesses?</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">table</span>( dat<span class="sc">$</span>most.imp.fund.source, dat<span class="sc">$</span>gender )</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>e <span class="sc">%&gt;%</span> <span class="fu">prop.table</span>( <span class="at">margin=</span><span class="dv">1</span> ) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">table</span>( dat<span class="sc">$</span>most.imp.fund.source, dat<span class="sc">$</span>gender )</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>e <span class="sc">%&gt;%</span> <span class="fu">prop.table</span>( <span class="at">margin=</span><span class="dv">1</span> ) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code></pre></div>
 <table style="width:57%;">
 <colgroup>
 <col width="31%" />
@@ -715,7 +709,7 @@ importasnt to their businesses?</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>( e, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">chisq.test</span>( e, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
 ##  replicates)
@@ -731,14 +725,14 @@ funding sources by gender.</p>
 <div id="survey-question-6" class="section level1">
 <h1>Survey question 6:</h1>
 <p>Does the average age of nonprofit founders differ by gender?</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>( f, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">chisq.test</span>( f, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
 ##  replicates)
 ## 
 ## data:  f
 ## X-squared = 98.545, df = NA, p-value = 5e-04</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>( age <span class="sc">~</span> gender, <span class="at">data=</span>dat )</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">t.test</span>( age <span class="sc">~</span> gender, <span class="at">data=</span>dat )</span></code></pre></div>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
@@ -750,14 +744,14 @@ funding sources by gender.</p>
 ## sample estimates:
 ## mean in group Female   mean in group Male 
 ##             51.93948             55.04828</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>get_pval_from_tval <span class="ot">&lt;-</span> <span class="cf">function</span>( tvalue, n1, n2 )</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">min</span>( <span class="dv">655</span>, <span class="dv">657</span> ) <span class="sc">-</span> <span class="dv">1</span>  <span class="co"># size of treated group and comparison</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  pval <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pt</span>( <span class="fu">abs</span>(tvalue), <span class="at">df=</span>df, <span class="at">lower.tail=</span><span class="cn">FALSE</span> )</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>( pval )</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">get_pval_from_tval</span>( <span class="at">tvalue=</span><span class="sc">-</span><span class="fl">3.1749</span>, <span class="at">n1=</span><span class="dv">655</span>, <span class="at">n2=</span><span class="dv">657</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>get_pval_from_tval <span class="ot">&lt;-</span> <span class="cf">function</span>( tvalue, n1, n2 )</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>{</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">min</span>( <span class="dv">655</span>, <span class="dv">657</span> ) <span class="sc">-</span> <span class="dv">1</span>  <span class="co"># size of treated group and comparison</span></span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>  pval <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pt</span>( <span class="fu">abs</span>(tvalue), <span class="at">df=</span>df, <span class="at">lower.tail=</span><span class="cn">FALSE</span> )</span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a>  <span class="fu">return</span>( pval )</span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a>}</span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a><span class="fu">get_pval_from_tval</span>( <span class="at">tvalue=</span><span class="sc">-</span><span class="fl">3.1749</span>, <span class="at">n1=</span><span class="dv">655</span>, <span class="at">n2=</span><span class="dv">657</span> )</span></code></pre></div>
 <pre><code>## [1] 0.001569263</code></pre>
 <p>Our data suggest within a 95% confidence interval that the average
 age of male nonprofit entrepreneurs is slightly older than that of
@@ -769,14 +763,14 @@ groups are equivalent, more in Q8)</p>
 <h1>Survey Question 7:</h1>
 <p>Were the income levels between men and women entrepeneurs different
 at the time of inception?</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>( g, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="fu">chisq.test</span>( g, <span class="at">simulate.p.value =</span> <span class="cn">TRUE</span> , <span class="at">B =</span> <span class="dv">10000</span> )</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test with simulated p-value (based on 10000
 ##  replicates)
 ## 
 ## data:  g
-## X-squared = 601.88, df = NA, p-value = 0.6753</code></pre>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>( income <span class="sc">~</span> gender, <span class="at">data=</span>dat )</span></code></pre></div>
+## X-squared = 601.88, df = NA, p-value = 0.529</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="fu">t.test</span>( income <span class="sc">~</span> gender, <span class="at">data=</span>dat )</span></code></pre></div>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 

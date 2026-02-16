@@ -1,17 +1,16 @@
----
-title: 'Omitted Variable Bias'
-author: ""
-date: ""
-output:
-  html_document:
-    df_print: paged
-    theme: cerulean
-    highlight: haddock
+___
+title: "DSProj5_Omitted (Disabled)"
+output: html_document
+knit: (function(inputFile, encoding) { 
+  rmarkdown::render(inputFile, encoding = encoding, 
+                    envir = new.env(), 
+                    quiet = TRUE,
+                    run_pandoc = TRUE) 
+})
 ---
 
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message=F, warning=F, fig.align='center', fig.width=9 )
+```{r eval=FALSE, eval=FALSE, setup, include=FALSE}
+#knitr::opts_chunk$set(eval = FALSE, message=F, warning=F, fig.align='center', fig.width=9 )
 
 
 ```
@@ -19,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE, message=F, warning=F, fig.align='center', fig
 
 
 
-```{r}
+```{r eval=FALSE,}
 library( pander )     # formatting tables
 library( dplyr )      # data wrangling
 library( stargazer )  # regression tables
@@ -28,16 +27,16 @@ library( stargazer )  # regression tables
 
 
 
-```{r}
+```{r eval=FALSE,}
 # CHANGING FROM: 
 #URL <- "https://raw.githubusercontent.com/DS4PS/cpp-523-fall-2019/master/labs/data/predicting-subjective-wellbeing.csv"
 #dat <- read.csv( URL, stringsAsFactors=F )
 
 #TO
 
-dat <- read.csv("/Users/Tyler/Desktop/thatsallfolks/TIY/Website_V1/WebsiteAssets/Data/predicting-subjective-wellbeing.csv",
-                stringsAsFactors = FALSE)
-head(dat)
+# dat <- read.csv("/Users/Tyler/Desktop/thatsallfolks/TIY/Website_V1/WebsiteAssets/Data/predicting-subjective-wellbeing.csv",
+ #               stringsAsFactors = FALSE)
+#head(dat)
 ```
 
 
@@ -48,14 +47,14 @@ head(dat)
 
 Consider a three-variable regression of Subjective Well-Being (SWB), Network Diversity (ND) and Perceived Social Support (PSS):
 
-$SWB=β_0+β_1 \cdot ND+β_2 \cdot PSS+e$
+ $SWB=β_0+β_1 \cdot ND+β_2 \cdot PSS+e$
 
 Calculate the omitted variable bias on the Network Diversity (ND) coefficient that results from omitting the Perceived Social Support (PSS) variable from the regression. 
 
 
 $SWB=b_0+b_1 \cdot ND+e$
 
-```{r, results="asis"}
+```{r eval=FALSE, results="asis"}
 # Html viz problems 
 # Graph changes when knitted vs executed in console? 
 # Necessary to make third code chunk Eval = F
@@ -75,7 +74,7 @@ stargazer( m.naive, m.full,
 Results from above chunk:
 
 
-```{r}
+```{r eval=FALSE}
 B1 <- -0.05  # replace with the appropriate value from the table above
 b1 <- 0.52  # replace with the appropriate value from the table above
 bias <- b1 - B1
@@ -94,7 +93,7 @@ Run the auxiliary regression to estimate $\alpha_1$.
 Calculate the bias using the omitted variable bias equation and show your math.  You can check your results by comparing your answer to bias calculation from **Variables**.
 
 
-```{r, results="asis" ,eval=T }
+```{r eval=FALSE,, results="asis" }
 
 #Html  viz problems 
 # Eval = F /T to knit (html/text)
@@ -129,7 +128,7 @@ bias
 
 How good is the naive estimation of β1, the impact of network diversity on our happiness, in this case?
 
-```{r, eval=T}
+```{r eval=FALSE,, eval=T}
 #bias / B1  # rough measure of the magnitude of bias
 
 (.52 - (-0.05))/ (-0.05) 
@@ -168,7 +167,7 @@ We can then compare these two bivariate regressions to the results in the full m
 
 SWB=β0+β1⋅CSE+β2⋅RSE+ϵ
 
-```{r}
+```{r eval=FALSE,}
 #Hdoes function in the console despite html viz
 
 m.01 <- lm( SWB ~ CSE, data=dat )

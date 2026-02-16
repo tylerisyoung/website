@@ -14,7 +14,7 @@
 
 <title>Control Variable Regression Models</title>
 
-<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
@@ -54,6 +54,7 @@
   }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -266,8 +267,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -275,16 +276,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -376,11 +370,11 @@ $(document).ready(function () {
 </div>
 
 
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( pander )     <span class="co"># formatting tables</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( dplyr )      <span class="co"># data wrangling</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( stargazer )  <span class="co"># regression tables</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>URL <span class="ot">&lt;-</span> <span class="st">&quot;https://raw.githubusercontent.com/DS4PS/cpp-523-fall-2019/master/labs/class-size-seed-1234.csv&quot;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>( URL )</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>( pander )     <span class="co"># formatting tables</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>( dplyr )      <span class="co"># data wrangling</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>( stargazer )  <span class="co"># regression tables</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>URL <span class="ot">&lt;-</span> <span class="st">&quot;https://raw.githubusercontent.com/DS4PS/cpp-523-fall-2019/master/labs/class-size-seed-1234.csv&quot;</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>( URL )</span></code></pre></div>
 <div id="regression-models-teachers-class-size-caffine-exercise"
 class="section level1">
 <h1>Regression Models: Teachers &amp; Class Size / Caffine &amp;
@@ -452,53 +446,53 @@ experts on a scale of 1 to 100</li>
 <li><strong>ses</strong> - socio economic status of students measured as
 median household income</li>
 </ul>
-<p><img src="DSProj4_Regression_files/figure-html/unnamed-chunk-4-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="DSProj4_Regression_files/figure-html/unnamed-chunk-4-1.png" alt="" width="960" style="display: block; margin: auto;" /></p>
 </div>
 <div id="scatterpolot" class="section level4">
 <h4>Scatterpolot</h4>
 <p>Class Size (x-axis) and Test Score (y-axis). This will serve as a
 visual representation of our baseline model of the relationship between
 Class Size and Test Score.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#plot( dat$csize, dat$test, </span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#     xlab=&quot;Class Size&quot;, ylab=&quot;Test Scores&quot;,</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     main=&quot;Relationship Between Class Size and Test Scores&quot; )</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#     abline( lm(test~csize,data=dat), col=&quot;firebrick&quot;, lwd=2 )</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># CHANGE THE PLOT STYLE: </span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># pch=19             # change point style</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># cex=1.5            # change point size</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># col=&quot;firebrick&quot;    # change color *points?*</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># bty=&quot;n&quot;            # remove bounding box</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Also changed Abline to black so it was visible, </span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#made others black instead.</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>csize, dat<span class="sc">$</span>test, <span class="at">col=</span><span class="st">&quot;firebrick&quot;</span>, <span class="at">pch=</span><span class="dv">19</span>, <span class="at">bty=</span><span class="st">&quot;n&quot;</span>, <span class="at">cex=</span><span class="fl">1.5</span>, <span class="at">xlab=</span><span class="st">&quot;Class Size&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Test Scores&quot;</span>,<span class="at">main=</span><span class="st">&quot;Relationship Between Class Size and Test Scores&quot;</span> )</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="fu">lm</span>(test<span class="sc">~</span>csize,<span class="at">data=</span>dat), <span class="at">col=</span><span class="st">&quot;black&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span> )</span></code></pre></div>
-<p><img src="DSProj4_Regression_files/figure-html/unnamed-chunk-5-1.png" width="864" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co">#plot( dat$csize, dat$test, </span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#     xlab=&quot;Class Size&quot;, ylab=&quot;Test Scores&quot;,</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#     main=&quot;Relationship Between Class Size and Test Scores&quot; )</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#     abline( lm(test~csize,data=dat), col=&quot;firebrick&quot;, lwd=2 )</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co"># CHANGE THE PLOT STYLE: </span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co"># pch=19             # change point style</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co"># cex=1.5            # change point size</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co"># col=&quot;firebrick&quot;    # change color *points?*</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co"># bty=&quot;n&quot;            # remove bounding box</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#Also changed Abline to black so it was visible, </span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#made others black instead.</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>csize, dat<span class="sc">$</span>test, <span class="at">col=</span><span class="st">&quot;firebrick&quot;</span>, <span class="at">pch=</span><span class="dv">19</span>, <span class="at">bty=</span><span class="st">&quot;n&quot;</span>, <span class="at">cex=</span><span class="fl">1.5</span>, <span class="at">xlab=</span><span class="st">&quot;Class Size&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Test Scores&quot;</span>,<span class="at">main=</span><span class="st">&quot;Relationship Between Class Size and Test Scores&quot;</span> )</span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="fu">abline</span>( <span class="fu">lm</span>(test<span class="sc">~</span>csize,<span class="at">data=</span>dat), <span class="at">col=</span><span class="st">&quot;black&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span> )</span></code></pre></div>
+<p><img src="DSProj4_Regression_files/figure-html/unnamed-chunk-5-1.png" alt="" width="864" style="display: block; margin: auto;" /></p>
 </div>
 <div id="regression-plot-of-class-size-test-scores"
 class="section level4">
 <h4>Regression &amp; Plot of Class size &amp; Test Scores</h4>
 <p><span class="math inline">\(test = b_0 + b_1 \cdot tqual +
 e1\)</span></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>model<span class="fl">.01</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>( test <span class="sc">~</span> tqual, <span class="at">data=</span>dat )</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>e1.test.score <span class="ot">&lt;-</span> model<span class="fl">.01</span><span class="sc">$</span>residual</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>csize, e1.test.score )</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="fu">lm</span>(e1.test.score<span class="sc">~</span>dat<span class="sc">$</span>csize), <span class="at">col=</span><span class="st">&quot;firebrick&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span> )</span></code></pre></div>
-<p><img src="DSProj4_Regression_files/figure-html/unnamed-chunk-6-1.png" width="864" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>model<span class="fl">.01</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>( test <span class="sc">~</span> tqual, <span class="at">data=</span>dat )</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>e1.test.score <span class="ot">&lt;-</span> model<span class="fl">.01</span><span class="sc">$</span>residual</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>csize, e1.test.score )</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="fu">abline</span>( <span class="fu">lm</span>(e1.test.score<span class="sc">~</span>dat<span class="sc">$</span>csize), <span class="at">col=</span><span class="st">&quot;firebrick&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span> )</span></code></pre></div>
+<p><img src="DSProj4_Regression_files/figure-html/unnamed-chunk-6-1.png" alt="" width="864" style="display: block; margin: auto;" /></p>
 <p>The strength of the relationship improved dramatically as we have
 removed any excess or unexplained residual variance from the test
 scores. <br> #### Regression of Test scoreson SES</p>
 <p><span class="math inline">\(test = b_0 + b_1 \cdot ses +
 e2\)</span></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>model<span class="fl">.02</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>( test <span class="sc">~</span> ses, <span class="at">data=</span>dat )</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>e2.test.score <span class="ot">&lt;-</span> model<span class="fl">.02</span><span class="sc">$</span>residual</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>csize, e2.test.score )</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="fu">lm</span>(e2.test.score<span class="sc">~</span>dat<span class="sc">$</span>csize), <span class="at">col=</span><span class="st">&quot;firebrick&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span> )</span></code></pre></div>
-<p><img src="DSProj4_Regression_files/figure-html/unnamed-chunk-7-1.png" width="864" style="display: block; margin: auto;" />
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>model<span class="fl">.02</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>( test <span class="sc">~</span> ses, <span class="at">data=</span>dat )</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>e2.test.score <span class="ot">&lt;-</span> model<span class="fl">.02</span><span class="sc">$</span>residual</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>csize, e2.test.score )</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="fu">abline</span>( <span class="fu">lm</span>(e2.test.score<span class="sc">~</span>dat<span class="sc">$</span>csize), <span class="at">col=</span><span class="st">&quot;firebrick&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span> )</span></code></pre></div>
+<p><img src="DSProj4_Regression_files/figure-html/unnamed-chunk-7-1.png" alt="" width="864" style="display: block; margin: auto;" />
 The strength of the relationship is lost because class size and test
 score are highly correlated so when we use only the residuals and
 compare them with test scores, the slope falls flat. <br> ####
@@ -685,7 +679,7 @@ Residual Std. Error
 </td>
 </tr>
 </table>
-<p><img src="DSProj4_Regression_files/figure-html/unnamed-chunk-9-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="DSProj4_Regression_files/figure-html/unnamed-chunk-9-1.png" alt="" width="960" style="display: block; margin: auto;" /></p>
 <p><br><br></p>
 </div>
 
