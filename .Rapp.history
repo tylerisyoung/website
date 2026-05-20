@@ -1,0 +1,4 @@
+setwd("~/tiy/website")
+path.expand("~")
+setwd("~tyleryoung/thatsallfolks/tiy/website")
+rmarkdown::render_site()
