@@ -19,16 +19,15 @@ output:
 <h6>Creativity, Data Science & Prioritization for a Greater Good.
 </h6>
 <h6>
-***B.S. Environmental Studies***
-***University of Oregon***  
-***M.S. Data Analytics***
-***Arizona State***
+***B.S. Environmental Studies - University of Oregon***  
+***M.S. Data Analytics - Arizona State***
 </h6><h5>
 <br>
 **Currently:**
 </h5>
 <h6>
 **Growatt USA, North American Marketing Manager**  
+[us.Growatt.com](US.growatt.com)
   
 </h6>
 Social:
