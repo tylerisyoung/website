@@ -11,7 +11,7 @@ output:
 
 
 ---
-
+https://www.tylerisyoung.com/ongoingta.html
 <br>
 <br>
 
@@ -26,6 +26,10 @@ output:
  _________________________
  
  <br>
+ Read my [Blog](https://www.tylerisyoung.com/ongoingta.html)
+ <br>
+ <br>
+ 
  <h4>
  <details><summary>[***List of All Articles***]</summary>
 [ ](./n/a.html) 
