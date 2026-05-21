@@ -28,14 +28,27 @@ output:
 <h4>
 **The Fundamentals**
 </h4>
-Read: [Modern Monetary Theory - Slow at first, then all at once.](./mmt.html)  
+14m Read: [Modern Monetary Theory - Slow at first, then all at once.](./mmt.html)  
 </center>
 <br>  
 <h4>
 **The Macroeconomic Backdrop**  
 </h4>
 The macroeconomics problem displayed in a single chart:
-![](./Journalism/Economics/ongoingta/MMT_ALLCHARTS.jpg)
+![](./Journalism/Economics/macro.png)
+The combination of (Federal Budget Deficit + 10-Year Treasury Yield) shows The deficit  measured in dollars (currently around -$1.8T annually), and the 10 year yield as a percentage (currently ~4.5%) added into one line. 
+
+Free market economics dictates that this line should be mean reverting to $0. To achieve this, as we have in the past, free market discovery of bond yields is necessary, but this trend will continue and reach -$3Trillion again and extend lower as the spiral continues.  
+
+What the trend means - The deficit is so large that even with QE artificially capping yields at 4-5% (implied Yield Curve Control) the combined picture is still deeply negative, our borrowing hole is bigger than what reasonable rate normalization can offset. 
+
+What you'd expect (normal economics - leading into the dot com bubble when we had a slight budget surplus) When the government runs bigger deficits, it has to borrow more. More borrowing means more bond supply - bond prices fall - yields rise. Bigger deficits should mean higher interest rates to close the gap and the chart goes above 0 indicating free market risk in US Treasuries (UST).
+
+QE changes that.
+
+Since the 80s, deficits have grown almost continuously, but the 10-year yield went from ~15% down to nearly 0% instead of up. That's the paradox of QE hiding the debt spiral. When long term treasury yields began to rise too rapidly, the Fed began to buy treasuries (Quantitative Easing) masking price discovery for government debt, and until recently, global demand for UST's as a safe reserve asset held steady too helping keep prices high and yields low despite ballooning supply, but relief is temporary and the fun is over. 
+
+Deficits are too high, liabilities exceed receipts, M2 and inflation will remain elevated to fund everything, and demand for UST's will dry up in a multipolar commodity driven world. 
 
 <h4>
 <br>
