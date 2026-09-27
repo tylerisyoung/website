@@ -39,6 +39,18 @@ library ("cowplot")
 
 
 <font size="5">
+<p style="text-align: center;">Thesis Project: Policy Priorities</p>
+</font>
+<center>
+A multivariate benefit-cost ranking of 60 policies, built in R. Change the assumptions and watch the ranking move. <a href="./cba-dashboard/index.html" target="_blank">Open full screen</a>
+</center>
+<br>
+<iframe src="./cba-dashboard/index.html" width="100%" height="1150" style="border:1px solid #ddd; border-radius:6px;" loading="lazy" title="Policy Priorities dashboard"></iframe>
+
+<br>
+<br>
+
+<font size="5">
 <p style="text-align: center;">Data Driven Journalism</p>
 </font>
 <br>
