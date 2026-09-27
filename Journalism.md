@@ -40,7 +40,7 @@ Article: [Modern Monetary Theory - Slow at first, then all at once.](./mmt.html)
 
 Article: [Politics, Critical Theory, and our loss of Sensemaking in 2020](./politicsandcriticaltheory.html)    
 
-Article: [From Canada to Coos Bay, The Politics of a Pipeline](./Fromcanadatocoosbay.html) 
+Article: [From Canada to Coos Bay, The Politics of a Pipeline](./fromcanadatocoosbay.html) 
 
 Article: [Distributed Idea Suppression Complex](./distributedideasuppressioncomplex.html)  
 
@@ -48,11 +48,11 @@ Article: [Mainstream Monitoring and Manipulation](./mainstreammonitoringandmanip
 
 <br>
 
-Story: [The REI Campaign](./thereicampaign.html)    
+Story: [The REI Campaign](./TheReiCampaign.html)    
 
 Story: [Cycling from Oregon to Mexico](https://www.lightheartedhumans.com/storytelling/2019/6/9/entry-003-cycling-from-oregon-to-mexico)
 
-Story: [A Year in Ecuador](./journalism/adventure/ayearinecuador.html)
+Story: [A Year in Ecuador](./AYearInEcuador.html)
 
 Story: [Rafting the Deschutes](https://www.lightheartedhumans.com/storytelling/2019/6/19/entry-005-rafting-the-deschutes-tyler-young)  
 
@@ -100,7 +100,7 @@ Story: [Rafting the Deschutes](https://www.lightheartedhumans.com/storytelling/2
 
 
 <br>
- Essay: [The Artists Rebellion](./docs/Theartistsrebellion.html)   
+ Essay: [The Artists Rebellion](./Theartistsrebellion.html)   
 <center>
  <br>
  ![](images/THE ARTISTS REBELLION.png)

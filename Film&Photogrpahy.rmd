@@ -37,4 +37,4 @@ output:
  Article: [From Canada to Coos Bay, The Politics of a Pipeline]  
  
  <br>
- ![](images/theartistsrebellion.jpg)
+ ![](images/THE%20ARTISTS%20REBELLION.png)

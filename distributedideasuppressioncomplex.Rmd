@@ -20,8 +20,8 @@ output:
 ***An article by Tyler Young.***
 </h6>
 
-*[Tylerisyoung.Substack.com](www.tylerisyoung.substack.com)*   
-*[Twitter.com/TylerisYoung](www.twitter.com/Tylerisyoung)*  
+*[Tylerisyoung.Substack.com](https://www.tylerisyoung.substack.com)*   
+*[Twitter.com/TylerisYoung](https://www.twitter.com/Tylerisyoung)*  
  _________________________
  <br>
  11/02/2021

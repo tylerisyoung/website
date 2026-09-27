@@ -39,7 +39,7 @@ Story: [Rafting the Deschutes](https://www.lightheartedhumans.com/storytelling/2
 
 Story: [Cycling from Oregon to Mexico](https://www.lightheartedhumans.com/storytelling/2019/6/9/entry-003-cycling-from-oregon-to-mexico)
 
-Story: [A Year in Ecuador](./journalism/adventure/ayearinecuador.html)
+Story: [A Year in Ecuador](./AYearInEcuador.html)
 
 </details>
 

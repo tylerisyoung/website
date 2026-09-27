@@ -59,11 +59,11 @@ Article: [*Activism, and how it has been taken over by Postmodernism*](./deepeco
 
 --->
 
-Story: [*The REI Campaign*](./thereicampaign.html)    
+Story: [*The REI Campaign*](./TheReiCampaign.html)    
 
-Article: [*Deep Ecology*](./deepecology.html)   
+Article: [*Deep Ecology*](./DeepEcology.html)   
   
-Article: [*From Canada to Coos Bay, The Politics of a Pipeline*](./Fromcanadatocoosbay.html) *Published in: Ethos & The Daily Emerald*
+Article: [*From Canada to Coos Bay, The Politics of a Pipeline*](./fromcanadatocoosbay.html) *Published in: Ethos & The Daily Emerald*
 
 </details>
 

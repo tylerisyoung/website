@@ -20,8 +20,8 @@ output:
 ***A practical overview***
 </h6>
 
-*[Tylerisyoung.Substack.com](www.tylerisyoung.substack.com)*   
-*[Twitter.com/TylerisYoung](www.twitter.com/Tylerisyoung)*  
+*[Tylerisyoung.Substack.com](https://www.tylerisyoung.substack.com)*   
+*[Twitter.com/TylerisYoung](https://www.twitter.com/Tylerisyoung)*  
  _________________________
  <br>
  04/12/2018
@@ -46,7 +46,7 @@ None of this is financial advice, I am not an investment adviser, but I definite
 WHY BITCOIN: 
 Bitcoin is going to the moon, end of story. 
 
-Bitcoin is not money, it is an asset. Everyone from world leaders to the central bank and federal reserve agree, but what is an asset? Well we know that Gold is an asset, Silver is an asset, beautiful works of art, our cars are an asset, our groceries, our health, assets are everywhere and they all have a few things in common: It is possible to definitively and provably own them, they have value to the economy, and that value can be exchanged i.e.transferred to a different owner or used up in some way. Some assets are better than others for certain applications, choosing to use a premium fuel vs a lower fuel grade; The benefits and tradeoffs of short term use case and consumer good type assets are seemingly clear; Save money at the pump vs Introducing a few additional cleaning solvents into your engine as you possibly should every few thousand miles in the hopes of it lasting longer. However when it comes to financial assets the tradeoff is less clear, should I buy silver or gold? *[(Hint: You should buy silver! )](reddit.com/r/wallstreetsilver)* *[& Why I chose Silver.](./silver.html)* They both have a physical existence, they are both easily accepted and converted back to cash, and they both have real world use cases which include industrial production, gold tooth crowns, use in solar cells, and much more, therefore the only way to determine their value, and thus their exchange rate with fiat dollars backed by central governments is to consider what buyers are willing to pay for such an asset. The current price of gold is 
+Bitcoin is not money, it is an asset. Everyone from world leaders to the central bank and federal reserve agree, but what is an asset? Well we know that Gold is an asset, Silver is an asset, beautiful works of art, our cars are an asset, our groceries, our health, assets are everywhere and they all have a few things in common: It is possible to definitively and provably own them, they have value to the economy, and that value can be exchanged i.e.transferred to a different owner or used up in some way. Some assets are better than others for certain applications, choosing to use a premium fuel vs a lower fuel grade; The benefits and tradeoffs of short term use case and consumer good type assets are seemingly clear; Save money at the pump vs Introducing a few additional cleaning solvents into your engine as you possibly should every few thousand miles in the hopes of it lasting longer. However when it comes to financial assets the tradeoff is less clear, should I buy silver or gold? *[(Hint: You should buy silver! )](https://reddit.com/r/wallstreetsilver)* *[& Why I chose Silver.](./silver.html)* They both have a physical existence, they are both easily accepted and converted back to cash, and they both have real world use cases which include industrial production, gold tooth crowns, use in solar cells, and much more, therefore the only way to determine their value, and thus their exchange rate with fiat dollars backed by central governments is to consider what buyers are willing to pay for such an asset. The current price of gold is 
 
 <!-- TradingView Widget BEGIN -->
 <div class="tradingview-widget-container">

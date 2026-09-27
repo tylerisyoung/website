@@ -53,7 +53,7 @@ output:
 <h4>
 ***Ongoing Projects***
 </h4>
-- [Lighthearted Humans - Creativity for a greater good](www.lightheartedhumans.com)   
+- [Lighthearted Humans - Creativity for a greater good](https://www.lightheartedhumans.com)   
 - [Ongoing Technical Analysis of Financial Markets & Geopolitics](./ongoingta.html)    
 
 <br>
@@ -64,7 +64,7 @@ output:
 </h4>
 - [Read: Modern Monetary Theory - Slow at first, then all at once.](./mmt.html)  
 - [Read: Politics, Critical Theory, and our loss of Sensemaking in 2020](./politicsandcriticaltheory.html)  
-- [Read: Distributed Idea Supression Complex](./distributedideasupressioncomplex.html)  
+- [Read: Distributed Idea Supression Complex](./distributedideasuppressioncomplex.html)  
 - [Read: Mainstream Monitoring and Manipulation](./mainstreammonitoringandmanipulation.html)
 
 
