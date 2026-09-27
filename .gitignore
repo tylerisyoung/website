@@ -3,3 +3,6 @@
 .RData
 .Ruserdata
 .positai
+
+# contains a private FRED API key
+FinancialDashboard.Rmd

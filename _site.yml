@@ -14,7 +14,8 @@ navbar:
       href: Journalism.html
     - text: "Data Science"
       href: datascience.html
+    - text: "Financial Dashboard"
+      href: FinancialDashboard.html
     - text: "Contact"
       href: Contact.html
 output_dir: "docs"
-

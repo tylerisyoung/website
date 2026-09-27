@@ -19,8 +19,8 @@ output:
 <h6>Creativity, Data Science & Prioritization for a Greater Good.
 </h6>
 <h6>
-***B.S. Environmental Studies - University of Oregon***  
-***M.S. Data Analytics - Arizona State***
+***B.S. Environmental Studies***  
+***M.S. Data Analytics***
 </h6><h5>
 <br>
 **Currently:**
@@ -56,7 +56,7 @@ ________________________________________
 
 
 <h6>
-***This website was coded by Tyler Young in R, more info on Github.***
+***This website was coded by Tyler Young in R before the vibe coding era, more info on Github.***
 </h6>
 
 
