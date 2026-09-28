@@ -19,3 +19,4 @@ navbar:
     - text: "Contact"
       href: Contact.html
 output_dir: "docs"
+exclude: ["scripts"]
