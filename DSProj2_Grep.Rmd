@@ -17,14 +17,9 @@ library(tidytext)
 library(stringr)
 ```
 
-```{r eval=FALSE}
-# IRS 1023 DATA
-# Correct raw GitHub URL
-# No longer functioning? URL <-"https://raw.githubusercontent.com/DS4PS/pe4ps-textbook/master/data/org-mission-statements.rds"
-dat <- readRDS("/Users/Tyler/Desktop/thatsallfolks/TIY/website_v1/WebsiteAssets/Data/IRS-1023-EZ-MISSIONS.rds")
-
-# Load the RDS directly (don't need now )
-#dat <- readRDS(url(URL))
+```{r}
+# IRS 1023 DATA (stored with this website)
+dat <- readRDS("WebsiteAssets/Data/IRS-1023-EZ-MISSIONS.rds")
 
 # Quick check
 head(dat[c("orgname","codedef01","mission")])
@@ -39,47 +34,47 @@ grep(pattern="some.reg.ex", x="mission statements", value=TRUE)
 ```
 
 # Missions with Numbers
-```{r eval=FALSE}
+```{r}
 grep(pattern="[0-9]", x=dat$mission, value=TRUE) %>% head() %>% pander()
 ```
 
-```{r eval=FALSE}
+```{r}
 grepl("[0-9]", dat$mission) %>% sum()
 ```
 
 ## 1. Filter by: Starts with "to"
-```{r eval=FALSE}
+```{r}
 filter_to <- grep("^to", x=dat$mission, value=TRUE)
 head(filter_to, 6) %>% pander()
 ```
 
-```{r eval=FALSE}
+```{r}
 sum(grepl("^to", dat$mission))
 ```
 
 ## 2. Filter by: blank mission statements
-```{r eval=FALSE}
+```{r}
 filter_blank <- grep("^[[:space:]]*$", x=dat$mission)
 head(filter_blank, 6)
 ```
 
-```{r eval=FALSE}
+```{r}
 sum(grepl("^[[:space:]]*$", dat$mission))
 ```
 
 ## 3. Filter by: Mission statements with trailing whitespace
-```{r eval=FALSE}
+```{r}
 filter_blank_end <- grepl("[[:space:]]+$", x=dat$mission)
 sum(filter_blank_end)
 ```
 
-```{r eval=FALSE}
+```{r}
 trim_final_spaces <- function(x=dat$mission) sub("\\s+$", "", x)
 trim_final_spaces() %>% head(6) %>% pander()
 ```
 
 ## 4. Filter by: Missions with a dollar sign
-```{r eval=FALSE}
+```{r}
 filter_dollar <- grepl("\\$", x=dat$mission)
 sum(filter_dollar)
 ```

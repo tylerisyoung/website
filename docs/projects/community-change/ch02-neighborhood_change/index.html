@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<title>Part I - Neighborhood Change | Community Change Project</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Introduction There are three sections which focus on the exploration of median home value (MHV), operationalizing gentrification, and spatial patterns. While...">
+<meta name="author" content="Group 4">
+<meta name="generator" content="Jekyll v3.9.0">
+<link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../assets/css/index.css">
+<link rel="stylesheet" href="../assets/css/classes.css">
+
+<link rel="stylesheet" href="../assets/css/minimal.css">
+
+
+
+
+
+<header>
+  <h1><a href="../index.html">Community Change Project</a></h1>
+  <nav><a href="../index.html">Chapters</a><a href="../about/index.html">About</a></nav>
+  <nav>
+    
+    
+  </nav> 
+</header>
+
+<article>
+  <header><h1><a href="index.html">Part I - Neighborhood Change</a></h1>
+    <h2>Descriptive Analysis and Prediction of Community Change</h2>
+    <time datetime="2021-04-22T00:00:00+00:00">April 22, 2021</time>
+  </header>
+<h2 id="introduction">Introduction</h2>
+
+<p>There are three sections which focus on the exploration of median home
+value (MHV), operationalizing gentrification, and spatial patterns.
+While this chapter will garner insights on median home value, it will
+not exercise the utility of additional variables. Understanding median
+home value at this level can allow us to understand gentrification as we
+build our approach for hedonic pricing models and measuring the impact
+of federal programs as interventions in gentrifiable communities.</p>
+
+<p><strong>Summary Insights:</strong></p>
+
+<p>Through our analysis we find that the MHV data is skewed and by looking
+at it using a relative change in MHV after removing potential empty
+tracts, the quality of our insight improves. We see an average of 33%
+increase in MHV from 2000 to 2010.</p>
+
+<p>After defining a criteria for gentrification we found that ~6% of
+tracts were gentrified. This is still open to interpretation because we
+can consider that criteria for gentrfiability by new market tax credit
+programs as capturing a much larger group of tracts, so an interesting
+question might be which are being gentrified based on a more rigorous
+criteria after participating in a program?</p>
+
+<p>After taking a quick look at some spatial patterns, we can see that the
+concentration of people could be related to the percent change in MHV,
+this is also open to intepretation. Nonetheless, an important
+consideration for future analysis.</p>
+
+<p>Overall, this provides good insight into understanding changes in median
+home value and it’s relationships to gentrification.</p>
+
+<p><strong>Note:</strong> This chapter imports multiple functions defined in the
+utilitiesDescriptiveAnalysis.R file within the respective folder. Please
+refer to this file for more detail. This chapter will contain plots and
+tabular views with descriptions on the insight gathered.</p>
+
+<h2 id="exploration-of-median-home-value">Exploration of Median Home Value</h2>
+
+<p>First, we can explore the initial conditions in 1990 to 2000: There was
+a decrease in MHV between 1990 and 2000 of <strong>$2,239.</strong></p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># adjust 2000 home values for inflation </span><span class="w">
+</span><span class="n">mhv.90</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">d</span><span class="o">$</span><span class="n">mhmval90</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">1.357</span><span class="w">  
+</span><span class="n">mhv.00</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">d</span><span class="o">$</span><span class="n">mhmval00</span><span class="w">
+
+</span><span class="n">mhv.change90</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mhv.00</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">mhv.90</span><span class="w">
+
+</span><span class="n">df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w"> </span><span class="n">MedianHomeValue1990</span><span class="o">=</span><span class="n">mhv.90</span><span class="p">,</span><span class="w"> 
+                  </span><span class="n">MedianHomeValue2000</span><span class="o">=</span><span class="n">mhv.00</span><span class="p">,</span><span class="w"> 
+                  </span><span class="n">Change.90.to.00</span><span class="o">=</span><span class="n">mhv.change90</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">stargazer</span><span class="p">(</span><span class="w"> </span><span class="n">df</span><span class="p">,</span><span class="w">  
+           </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"html"</span><span class="p">,</span><span class="w"> 
+           </span><span class="n">covariate.labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"MHV 1990"</span><span class="p">,</span><span class="w"> </span><span class="s2">"MHV 2000"</span><span class="p">,</span><span class="w"> </span><span class="s2">"MHV Change 1990 to 2000"</span><span class="p">),</span><span class="w">
+           </span><span class="n">digits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> 
+           </span><span class="n">summary.stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"median"</span><span class="p">,</span><span class="s2">"mean"</span><span class="p">,</span><span class="s2">"min"</span><span class="p">,</span><span class="s2">"p25"</span><span class="p">,</span><span class="s2">"p75"</span><span class="p">,</span><span class="s2">"max"</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<table style="text-align:center">
+
+<tr>
+
+<td colspan="7" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Statistic
+
+</td>
+
+<td>
+
+Median
+
+</td>
+
+<td>
+
+Mean
+
+</td>
+
+<td>
+
+Min
+
+</td>
+
+<td>
+
+Pctl(25)
+
+</td>
+
+<td>
+
+Pctl(75)
+
+</td>
+
+<td>
+
+Max
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="7" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+MHV 1990
+
+</td>
+
+<td>
+
+117,380
+
+</td>
+
+<td>
+
+152,526
+
+</td>
+
+<td>
+
+0
+
+</td>
+
+<td>
+
+79,792
+
+</td>
+
+<td>
+
+192,423
+
+</td>
+
+<td>
+
+678,501
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+MHV 2000
+
+</td>
+
+<td>
+
+119,900
+
+</td>
+
+<td>
+
+144,738
+
+</td>
+
+<td>
+
+0
+
+</td>
+
+<td>
+
+81,600
+
+</td>
+
+<td>
+
+173,894
+
+</td>
+
+<td>
+
+1,000,001
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+MHV Change 1990 to 2000
+
+</td>
+
+<td>
+
+\-2,237
+
+</td>
+
+<td>
+
+\-7,788
+
+</td>
+
+<td>
+
+\-678,501
+
+</td>
+
+<td>
+
+\-27,975
+
+</td>
+
+<td>
+
+16,239
+
+</td>
+
+<td>
+
+1,000,001
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="7" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+</table>
+
+<p>Next, we can explore the initial conditions in 2000 to 2010: There was
+an increase in MHV between 2000 and 2010 of <strong>$36,268.</strong> We should also
+consider the median change of 36k, which is a lot less, but the mean
+might be higher if we expected the data to be skewed. With minimum home
+values of 0 and 9,999, we can expect empty land or other cases when home
+value would be so low.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># adjust 2000 home values for inflation </span><span class="w">
+</span><span class="n">mhv.00</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">d</span><span class="o">$</span><span class="n">mhmval00</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">1.28855</span><span class="w">  
+</span><span class="n">mhv.10</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">d</span><span class="o">$</span><span class="n">mhmval12</span><span class="w">
+
+</span><span class="n">mhv.change</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mhv.10</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">mhv.00</span><span class="w">
+
+</span><span class="n">df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w"> </span><span class="n">MedianHomeValue2000</span><span class="o">=</span><span class="n">mhv.00</span><span class="p">,</span><span class="w"> 
+                  </span><span class="n">MedianHomeValue2010</span><span class="o">=</span><span class="n">mhv.10</span><span class="p">,</span><span class="w"> 
+                  </span><span class="n">Change.00.to.10</span><span class="o">=</span><span class="n">mhv.change</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">stargazer</span><span class="p">(</span><span class="w"> </span><span class="n">df</span><span class="p">,</span><span class="w">  
+           </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"html"</span><span class="p">,</span><span class="w"> 
+           </span><span class="n">covariate.labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"MHV 2000"</span><span class="p">,</span><span class="w"> </span><span class="s2">"MHV 2010"</span><span class="p">,</span><span class="w"> </span><span class="s2">"MHV Change 2000 to 2010"</span><span class="p">),</span><span class="w">
+           </span><span class="n">digits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> 
+           </span><span class="n">summary.stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"median"</span><span class="p">,</span><span class="s2">"mean"</span><span class="p">,</span><span class="s2">"min"</span><span class="p">,</span><span class="s2">"p25"</span><span class="p">,</span><span class="s2">"p75"</span><span class="p">,</span><span class="s2">"max"</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<table style="text-align:center">
+
+<tr>
+
+<td colspan="7" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Statistic
+
+</td>
+
+<td>
+
+Median
+
+</td>
+
+<td>
+
+Mean
+
+</td>
+
+<td>
+
+Min
+
+</td>
+
+<td>
+
+Pctl(25)
+
+</td>
+
+<td>
+
+Pctl(75)
+
+</td>
+
+<td>
+
+Max
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="7" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+MHV 2000
+
+</td>
+
+<td>
+
+154,497
+
+</td>
+
+<td>
+
+186,502
+
+</td>
+
+<td>
+
+0
+
+</td>
+
+<td>
+
+105,146
+
+</td>
+
+<td>
+
+224,071
+
+</td>
+
+<td>
+
+1,288,551
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+MHV 2010
+
+</td>
+
+<td>
+
+193,200
+
+</td>
+
+<td>
+
+246,570
+
+</td>
+
+<td>
+
+9,999
+
+</td>
+
+<td>
+
+123,200
+
+</td>
+
+<td>
+
+312,000
+
+</td>
+
+<td>
+
+1,000,001
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+MHV Change 2000 to 2010
+
+</td>
+
+<td>
+
+36,268
+
+</td>
+
+<td>
+
+60,047
+
+</td>
+
+<td>
+
+\-1,228,651
+
+</td>
+
+<td>
+
+7,187
+
+</td>
+
+<td>
+
+94,881
+
+</td>
+
+<td>
+
+1,000,001
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="7" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+</table>
+
+<h2 id="histogram-of-mhv">Histogram of MHV</h2>
+
+<p>Creating histograms of the change in median home values from 1990-2000.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#1990-2000</span><span class="w">
+</span><span class="n">histChangeMVH1</span><span class="p">(</span><span class="n">mhv.change90</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../assets/img/2021-04-22-ch02-neighborhood_change_files/figure-gfm/unnamed-chunk-4-1.png" alt="" /><!-- --></p>
+
+<p>Creating histograms of the change in median home values from 2000-2010.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#2000-2010</span><span class="w">
+</span><span class="n">histChangeMVH</span><span class="p">(</span><span class="n">mhv.change</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../assets/img/2021-04-22-ch02-neighborhood_change_files/figure-gfm/unnamed-chunk-5-1.png" alt="" /><!-- --></p>
+
+<p>The distribution of change in MVH from 2000 to 2010 shows a positive
+skew. Now that we know there isn’t a normal distribution of change, we
+may want to look at change through a different lense.</p>
+
+<p>Comparing 2000-2010 distributions of MHV.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#dist comparison between 2000-2010</span><span class="w">
+</span><span class="n">distMVH</span><span class="p">(</span><span class="n">mhv.00</span><span class="p">,</span><span class="w"> </span><span class="n">mhv.10</span><span class="p">,</span><span class="w"> </span><span class="s2">"2000"</span><span class="p">,</span><span class="w"> </span><span class="s2">"2010"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../assets/img/2021-04-22-ch02-neighborhood_change_files/figure-gfm/unnamed-chunk-6-1.png" alt="" /><!-- --></p>
+
+<p>The distributions for MHV in 2000 and 2010 are look similar with some
+slight differences. In 2010, there is a spike around $240,000. Also,
+there is a wider range of concentration in 2010 hovering $100,000.</p>
+
+<p>The scatterplot is very interesting because it shows more of a
+relationship between the years. From 2000 to 2010, the relationship
+shows an increase in MHV, this supports what we’ve already seen - higher
+home prices in 2010. As data points pass ~$500,000 the line starts to
+decline. We might consider some data points above the red line and under
+$10,000 in MHV during 2000 to be problematic since they may have change
+in MHV that are not part comparable as a counterfactual.</p>
+
+<p><strong>Comparing change in home value by as a relative change in percent.</strong></p>
+
+<p>As we have progressed, two adjustments that can be noted that will allow
+for better insight:</p>
+
+<ol>
+  <li>
+    <p>By using an absolute change in MHV we find skewed distributions and
+some extreme changes in value. By computing change as a relative
+measure, it may now make more sense for us to visualization the
+group which contains various magnitudes in absolute value. Our
+distributions are expected to change.</p>
+  </li>
+  <li>
+    <p>If there are additional data points that represent empty lots, or
+others alike, then we will expect to see very high changes in value
+relative to the MHV in 2000. By removing these we can find more
+comparable data for thinking about the counterfactual.</p>
+  </li>
+</ol>
+
+<!-- end list -->
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Remove values in 10k</span><span class="w">
+</span><span class="n">mhv.00</span><span class="p">[</span><span class="w"> </span><span class="n">mhv.00</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">10000</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kc">NA</span><span class="w">
+
+</span><span class="c1">#create a percent change in MHV</span><span class="w">
+</span><span class="n">pct.change</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mhv.change</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">mhv.00</span><span class="w">
+
+</span><span class="c1">#Plot 2000-2010</span><span class="w">
+</span><span class="n">PlotPctChange</span><span class="p">(</span><span class="n">pct.change</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../assets/img/2021-04-22-ch02-neighborhood_change_files/figure-gfm/unnamed-chunk-7-1.png" alt="" /><!-- --></p>
+
+<p>Showing changes by percent yields similar results, but still different.
+The new insight is that there is a 33% change in MHV, or a 25% when
+considering a skew. The range between median and mean is much smaller in
+this case, remember we saw almost a 2x in the mean MHV from the median.
+Removing problematic data may have made a difference in the output with
+the help of using a relative change in MHV.</p>
+
+<p>Using a relative change is important because we may expect there to be a
+different absolute change in MHV for a home that is valued at $100,000
+vs $300,000 in the year 2000.</p>
+
+<h2 id="group-growth-rates-by-metro-area">Group Growth Rates By Metro Area</h2>
+
+<p>As we continue to use a percent change, we can start looking at cities
+with the highest growth rate from 2000 to 2010.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#2000 to 2010 top 25 cities by growth </span><span class="w">
+</span><span class="n">d</span><span class="o">$</span><span class="n">mhv.change</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mhv.change</span><span class="w"> 
+</span><span class="n">d</span><span class="o">$</span><span class="n">pct.change</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">pct.change</span><span class="w">
+</span><span class="n">d</span><span class="o">$</span><span class="n">mhv.10</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mhv.10</span><span class="w">
+</span><span class="n">d</span><span class="o">$</span><span class="n">mhv.00</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mhv.00</span><span class="w">
+
+</span><span class="n">d</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">group_by</span><span class="p">(</span><span class="w"> </span><span class="n">cbsaname</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">summarize</span><span class="p">(</span><span class="w"> </span><span class="n">ave.change</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">median</span><span class="p">(</span><span class="w"> </span><span class="n">mhv.change</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="nb">T</span><span class="w"> </span><span class="p">),</span><span class="w">
+             </span><span class="n">ave.change.d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dollar</span><span class="p">(</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">ave.change</span><span class="p">,</span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="p">),</span><span class="w">
+             </span><span class="n">growth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">median</span><span class="p">(</span><span class="w"> </span><span class="n">pct.change</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="nb">T</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ungroup</span><span class="p">()</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">arrange</span><span class="p">(</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">growth</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">select</span><span class="p">(</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ave.change</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">head</span><span class="p">(</span><span class="w"> </span><span class="m">25</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">pander</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">cbsaname</th>
+      <th style="text-align: center">ave.change.d</th>
+      <th style="text-align: center">growth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Ocean City, NJ</td>
+      <td style="text-align: center">$154,667</td>
+      <td style="text-align: center">93.07</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Virginia Beach-Norfolk-Newport News, VA</td>
+      <td style="text-align: center">$97,955</td>
+      <td style="text-align: center">71.81</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Casper, WY</td>
+      <td style="text-align: center">$70,770</td>
+      <td style="text-align: center">70.03</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">New York-Wayne-White Plains, NY-NJ</td>
+      <td style="text-align: center">$189,118</td>
+      <td style="text-align: center">69.86</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Kingston, NY</td>
+      <td style="text-align: center">$89,272</td>
+      <td style="text-align: center">65.08</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Barnstable Town, MA</td>
+      <td style="text-align: center">$146,088</td>
+      <td style="text-align: center">65.07</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Washington-Arlington-Alexandria DC-VA</td>
+      <td style="text-align: center">$139,136</td>
+      <td style="text-align: center">64.82</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Charlottesville, VA</td>
+      <td style="text-align: center">$104,487</td>
+      <td style="text-align: center">62.74</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Atlan City, NJ</td>
+      <td style="text-align: center">$94,239</td>
+      <td style="text-align: center">62.32</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Baltimore-Towson, MD</td>
+      <td style="text-align: center">$102,918</td>
+      <td style="text-align: center">61.9</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Bethesda-Frederick-Gaithersburg, MD</td>
+      <td style="text-align: center">$146,639</td>
+      <td style="text-align: center">61.46</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">San Luis Obispo-Paso Robles, CA</td>
+      <td style="text-align: center">$172,722</td>
+      <td style="text-align: center">61.01</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Midland, TX</td>
+      <td style="text-align: center">$54,576</td>
+      <td style="text-align: center">60.3</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Los Angeles-Long Beach-Santa Ana, CA</td>
+      <td style="text-align: center">$145,968</td>
+      <td style="text-align: center">60.3</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Redding, CA</td>
+      <td style="text-align: center">$87,677</td>
+      <td style="text-align: center">59.12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Honolulu, HI</td>
+      <td style="text-align: center">$194,665</td>
+      <td style="text-align: center">58.85</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Chico, CA</td>
+      <td style="text-align: center">$81,746</td>
+      <td style="text-align: center">57.83</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Nassau-Suffolk, NY</td>
+      <td style="text-align: center">$149,785</td>
+      <td style="text-align: center">57.62</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Edison, NJ</td>
+      <td style="text-align: center">$125,056</td>
+      <td style="text-align: center">57.19</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Santa Ana-Anaheim-Irvine, CA</td>
+      <td style="text-align: center">$177,367</td>
+      <td style="text-align: center">56.05</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Poughkeepsie-Newburgh-Middletown, NY</td>
+      <td style="text-align: center">$101,010</td>
+      <td style="text-align: center">55.18</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Flagstaff, AZ</td>
+      <td style="text-align: center">$71,072</td>
+      <td style="text-align: center">54.67</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Salisbury, MD</td>
+      <td style="text-align: center">$60,400</td>
+      <td style="text-align: center">54.06</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Winchester, VA-WV</td>
+      <td style="text-align: center">$73,165</td>
+      <td style="text-align: center">53.76</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Odessa, TX</td>
+      <td style="text-align: center">$26,240</td>
+      <td style="text-align: center">53.37</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>From 2000 to 2010, the highest growth rate by metro area is 93%. Ocean
+City, NJ nearly doubled in value. If we refer back to the change by
+tract, we can see changes &gt; 200%. When measuring at the metro area, the
+changes are more balanced.</p>
+
+<p>There is a bit of a spread across the US, but the east coast seems to be
+popular in this top 25 listing some of the top areas in New Jersey,
+Virginia, New York, Mass., and Wyoming.</p>
+
+<p>At this level, we may also be able to understand which cities are
+experiencing gentrification as a whole. Although, we would still expect
+certain tracts within a metro to not be experiencing gentrification.
+This is where we can isolate tracts that may experience gentrification
+based on their metro level measures.</p>
+
+<h2 id="operationalizing-gentifrication">Operationalizing Gentifrication</h2>
+
+<p>To operationalize gentrifcation we can pick certain criteria that would
+elicit gentrification. Such an analysis would allow us to understand
+gentrification at high level. E.g. the number of tracts that experienced
+gentrification from 2000 to 2010.</p>
+
+<p>Let’s focus on the following criteria:</p>
+
+<ol>
+  <li>Lower than average home value in metro</li>
+  <li>Above average diversity for the metro</li>
+  <li>Change in MHV greater than city</li>
+  <li>Change in MHV greater than median for country</li>
+  <li>Loss of diversity</li>
+</ol>
+
+<!-- end list -->
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># home value in lower than average home in a metro in 2000</span><span class="w">
+</span><span class="n">poor.2000</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">d3</span><span class="o">$</span><span class="n">metro.mhv.pct.00</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">50</span><span class="w">  
+
+</span><span class="c1"># above average diversity for metro</span><span class="w">
+</span><span class="n">diverse.2000</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">d3</span><span class="o">$</span><span class="n">metro.race.rank.00</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">50</span><span class="w"> 
+
+</span><span class="c1"># home values increased more than overall city gains </span><span class="w">
+</span><span class="c1"># change in percentile rank within the metro</span><span class="w">
+</span><span class="n">mhv.pct.increase</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">d3</span><span class="o">$</span><span class="n">metro.mhv.pct.change</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">0</span><span class="w">
+
+</span><span class="c1"># faster than average growth  </span><span class="w">
+</span><span class="c1"># 25% growth in value is median for the country</span><span class="w">
+</span><span class="n">home.val.rise</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">d3</span><span class="o">$</span><span class="n">pct.change</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">25</span><span class="w"> 
+
+</span><span class="c1"># proportion of whites increases by more than 3 percent </span><span class="w">
+</span><span class="c1"># measured by increase in white</span><span class="w">
+</span><span class="n">loss.diversity</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">d3</span><span class="o">$</span><span class="n">race.change</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">3</span><span class="w"> 
+
+</span><span class="n">g.flag</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">poor.2000</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">diverse.2000</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">mhv.pct.increase</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">home.val.rise</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">loss.diversity</span><span class="w">
+
+</span><span class="n">num.candidates</span><span class="w"> </span><span class="o">&lt;-</span><span class="w">  </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="n">poor.2000</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">diverse.2000</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="nb">T</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">num.gentrified</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="n">g.flag</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="nb">T</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">num.gentrified</span><span class="w"> 
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## [1] 1137
+</code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">num.gentrified</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">num.candidates</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## [1] 0.06240738
+</code></pre></div></div>
+
+<p>With this criteria, we find that 1137 or 6.2% of tracts are likely to
+have undergone gentrification.</p>
+
+<h2 id="spatial-patterns">Spatial Patterns</h2>
+
+<p>Virginia Beach-Norfolk-Newport News, VA came in #2 on our list, with
+country and city level criteria we can see how the tracts themselves
+might be changing in relation to the overall rank.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#plot the shape file to see outline</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">msp.sp</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../assets/img/2021-04-22-ch02-neighborhood_change_files/figure-gfm/unnamed-chunk-10-1.png" alt="" /><!-- --></p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#plot dorling cartogram with size as population and color as pct change in MHV</span><span class="w">
+</span><span class="n">tm_shape</span><span class="p">(</span><span class="w"> </span><span class="n">msp_dorling</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">tm_polygons</span><span class="p">(</span><span class="w"> </span><span class="n">size</span><span class="o">=</span><span class="s2">"POP"</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="o">=</span><span class="s2">"pct.change"</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="o">=</span><span class="m">7</span><span class="p">,</span><span class="w"> </span><span class="n">style</span><span class="o">=</span><span class="s2">"quantile"</span><span class="p">,</span><span class="w"> </span><span class="n">palette</span><span class="o">=</span><span class="s2">"Spectral"</span><span class="w"> </span><span class="p">)</span><span class="w"> 
+</span></code></pre></div></div>
+
+<p><img src="../assets/img/2021-04-22-ch02-neighborhood_change_files/figure-gfm/unnamed-chunk-11-1.png" alt="" /><!-- --></p>
+
+<p>In this example, the tracts are concentrated on the bottom left, but
+otherwise somewhat spread out across the region. Overall, there is not a
+bad mix of high and low percent changes in MHV. Since the size of the
+circle denotes population size, it is clear that some areas in the
+bottom left contain larger populations than those further away. Those
+with largest populations tend to have a turqiose color, indicating high
+changes in MHV, but not the largest. The biggest changes (blue) tend to
+be smaller circles. In future analysis, we may want to consider the
+concentration of residents with the change in MHV.</p>
+
+<hr />
+
+<h1 id="references">References</h1>
+
+<div id="refs" class="references">
+
+<div id="ref-R-base1">
+
+*Census Geography: Bridging Data for Census Tracts Across Time*. n.d.
+Spatial Structures in the Social Sciences, Brown University.
+&lt;https://s4.ad.brown.edu/Projects/Diversity/Researcher/Bridging.htm&gt;.
+
+</div>
+
+<div id="ref-R-base3">
+
+*Low-Income Housing Tax Credit (Lihtc)*. n.d. Washington, DC: U.S.
+Department of Housing; Urban Development.
+&lt;https://www.huduser.gov/portal/datasets/lihtc.html&gt;.
+
+</div>
+
+<div id="ref-R-base2">
+
+*New Markets Tax Credit Program*. n.d. U.S. Department of the Treasury,
+Community Development Financial Institutions Fund.
+&lt;https://www.cdfifund.gov/programs-training/programs/new-markets-tax-credit&gt;.
+
+</div>
+
+</div>
+
+  
+  
+</article>
+
+
+
+<footer>
+  <center>
+<h5>
+    This project is licensed under the
+    <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License
+      v3.0</a>
+    </h5>
+  </center>
+</footer> 

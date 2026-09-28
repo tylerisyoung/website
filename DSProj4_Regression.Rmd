@@ -24,8 +24,7 @@ library( stargazer )  # regression tables
 
 
 ```{r}
-URL <- "https://raw.githubusercontent.com/DS4PS/cpp-523-fall-2019/master/labs/class-size-seed-1234.csv"
-dat <- read.csv( URL )
+dat <- read.csv( "WebsiteAssets/Data/class-size-seed-1234.csv" )
 ```
 
 # Regression Models: Teachers & Class Size / Caffine & Exercise 
@@ -167,8 +166,7 @@ Since Gym Time is not correlated with Stress Index, or Caffeine, it would produc
 
 
 ```{r, echo=F, results="asis"}
-URL <- "https://raw.githubusercontent.com/DS4PS/cpp-523-fall-2019/master/labs/data/caffeine-heart-rate-w-controls.csv"
-dat.caffeine <- read.csv( URL )
+dat.caffeine <- read.csv( "WebsiteAssets/Data/caffeine-heart-rate-w-controls.csv" )
 mod <- lm( heart.rate ~ caffeine + stress.index + gym.time, data=dat.caffeine )
 stargazer( mod, header=F, type="html", omit.stat = c("adj.rsq", "f") )
 ```

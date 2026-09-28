@@ -1,0 +1,2693 @@
+<!DOCTYPE html>
+<title>Part II - Evaluation of Tax Credits | Community Change Project</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Quick Insights: We begin by providing detail on what the NMTC Program and LIHTC Program actually are and how they work. We also discuss our prior model using...">
+<meta name="author" content="Group 4">
+<meta name="generator" content="Jekyll v3.9.0">
+<link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../assets/css/index.css">
+<link rel="stylesheet" href="../assets/css/classes.css">
+
+<link rel="stylesheet" href="../assets/css/minimal.css">
+
+
+
+
+
+<header>
+  <h1><a href="../index.html">Community Change Project</a></h1>
+  <nav><a href="../index.html">Chapters</a><a href="../about/index.html">About</a></nav>
+  <nav>
+    
+    
+  </nav> 
+</header>
+
+<article>
+  <header><h1><a href="index.html">Part II - Evaluation of Tax Credits</a></h1>
+    <h2>Tax Credit Programs and Predictive Analysis</h2>
+    <time datetime="2021-04-22T00:00:00+00:00">April 22, 2021</time>
+  </header>
+<p><strong>Quick Insights:</strong></p>
+
+<p>We begin by providing detail on what the NMTC Program and LIHTC Program
+actually are and how they work. We also discuss our prior model using
+various independent variables to predict MHV growth. From there, we
+discuss how the independent variables can be added into our program
+models to be utilized as control variables. Once that is established, we
+present a model for each program utilizing a log-linear diff-in-diff
+approach. We find that both the NMTC Program and LIHTC Programs are
+marginally effective, and <strong>the NMTC can be considered the “better”
+program</strong>.</p>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>This chapter analyzes the program effects of the New Market Tax Credit
+(NMTC) Program and the Low-Income Housing Tax Credit (LIHTC) Program
+from 2000 to 2010. We control for outside variables in order to
+accurately model median home value (MHV) growth.</p>
+
+<p><strong>Note:</strong> This chapter imports multiple functions defined in the
+utilitiesChapter3Chapter4.R file within the respective folder. Please
+refer to this file for more detail. The chapter will contain plots and
+tabular views with descriptions on the insight gathered.</p>
+
+<h1 id="data-setup">Data Setup</h1>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># load necessary packages</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="w"> </span><span class="n">dplyr</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="w"> </span><span class="n">here</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="w"> </span><span class="n">knitr</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="w"> </span><span class="n">pander</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="w"> </span><span class="n">stargazer</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="w"> </span><span class="n">scales</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="w"> </span><span class="n">gridExtra</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># load necessary functions and objects ----</span><span class="w">
+</span><span class="c1"># note: all of these are R objects that will be used through this .rmd file</span><span class="w">
+
+</span><span class="n">import</span><span class="o">::</span><span class="n">here</span><span class="p">(</span><span class="s2">"S_TYPE"</span><span class="p">,</span><span class="w">
+             </span><span class="s2">"d"</span><span class="p">,</span><span class="w">
+             </span><span class="s2">"d1"</span><span class="p">,</span><span class="w">
+             </span><span class="s2">"d2"</span><span class="p">,</span><span class="w">
+             </span><span class="s2">"df"</span><span class="p">,</span><span class="w">
+             </span><span class="s2">"d3"</span><span class="p">,</span><span class="w">
+             </span><span class="s2">"d6"</span><span class="p">,</span><span class="w">
+             </span><span class="s2">"PLOTS"</span><span class="p">,</span><span class="w">
+             </span><span class="s2">"%&gt;%"</span><span class="p">,</span><span class="w">
+             </span><span class="s2">"nmtc"</span><span class="p">,</span><span class="w">
+             </span><span class="s2">"lihtc"</span><span class="p">,</span><span class="w">
+</span><span class="c1"># notice the use of here::here() that points to the .R file where all of these R objects are created</span><span class="w">
+              </span><span class="n">.from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">here</span><span class="o">::</span><span class="n">here</span><span class="p">(</span><span class="s2">"labs/utilitiesChapter3Chapter4.R"</span><span class="p">),</span><span class="w">
+              </span><span class="n">.character_only</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<h1 id="overview-of-programs">Overview of Programs</h1>
+
+<p>There are two social programs in place whose main goals are to improve
+low-income neighborhoods: the <strong>New Markets Tax Credit (NMTC) Program</strong>
+and the <strong>Low-Income Housing Tax Credit (LIHTC) Program</strong>. Both of these
+programs use federal tax credits to encourage private investors to fund
+infrastructure projects for distressed neighborhoods.</p>
+
+<h2 id="new-market-tax-credits">New Market Tax Credits</h2>
+
+<p>The <a href="https://www.cdfifund.gov/programs-training/programs/new-markets-tax-credit">New Market Tax Credits
+program</a>
+solves a key issue in distressed communities: the lack of overall
+investment. They incentivize investments for community development and
+economic growth by sparking interest and net positive outcome for those
+in need of low income housing and the neighborhood as a whole. New
+Market Tax Credits can promote revitalization within the community
+directly to its residents. A key point that proponents of the NMTC
+program cite is that they advocate for the communities they are
+revitalizing by including residents in the construction and application
+of the improvements. With community on the forefront of every
+stakeholder’s mind, and the continuous funds for the projects, these tax
+credits can be very beneficial.</p>
+
+<h2 id="low-income-housing-tax-credits">Low Income Housing Tax Credits</h2>
+
+<p><a href="https://www.huduser.gov/portal/datasets/lihtc.html">Low Income Housing Tax
+Credits</a> also
+promotes neighborhood revitilization. The LIHTC program can help create
+more affordable housing for the community residents. Developers can
+utilize these Tax Credits to receive the amount needed to fund their
+projects. Research has shown that neighborhood improvements that come
+from projects such as building or rehabilitating low income houses can
+demonstrably improve the immediate surroundings by raising property
+values. Including private developers ensures that other people have a
+foot int he game besides only the government and policymakers. When
+there are more stakeholders, this creates opportunity for a wider
+interest and more accountability to see the project to its completion.
+This program has the opportunity to draw the attention of big-time
+investors from major corporations.</p>
+
+<hr />
+
+<p>The NMTC Program has specific requirements regarding which areas can be
+developed: low-income communities with at least a 20% poverty rate or a
+median family income at or below 80%. The LIHTC program does not have
+these specific requirements, and developers can choose to invest in
+either low-income or middle-income communities. With that being said,
+there is typically a greater return on investment when choosing to
+develop in low-income communities, so that is typically where the LIHTC
+tax credits end up going to. Although these programs both serve similar
+neighborhoods, their reach is not identical. For example:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">### POVERTY RATES</span><span class="w">
+</span><span class="n">gridExtra</span><span class="o">::</span><span class="n">grid.arrange</span><span class="p">(</span><span class="w"> </span><span class="n">PLOTS</span><span class="o">$</span><span class="n">pov_rate_2000</span><span class="o">$</span><span class="n">nmtc</span><span class="p">,</span><span class="w"> 
+                         </span><span class="n">PLOTS</span><span class="o">$</span><span class="n">pov_rate_2000</span><span class="o">$</span><span class="n">lihtc</span><span class="p">,</span><span class="w"> 
+                         </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../assets/img/2021-04-22-ch03-tax_credits_files/figure-gfm/unnamed-chunk-2-1.png" alt="" /><!-- --></p>
+
+<p>The NMTC tends to cover a greater amount of poverty-stricken
+neighborhoods than the LIHTC does. Knowing this, we cannot make a direct
+comparison between the two programs. We will instead analyze their
+effects in separate models.</p>
+
+<h1 id="data-sources">Data Sources</h1>
+
+<p>We have access to records on New Market Tax Credits (NMTC) that
+originates from this <a href="https://www.cdfifund.gov">data source</a>.
+Information regarding projects, the Census Tract and city they took
+place in, the origination year, and more are all available.</p>
+
+<p>Our data regarding Low Income Housing Tax Credits (LIHTC) derive from
+this <a href="https://lihtc.huduser.gov">data source</a>. Relevant information
+regarding what projecs took place, as well as when and where they
+occurred are included.</p>
+
+<p>As part of our data cleaning, we have grouped all projects that
+originated after 2000 and before 2010 into one record per tract.</p>
+
+<h1 id="descriptive-statistics">Descriptive Statistics</h1>
+
+<p>The change in overall median home value from 2000 to 2010 adjusted for
+inflation gives us a basic understanding of the economy and structural
+changes in society and the housing market. We can see that on average,
+homes grew in value over this time period.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Change in MHV 2000-2010 adjusted for inflation</span><span class="w">
+
+</span><span class="n">hist</span><span class="p">(</span><span class="w"> </span><span class="n">df</span><span class="o">$</span><span class="n">MHV.Change.00.to.10</span><span class="o">/</span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">breaks</span><span class="o">=</span><span class="m">500</span><span class="p">,</span><span class="w"> 
+      </span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-100</span><span class="p">,</span><span class="m">500</span><span class="p">),</span><span class="w"> </span><span class="n">yaxt</span><span class="o">=</span><span class="s2">"n"</span><span class="p">,</span><span class="w"> </span><span class="n">xaxt</span><span class="o">=</span><span class="s2">"n"</span><span class="p">,</span><span class="w">
+      </span><span class="n">xlab</span><span class="o">=</span><span class="s2">"Thousands of US Dollars (adjusted to 2010)"</span><span class="p">,</span><span class="w"> </span><span class="n">cex.lab</span><span class="o">=</span><span class="m">1.0</span><span class="p">,</span><span class="w">
+      </span><span class="n">ylab</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s2">"Change in Median Home Value 2000 to 2010"</span><span class="p">,</span><span class="w">
+      </span><span class="n">col</span><span class="o">=</span><span class="s2">"indianred4"</span><span class="p">,</span><span class="w"> </span><span class="n">border</span><span class="o">=</span><span class="s2">"white"</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">axis</span><span class="p">(</span><span class="w"> </span><span class="n">side</span><span class="o">=</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">at</span><span class="o">=</span><span class="n">seq</span><span class="p">(</span><span class="w"> </span><span class="n">from</span><span class="o">=</span><span class="m">-100</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="o">=</span><span class="m">500</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="o">=</span><span class="m">100</span><span class="w"> </span><span class="p">),</span><span class="w"> 
+      </span><span class="n">labels</span><span class="o">=</span><span class="n">paste0</span><span class="p">(</span><span class="w"> </span><span class="s2">"$"</span><span class="p">,</span><span class="w"> </span><span class="n">seq</span><span class="p">(</span><span class="w"> </span><span class="n">from</span><span class="o">=</span><span class="m">-100</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="o">=</span><span class="m">500</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="o">=</span><span class="m">100</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="s2">"k"</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+        
+</span><span class="n">mean.x</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">df</span><span class="o">$</span><span class="n">MHV.Change.00.to.10</span><span class="o">/</span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="nb">T</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">abline</span><span class="p">(</span><span class="w"> </span><span class="n">v</span><span class="o">=</span><span class="n">mean.x</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="o">=</span><span class="s2">"yellow3"</span><span class="p">,</span><span class="w"> </span><span class="n">lwd</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">lty</span><span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">text</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="o">=</span><span class="m">200</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="m">1500</span><span class="p">,</span><span class="w"> 
+      </span><span class="n">labels</span><span class="o">=</span><span class="n">paste0</span><span class="p">(</span><span class="w"> </span><span class="s2">"Mean = "</span><span class="p">,</span><span class="w"> </span><span class="n">dollar</span><span class="p">(</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="m">1000</span><span class="o">*</span><span class="n">mean.x</span><span class="p">,</span><span class="m">0</span><span class="p">))</span><span class="w"> </span><span class="p">),</span><span class="w"> 
+      </span><span class="n">col</span><span class="o">=</span><span class="s2">"yellow3"</span><span class="p">,</span><span class="w"> </span><span class="n">cex</span><span class="o">=</span><span class="m">1.8</span><span class="p">,</span><span class="w"> </span><span class="n">pos</span><span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">median.x</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">median</span><span class="p">(</span><span class="w"> </span><span class="n">df</span><span class="o">$</span><span class="n">MHV.Change.00.to.10</span><span class="o">/</span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="nb">T</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">abline</span><span class="p">(</span><span class="w"> </span><span class="n">v</span><span class="o">=</span><span class="n">median.x</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="o">=</span><span class="s2">"yellow4"</span><span class="p">,</span><span class="w"> </span><span class="n">lwd</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">lty</span><span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">text</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="o">=</span><span class="m">200</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="m">2000</span><span class="p">,</span><span class="w"> 
+      </span><span class="n">labels</span><span class="o">=</span><span class="n">paste0</span><span class="p">(</span><span class="w"> </span><span class="s2">"Median = "</span><span class="p">,</span><span class="w"> </span><span class="n">dollar</span><span class="p">(</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="m">1000</span><span class="o">*</span><span class="n">median.x</span><span class="p">,</span><span class="m">0</span><span class="p">))</span><span class="w"> </span><span class="p">),</span><span class="w"> 
+      </span><span class="n">col</span><span class="o">=</span><span class="s2">"yellow4"</span><span class="p">,</span><span class="w"> </span><span class="n">cex</span><span class="o">=</span><span class="m">1.8</span><span class="p">,</span><span class="w"> </span><span class="n">pos</span><span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../assets/img/2021-04-22-ch03-tax_credits_files/figure-gfm/unnamed-chunk-3-1.png" alt="" /><!-- --></p>
+
+<h2 id="dollars-distrubuted-by-program">Dollars Distrubuted by Program</h2>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">par</span><span class="p">(</span><span class="w"> </span><span class="n">mfrow</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+
+</span><span class="c1"># Amounts given for NMTC</span><span class="w">
+
+</span><span class="n">hist</span><span class="p">(</span><span class="w"> </span><span class="n">nmtc</span><span class="o">$</span><span class="n">amount</span><span class="o">/</span><span class="m">10000</span><span class="p">,</span><span class="w"> </span><span class="n">breaks</span><span class="o">=</span><span class="m">200</span><span class="p">,</span><span class="w"> 
+      </span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">3000</span><span class="p">),</span><span class="w"> </span><span class="n">yaxt</span><span class="o">=</span><span class="s2">"n"</span><span class="p">,</span><span class="w"> </span><span class="n">xaxt</span><span class="o">=</span><span class="s2">"n"</span><span class="p">,</span><span class="w">
+      </span><span class="n">xlab</span><span class="o">=</span><span class="s2">"Thousands of Dollars"</span><span class="p">,</span><span class="w"> </span><span class="n">cex.lab</span><span class="o">=</span><span class="m">1.0</span><span class="p">,</span><span class="w">
+      </span><span class="n">ylab</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s2">"Dollars Distributed via NMTC"</span><span class="p">,</span><span class="w">
+      </span><span class="n">col</span><span class="o">=</span><span class="s2">"indianred4"</span><span class="p">,</span><span class="w"> </span><span class="n">border</span><span class="o">=</span><span class="s2">"white"</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">axis</span><span class="p">(</span><span class="w"> </span><span class="n">side</span><span class="o">=</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">at</span><span class="o">=</span><span class="n">seq</span><span class="p">(</span><span class="w"> </span><span class="n">from</span><span class="o">=</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="o">=</span><span class="m">2500</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="o">=</span><span class="m">500</span><span class="w"> </span><span class="p">),</span><span class="w"> 
+      </span><span class="n">labels</span><span class="o">=</span><span class="n">paste0</span><span class="p">(</span><span class="w"> </span><span class="s2">"$"</span><span class="p">,</span><span class="w"> </span><span class="n">seq</span><span class="p">(</span><span class="w"> </span><span class="n">from</span><span class="o">=</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="o">=</span><span class="m">2500</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="o">=</span><span class="m">500</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="s2">""</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+        
+</span><span class="n">mean.nmtc.amt</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">nmtc</span><span class="o">$</span><span class="n">amount</span><span class="o">/</span><span class="m">10000</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="nb">T</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">abline</span><span class="p">(</span><span class="w"> </span><span class="n">v</span><span class="o">=</span><span class="n">mean.nmtc.amt</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="o">=</span><span class="s2">"yellow3"</span><span class="p">,</span><span class="w"> </span><span class="n">lwd</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">lty</span><span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">text</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="o">=</span><span class="m">1700</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="m">1500</span><span class="p">,</span><span class="w"> 
+      </span><span class="n">labels</span><span class="o">=</span><span class="n">paste0</span><span class="p">(</span><span class="w"> </span><span class="s2">"Mean = "</span><span class="p">,</span><span class="w"> </span><span class="n">dollar</span><span class="p">(</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="m">1000</span><span class="o">*</span><span class="n">mean.nmtc.amt</span><span class="p">,</span><span class="m">0</span><span class="p">))</span><span class="w"> </span><span class="p">),</span><span class="w"> 
+      </span><span class="n">col</span><span class="o">=</span><span class="s2">"yellow3"</span><span class="p">,</span><span class="w"> </span><span class="n">cex</span><span class="o">=</span><span class="m">1.3</span><span class="p">,</span><span class="w"> </span><span class="n">pos</span><span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">median.nmtc.amt</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">median</span><span class="p">(</span><span class="w"> </span><span class="n">nmtc</span><span class="o">$</span><span class="n">amount</span><span class="o">/</span><span class="m">10000</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="nb">T</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">abline</span><span class="p">(</span><span class="w"> </span><span class="n">v</span><span class="o">=</span><span class="n">median.nmtc.amt</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="o">=</span><span class="s2">"yellow4"</span><span class="p">,</span><span class="w"> </span><span class="n">lwd</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">lty</span><span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">text</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="o">=</span><span class="m">1740</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="m">2000</span><span class="p">,</span><span class="w"> 
+      </span><span class="n">labels</span><span class="o">=</span><span class="n">paste0</span><span class="p">(</span><span class="w"> </span><span class="s2">"Median = "</span><span class="p">,</span><span class="w"> </span><span class="n">dollar</span><span class="p">(</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="m">1000</span><span class="o">*</span><span class="n">median.nmtc.amt</span><span class="p">,</span><span class="m">0</span><span class="p">))</span><span class="w"> </span><span class="p">),</span><span class="w"> 
+      </span><span class="n">col</span><span class="o">=</span><span class="s2">"yellow4"</span><span class="p">,</span><span class="w"> </span><span class="n">cex</span><span class="o">=</span><span class="m">1.3</span><span class="p">,</span><span class="w"> </span><span class="n">pos</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+
+
+
+</span><span class="c1"># Amounts given for LIHTC</span><span class="w">
+
+</span><span class="n">hist</span><span class="p">(</span><span class="w"> </span><span class="n">lihtc</span><span class="o">$</span><span class="n">allocamt</span><span class="o">/</span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">breaks</span><span class="o">=</span><span class="m">1000</span><span class="p">,</span><span class="w"> 
+      </span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">3000</span><span class="p">),</span><span class="w"> </span><span class="n">yaxt</span><span class="o">=</span><span class="s2">"n"</span><span class="p">,</span><span class="w"> </span><span class="n">xaxt</span><span class="o">=</span><span class="s2">"n"</span><span class="p">,</span><span class="w">
+      </span><span class="n">xlab</span><span class="o">=</span><span class="s2">"Thousands of Dollars"</span><span class="p">,</span><span class="w"> </span><span class="n">cex.lab</span><span class="o">=</span><span class="m">1.0</span><span class="p">,</span><span class="w">
+      </span><span class="n">ylab</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s2">"Dollars Distributed via LIHTC"</span><span class="p">,</span><span class="w">
+      </span><span class="n">col</span><span class="o">=</span><span class="s2">"indianred4"</span><span class="p">,</span><span class="w"> </span><span class="n">border</span><span class="o">=</span><span class="s2">"white"</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">axis</span><span class="p">(</span><span class="w"> </span><span class="n">side</span><span class="o">=</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">at</span><span class="o">=</span><span class="n">seq</span><span class="p">(</span><span class="w"> </span><span class="n">from</span><span class="o">=</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="o">=</span><span class="m">2500</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="o">=</span><span class="m">500</span><span class="w"> </span><span class="p">),</span><span class="w"> 
+      </span><span class="n">labels</span><span class="o">=</span><span class="n">paste0</span><span class="p">(</span><span class="w"> </span><span class="s2">"$"</span><span class="p">,</span><span class="w"> </span><span class="n">seq</span><span class="p">(</span><span class="w"> </span><span class="n">from</span><span class="o">=</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="o">=</span><span class="m">2500</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="o">=</span><span class="m">500</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="s2">""</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+        
+</span><span class="n">mean.lihtc.amt</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">lihtc</span><span class="o">$</span><span class="n">allocamt</span><span class="o">/</span><span class="m">10000</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="nb">T</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">abline</span><span class="p">(</span><span class="w"> </span><span class="n">v</span><span class="o">=</span><span class="n">mean.lihtc.amt</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="o">=</span><span class="s2">"yellow3"</span><span class="p">,</span><span class="w"> </span><span class="n">lwd</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">lty</span><span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">text</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="o">=</span><span class="m">1700</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="m">5100</span><span class="p">,</span><span class="w"> 
+      </span><span class="n">labels</span><span class="o">=</span><span class="n">paste0</span><span class="p">(</span><span class="w"> </span><span class="s2">"Mean = "</span><span class="p">,</span><span class="w"> </span><span class="n">dollar</span><span class="p">(</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="m">1000</span><span class="o">*</span><span class="n">mean.lihtc.amt</span><span class="p">,</span><span class="m">0</span><span class="p">))</span><span class="w"> </span><span class="p">),</span><span class="w"> 
+      </span><span class="n">col</span><span class="o">=</span><span class="s2">"yellow3"</span><span class="p">,</span><span class="w"> </span><span class="n">cex</span><span class="o">=</span><span class="m">1.3</span><span class="p">,</span><span class="w"> </span><span class="n">pos</span><span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">median.lihtc.amt</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">median</span><span class="p">(</span><span class="w"> </span><span class="n">lihtc</span><span class="o">$</span><span class="n">allocamt</span><span class="o">/</span><span class="m">10000</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="nb">T</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">abline</span><span class="p">(</span><span class="w"> </span><span class="n">v</span><span class="o">=</span><span class="n">median.lihtc.amt</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="o">=</span><span class="s2">"yellow4"</span><span class="p">,</span><span class="w"> </span><span class="n">lwd</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">lty</span><span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">text</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="o">=</span><span class="m">1740</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="m">7000</span><span class="p">,</span><span class="w"> 
+      </span><span class="n">labels</span><span class="o">=</span><span class="n">paste0</span><span class="p">(</span><span class="w"> </span><span class="s2">"Median = "</span><span class="p">,</span><span class="w"> </span><span class="n">dollar</span><span class="p">(</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="m">1000</span><span class="o">*</span><span class="n">median.lihtc.amt</span><span class="p">,</span><span class="m">0</span><span class="p">))</span><span class="w"> </span><span class="p">),</span><span class="w"> 
+      </span><span class="n">col</span><span class="o">=</span><span class="s2">"yellow4"</span><span class="p">,</span><span class="w"> </span><span class="n">cex</span><span class="o">=</span><span class="m">1.3</span><span class="p">,</span><span class="w"> </span><span class="n">pos</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../assets/img/2021-04-22-ch03-tax_credits_files/figure-gfm/unnamed-chunk-4-1.png" alt="" /><!-- --></p>
+
+<h2 id="characteristics-of-individuals-that-received-them">Characteristics of Individuals That Received Them</h2>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Granted </span><span class="w">
+</span><span class="n">pairs</span><span class="p">(</span><span class="n">d2</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">4</span><span class="p">],</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Makeup of those granted either an NMTC or LIHTC tax credit"</span><span class="p">,</span><span class="w">
+      </span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"unemployment"</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="s2">"Household Income"</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="s2">"Highschool Education"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Granted"</span><span class="p">),</span><span class="w">
+      </span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">,</span><span class="w"> 
+      </span><span class="n">bg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"red"</span><span class="p">)[</span><span class="nf">unclass</span><span class="p">(</span><span class="n">d2</span><span class="o">$</span><span class="n">post</span><span class="p">)])</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../assets/img/2021-04-22-ch03-tax_credits_files/figure-gfm/unnamed-chunk-5-1.png" alt="" /><!-- --></p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Not granted </span><span class="w">
+</span><span class="n">pairs</span><span class="p">(</span><span class="n">d1</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">4</span><span class="p">],</span><span class="w"> 
+      </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Makeup of those not granted either NMTC or LIHTC tax credits"</span><span class="p">,</span><span class="w">
+      </span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"unemployment"</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="s2">"Household Income"</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="s2">"Highschool Education"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Granted"</span><span class="p">),</span><span class="w">
+      </span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">,</span><span class="w"> 
+      </span><span class="n">bg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"red"</span><span class="p">)[</span><span class="nf">unclass</span><span class="p">(</span><span class="n">d1</span><span class="o">$</span><span class="n">post</span><span class="p">)])</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../assets/img/2021-04-22-ch03-tax_credits_files/figure-gfm/unnamed-chunk-6-1.png" alt="" /><!-- --></p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w"> </span><span class="n">gridExtra</span><span class="o">::</span><span class="n">grid.arrange</span><span class="p">(</span><span class="w"> </span><span class="n">PLOTS</span><span class="o">$</span><span class="n">mhv_growth</span><span class="o">$</span><span class="n">nmtc</span><span class="p">,</span><span class="w"> 
+                             </span><span class="n">PLOTS</span><span class="o">$</span><span class="n">mhv_growth</span><span class="o">$</span><span class="n">lihtc</span><span class="p">,</span><span class="w">
+                             </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../assets/img/2021-04-22-ch03-tax_credits_files/figure-gfm/unnamed-chunk-7-1.png" alt="" /><!-- --></p>
+
+<h1 id="predictive-analysis">Predictive Analysis</h1>
+
+<h2 id="background-information">Background Information</h2>
+
+<h3 id="the-baseline-model">The Baseline Model</h3>
+
+<p>Prior to this chapter, we explored how various census variables can be
+utilized in a model to predict median home value (MHV) growth. We
+determined that Median Household Income, Percent of High School
+Education, and Percent of Unemployment are all valuable in predicting
+median home value growth.</p>
+
+<p>Following is the model:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">reg.data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">d</span><span class="w">
+
+</span><span class="n">reg.data</span><span class="o">$</span><span class="n">mhv.growth</span><span class="p">[</span><span class="w"> </span><span class="n">reg.data</span><span class="o">$</span><span class="n">mhv.growth</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">200</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kc">NA</span><span class="w">
+</span><span class="c1">#reg.data$p.prof &lt;- regdata$p.prof</span><span class="w">
+</span><span class="c1">#reg.data$p.vacant &lt;- log10( reg.data$p.vacant + 1 )</span><span class="w">
+</span><span class="c1">#reg.data$p.white &lt;- regdata$p.white</span><span class="w">
+
+</span><span class="n">m1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lm</span><span class="p">(</span><span class="w"> </span><span class="n">mhv.growth</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">p.unemp.00</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">reg.data</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">m2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lm</span><span class="p">(</span><span class="w"> </span><span class="n">mhv.growth</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">hinc00</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">reg.data</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">m3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lm</span><span class="p">(</span><span class="w"> </span><span class="n">mhv.growth</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">p.hs.edu.00</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">reg.data</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">m4</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lm</span><span class="p">(</span><span class="w"> </span><span class="n">mhv.growth</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">p.unemp.00</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hinc00</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p.hs.edu.00</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">reg.data</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">stargazer</span><span class="p">(</span><span class="w"> </span><span class="n">m1</span><span class="p">,</span><span class="w"> </span><span class="n">m2</span><span class="p">,</span><span class="w"> </span><span class="n">m3</span><span class="p">,</span><span class="w"> </span><span class="n">m4</span><span class="p">,</span><span class="w">
+           </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">S_TYPE</span><span class="p">,</span><span class="w"> </span><span class="n">digts</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w">
+           </span><span class="n">dep.var.labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="s2">"MHV Growth"</span><span class="p">),</span><span class="w">
+           </span><span class="n">covariate.labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"Unemployment"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Household Income"</span><span class="p">,</span><span class="w"> </span><span class="s2">"HS Education"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Constant"</span><span class="p">),</span><span class="w">
+           </span><span class="n">omit.stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"rsq"</span><span class="p">,</span><span class="w"> </span><span class="s2">"f"</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<table style="text-align:center">
+
+<tr>
+
+<td colspan="5" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td colspan="4">
+
+<em>Dependent variable:</em>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+</td>
+
+<td colspan="4" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td colspan="4">
+
+MHV Growth
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(1)
+
+</td>
+
+<td>
+
+(2)
+
+</td>
+
+<td>
+
+(3)
+
+</td>
+
+<td>
+
+(4)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="5" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Unemployment
+
+</td>
+
+<td>
+
+0.706<sup>\*\*\*</sup>
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+0.500<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.027)
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+(0.033)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Household Income
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+\-0.0001<sup>\*\*\*</sup>
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+0.00000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+(0.00001)
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+(0.00001)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+HS Education
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+0.627<sup>\*\*\*</sup>
+
+</td>
+
+<td>
+
+0.533<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+(0.019)
+
+</td>
+
+<td>
+
+(0.020)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Constant
+
+</td>
+
+<td>
+
+25.060<sup>\*\*\*</sup>
+
+</td>
+
+<td>
+
+33.494<sup>\*\*\*</sup>
+
+</td>
+
+<td>
+
+\-15.991<sup>\*\*\*</sup>
+
+</td>
+
+<td>
+
+\-12.343<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.221)
+
+</td>
+
+<td>
+
+(0.354)
+
+</td>
+
+<td>
+
+(1.378)
+
+</td>
+
+<td>
+
+(1.467)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="5" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Observations
+
+</td>
+
+<td>
+
+58,557
+
+</td>
+
+<td>
+
+58,557
+
+</td>
+
+<td>
+
+58,557
+
+</td>
+
+<td>
+
+58,557
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Adjusted R<sup>2</sup>
+
+</td>
+
+<td>
+
+0.011
+
+</td>
+
+<td>
+
+0.003
+
+</td>
+
+<td>
+
+0.018
+
+</td>
+
+<td>
+
+0.023
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Residual Std. Error
+
+</td>
+
+<td>
+
+34.786 (df = 58555)
+
+</td>
+
+<td>
+
+34.934 (df = 58555)
+
+</td>
+
+<td>
+
+34.659 (df = 58555)
+
+</td>
+
+<td>
+
+34.569 (df = 58553)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="5" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+<em>Note:</em>
+
+</td>
+
+<td colspan="4" style="text-align:right">
+
+<sup>*</sup>p\&lt;0.1; <sup>**</sup>p\&lt;0.05; <sup>***</sup>p\&lt;0.01
+
+</td>
+
+</tr>
+
+</table>
+
+<table style="text-align:center">
+
+<tr>
+
+<td colspan="1" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+2
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="1" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+</table>
+
+<h3 id="the-controls">The Controls</h3>
+
+<p>This model shows how these three variables can be used to predict MHV
+growth. As program analysts, we are interested in seeing how our
+specific programs can affect MHV growth. Because of this, we want to
+control for any variables that are naturally occurring outside of the
+scope of our programs, such as secular trends or natural maturation.
+We’ve shown that Median Household Income, Percent of High School
+Education, and Percent of Unemployment are all contributing factors to
+MHV growth, and consequently, we want to ensure that we do not include
+their effects as contributions to our programs. We can make sure to
+control for these variables as we analyze whether or not our social
+programs are effective at catalyzing neighborhood improvement.</p>
+
+<h2 id="log-linear-diff-in-diff-models">Log-Linear Diff-in-Diff Models</h2>
+
+<p>The best plan of action to approach modeling the effects of these
+programs is by utilizing a log-linear diff-in-diff model. We can analyze
+the growth rates of the treatment and control to see whether or not our
+programs made a difference.</p>
+
+<h3 id="nmtc-program-model">NMTC Program Model</h3>
+
+<p>We have created the difference in difference dataset in our data
+processing steps. We have logged both our median home value of 2000 and
+media home value of 2010. We have also made sure to include all of the
+tracts that received NMTC funding <strong>(d$num.nmtc &gt; 0)</strong>. From there, we
+stored our 2000 data and 2010 dataframes, defining our treat and post
+variables. We then stacked the two time periods together into one data
+source: d3.</p>
+
+<p>We also need to include our control variables in this model. In order to
+do so, we added them into our data processing steps as well.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># create the difference in difference model</span><span class="w">
+</span><span class="c1"># note: treat = B1, post = B2, treat*post = B3</span><span class="w">
+
+</span><span class="n">m</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lm</span><span class="p">(</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">treat.a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">post</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">treat.a</span><span class="o">*</span><span class="n">post</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">d3</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># display model results</span><span class="w">
+</span><span class="n">stargazer</span><span class="o">::</span><span class="n">stargazer</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w">
+                     </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">S_TYPE</span><span class="p">,</span><span class="w">
+                     </span><span class="n">dep.var.labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="s2">"MHV"</span><span class="p">),</span><span class="w">
+                     </span><span class="n">covariate.labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"NMTC"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Unemployment"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Household Income"</span><span class="p">,</span><span class="w"> </span><span class="s2">"HS Education"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Post Treatment"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Diff-in-Diff"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Constant"</span><span class="p">),</span><span class="w">
+                     </span><span class="n">digits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<table style="text-align:center">
+
+<tr>
+
+<td colspan="2" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+<em>Dependent variable:</em>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+</td>
+
+<td colspan="1" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+MHV
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="2" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+NMTC
+
+</td>
+
+<td>
+
+0.13<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.01)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Unemployment
+
+</td>
+
+<td>
+
+\-0.005<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.0003)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Household Income
+
+</td>
+
+<td>
+
+0.0000<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.0000)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+HS Education
+
+</td>
+
+<td>
+
+0.01<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.0002)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Post Treatment
+
+</td>
+
+<td>
+
+0.28<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.003)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Diff-in-Diff
+
+</td>
+
+<td>
+
+0.07<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.02)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Constant
+
+</td>
+
+<td>
+
+10.54<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.01)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="2" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Observations
+
+</td>
+
+<td>
+
+118,112
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+R<sup>2</sup>
+
+</td>
+
+<td>
+
+0.50
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Adjusted R<sup>2</sup>
+
+</td>
+
+<td>
+
+0.50
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Residual Std. Error
+
+</td>
+
+<td>
+
+0.46 (df = 118105)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+F Statistic
+
+</td>
+
+<td>
+
+19,547.44<sup>\*\*\*</sup> (df = 6; 118105)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="2" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+<em>Note:</em>
+
+</td>
+
+<td style="text-align:right">
+
+<sup>*</sup>p\&lt;0.1; <sup>**</sup>p\&lt;0.05; <sup>***</sup>p\&lt;0.01
+
+</td>
+
+</tr>
+
+</table>
+
+<h3 id="lihtc-program-model">LIHTC Program Model</h3>
+
+<p>We also need to create the difference in difference dataset for the
+LIHTC Program. We included our control variables in the data processing.
+We made sure to include all of the tracts that received LIHTC funding
+<strong>(d$num.lihtc &gt; 0)</strong>. We stacked the two time periods together into
+one data source: d6.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># create the difference in difference model</span><span class="w">
+</span><span class="c1"># note: treat = B1, post = B2, treat*post = B3</span><span class="w">
+
+</span><span class="n">m</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lm</span><span class="p">(</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">treat.b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">post</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">treat.b</span><span class="o">*</span><span class="n">post</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">d6</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># display model results</span><span class="w">
+</span><span class="n">stargazer</span><span class="o">::</span><span class="n">stargazer</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w">
+                     </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">S_TYPE</span><span class="p">,</span><span class="w">
+                     </span><span class="n">dep.var.labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="s2">"MHV"</span><span class="p">),</span><span class="w">
+                     </span><span class="n">covariate.labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"LIHTC"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Unemployment"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Household Income"</span><span class="p">,</span><span class="w"> </span><span class="s2">"HS Education"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Post Treatment"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Diff-in-Diff"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Constant"</span><span class="p">),</span><span class="w">
+                     </span><span class="n">digits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<table style="text-align:center">
+
+<tr>
+
+<td colspan="2" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+<em>Dependent variable:</em>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+</td>
+
+<td colspan="1" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+MHV
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="2" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+LIHTC
+
+</td>
+
+<td>
+
+0.04<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.01)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Unemployment
+
+</td>
+
+<td>
+
+\-0.005<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.0003)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Household Income
+
+</td>
+
+<td>
+
+0.0000<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.0000)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+HS Education
+
+</td>
+
+<td>
+
+0.01<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.0002)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Post Treatment
+
+</td>
+
+<td>
+
+0.28<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.003)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Diff-in-Diff
+
+</td>
+
+<td>
+
+0.04<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.01)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Constant
+
+</td>
+
+<td>
+
+10.52<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.01)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="2" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Observations
+
+</td>
+
+<td>
+
+118,112
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+R<sup>2</sup>
+
+</td>
+
+<td>
+
+0.50
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Adjusted R<sup>2</sup>
+
+</td>
+
+<td>
+
+0.50
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Residual Std. Error
+
+</td>
+
+<td>
+
+0.46 (df = 118105)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+F Statistic
+
+</td>
+
+<td>
+
+19,496.83<sup>\*\*\*</sup> (df = 6; 118105)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="2" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+<em>Note:</em>
+
+</td>
+
+<td style="text-align:right">
+
+<sup>*</sup>p\&lt;0.1; <sup>**</sup>p\&lt;0.05; <sup>***</sup>p\&lt;0.01
+
+</td>
+
+</tr>
+
+</table>
+
+<h2 id="interpretation-of-results">Interpretation of Results</h2>
+
+<p>We see that in the NMTC Program, the secular trend had 28% growth
+(represented by “post”). As mentioned before, this is the growth that
+would have occurred naturally had our program not taken place (the
+counterfactual). We also see that the treatment group grew 7 percentage
+points more than the baseline/control group (represented by
+“treat.a:post”).</p>
+
+<p>The LIHTC Program model comes back with a secular trend of 28% as well,
+which makes sense because, again, this number represents the growth over
+time had neither program occurred. The treatment group in this program
+only grew 4 percentage point more than the baseline/control group
+(represented by “treat.b:post”).</p>
+
+<p>It appears that the added control variables had some impact on our
+models. Following are the models without any controls added:</p>
+
+<p><strong>NMTC Program Without Controls</strong></p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">m</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lm</span><span class="p">(</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">treat.a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">post</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">treat.a</span><span class="o">*</span><span class="n">post</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">d3</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">stargazer</span><span class="o">::</span><span class="n">stargazer</span><span class="p">(</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w">
+                      </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">S_TYPE</span><span class="p">,</span><span class="w">
+                      </span><span class="n">dep.var.labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="s2">"MHV"</span><span class="p">),</span><span class="w">
+                      </span><span class="n">covariate.labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"NMTC"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Post Treatment"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Diff-in-Diff"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Constant"</span><span class="p">),</span><span class="w">
+                      </span><span class="n">digits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<table style="text-align:center">
+
+<tr>
+
+<td colspan="2" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+<em>Dependent variable:</em>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+</td>
+
+<td colspan="1" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+MHV
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="2" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+NMTC
+
+</td>
+
+<td>
+
+\-0.26<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.02)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Post Treatment
+
+</td>
+
+<td>
+
+0.23<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.004)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Diff-in-Diff
+
+</td>
+
+<td>
+
+0.10<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.02)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Constant
+
+</td>
+
+<td>
+
+11.96<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.003)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="2" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Observations
+
+</td>
+
+<td>
+
+118,112
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+R<sup>2</sup>
+
+</td>
+
+<td>
+
+0.04
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Adjusted R<sup>2</sup>
+
+</td>
+
+<td>
+
+0.04
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Residual Std. Error
+
+</td>
+
+<td>
+
+0.64 (df = 118108)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+F Statistic
+
+</td>
+
+<td>
+
+1,431.79<sup>\*\*\*</sup> (df = 3; 118108)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="2" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+<em>Note:</em>
+
+</td>
+
+<td style="text-align:right">
+
+<sup>*</sup>p\&lt;0.1; <sup>**</sup>p\&lt;0.05; <sup>***</sup>p\&lt;0.01
+
+</td>
+
+</tr>
+
+</table>
+
+<p><strong>LIHTC Program Without Controls</strong></p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">m</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lm</span><span class="p">(</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">treat.b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">post</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">treat.b</span><span class="o">*</span><span class="n">post</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">d6</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">stargazer</span><span class="o">::</span><span class="n">stargazer</span><span class="p">(</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w">
+                      </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">S_TYPE</span><span class="p">,</span><span class="w">
+                      </span><span class="n">dep.var.labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="s2">"MHV"</span><span class="p">),</span><span class="w">
+                      </span><span class="n">covariate.labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"LIHTC"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Post Treatment"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Diff-in-Diff"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Constant"</span><span class="p">),</span><span class="w">
+                      </span><span class="n">digits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<table style="text-align:center">
+
+<tr>
+
+<td colspan="2" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+<em>Dependent variable:</em>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+</td>
+
+<td colspan="1" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+MHV
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="2" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+LIHTC
+
+</td>
+
+<td>
+
+\-0.21<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.01)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Post Treatment
+
+</td>
+
+<td>
+
+0.23<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.004)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Diff-in-Diff
+
+</td>
+
+<td>
+
+0.01
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.01)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Constant
+
+</td>
+
+<td>
+
+11.98<sup>\*\*\*</sup>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+(0.003)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+</td>
+
+<td>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="2" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Observations
+
+</td>
+
+<td>
+
+118,112
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+R<sup>2</sup>
+
+</td>
+
+<td>
+
+0.04
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Adjusted R<sup>2</sup>
+
+</td>
+
+<td>
+
+0.04
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+Residual Std. Error
+
+</td>
+
+<td>
+
+0.64 (df = 118108)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+F Statistic
+
+</td>
+
+<td>
+
+1,798.71<sup>\*\*\*</sup> (df = 3; 118108)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan="2" style="border-bottom: 1px solid black">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left">
+
+<em>Note:</em>
+
+</td>
+
+<td style="text-align:right">
+
+<sup>*</sup>p\&lt;0.1; <sup>**</sup>p\&lt;0.05; <sup>***</sup>p\&lt;0.01
+
+</td>
+
+</tr>
+
+</table>
+
+<p>In regard to the NMTC Program, without control variables, the treatment
+group grew 3 percentage points more than the baseline. This is a larger
+amount than the 7 percentage points our full model presents. Again, we
+would expect that with the control variables accounted for, the program
+impact decreases as we zone in on our program’s specific contributions.
+With that being said, it appears that the LIHTC Program’s treatment
+group grew only 1 percentage point without the control variables.</p>
+
+<p>Based off of these interpretations, we can conclude that the programs
+are effective at catalyzing neighborhood improvement. The NMTC Program
+can be considered more effective, as the treatment group increased 7
+percentage points more than those who did not receive the program. In
+contrast, the LITHC Program increased by 4 percentage point. The home
+values for the areas where heavy investments took place saw greater
+improvement than neighborhoods that did not receive the same funding.</p>
+
+<hr />
+
+<h1 id="references">References</h1>
+
+<div id="refs" class="references">
+
+<div id="ref-R-base1">
+
+*Census Geography: Bridging Data for Census Tracts Across Time*. n.d.
+Spatial Structures in the Social Sciences, Brown University.
+&lt;https://s4.ad.brown.edu/Projects/Diversity/Researcher/Bridging.htm&gt;.
+
+</div>
+
+<div id="ref-R-base3">
+
+*Low-Income Housing Tax Credit (Lihtc)*. n.d. Washington, DC: U.S.
+Department of Housing; Urban Development.
+&lt;https://www.huduser.gov/portal/datasets/lihtc.html&gt;.
+
+</div>
+
+<div id="ref-R-base2">
+
+*New Markets Tax Credit Program*. n.d. U.S. Department of the Treasury,
+Community Development Financial Institutions Fund.
+&lt;https://www.cdfifund.gov/programs-training/programs/new-markets-tax-credit&gt;.
+
+</div>
+
+</div>
+
+  
+  
+</article>
+
+
+
+<footer>
+  <center>
+<h5>
+    This project is licensed under the
+    <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License
+      v3.0</a>
+    </h5>
+  </center>
+</footer> 

@@ -29,8 +29,7 @@ library( tidyverse )
 
 
 ```{r}
-URL <- "https://github.com/DS4PS/cpp-524-sum-2020/blob/master/labs/data/female-np-entrepreneurs.rds?raw=true"
-dat <- readRDS(gzcon(url( URL )))
+dat <- readRDS( "WebsiteAssets/Data/female-np-entrepreneurs.rds" )
 head( dat )
 ```
 

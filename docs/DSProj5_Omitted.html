@@ -11,9 +11,9 @@
 
 
 
-<title>DSProj5_Omitted.knit</title>
+<title>Omitted Variable Bias - Happiness &amp; Wellbeing</title>
 
-<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.32/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -278,26 +278,25 @@ $(document).ready(function () {
 
 
 
+<h1 class="title toc-ignore">Omitted Variable Bias - Happiness &amp;
+Wellbeing</h1>
 
 </div>
 
 
-<hr />
-<p>title: “DSProj5_Omitted (Disabled)” output: html_document knit:
-(function(inputFile, encoding) { rmarkdown::render(inputFile, encoding =
-encoding, envir = new.env(), quiet = TRUE, run_pandoc = TRUE) }) —</p>
 <pre class="r"><code>library( pander )     # formatting tables
 library( dplyr )      # data wrangling
 library( stargazer )  # regression tables</code></pre>
-<pre class="r"><code># CHANGING FROM: 
-#URL &lt;- &quot;https://raw.githubusercontent.com/DS4PS/cpp-523-fall-2019/master/labs/data/predicting-subjective-wellbeing.csv&quot;
-#dat &lt;- read.csv( URL, stringsAsFactors=F )
-
-#TO
-
-# dat &lt;- read.csv(&quot;/Users/Tyler/Desktop/thatsallfolks/TIY/Website_V1/WebsiteAssets/Data/predicting-subjective-wellbeing.csv&quot;,
- #               stringsAsFactors = FALSE)
-#head(dat)</code></pre>
+<pre class="r"><code>dat &lt;- read.csv(&quot;WebsiteAssets/Data/predicting-subjective-wellbeing.csv&quot;,
+                stringsAsFactors = FALSE)
+head(dat)</code></pre>
+<pre><code>##   Id SWB      CSE PANASpos PANASneg  SJAS_hc ND RSE PSS  NP
+## 1  1  33 39.00000       39       15 2.000000  5  48  93  24
+## 2  2  33 59.00000       48       27 8.000000  6  45  95  29
+## 3  3  29 54.00000       44       24 7.000000  5  43  89 103
+## 4  4  21 36.00000       30       17 2.000000  6  45  74  19
+## 5  5  25 48.00000       41       18 6.000000  6  47  93  20
+## 6  6  23 51.42857       30       25 4.444444  6  28  91  18</code></pre>
 <div id="variables" class="section level4">
 <h4>Variables</h4>
 <p>Consider a three-variable regression of Subjective Well-Being (SWB),
@@ -320,12 +319,177 @@ stargazer( m.naive, m.full,
            dep.var.caption = &quot;DV: Subjective Well-Being&quot;,
            omit.stat = c(&quot;rsq&quot;,&quot;f&quot;,&quot;ser&quot;),
            notes.label = &quot;Standard errors in parentheses&quot;)</code></pre>
+<table style="text-align:center">
+<tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="2">
+DV: Subjective Well-Being
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="2">
+SWB
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1)
+</td>
+<td>
+(2)
+</td>
+</tr>
+<tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+ND
+</td>
+<td>
+0.52<sup>***</sup>
+</td>
+<td>
+-0.05
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.20)
+</td>
+<td>
+(0.19)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+PSS
+</td>
+<td>
+</td>
+<td>
+0.32<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+(0.03)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+20.99<sup>***</sup>
+</td>
+<td>
+-2.35
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1.19)
+</td>
+<td>
+(2.59)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+389
+</td>
+<td>
+389
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.02
+</td>
+<td>
+0.21
+</td>
+</tr>
+<tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Standard errors in parentheses
+</td>
+<td colspan="2" style="text-align:right">
+<sup><em></sup>p&lt;0.1; <sup><strong></sup>p&lt;0.05;
+<sup></strong></em></sup>p&lt;0.01
+</td>
+</tr>
+</table>
 <p>Results from above chunk:</p>
 <pre class="r"><code>B1 &lt;- -0.05  # replace with the appropriate value from the table above
 b1 &lt;- 0.52  # replace with the appropriate value from the table above
 bias &lt;- b1 - B1
-bias 
-#= 0.57</code></pre>
+bias </code></pre>
+<pre><code>## [1] 0.57</code></pre>
+<pre class="r"><code>#= 0.57</code></pre>
 </div>
 <div id="estimation" class="section level4">
 <h4>Estimation</h4>
@@ -345,16 +509,129 @@ stargazer( m.auxiliary,
            type = &quot;html&quot;, digits=2,
            dep.var.caption = &quot;DV: PSS&quot;,
            omit.stat = c(&quot;rsq&quot;,&quot;f&quot;,&quot;ser&quot;),
-           notes.label = &quot;Standard errors in parentheses&quot;)
-
- summary(m.auxiliary)
- 
-#x_2=a_0+a_1X+E_2 
+           notes.label = &quot;Standard errors in parentheses&quot;)</code></pre>
+<table style="text-align:center">
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+DV: PSS
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="1" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+PSS
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+ND
+</td>
+<td>
+1.81<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.28)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+73.88<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1.69)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+389
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.10
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Standard errors in parentheses
+</td>
+<td style="text-align:right">
+<sup><em></sup>p&lt;0.1; <sup><strong></sup>p&lt;0.05;
+<sup></strong></em></sup>p&lt;0.01
+</td>
+</tr>
+</table>
+<pre class="r"><code> summary(m.auxiliary)</code></pre>
+<p>Call: lm(formula = PSS ~ ND, data = dat)</p>
+<p>Residuals: Min 1Q Median 3Q Max -32.322 -4.765 1.420 6.235 14.678</p>
+<p>Coefficients: Estimate Std. Error t value Pr(&gt;|t|)<br />
+(Intercept) 73.8780 1.6928 43.642 &lt; 2e-16 <strong><em> ND 1.8146
+0.2802 6.476 2.86e-10 </em></strong> — Signif. codes: 0 ‘<em><strong>’
+0.001 ’</strong>’ 0.01 ’</em>’ 0.05 ‘.’ 0.1 ’ ’ 1</p>
+<p>Residual standard error: 7.98 on 387 degrees of freedom Multiple
+R-squared: 0.09777, Adjusted R-squared: 0.09544 F-statistic: 41.94 on 1
+and 387 DF, p-value: 2.862e-10</p>
+<pre class="r"><code>#x_2=a_0+a_1X+E_2 
 # (b1-B1) / B1
 a1 &lt;- 1.81
 B2 &lt;- 0.32
 bias &lt;- a1*B2
 bias</code></pre>
+<p>[1] 0.5792</p>
 <p><br></p>
 </div>
 <div id="estimation-on-happiness" class="section level4">
@@ -405,6 +682,27 @@ stargazer( m.01, m.02, m.03,
            dep.var.caption = &quot;DV: Subjective Well-Being&quot;,
            omit.stat = c(&quot;rsq&quot;,&quot;f&quot;,&quot;ser&quot;),
            notes.label = &quot;Standard errors in parentheses&quot;)</code></pre>
+<pre><code>## 
+## ============================================================
+##                                  DV: Subjective Well-Being  
+##                                -----------------------------
+##                                             SWB             
+##                                   (1)        (2)      (3)   
+## ------------------------------------------------------------
+## CSE                             -0.11***            0.09*** 
+##                                  (0.03)              (0.03) 
+##                                                             
+## RSE                                        0.55***  0.61*** 
+##                                            (0.04)    (0.04) 
+##                                                             
+## Constant                        29.29***    1.62     -4.82* 
+##                                  (1.65)    (1.54)    (2.68) 
+##                                                             
+## ------------------------------------------------------------
+## Observations                      389        389      389   
+## Adjusted R2                       0.02      0.36      0.37  
+## ============================================================
+## Standard errors in parentheses   *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <p><br> #### Analysis</p>
 <p>The slope of CSE flipped from negative to positive, and it is highly
 statistically significant in both cases, but now with the added

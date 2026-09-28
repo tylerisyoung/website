@@ -23,9 +23,8 @@ library( "pander" )        # nice tables
 # GITHUB
 # devtools::install_github( repo="OuhscBbmc/Wats" )
 
-# load data from GitHub
-URL <- "https://github.com/DS4PS/pe4ps-textbook/blob/master/data/time-series-example.rds?raw=true"
-dataTS <- readRDS(gzcon(url( URL )))
+# load data (stored with this website)
+dataTS <- readRDS( "WebsiteAssets/Data/time-series-example.rds" )
 
 
 #notes: code chunk 4 & 13  swap between html/text
@@ -41,7 +40,7 @@ dataTS <- readRDS(gzcon(url( URL )))
 #### Load Data
 Assigning example passenger data to a variable, and creating a control and a treatment group for analysis divided by each half of attendance throughout the year & putting this within a datframe for analysis and visualization. 
 
-Example Data from [DS4PS Github](https://github.com/DS4PS/pe4ps-textbook/blob/master/data/time-series-example.rds?raw=true). 
+Example data: [time-series-example.rds](./WebsiteAssets/Data/time-series-example.rds). 
 
 ```{r}
 

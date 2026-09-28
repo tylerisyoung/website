@@ -14,7 +14,7 @@
 
 <title>Gender in Nonprofits - a Chi Squared test</title>
 
-<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.32/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -52,9 +52,8 @@
   }
 </style>
 <style type="text/css" data-origin="pandoc">
-html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -383,9 +382,8 @@ class="section level3">
 <h3>The dataset contains ten survey questions from a survey of nonprofit
 entrepreneurs. The gender variable represents our study groups, male and
 female.</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>URL <span class="ot">&lt;-</span> <span class="st">&quot;https://github.com/DS4PS/cpp-524-sum-2020/blob/master/labs/data/female-np-entrepreneurs.rds?raw=true&quot;</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">gzcon</span>(<span class="fu">url</span>( URL )))</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">head</span>( dat )</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>( <span class="st">&quot;WebsiteAssets/Data/female-np-entrepreneurs.rds&quot;</span> )</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">head</span>( dat )</span></code></pre></div>
 <pre><code>##   gender age income edu.level years.prof.exp experience.np.create
 ## 1 Female  54  79669  Graduate          11-15                   No
 ## 2 Female  62  63474  Graduate            15+                   No
@@ -466,7 +464,7 @@ highest level of education you achieved?”</p>
 ##  replicates)
 ## 
 ## data:  a
-## X-squared = 4.3831, df = NA, p-value = 0.3588</code></pre>
+## X-squared = 4.3831, df = NA, p-value = 0.3582</code></pre>
 <div id="question-1" class="section level3">
 <h3>Question 1</h3>
 <p>The two factors chi square p value is less than 0.05, therefore they
@@ -534,7 +532,7 @@ or females have more professional* work experience?”</p>
 ##  replicates)
 ## 
 ## data:  b
-## X-squared = 4.0086, df = NA, p-value = 0.5764</code></pre>
+## X-squared = 4.0086, df = NA, p-value = 0.5757</code></pre>
 <p>The two factors chi square p value is greater than 0.05, therefore
 they are uncorrelated, and independent. The work experience of female
 entrepreneurs is on average greater and is statistically
@@ -578,7 +576,7 @@ significant.</p>
 ##  replicates)
 ## 
 ## data:  c
-## X-squared = 0.033448, df = NA, p-value = 0.8558</code></pre>
+## X-squared = 0.033448, df = NA, p-value = 0.8614</code></pre>
 <p>The two factors chi square p value is greater than 0.05, therefore
 they are uncorrelated, and independent. Therefore we can determine that
 our data is statistically significant in finding that females receive
@@ -638,7 +636,7 @@ business?</p>
 ##  replicates)
 ## 
 ## data:  d
-## X-squared = 8.6158, df = NA, p-value = 0.06689</code></pre>
+## X-squared = 8.6158, df = NA, p-value = 0.06779</code></pre>
 <p>The two factors chi square p value is just greater than 0.05,
 therefore they are uncorrelated, and independent. Our data do suggest
 that males comparatively take on debt more often than their
@@ -734,7 +732,7 @@ funding sources by gender.</p>
 ##  replicates)
 ## 
 ## data:  f
-## X-squared = 98.545, df = NA, p-value = 5e-04</code></pre>
+## X-squared = 98.545, df = NA, p-value = 2e-04</code></pre>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">t.test</span>( age <span class="sc">~</span> gender, <span class="at">data=</span>dat )</span></code></pre></div>
 <pre><code>## 
 ##  Welch Two Sample t-test
@@ -772,7 +770,7 @@ at the time of inception?</p>
 ##  replicates)
 ## 
 ## data:  g
-## X-squared = 601.88, df = NA, p-value = 0.529</code></pre>
+## X-squared = 601.88, df = NA, p-value = 0.6743</code></pre>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="fu">t.test</span>( income <span class="sc">~</span> gender, <span class="at">data=</span>dat )</span></code></pre></div>
 <pre><code>## 
 ##  Welch Two Sample t-test
