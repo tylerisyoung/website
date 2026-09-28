@@ -12,10 +12,9 @@ OUT = os.path.join(os.path.dirname(__file__), "..", "docs", "data", "markets.jso
 
 TICKERS = [("BTC-USD", "Bitcoin"), ("SPY", "S&P 500 (SPY)"),
            ("SOL-USD", "Solana"), ("MSTR", "Strategy (MSTR)"), ("TSLA", "Tesla"), ("SPCX", "SpaceX (SPCX)"),
-           ("AVGO", "Broadcom"), ("AMD", "AMD"), ("NVDA", "Nvidia"), ("MU", "Micron (MU)"),
+           ("AVGO", "Broadcom"), ("NVDA", "Nvidia"), ("MU", "Micron (MU)"),
            ("FWDI", "Forward Industries (FWDI)"), ("DFDV", "DeFi Development (DFDV)"), ("UPXI", "Upexi (UPXI)"),
-           ("MP", "MP Materials"), ("BZ=F", "Brent crude oil"),
-           ("GC=F", "Gold (futures)"), ("SLV", "Silver (SLV)"), ("SILJ", "Junior silver miners (SILJ)"),
+           ("MP", "MP Materials"), ("GC=F", "Gold (futures)"), ("SLV", "Silver (SLV)"), ("SILJ", "Junior silver miners (SILJ)"),
            ("UUUU", "Energy Fuels (UUUU)"), ("GLD", "Gold ETF (GLD)"), ("HG=F", "Copper (futures)"), ("ETH-USD", "Ethereum")]
 
 TREASURY_ASOF = "2026-09-14"
@@ -23,12 +22,9 @@ TREASURY_ASOF = "2026-09-14"
 TREASURY = [(t, n, round(mc / p), q) for t, n, p, mc, q in [
     ("MTPLF", "Metaplanet", 1.79, 2405411848, 43000),
     ("MSTR", "Strategy", 160.85, 52690000000, 847666),
-    ("MARA", "MARA Holdings", 12.37, 4779254919, 35577),
-    ("CLSK", "CleanSpark", 13.73, 3511972523, 13703),
     ("RIOT", "Riot Platforms", 22.19, 8289693903, 11380),
     ("HUT", "Hut 8", 94.34, 11688689127, 10278),
     ("GLXY", "Galaxy Digital", 28.90, 11132000000, 6972),
-    ("COIN", "Coinbase", 195.04, 51459592629, 17311),
     ("SPCX", "SpaceX", 146.82, 1990861138189, 18712),
     ("TSLA", "Tesla", 359.59, 1421876454039, 11509),
 ]]
@@ -40,7 +36,6 @@ SOL_TREASURY = [
     ("FWDI", "Forward Industries", 7550000),
     ("DFDV", "DeFi Development", 2490304),
     ("UPXI", "Upexi", 2173204),
-    ("SKYA", "SkyAI", 2077799),
     ("HSDT", "Solana Company", 2064717),
 ]
 
@@ -57,9 +52,8 @@ def yahoo_shares(symbols):
     return {q["symbol"]: q.get("sharesOutstanding") for q in j["quoteResponse"]["result"]}
 
 # Treasury companies not already in TICKERS (price history for the Markets chart)
-TREASURY_HIST = [("MTPLF", "Metaplanet (MTPLF)"), ("MARA", "MARA Holdings"), ("CLSK", "CleanSpark"),
-                 ("RIOT", "Riot Platforms"), ("HUT", "Hut 8"), ("GLXY", "Galaxy Digital"), ("COIN", "Coinbase"),
-                 ("SKYA", "SkyAI"), ("HSDT", "Solana Company (HSDT)")]
+TREASURY_HIST = [("MTPLF", "Metaplanet (MTPLF)"), ("RIOT", "Riot Platforms"), ("HUT", "Hut 8"),
+                 ("GLXY", "Galaxy Digital"), ("HSDT", "Solana Company (HSDT)")]
 AUX = [("SI=F", "Silver (futures, $/oz)")]   # used only to convert silver targets to SLV
 
 # Price targets for the "Current Best Buy" ranking. Edit here; the page recomputes everything.
@@ -82,7 +76,7 @@ TARGETS = {
         [IA_SANDBAG, "2030 $2,153", ""],
         ["Standard Chartered (Feb 3, 2026)", "2030 $2,000", "https://www.dlnews.com/articles/markets/solana-price-target-dropped-in-2025-but-raised-for-2030-standard-chartered/"],
         ["VanEck (Oct 27, 2023)", "bear $9.81 / base $334.70 / bull $3,211", "https://www.vaneck.com/us/en/blogs/digital-assets/matthew-sigel-vanecks-base-bear-bull-case-solana-valuation-by-2030/"]]},
-    "TSLA": {"kind": "long", "horizon": 2030, "low": 2000, "base": 2600, "high": 4794, "sources": [
+    "TSLA": {"c12": 391.40, "kind": "long", "horizon": 2030, "low": 2000, "base": 2600, "high": 4794, "sources": [
         [IA_SANDBAG, "2030 $4,794", ""],
         ["InvestAnswers Substack (Nov 1, 2025)", "2030 $2,567 from robotaxi alone", "https://investanswers.substack.com/p/teslas-robotaxi-ramp"],
         ["ARK Invest, Tesla 2029 model (Jun 12, 2024)", "bear $2,000 / base $2,600 / bull $3,100 (2029)", "https://www.ark-invest.com/articles/valuation-models/arks-tesla-price-target-2029"]]},
@@ -98,22 +92,19 @@ TARGETS = {
     "HG=F": {"kind": "long", "horizon": 2030, "low": 6.80, "base": 7.17, "high": 7.17, "sources": [
         ["BMI / Fitch (Jul 16, 2026)", "2030 $15,800/t, about $7.17/lb", "https://www.mining.com/copper-price-bmi-hikes-forecasts-structural-deficits-to-bring-17000-next-decade/"],
         ["Goldman Sachs (2025/26)", "2035 $15,000/t, about $6.80/lb", "https://www.goldmansachs.com/insights/articles/copper-prices-forecast-to-decline-from-record-highs-in-2026"]]},
-    "BZ=F": {"kind": "long", "horizon": 2027, "low": 62, "base": 62, "high": 62, "sources": [
-        ["JPMorgan", "Brent in the low $60s from 2H 2027 (no 2030 target found)", "https://www.jpmorgan.com/insights/global-research/commodities/oil-prices"]]},
-    "MSTR": {"kind": "nav", "coin": "BTC-USD", "extra": [2489], "sources": [
+    "MSTR": {"c12": 226.85, "kind": "nav", "coin": "BTC-USD", "extra": [2489], "sources": [
         [IA_SANDBAG, "2030 $2,489 (averaged with the NAV-derived base)", ""],
         ["Nasdaq consensus (Sep 2026, 12-month)", "avg $226.85 ($136-$435); Bernstein $350 (Aug 26, 2026)", "https://www.nasdaq.com/market-activity/stocks/mstr/analyst-research"]]},
     "MTPLF": {"kind": "nav", "coin": "BTC-USD", "sources": [["MarketScreener (Tokyo 3350)", "2 analysts, avg 596 yen (not used)", ""]]},
-    "FWDI": {"kind": "nav", "coin": "SOL-USD", "sources": [["Nasdaq consensus (12-month)", "avg $13.50 ($11-$16), 2 analysts", "https://www.nasdaq.com/market-activity/stocks/fwdi/analyst-research"]]},
-    "DFDV": {"kind": "nav", "coin": "SOL-USD", "sources": [["Nasdaq consensus (12-month)", "$10.40, 1 analyst", "https://www.nasdaq.com/market-activity/stocks/dfdv/analyst-research"]]},
-    "UPXI": {"kind": "nav", "coin": "SOL-USD", "sources": [["Nasdaq consensus (12-month)", "$2.00, 1 analyst", "https://www.nasdaq.com/market-activity/stocks/upxi/analyst-research"]]},
-    "SKYA": {"kind": "nav", "coin": "SOL-USD", "sources": []},
-    "HSDT": {"kind": "nav", "coin": "SOL-USD", "sources": [["Nasdaq consensus (12-month)", "avg $3.50 ($3-$4), 2 analysts", "https://www.nasdaq.com/market-activity/stocks/hsdt/analyst-research"]]},
+    "FWDI": {"c12": 13.50, "kind": "nav", "coin": "SOL-USD", "sources": [["Nasdaq consensus (12-month)", "avg $13.50 ($11-$16), 2 analysts", "https://www.nasdaq.com/market-activity/stocks/fwdi/analyst-research"]]},
+    "DFDV": {"c12": 10.40, "kind": "nav", "coin": "SOL-USD", "sources": [["Nasdaq consensus (12-month)", "$10.40, 1 analyst", "https://www.nasdaq.com/market-activity/stocks/dfdv/analyst-research"]]},
+    "UPXI": {"c12": 2.00, "kind": "nav", "coin": "SOL-USD", "sources": [["Nasdaq consensus (12-month)", "$2.00, 1 analyst", "https://www.nasdaq.com/market-activity/stocks/upxi/analyst-research"]]},
+    "HSDT": {"c12": 3.50, "kind": "nav", "coin": "SOL-USD", "sources": [["Nasdaq consensus (12-month)", "avg $3.50 ($3-$4), 2 analysts", "https://www.nasdaq.com/market-activity/stocks/hsdt/analyst-research"]]},
 }
-for t, avg, lo, hi in [("COIN", 206.15, 95, 330), ("NVDA", 324.32, 275, 465), ("AVGO", 519.21, 350, 630),
-                       ("AMD", 648.07, 465, 1250), ("MU", 1490.23, 1100, 2000), ("UUUU", 24.15, 16, 32.5),
-                       ("MP", 72.00, 57, 85), ("GLXY", 37.90, 26, 50), ("MARA", 15.11, 10, 27),
-                       ("RIOT", 33.54, 22, 43), ("CLSK", 23.85, 21, 26), ("HUT", 161.47, 96, 273)]:
+for t, avg, lo, hi in [("NVDA", 324.32, 275, 465), ("AVGO", 519.21, 350, 630),
+                       ("MU", 1490.23, 1100, 2000), ("UUUU", 24.15, 16, 32.5),
+                       ("MP", 72.00, 57, 85), ("GLXY", 37.90, 26, 50), 
+                       ("RIOT", 33.54, 22, 43), ("HUT", 161.47, 96, 273)]:
     TARGETS[t] = {"kind": "consensus", "horizon": "12m", "low": lo, "base": avg, "high": hi, "sources": [
         ["Nasdaq analyst consensus (as of Sep 1, 2026)", "12-month avg $%s (low $%s, high $%s); no 2030 target found" % (avg, lo, hi),
          "https://www.nasdaq.com/market-activity/stocks/%s/analyst-research" % t.lower()]]}

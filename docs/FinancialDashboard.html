@@ -329,7 +329,8 @@ _________________________</p>
 .fd .best-chart{position:relative}
 .fd .best table{width:100%;border-collapse:collapse;font-size:.8rem;font-variant-numeric:tabular-nums;white-space:nowrap;margin-top:.6rem}
 .fd .best th{background:var(--ink);color:#fff;font-weight:600;padding:.35rem .45rem;text-align:right}
-.fd .best th:nth-child(2),.fd .best td:nth-child(2),.fd .best th:nth-child(10),.fd .best td:nth-child(10),.fd .best td:nth-child(5),.fd .best th:nth-child(5){text-align:left}
+.fd .best th:nth-child(2),.fd .best td:nth-child(2),.fd .best th:nth-child(14),.fd .best td:nth-child(14),.fd .best td:nth-child(7),.fd .best th:nth-child(7),.fd .best td:nth-child(11),.fd .best th:nth-child(11){text-align:left}
+.fd .best .pct{color:var(--muted);font-size:.72rem}.fd .best .up{color:#3f8a57}.fd .best .dn{color:#c75b5b}
 .fd .best td{padding:.26rem .45rem;text-align:right;border-bottom:1px solid var(--line)}
 .fd .best td:nth-child(2){font-weight:700}
 .fd .best tr:hover td{background:#fdf8ea}
@@ -407,10 +408,10 @@ _________________________</p>
   <div class="grid" id="fd-prices"></div>
   <h2>Current Best Buy</h2>
   <div class="best">
-    <div class="best-sub">Every asset compared against every other one, pair by pair. Score = share of head-to-head pairs won, based on expected return to its price target plus how cheap the pair ratio is versus its own 3-year history. Updates with every price refresh.</div>
+    <div class="best-sub">Every asset compared against every other one, pair by pair. Score = share of head-to-head pairs won. Updates with every price refresh.</div>
     <div class="best-chart"><canvas id="best-chart"></canvas></div>
     <div class="tre-wrap"><table id="best-table"><thead><tr>
-      <th>#</th><th>Ticker</th><th>Price</th><th>Target (low / base / high)</th><th>By</th><th>CAGR base (low / high)</th><th>Price / target</th><th>Pairs won</th><th>Avg pair edge</th><th>Most discounted vs</th>
+      <th>#</th><th>Ticker</th><th>Price</th><th>Low target</th><th>Median target</th><th>High target</th><th>By</th><th>Avg 12-mo return</th><th>Avg 2030 return</th><th>CAGR</th><th>At NAV 1.0x</th><th>Pairs won</th><th>Avg pair edge</th><th>Most discounted vs</th>
     </tr></thead><tbody></tbody></table></div>
     <div class="best-method" id="best-method"></div>
   </div>
@@ -436,8 +437,8 @@ _________________________</p>
 (function () {
   var years = 3, tf = "D", logScale = true, DATA = null, charts = [];
   var FEATURED = [];
-  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "AMD", "NVDA", "MU", "FWDI", "DFDV", "UPXI", "MP", "BZ=F", "GC=F", "SLV", "SILJ", "UUUU", "HG=F", "ETH-USD"];
-  var TREASURY_T = ["MSTR", "MTPLF", "MARA", "CLSK", "RIOT", "HUT", "GLXY", "COIN", "SPCX", "TSLA", "FWDI", "DFDV", "UPXI", "SKYA", "HSDT"];
+  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "NVDA", "MU", "FWDI", "DFDV", "UPXI", "MP", "GC=F", "SLV", "SILJ", "UUUU", "HG=F", "ETH-USD"];
+  var TREASURY_T = ["MSTR", "MTPLF", "RIOT", "HUT", "GLXY", "SPCX", "TSLA", "FWDI", "DFDV", "UPXI", "HSDT"];
   var PAIRS = [["ETH-USD", "BTC-USD"], ["BTC-USD", "GC=F"], ["FWDI", "SOL-USD"], ["MSTR", "BTC-USD"], ["SOL-USD", "BTC-USD"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["AVGO", "NVDA"], ["NVDA", "MU"], ["TSLA", "SPCX"], ["SLV", "GLD"], ["HG=F", "SLV"], ["SPY", "GLD"], ["SOL-USD", "ETH-USD"]];
   var SHORT = {"BTC-USD": "BTC", "SOL-USD": "SOL", "BZ=F": "Brent", "GC=F": "Gold", "HG=F": "Copper", "ETH-USD": "ETH"};
   var sel = "BTC-USD";
@@ -644,7 +645,12 @@ _________________________</p>
         var k2 = px / lastPx(t.of); lo = t.low * k2; base = t.base * k2; hi = t.high * k2;
       } else { lo = t.low; base = t.base; hi = t.high; }
       var y = yearsTo(h);
-      rows.push({ k: k, px: px, lo: lo, base: base, hi: hi, h: h, kind: kind, extra: extra,
+      var nav1 = null;
+      if (kind === "nav") { var cp = lastPx(t.coin); nav1 = { coin: sn(t.coin), now: px / cps, tgt: c.base * cps, cbase: c.base }; }
+      var y30 = yearsTo(2030);
+      var r12 = t.c12 ? t.c12 / px - 1 : (kind === "consensus" ? base / px - 1 : null);
+      var r30 = kind === "consensus" ? null : Math.pow(base / px, Math.min(1, y30 / y)) - 1;
+      rows.push({ k: k, px: px, lo: lo, base: base, hi: hi, h: h, kind: kind, extra: extra, nav1: nav1, r12: r12, r30: r30, y: y,
                   c: cagr(px, base, y), cl: cagr(px, lo, y), ch: cagr(px, hi, y), pt: px / base });
     });
     // head-to-head pairs
@@ -678,25 +684,24 @@ _________________________</p>
     // table
     function pc(v) { return (v * 100).toFixed(1) + "%"; }
     function m(v) { return v >= 1000 ? money(v) : "$" + v.toPrecision(v < 1 ? 3 : 4); }
+    function tp(v, px) { var g = v / px - 1; return m(v) + ' <span class="pct ' + (g >= 0 ? "up" : "dn") + '">(' + (g >= 0 ? "+" : "") + Math.round(g * 100).toLocaleString("en-US") + "%)</span>"; }
+    function rt(v, pace) { return v == null ? '<span class="pct">n/a</span>' : '<span class="' + (v >= 0 ? "up" : "dn") + '">' + (v >= 0 ? "+" : "") + Math.round(v * 100).toLocaleString("en-US") + "%</span>" + (pace ? '<span class="pct"> /yr</span>' : ""); }
+    function k$(v) { return v >= 1e6 ? "$" + (v / 1e6).toFixed(2) + "M" : v >= 1e3 ? "$" + (v / 1e3).toFixed(1) + "k" : "$" + v.toFixed(v < 10 ? 2 : 0); }
     document.querySelector("#best-table tbody").innerHTML = rows.map(function (r, i) {
-      var byLab = r.kind === "consensus" ? "12 mo (consensus)" : r.kind === "nav" ? r.h + " (NAV method)" : r.h;
-      return '<tr title="' + (DATA.prices[r.k].name || r.k) + (r.extra ? " - " + r.extra : "") + '"><td>' + (i + 1) + "</td><td>" + sn(r.k) + "</td><td>" + m(r.px) + "</td><td>" + m(r.lo) + " / <b>" + m(r.base) + "</b> / " + m(r.hi) +
-        "</td><td>" + byLab + "</td><td><b>" + pc(r.c) + "</b> (" + pc(r.cl) + " / " + pc(r.ch) + ")</td><td>" + r.pt.toFixed(3) + "</td><td>" + r.wins + "/" + n + " (" + Math.round(r.win * 100) + "%)</td><td>" +
+      var byLab = r.kind === "consensus" ? "12 mo" : r.h;
+      var navTxt = r.nav1 ? "now " + m(r.px) + " = " + r.nav1.coin + " " + k$(r.nav1.now) + "<br>" + r.nav1.coin + " " + k$(r.nav1.cbase) + " = " + m(r.nav1.tgt) : "";
+      var r12 = r.r12 != null ? rt(r.r12) : rt(r.c, true);
+      return '<tr title="' + (DATA.prices[r.k].name || r.k) + (r.extra ? " - " + r.extra : "") + '"><td>' + (i + 1) + "</td><td>" + sn(r.k) + "</td><td>" + m(r.px) + "</td><td>" + tp(r.lo, r.px) + "</td><td><b>" + tp(r.base, r.px) + "</b></td><td>" + tp(r.hi, r.px) +
+        "</td><td>" + byLab + "</td><td>" + r12 + "</td><td>" + rt(r.r30) + "</td><td>" + pc(r.c) + "</td><td>" + navTxt + "</td><td>" + r.wins + "/" + n + " (" + Math.round(r.win * 100) + "%)</td><td>" +
         (r.edge >= 0 ? "+" : "") + (r.edge * 100).toFixed(1) + " pts</td><td>" + (r.bestVs ? sn(r.bestVs) + " (" + Math.round(r.minPct * 100) + "th pct)" : "") + "</td></tr>";
     }).join("");
-    // methods + sources
-    var src = Object.keys(T).filter(function (k) { return T[k].sources && T[k].sources.length && DATA.prices[k]; }).map(function (k) {
-      return "<li><b>" + sn(k) + ":</b> " + T[k].sources.map(function (x) { return x[2] ? '<a href="' + x[2] + '" target="_blank" rel="noopener">' + x[0] + "</a>: " + x[1] : x[0] + ": " + x[1]; }).join("; ") + "</li>";
-    }).join("");
     document.getElementById("best-method").innerHTML =
-      "<h4>Method</h4><ol>" +
-      "<li><b>Price target range.</b> For each asset the low, base and high target come from the sources below. Base = the median of the published base cases (2030 where one exists); low and high = the lowest bear and highest bull case.</li>" +
-      "<li><b>Expected return (CAGR).</b> (base target / today's price)^(1 / years to the target date) - 1, using Dec 31 of the target year. Assets with no long-range target use the analysts' 12-month consensus as a 1-year return, so they are compared on the same per-year basis (these are shorter-range and usually more conservative).</li>" +
-      "<li><b>Treasury companies (NAV method).</b> Target = the coin's target x coins held per share x an assumed NAV multiple. The multiple is assumed to move halfway (in log terms) from today's toward 1.0x by the target year, e.g. 0.49x becomes 0.70x and 4x becomes 2x. This ignores future dilution, debt and new coin purchases. For MSTR the result is averaged with InvestAnswers' 2030 target.</li>" +
-      "<li><b>Pairs.</b> Every asset is compared with every other (" + (rows.length * (rows.length - 1) / 2) + " pairs). Edge of A over B = A's CAGR - B's CAGR + " + (RV_WEIGHT * 100) + " x (0.5 - where the A/B ratio sits in its 3-year range). A ratio at its 3-year low adds up to +" + (RV_WEIGHT * 50) + " points, at its high up to -" + (RV_WEIGHT * 50) + ". Pairs with under a year of shared history count as neutral.</li>" +
-      "<li><b>Ranking.</b> Share of head-to-head pairs won, then average edge. \"Price / target\" below 1 means the price is under the base target (lower = more upside). \"Most discounted vs\" is the asset whose pair ratio is lowest in its own 3-year range.</li>" +
-      "<li><b>Limits.</b> Targets are other people's forecasts and change often; long-range targets are far more uncertain than 12-month ones, and mixing them favors assets with bold long-range calls (crypto, Tesla). " + (skipped.length ? "Not ranked (no credible target found): " + skipped.map(sn).join(", ") + ". " : "") + "Not investment advice.</li></ol>" +
-      "<h4>Price targets and sources</h4><ul class=\"src\">" + src + "</ul>";
+      "<h4>How it works</h4><ol>" +
+      "<li><b>Targets.</b> Low, median and high price targets per asset, shown with the % move from today's price. \"By\" is the target date (2030 unless noted; \"12 mo\" = analyst 12-month consensus only).</li>" +
+      "<li><b>Avg 12-mo return</b> = the 12-month analyst consensus vs today's price where one exists; otherwise the yearly pace implied by the long-range target (marked /yr). <b>Avg 2030 return</b> = total move from today to the median target (n/a where only a 12-month target exists). <b>CAGR</b> = yearly return to the median target.</li>" +
+      "<li><b>Treasury companies.</b> Target = coin target x coins per share x an assumed NAV multiple halfway (log terms) between today's and 1.0x. <b>At NAV 1.0x</b> shows what today's share price is worth in coin terms, and the share price if the coin hits its median target and the stock trades at exactly its holdings.</li>" +
+      "<li><b>Pairs.</b> Each asset vs every other: edge = difference in CAGR + up to +/-10 points when the pair ratio sits at the low/high of its 3-year range. Ranked by share of pairs won, then average edge.</li>" +
+      "<li>Forecasts, not facts; long-range targets are far less certain than 12-month ones. " + (skipped.length ? "Not ranked (no target): " + skipped.map(sn).join(", ") + ". " : "") + "Not investment advice.</li></ol>";
   }
   // Debt clock: latest Treasury "Debt to the Penny" figure, run forward at its average pace over the past year
   function debtClock(dc) {
