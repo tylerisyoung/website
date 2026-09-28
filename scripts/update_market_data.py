@@ -18,6 +18,30 @@ TICKERS = [("BTC-USD", "Bitcoin"), ("SPY", "S&P 500 (SPY)"),
            ("GC=F", "Gold (futures)"), ("SLV", "Silver (SLV)"), ("SILJ", "Junior silver miners (SILJ)"),
            ("UUUU", "Energy Fuels (UUUU)"), ("GLD", "Gold ETF (GLD)"), ("HG=F", "Copper (futures)"), ("ETH-USD", "Ethereum")]
 
+TREASURY_ASOF = "2026-09-14"
+# (ticker, name, shares outstanding, BTC held)
+TREASURY = [(t, n, round(mc / p), q) for t, n, p, mc, q in [
+    ("FLD", "Fold Holdings", 0.52, 28318776, 1490),
+    ("MTPLF", "Metaplanet", 1.79, 2405411848, 43000),
+    ("MSTR", "Strategy", 160.85, 52690000000, 847666),
+    ("XXI", "Twenty One Capital", 6.98, 3925357966, 43514),
+    ("ASST", "Strive", 29.88, 2897953870, 27462),
+    ("MARA", "MARA Holdings", 12.37, 4779254919, 35577),
+    ("DJT", "Trump Media & Technology", 9.07, 2516757650, 16500),
+    ("CAN", "Canaan", 0.37, 269800050, 1230),
+    ("CLSK", "CleanSpark", 13.73, 3511972523, 13703),
+    ("RIOT", "Riot Platforms", 22.19, 8289693903, 11380),
+    ("BTBT", "Bit Digital", 1.72, 619892910, 813),
+    ("HUT", "Hut 8", 94.34, 11688689127, 10278),
+    ("GLXY", "Galaxy Digital", 28.90, 11132000000, 6972),
+    ("BTDR", "Bitdeer", 11.23, 3050755298, 1676),
+    ("GME", "GameStop", 24.07, 12133248665, 4710),
+    ("COIN", "Coinbase", 195.04, 51459592629, 17311),
+    ("CIFR", "Cipher Mining", 16.98, 7047221096, 1414),
+    ("SPCX", "SpaceX", 146.82, 1990861138189, 18712),
+    ("TSLA", "Tesla", 359.59, 1421876454039, 11509),
+]]
+
 def get(url, headers, tries=3):
     for i in range(tries):
         try:
@@ -94,6 +118,21 @@ def main():
     except Exception as e:
         print("macro failed", e, file=sys.stderr)
         data["macro"] = old.get("macro", {})
+
+    # Bitcoin treasury companies. BTC held and share counts: InvestAnswers model, 2026-09-14
+    # (shares = that model's market cap / share price). Edit TREASURY to update holdings.
+    tre = {"holdings_asof": TREASURY_ASOF, "rows": []}
+    olds = {r["t"]: r for r in old.get("treasury", {}).get("rows", [])}
+    for t, name, shares, qty in TREASURY:
+        row = {"t": t, "name": name, "shares": shares, "btc": qty, "price": None}
+        try:
+            j = json.loads(get(f"https://query1.finance.yahoo.com/v8/finance/chart/{t}?range=5d&interval=1d", UA_YAHOO))
+            row["price"] = round(j["chart"]["result"][0]["meta"]["regularMarketPrice"], 4)
+        except Exception as e:
+            print("treasury price failed", t, e, file=sys.stderr)
+            if t in olds: row["price"] = olds[t]["price"]
+        tre["rows"].append(row)
+    data["treasury"] = tre
 
     # Debt clock: latest Treasury "Debt to the Penny" figure and the one about a year earlier
     try:
