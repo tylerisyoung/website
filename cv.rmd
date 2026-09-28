@@ -16,7 +16,7 @@ output:
 
 
 <h1>**Automated CV Project**</h1>
-<h6>***An automatic way to generate a new CV from an excel sheet with your past positions. This project was sourced and adapted from Nick Strayer & [Jesse Lacey](https://github.com/DS4PS/cv)***
+<h6>***An automatic way to generate a new CV from an excel sheet with your past positions. This project was adapted from Nick Strayer's [datadrivencv](https://github.com/nstrayer/datadrivencv)***
 </h6>
 <br>
 <h6>*[My Custom CV](https://tylerisyoung.github.io/CV/) Project *

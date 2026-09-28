@@ -81,7 +81,7 @@ Modern Monetary Theory - Slow at first, then all at once.                       
 
 Predictive Community Change based on Tax Revenue                                                              |  Dashboard: Interactive Car Accident User Investigation 
 :------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------:
-[Masters Group Project, ASU](./projects/community-change/index.html)                            |  [Accident Characteristics in AZ - ShinyAPP](https://tylerisyoung.shinyapps.io/final-project-dashboard-Young/)
+[Masters Group Project](./projects/community-change/index.html)                                 |  [Accident Characteristics in AZ - ShinyAPP](https://tylerisyoung.shinyapps.io/final-project-dashboard-Young/)
 ![](./images/Schoolproject01.jpg)                                                                             |  ![](./images/Schoolproject02.jpg)
                                                                                                               
 
