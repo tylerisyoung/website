@@ -293,11 +293,13 @@ CSVs) and refreshed every day by the GitHub Action in
     font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);max-width:1180px;margin:0 auto}
 .fd h1{font:600 1.7rem Georgia,serif;margin:.4rem 0 .1rem}
 .fd .accent{height:4px;border-radius:4px;background:linear-gradient(90deg,#e8a0a0,#f2c46d 45%,#a8c5f7);margin:.3rem 0 .6rem;opacity:.8}
+.fd .live .tradingview-widget-container{width:80%!important;transform:scale(1.25);transform-origin:0 0;margin-bottom:18px}
 .fd .live{border:1px solid #f1e3bd;border-left:4px solid #f2c46d;background:#fefaf0;border-radius:10px;padding:.3rem .6rem;margin:.2rem 0 .6rem;min-height:72px}
-.fd .debtclock{border:1px solid var(--line);border-top:3px solid #eca7a7;border-radius:10px;overflow:hidden;margin-bottom:12px;background:#fff}
-.fd .debtclock .hd{display:flex;justify-content:space-between;align-items:baseline;padding:.5rem .8rem;font-size:.85rem}
-.fd .debtclock .wrap{position:relative;overflow:hidden;height:560px}
-.fd .debtclock iframe{width:1480px;height:860px;border:0;display:block;transform-origin:0 0}
+.fd .debtclock{border:1px solid #f1d0d0;border-left:4px solid #e07a7a;background:#fdf6f5;border-radius:10px;padding:.6rem 1rem;margin-bottom:12px;text-align:center}
+.fd .debtclock .lab{font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;color:#b25a5a;font-weight:700}
+.fd .debtclock .num{font:700 2.4rem/1.15 "SFMono-Regular",Menlo,Consolas,monospace;color:#c0392b;letter-spacing:.02em;font-variant-numeric:tabular-nums;margin:.15rem 0}
+@media(max-width:700px){.fd .debtclock .num{font-size:1.5rem}}
+.fd .debtclock .meta{font-size:.76rem;color:var(--muted)}
 .fd .tile{border:1px solid #f1e3bd;border-left:4px solid #f2c46d;background:#fefaf0;border-radius:10px;padding:.5rem .9rem;height:96px;overflow:hidden}
 .fd .tile .k{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:#8a7338;font-weight:600}
 .fd .tile .big{font:600 1.8rem Georgia,serif;line-height:1.15;margin:.15rem 0}
@@ -352,10 +354,11 @@ CSVs) and refreshed every day by the GitHub Action in
   <h2>Markets</h2>
   <div class="grid" id="fd-prices"></div>
   <h2>Economy</h2>
-  <div class="debtclock"><div class="hd"><b>U.S. National Debt Clock</b><a href="https://www.usdebtclock.org/" target="_blank" rel="noopener">open usdebtclock.org ↗</a></div>
-    <div class="wrap"><iframe id="fd-dc" src="https://www.usdebtclock.org/" loading="lazy" title="U.S. National Debt Clock"></iframe></div></div>
+  <div class="debtclock"><div class="lab">U.S. National Debt</div>
+    <div class="num" id="fd-debt">$—</div>
+    <div class="meta" id="fd-debt-meta">Treasury, Debt to the Penny</div></div>
   <div class="grid" id="fd-macro"></div>
-  <div class="foot">Prices: Yahoo Finance daily closes. Economic data: Federal Reserve Bank of St. Louis (FRED): FEDFUNDS, DGS10, WALCL, ICSA, SAHMREALTIME, CPIAUCSL, GDPC1, UNRATE, M2SL, PAYEMS, GFDEBTN, T10Y2Y, GDP. Ratios compare closing prices on days both traded. Live bitcoin: Coinbase. Live S&amp;P 500: TradingView (Capital.com US500, which tracks the E-mini ES futures; CME does not allow ES1! itself in website widgets). Updated automatically every day. Not investment advice.</div>
+  <div class="foot">Prices: Yahoo Finance daily closes. Economic data: Federal Reserve Bank of St. Louis (FRED): FEDFUNDS, DGS10, DGS30, DGS2, WALCL, ICSA, CPIAUCSL, GDPC1, UNRATE, M2SL, PAYEMS, GFDEBTN, T10Y2Y, GDP. Ratios compare closing prices on days both traded. Live bitcoin: Coinbase. Live S&amp;P 500: TradingView (Capital.com US500, which tracks the E-mini ES futures; CME does not allow ES1! itself in website widgets). Debt clock: U.S. Treasury, Debt to the Penny, extended at its past-year pace. ShadowStats-style line is an estimate (official CPI + 7 points; Saville, TSI Blog, 2015), not ShadowStats data. Updated automatically every 15 minutes. Not investment advice.</div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -380,6 +383,7 @@ CSVs) and refreshed every day by the GitHub Action in
     real_gdp: function (v) { return "$" + v.toFixed(2) + "T"; },
     payrolls: function (v) { return (v >= 0 ? "+" : "") + Math.round(v).toLocaleString() + "K"; },
     fedfunds: function (v) { return v.toFixed(2) + "%"; }, dgs10: function (v) { return v.toFixed(2) + "%"; },
+    dgs30: function (v) { return v.toFixed(2) + "%"; }, dgs2: function (v) { return v.toFixed(2) + "%"; }, shadow: function (v) { return "~" + v.toFixed(1) + "%"; },
     walcl: function (v) { return "$" + v.toFixed(2) + "T"; }, icsa: function (v) { return Math.round(v) + "K"; },
     sahm: function (v) { return v.toFixed(2); }
   };
@@ -451,10 +455,11 @@ CSVs) and refreshed every day by the GitHub Action in
     ex.querySelectorAll("button[data-k]").forEach(function (b) { b.onclick = function () { sel = b.dataset.k; render(); }; });
     charts.push(draw(document.getElementById("ex"), pts, { log: logScale, fmt: f, color: isPair ? "#d9736f" : "#3d6fd6", fill: isPair ? "rgba(224,122,122,0.08)" : "rgba(61,111,214,0.08)", axis: isPair ? function (v) { return (+v).toPrecision(3); } : function (v) { return v >= 1000 ? "$" + (v / 1000).toFixed(v >= 10000 ? 0 : 1) + "k" : "$" + v; } }));
 
-    Object.keys(DATA.macro).forEach(function (k, i) {
+    var ORDER = ["debt_gdp", "cpi_cum", "cpi_yoy", "shadow", "fedfunds", "walcl", "unrate", "icsa", "payrolls", "real_gdp", "m2", "debt", "dgs10", "dgs30", "dgs2", "t10y2y"];
+    ORDER.filter(function (k) { return DATA.macro[k]; }).forEach(function (k, i) {
       var s = DATA.macro[k], pts = s.points, last = pts[pts.length - 1], f = MACRO_FMT[k] || function (v) { return v; };
       var cv = card(M, "m" + i, s.name, f(last[1]), s.unit + " &nbsp;·&nbsp; latest " + last[0]);
-      var warm = ["fedfunds", "dgs10", "cpi_yoy", "cpi_cum", "unrate", "icsa", "sahm", "debt", "debt_gdp"].indexOf(k) >= 0;   // stress gauges in faded red
+      var warm = ["fedfunds", "dgs10", "dgs30", "dgs2", "cpi_yoy", "cpi_cum", "shadow", "unrate", "icsa", "debt", "debt_gdp"].indexOf(k) >= 0;   // stress gauges in faded red
       charts.push(draw(cv, pts, { bar: k === "payrolls", fmt: f, axis: null, color: warm ? "#d9736f" : "#3d6fd6", fill: warm ? "rgba(224,122,122,0.07)" : "rgba(61,111,214,0.08)" }));
     });
   }
@@ -477,16 +482,19 @@ CSVs) and refreshed every day by the GitHub Action in
     });
   }
   setInterval(cryptoLive, 60000);
-  // Shrink the debt clock (a fixed-width page) to fit the column
-  function fitClock() {
-    var fr = document.getElementById("fd-dc"); if (!fr) return;
-    var w = fr.parentNode.clientWidth, k = Math.min(1, w / 1480);
-    fr.style.transform = "scale(" + k + ")"; fr.parentNode.style.height = Math.round(860 * k) + "px";
+  // Debt clock: latest Treasury "Debt to the Penny" figure, run forward at its average pace over the past year
+  function debtClock(dc) {
+    if (!dc) return;
+    var t0 = Date.parse(dc.latest[0] + "T00:00:00Z"), v0 = dc.latest[1];
+    var perMs = (v0 - dc.year_ago[1]) / (t0 - Date.parse(dc.year_ago[0] + "T00:00:00Z"));
+    var el = document.getElementById("fd-debt");
+    document.getElementById("fd-debt-meta").innerHTML = "Rising about $" + Math.round(perMs * 1000).toLocaleString() + " per second (past-year average) &nbsp;·&nbsp; last official figure $" +
+      (v0 / 1e12).toFixed(3) + "T on " + dc.latest[0] + " (U.S. Treasury, Debt to the Penny)";
+    (function tick() { el.textContent = "$" + Math.round(v0 + perMs * (Date.now() - t0)).toLocaleString("en-US"); setTimeout(tick, 60); })();
   }
-  fitClock(); window.addEventListener("resize", fitClock);
   fetch("data/markets.json?v=" + Date.now()).then(function (r) { return r.json(); }).then(function (d) {
     DATA = d; document.getElementById("fd-updated").textContent = "Updated " + d.updated + " · market data refreshed every 15 minutes; bitcoin and S&P futures stream live";
-    strip(); render(); cryptoLive();
+    strip(); render(); cryptoLive(); debtClock(d.debt_clock);
   }).catch(function () { document.getElementById("fd-updated").textContent = "Data could not be loaded."; });
 })();
 </script>

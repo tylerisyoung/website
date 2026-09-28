@@ -76,20 +76,33 @@ def main():
             "dgs10":    {"name": "10-year Treasury yield", "unit": "%", "points": since(fred("DGS10"))},
             "walcl":    {"name": "Fed balance sheet (total assets)", "unit": "$T", "points": since(walcl)},
             "icsa":     {"name": "Initial jobless claims (weekly)", "unit": "thousands", "points": since(icsa)},
-            "sahm":     {"name": "Sahm rule recession indicator", "unit": "percentage points (0.5+ signals recession)", "points": since(fred("SAHMREALTIME"))},
             "cpi_yoy":  {"name": "CPI inflation (year over year)", "unit": "%", "points": since(yoy)},
+            "shadow":   {"name": "ShadowStats-style alternate inflation (estimate)", "unit": "% y/y; official CPI + 7 pts, the typical gap to ShadowStats' 1980-method series since the late 1990s (Saville, TSI 2015); the real series is subscription-only", "points": [[d, round(v + 7, 2)] for d, v in since(yoy)]},
             "cpi_cum":  {"name": "Prices up since January 2020 (CPI, cumulative)", "unit": "% rise in the consumer price level", "points": cum},
             "real_gdp": {"name": "Real GDP", "unit": "$T (2017 dollars, annual rate)", "points": since(gdp_real)},
             "unrate":   {"name": "Unemployment rate", "unit": "%", "points": since(fred("UNRATE"))},
             "m2":       {"name": "M2 money supply", "unit": "$T", "points": since(m2)},
             "payrolls": {"name": "Nonfarm payrolls, monthly change", "unit": "thousands of jobs", "points": since(chg, 2010)},
             "debt":     {"name": "Federal debt", "unit": "$T", "points": [[d, round(v, 3)] for d, v in sorted(debt.items()) if int(d[:4]) >= 2000]},
+            "dgs30":    {"name": "30-year Treasury yield", "unit": "%", "points": since(fred("DGS30"))},
+            "dgs2":     {"name": "2-year Treasury yield", "unit": "%", "points": since(fred("DGS2"))},
             "t10y2y":   {"name": "10-year minus 2-year Treasury spread", "unit": "percentage points", "points": since(fred("T10Y2Y"))},
             "debt_gdp": {"name": "Federal debt to GDP", "unit": "%", "points": since(dtg)},
         }
     except Exception as e:
         print("macro failed", e, file=sys.stderr)
         data["macro"] = old.get("macro", {})
+
+    # Debt clock: latest Treasury "Debt to the Penny" figure and the one about a year earlier
+    try:
+        u = ("https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny"
+             "?fields=record_date,tot_pub_debt_out_amt&sort=-record_date&page%5Bsize%5D=260")
+        rows = json.loads(get(u, {"User-Agent": "curl/8.0"}))["data"]
+        data["debt_clock"] = {"latest": [rows[0]["record_date"], float(rows[0]["tot_pub_debt_out_amt"])],
+                              "year_ago": [rows[-1]["record_date"], float(rows[-1]["tot_pub_debt_out_amt"])]}
+    except Exception as e:
+        print("debt clock failed", e, file=sys.stderr)
+        if "debt_clock" in old: data["debt_clock"] = old["debt_clock"]
 
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w") as f: json.dump(data, f, separators=(",", ":"))
