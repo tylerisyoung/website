@@ -9,28 +9,28 @@
     <link rel="stylesheet" href="./../shinylive/shinylive.css" />
     <style>
       #lh-load{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
-        background:radial-gradient(1200px 600px at 20% 10%,#fdf6ff 0%,#f3f8ff 45%,#f7fff9 100%);
+        background:radial-gradient(1200px 600px at 20% 10%,#fdf3f3 0%,#f3f7ff 45%,#fdf9ee 100%);
         font-family:Georgia,'Times New Roman',serif;color:#1d2b36;transition:opacity .6s}
       #lh-load.done{opacity:0;pointer-events:none}
       .lh-box{width:min(620px,92vw);text-align:center}
-      .lh-kicker{font:600 .72rem/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#7a58c9}
+      .lh-kicker{font:600 .72rem/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#3d6fd6}
       .lh-title{font-size:clamp(1.5rem,4vw,2.2rem);margin:.5rem 0 .2rem}
       .lh-sub{color:#556;font-size:.98rem;margin:0 0 1.6rem}
       .lh-track{position:relative;height:14px;border-radius:99px;background:#e9ecf3;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.08)}
       .lh-fill{position:absolute;inset:0 auto 0 0;width:0%;border-radius:99px;
-        background:linear-gradient(90deg,#ff6a88,#ff99ac,#fcb045,#43cea2,#185a9d,#7a58c9);background-size:300% 100%;
+        background:linear-gradient(90deg,#e07a7a,#f2c46d,#8db0f3,#5b8def,#f2c46d,#e07a7a);background-size:300% 100%;
         animation:lh-flow 4s linear infinite;transition:width .35s ease}
       .lh-fill:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);
         animation:lh-shine 1.6s ease-in-out infinite}
       @keyframes lh-flow{to{background-position:300% 0}}
       @keyframes lh-shine{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
       .lh-row{display:flex;justify-content:space-between;margin-top:.55rem;font:500 .82rem system-ui,sans-serif;color:#445}
-      .lh-eta{font-weight:700;color:#185a9d}
+      .lh-eta{font-weight:700;color:#3d6fd6}
       .lh-steps{display:flex;justify-content:space-between;gap:.4rem;margin:1.3rem 0 0;padding:0;list-style:none;font:500 .72rem system-ui,sans-serif;color:#99a}
       .lh-steps li{flex:1;display:flex;flex-direction:column;align-items:center;gap:.35rem}
       .lh-steps li:before{content:"";width:12px;height:12px;border-radius:50%;background:#dde2ea;transition:all .3s}
-      .lh-steps li.on{color:#1d2b36}.lh-steps li.on:before{background:#fcb045;box-shadow:0 0 0 4px rgba(252,176,69,.25)}
-      .lh-steps li.ok{color:#1a7a3a}.lh-steps li.ok:before{background:#43cea2}
+      .lh-steps li.on{color:#1d2b36}.lh-steps li.on:before{background:#f2c46d;box-shadow:0 0 0 4px rgba(242,196,109,.3)}
+      .lh-steps li.ok{color:#3d6fd6}.lh-steps li.ok:before{background:#5b8def}
       .lh-fact{min-height:3.2em;margin:1.6rem auto 0;max-width:520px;font-style:italic;color:#445;transition:opacity .4s}
       .lh-why{margin-top:1.4rem;font:400 .78rem/1.45 system-ui,sans-serif;color:#778}
       .lh-why b{color:#556}
@@ -41,7 +41,7 @@
       <div class="lh-box">
         <div class="lh-kicker">Lighthearted Humans · thesis dashboard</div>
         <div class="lh-title">Policy Priorities</div>
-        <p class="lh-sub">60 policies · 547 published sources · 1,000 simulations each.<br>
+        <p class="lh-sub">60 policies · 561 published sources · 1,000 simulations each.<br>
           The first load can take <b>several minutes</b> on a slow connection.</p>
         <div class="lh-track"><div class="lh-fill" id="lh-fill"></div></div>
         <div class="lh-row"><span id="lh-msg">Getting ready…</span><span class="lh-eta" id="lh-eta">estimating…</span></div>
@@ -56,8 +56,8 @@
     </div>
     <div style="height: 100vh; width: 100vw" id="root"></div>
     <script type="module">
-      const FILES = [["shinylive/webr/R.wasm",18062845],["shinylive/webr/library.data.gz",15057328],["shinylive/webr/vfs/usr/lib/R/library/translations.data.gz",3061528],["shinylive/webr/libRlapack.so",1769888],["shinylive/webr/vfs/usr/lib/R/library/grDevices/libs.data.gz",1643930],["shinylive/webr/R.js",785856],["cba-dashboard/app.json",485627],["shinylive/webr/vfs/usr/share/fonts/NotoSans-Italic.ttf",446880],["shinylive/webr/vfs/usr/share/fonts/NotoSans-Regular.ttf",431364],["shinylive/webr/vfs/usr/lib/R/library/parallel.data.gz",349042],["shinylive/webr/libRblas.so",198205],["shinylive/webr/library.js.metadata",181616],["shinylive/webr/vfs/usr/lib/R/library/tcltk.data.gz",132160]];            // [path, uncompressed bytes] of the big downloads
-      const FACTS = ["Copenhagen Consensus economists estimate that finishing global trade liberalisation could return up to $2,000 for every $1 of adjustment cost.","Childhood immunization is the only policy here graded A+: several independent peer-reviewed studies agree it pays back many times over.","56 of the 60 policies have a published benefit-cost ratio; the other 4 are shown as not rated until a source is found.","The dashboard cites 547 unique works, from the Journal of Benefit-Cost Analysis to the Cato Journal.","A benefit-cost ratio of 10 means every dollar spent returns ten dollars of benefits to society.","Grades run from A+ (several randomized or controlled studies) down to C- (published theory, never tried at scale).","Move the sliders once it loads: the whole ranking is re-simulated 1,000 times, live, in your browser.","Hong Kong charges no tariff on any import or export, proof that unilateral free trade is possible.","The skepticism dial pulls weakly-sourced numbers toward break-even, so a C- ratio of 100 counts for less than an A+ ratio of 100."];
+      const FILES = [["shinylive/webr/R.wasm",18062845],["shinylive/webr/library.data.gz",15057328],["shinylive/webr/vfs/usr/lib/R/library/translations.data.gz",3061528],["shinylive/webr/libRlapack.so",1769888],["shinylive/webr/vfs/usr/lib/R/library/grDevices/libs.data.gz",1643930],["shinylive/webr/R.js",785856],["cba-dashboard/app.json",506227],["shinylive/webr/vfs/usr/share/fonts/NotoSans-Italic.ttf",446880],["shinylive/webr/vfs/usr/share/fonts/NotoSans-Regular.ttf",431364],["shinylive/webr/vfs/usr/lib/R/library/parallel.data.gz",349042],["shinylive/webr/libRblas.so",198205],["shinylive/webr/library.js.metadata",181616],["shinylive/webr/vfs/usr/lib/R/library/tcltk.data.gz",132160]];            // [path, uncompressed bytes] of the big downloads
+      const FACTS = ["Copenhagen Consensus economists estimate that finishing global trade liberalisation could return up to $2,000 for every $1 of adjustment cost.","Childhood immunization is the only policy here graded A+: several independent peer-reviewed studies agree it pays back many times over.","Every one of the 60 policies has a benefit-cost range built from published sources, graded A+ to C-.","The available budget follows Lomborg's Copenhagen Consensus rule: 15% on top of development aid, for four years.","The dashboard cites 561 unique works, from the Journal of Benefit-Cost Analysis to the Cato Journal.","A benefit-cost ratio of 10 means every dollar spent returns ten dollars of benefits to society.","Grades run from A+ (several randomized or controlled studies) down to C- (published theory, never tried at scale).","Move the sliders once it loads: the whole ranking is re-simulated 1,000 times, live, in your browser.","Hong Kong charges no tariff on any import or export, proof that unilateral free trade is possible.","The skepticism dial pulls weakly-sourced numbers toward break-even, so a C- ratio of 100 counts for less than an A+ ratio of 100."];
       const TOTAL = FILES.reduce((a, f) => a + f[1], 0);
       const START_SECS = 18;                 // typical time to start R and draw, after downloading
       const $ = (id) => document.getElementById(id);
