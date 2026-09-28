@@ -16,7 +16,7 @@ TICKERS = [("BTC-USD", "Bitcoin"), ("SPY", "S&P 500 (SPY)"),
            ("FWDI", "Forward Industries (FWDI)"), ("DFDV", "DeFi Development (DFDV)"), ("UPXI", "Upexi (UPXI)"),
            ("MP", "MP Materials"), ("BZ=F", "Brent crude oil"),
            ("GC=F", "Gold (futures)"), ("SLV", "Silver (SLV)"), ("SILJ", "Junior silver miners (SILJ)"),
-           ("UUUU", "Energy Fuels (UUUU)"), ("GLD", "Gold ETF (GLD)"), ("ETH-USD", "Ethereum")]
+           ("UUUU", "Energy Fuels (UUUU)"), ("GLD", "Gold ETF (GLD)"), ("HG=F", "Copper (futures)"), ("ETH-USD", "Ethereum")]
 
 def get(url, headers, tries=3):
     for i in range(tries):

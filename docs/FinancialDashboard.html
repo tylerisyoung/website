@@ -350,7 +350,7 @@ CSVs) and refreshed every day by the GitHub Action in
     </script></div>
   </div>
   <div class="strip" id="fd-strip"></div>
-  <div class="paradigm"><b>Current Market Paradigm:</b> Rates remain restrictive but the market prevails while bonds are waving the white flag and saying something's got to give. Inflation expectations remain high, but deflation narratives could take over quickly after the AI buildout. Finished rotation out of Silver and Uranium into the bottom of the bear for crypto. Currently dollar cost averaging into key assets of the future with a focus on BTC, Crypto, AI, and Space; looking for LEAP opportunities on those assets, and using a rotational model to layer in and layer out at key regression levels. Hold and stack only for now.</div>
+  <div class="paradigm"><b>Current Market Paradigm:</b> Rates remain restrictive but the market prevails while bonds are waving the white flag and saying something's got to give. Inflation expectations remain high, but deflation narratives could take over quickly after the AI buildout. Finished rotation out of Silver and Uranium into the bottom of the bear for crypto. Currently dollar cost averaging into key assets of the future with a focus on BTC, Crypto, AI, and Space. Silver, Copper, and Uranium are safe commodity plays that should outperform the S&amp;P; looking for LEAP opportunities on those assets, and using a rotational model to layer in and layer out at key regression levels. Hold and stack only for now.</div>
   <div class="ctrl">
     <span class="lab">Timeframe</span>
     <button data-tf="D" class="on">Daily</button><button data-tf="W">Weekly</button><button data-tf="M">Monthly</button>
@@ -375,9 +375,9 @@ CSVs) and refreshed every day by the GitHub Action in
 (function () {
   var years = 3, tf = "D", logScale = true, DATA = null, charts = [];
   var FEATURED = [];
-  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "AMD", "NVDA", "MU", "FWDI", "DFDV", "UPXI", "MP", "BZ=F", "GC=F", "SLV", "SILJ", "UUUU", "ETH-USD"];
-  var PAIRS = [["MSTR", "BTC-USD"], ["SOL-USD", "BTC-USD"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["AVGO", "NVDA"], ["NVDA", "MU"], ["TSLA", "SPCX"], ["SLV", "GLD"], ["SPY", "GLD"], ["SOL-USD", "ETH-USD"]];
-  var SHORT = {"BTC-USD": "BTC", "SOL-USD": "SOL", "BZ=F": "Brent", "GC=F": "Gold", "ETH-USD": "ETH"};
+  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "AMD", "NVDA", "MU", "FWDI", "DFDV", "UPXI", "MP", "BZ=F", "GC=F", "SLV", "SILJ", "UUUU", "HG=F", "ETH-USD"];
+  var PAIRS = [["MSTR", "BTC-USD"], ["SOL-USD", "BTC-USD"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["AVGO", "NVDA"], ["NVDA", "MU"], ["TSLA", "SPCX"], ["SLV", "GLD"], ["HG=F", "SLV"], ["SPY", "GLD"], ["SOL-USD", "ETH-USD"]];
+  var SHORT = {"BTC-USD": "BTC", "SOL-USD": "SOL", "BZ=F": "Brent", "GC=F": "Gold", "HG=F": "Copper", "ETH-USD": "ETH"};
   var sel = "BTC-USD";
   function sn(sym) { return SHORT[sym] || sym; }
   function ratio(a, b) {           // a / b on the dates both traded
