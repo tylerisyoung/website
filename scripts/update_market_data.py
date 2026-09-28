@@ -22,9 +22,6 @@ TREASURY_ASOF = "2026-09-14"
 TREASURY = [(t, n, round(mc / p), q) for t, n, p, mc, q in [
     ("MTPLF", "Metaplanet", 1.79, 2405411848, 43000),
     ("MSTR", "Strategy", 160.85, 52690000000, 847666),
-    ("RIOT", "Riot Platforms", 22.19, 8289693903, 11380),
-    ("HUT", "Hut 8", 94.34, 11688689127, 10278),
-    ("GLXY", "Galaxy Digital", 28.90, 11132000000, 6972),
     ("SPCX", "SpaceX", 146.82, 1990861138189, 18712),
     ("TSLA", "Tesla", 359.59, 1421876454039, 11509),
 ]]
@@ -52,8 +49,7 @@ def yahoo_shares(symbols):
     return {q["symbol"]: q.get("sharesOutstanding") for q in j["quoteResponse"]["result"]}
 
 # Treasury companies not already in TICKERS (price history for the Markets chart)
-TREASURY_HIST = [("MTPLF", "Metaplanet (MTPLF)"), ("RIOT", "Riot Platforms"), ("HUT", "Hut 8"),
-                 ("GLXY", "Galaxy Digital"), ("HSDT", "Solana Company (HSDT)")]
+TREASURY_HIST = [("MTPLF", "Metaplanet (MTPLF)"), ("HSDT", "Solana Company (HSDT)")]
 AUX = [("SI=F", "Silver (futures, $/oz)")]   # used only to convert silver targets to SLV
 
 # Price targets for the "Current Best Buy" ranking (checked 2026-09-28).
@@ -91,12 +87,15 @@ TARGETS = {
     "SLV": T("proxy", 2027, [("UBS", 80), ("HSBC", 68), ("BofA", 75), ("OCBC", 69), ("JPMorgan", 63.90), ("World Bank", 65), ("Macquarie", 65)], of="SI=F"),
     # Copper $/lb, 2030 / long-term: BMI $15,800/t (2030); Goldman $12,250/t (2030); JPMorgan $12,000/t (next-decade avg);
     # Macquarie $10,200/t (long-term, 2025 dollars)
-    "HG=F": T("long", 2030, [("BMI / Fitch", 7.17), ("Goldman Sachs", 5.56), ("JPMorgan", 5.44), ("Macquarie", 4.63)]),
+    # + UBS LT $5.50/lb (May 2026), Jefferies 2030-31 peak $8.00, Bernstein 2030 $10,700/t, Scotiabank LT $4.50,
+    #   Australia Resources & Energy Quarterly FY2030-31 $12,233/t (Jun 2026)
+    "HG=F": T("long", 2030, [("BMI / Fitch", 7.17), ("Goldman Sachs", 5.56), ("JPMorgan", 5.44), ("Macquarie", 4.63), ("UBS", 5.50),
+                             ("Jefferies", 8.00), ("Bernstein", 4.85), ("Scotiabank", 4.50), ("Australia REQ", 5.55)]),
     # Uranium $/lb (sector outlook for UUUU): Morgans ~$100 FY29 / $105-110 FY31 (2030 ~ $102.5); Jefferies LT $95;
     # Macquarie base $95; Shaw and Partners LT $120; Bell Potter LT $90. Spot $89.50 (Trading Economics, Sep 25, 2026)
     "URANIUM": T("sector", 2030, [("Morgans", 102.5), ("Jefferies", 95), ("Macquarie", 95), ("Shaw and Partners", 120), ("Bell Potter", 90)], spot=89.50),
-    # TSLA: no 3 current long-range forecasters (ARK 2029 model is from 2024; Baron's $1,500 from 2023), so 12-month consensus
-    "TSLA": C(46, 411.89, 25.28, 840),
+    # TSLA 2030: InvestAnswers $4,794 (50% weight); ARK 2029 base $2,600; Ron Baron (2026) "$2,000 or $2,500" (midpoint)
+    "TSLA": T("long", 2030, [("ARK Invest", 2600), ("Baron Capital", 2250)], ia=4794, c12=411.89, c12n=46),
     "SPCX": C(44, 219.24, 75, 800),
     "MSTR": {"kind": "nav", "coin": "BTC-USD", "extra": [2489], "c12": 239.88, "c12n": 19},
     "MTPLF": {"kind": "nav", "coin": "BTC-USD"},
@@ -104,8 +103,8 @@ TARGETS = {
     "DFDV": {"kind": "nav", "coin": "SOL-USD"},
     "UPXI": {"kind": "nav", "coin": "SOL-USD"},
     "HSDT": {"kind": "nav", "coin": "SOL-USD", "c12": 3.25, "c12n": 4},
-    "UUUU": C(7, 21.85, 16, 29.25), "MP": C(17, 76.29, 57, 112), "GLXY": C(14, 39.58, 21, 57),
-    "RIOT": C(22, 30.50, 22, 43), "HUT": C(24, 143.95, 80, 263), "NVDA": C(55, 324.14, 218, 515),
+    "UUUU": C(7, 21.85, 16, 29.25), "MP": C(17, 76.29, 57, 112),
+    "NVDA": C(55, 324.14, 218, 515),
     "AVGO": C(41, 527.20, 350, 715), "MU": C(45, 1348, 300, 2000),
 }
 assert all(v.get("n", 3) >= 3 for v in TARGETS.values())
