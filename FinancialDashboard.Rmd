@@ -13,6 +13,21 @@ CSVs) and refreshed every day by the GitHub Action in
 .github/workflows/update-markets.yml. The charts are drawn in the browser.
 -->
 
+<br>
+<br>
+
+<h2>**Ongoing Technical Analysis of Financial markets and Crypto**</h2> 
+<h6>
+<br>
+***For sure financial advice - More on Substack & Twitter***
+</h6>
+
+*[Tylerisyoung.Substack.com](https://www.tylerisyoung.substack.com)*   
+*[Twitter.com/TylerisYoung](https://www.twitter.com/Tylerisyoung)*  
+ _________________________
+
+<p style="text-align:center;font-weight:700;font-size:1.25rem;margin:1rem 0 1rem"><a href="#ongoing-ta" style="color:inherit">Blog Below &darr;</a></p>
+
 ```{=html}
 <style>
 .fd{--blue:#3d6fd6;--blue-lt:#a8c5f7;--red:#e07a7a;--yellow:#f2c46d;--green:#4f9d69;--ink:#2d3a4a;--muted:#6b7686;--line:#e6e9ef;
@@ -255,18 +270,6 @@ CSVs) and refreshed every day by the GitHub Action in
 <hr>
 
 ::: {#ongoing-ta}
-<br>
-<br>
-
-<h2>**Ongoing Technical Analysis of Financial markets and Crypto**</h2> 
-<h6>
-<br>
-***For sure financial advice - More on Substack & Twitter***
-</h6>
-
-*[Tylerisyoung.Substack.com](https://www.tylerisyoung.substack.com)*   
-*[Twitter.com/TylerisYoung](https://www.twitter.com/Tylerisyoung)*  
- _________________________
 
 <center>
 <br>
@@ -1035,7 +1038,6 @@ _________________________________________________________
 <br>
 ![](./Journalism/Economics/ongoingta/5-24-2022_2.jpg)
 <br>
-![](./Journalism/Economics/ongoingta/5-24-2022_3.jpg)
 
 
 <br>
