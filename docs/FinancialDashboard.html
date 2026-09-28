@@ -327,11 +327,12 @@ _________________________</p>
 .fd .best{border:1px solid var(--line);border-top:3px solid #f5dfa6;border-radius:10px;background:#fff;padding:.7rem .8rem;margin-bottom:12px}
 .fd .best-sub{font-size:.8rem;color:var(--muted);margin-bottom:.4rem}
 .fd .best-chart{position:relative}
-.fd .best table{width:100%;border-collapse:collapse;font-size:.8rem;font-variant-numeric:tabular-nums;white-space:nowrap;margin-top:.6rem}
-.fd .best th{background:var(--ink);color:#fff;font-weight:600;padding:.35rem .45rem;text-align:right}
-.fd .best th:nth-child(2),.fd .best td:nth-child(2),.fd .best th:nth-child(14),.fd .best td:nth-child(14),.fd .best td:nth-child(7),.fd .best th:nth-child(7),.fd .best td:nth-child(11),.fd .best th:nth-child(11){text-align:left}
+.fd .best table{width:100%;border-collapse:collapse;font-size:.74rem;font-variant-numeric:tabular-nums;margin-top:.6rem;line-height:1.25}
+.fd .best th{background:var(--ink);color:#fff;font-weight:600;padding:.3rem .3rem;text-align:right;vertical-align:bottom}
+.fd .best th:nth-child(2),.fd .best td:nth-child(2),.fd .best th:nth-child(12),.fd .best td:nth-child(12),.fd .best td:nth-child(10),.fd .best th:nth-child(10){text-align:left}
 .fd .best .pct{color:var(--muted);font-size:.72rem}.fd .best .up{color:#3f8a57}.fd .best .dn{color:#c75b5b}
-.fd .best td{padding:.26rem .45rem;text-align:right;border-bottom:1px solid var(--line)}
+.fd .best td{padding:.22rem .3rem;text-align:right;border-bottom:1px solid var(--line);vertical-align:top}
+.fd .best td small{display:block;color:var(--muted);font-size:.66rem}
 .fd .best td:nth-child(2){font-weight:700}
 .fd .best tr:hover td{background:#fdf8ea}
 .fd .best-method{font-size:.78rem;color:var(--ink);line-height:1.5;margin-top:.7rem}
@@ -410,8 +411,8 @@ _________________________</p>
   <div class="best">
     <div class="best-sub">Every asset compared against every other one, pair by pair. Score = share of head-to-head pairs won. Updates with every price refresh.</div>
     <div class="best-chart"><canvas id="best-chart"></canvas></div>
-    <div class="tre-wrap"><table id="best-table"><thead><tr>
-      <th>#</th><th>Ticker</th><th>Price</th><th>Low target</th><th>Median target</th><th>High target</th><th>By</th><th>Avg 12-mo return</th><th>Avg 2030 return</th><th>CAGR</th><th>At NAV 1.0x</th><th>Pairs won</th><th>Avg pair edge</th><th>Most discounted vs</th>
+    <div><table id="best-table"><thead><tr>
+      <th>#</th><th>Ticker</th><th>Price</th><th>Low target</th><th>Median target</th><th>High target</th><th>Avg 12-mo return</th><th>Avg 2030 return</th><th>CAGR</th><th>At NAV 1.0x</th><th>Pairs won</th><th>Cheapest vs</th>
     </tr></thead><tbody></tbody></table></div>
     <div class="best-method" id="best-method"></div>
   </div>
@@ -633,10 +634,10 @@ _________________________</p>
     var univ = SINGLES.concat(TREASURY_T).filter(function (k, i, a) { return a.indexOf(k) === i && DATA.prices[k]; });
     var rows = [], skipped = [];
     univ.forEach(function (k) {
-      var t = T[k]; if (!t) { skipped.push(k); return; }
+      var t = T[k]; if (!t || (t.kind !== "nav" && (t.n || 0) < 3)) { skipped.push(k); return; }
       var px = lastPx(k), lo, base, hi, h = t.horizon, kind = t.kind, extra = "";
       if (kind === "nav") {   // treasury company: coin target x coins per share x assumed 2030 NAV multiple
-        var tr = trow[k], c = T[t.coin]; if (!tr || !tr.shares || !c) { skipped.push(k); return; }
+        var tr = trow[k], c = T[t.coin]; if (!tr || !tr.shares || !c || c.n < 3) { skipped.push(k); return; }
         var cps = tr.qty / tr.shares, mnav = px / (cps * lastPx(t.coin)), m30 = Math.sqrt(mnav);
         lo = c.low * cps * m30; base = c.base * cps * m30; hi = c.high * cps * m30; h = c.horizon;
         if (t.extra) base = median([base].concat(t.extra));
@@ -651,6 +652,7 @@ _________________________</p>
       var r12 = t.c12 ? t.c12 / px - 1 : (kind === "consensus" ? base / px - 1 : null);
       var r30 = kind === "consensus" ? null : Math.pow(base / px, Math.min(1, y30 / y)) - 1;
       rows.push({ k: k, px: px, lo: lo, base: base, hi: hi, h: h, kind: kind, extra: extra, nav1: nav1, r12: r12, r30: r30, y: y,
+                  n: kind === "nav" ? T[t.coin].n : t.n, c12n: t.c12n || (kind === "consensus" ? t.n : null),
                   c: cagr(px, base, y), cl: cagr(px, lo, y), ch: cagr(px, hi, y), pt: px / base });
     });
     // head-to-head pairs
@@ -684,24 +686,24 @@ _________________________</p>
     // table
     function pc(v) { return (v * 100).toFixed(1) + "%"; }
     function m(v) { return v >= 1000 ? money(v) : "$" + v.toPrecision(v < 1 ? 3 : 4); }
-    function tp(v, px) { var g = v / px - 1; return m(v) + ' <span class="pct ' + (g >= 0 ? "up" : "dn") + '">(' + (g >= 0 ? "+" : "") + Math.round(g * 100).toLocaleString("en-US") + "%)</span>"; }
-    function rt(v, pace) { return v == null ? '<span class="pct">n/a</span>' : '<span class="' + (v >= 0 ? "up" : "dn") + '">' + (v >= 0 ? "+" : "") + Math.round(v * 100).toLocaleString("en-US") + "%</span>" + (pace ? '<span class="pct"> /yr</span>' : ""); }
+    function tp(v, px) { var g = v / px - 1; return m(v) + '<small class="' + (g >= 0 ? "up" : "dn") + '">' + (g >= 0 ? "+" : "") + Math.round(g * 100).toLocaleString("en-US") + "%</small>"; }
+    function rt(v) { return '<span class="' + (v >= 0 ? "up" : "dn") + '">' + (v >= 0 ? "+" : "") + Math.round(v * 100).toLocaleString("en-US") + "%</span>"; }
     function k$(v) { return v >= 1e6 ? "$" + (v / 1e6).toFixed(2) + "M" : v >= 1e3 ? "$" + (v / 1e3).toFixed(1) + "k" : "$" + v.toFixed(v < 10 ? 2 : 0); }
     document.querySelector("#best-table tbody").innerHTML = rows.map(function (r, i) {
-      var byLab = r.kind === "consensus" ? "12 mo" : r.h;
-      var navTxt = r.nav1 ? "now " + m(r.px) + " = " + r.nav1.coin + " " + k$(r.nav1.now) + "<br>" + r.nav1.coin + " " + k$(r.nav1.cbase) + " = " + m(r.nav1.tgt) : "";
-      var r12 = r.r12 != null ? rt(r.r12) : rt(r.c, true);
-      return '<tr title="' + (DATA.prices[r.k].name || r.k) + (r.extra ? " - " + r.extra : "") + '"><td>' + (i + 1) + "</td><td>" + sn(r.k) + "</td><td>" + m(r.px) + "</td><td>" + tp(r.lo, r.px) + "</td><td><b>" + tp(r.base, r.px) + "</b></td><td>" + tp(r.hi, r.px) +
-        "</td><td>" + byLab + "</td><td>" + r12 + "</td><td>" + rt(r.r30) + "</td><td>" + pc(r.c) + "</td><td>" + navTxt + "</td><td>" + r.wins + "/" + n + " (" + Math.round(r.win * 100) + "%)</td><td>" +
-        (r.edge >= 0 ? "+" : "") + (r.edge * 100).toFixed(1) + " pts</td><td>" + (r.bestVs ? sn(r.bestVs) + " (" + Math.round(r.minPct * 100) + "th pct)" : "") + "</td></tr>";
+      var byLab = r.kind === "consensus" ? "12 mo" : (r.kind === "nav" ? "from " + r.nav1.coin + ", " : "") + r.h;
+      var navTxt = r.nav1 ? "now = " + r.nav1.coin + " " + k$(r.nav1.now) + "<small>" + r.nav1.coin + " " + k$(r.nav1.cbase) + " = " + m(r.nav1.tgt) + "</small>" : "";
+      var r12 = r.r12 != null ? rt(r.r12) + "<small>" + r.c12n + " analysts</small>" : rt(r.c) + "<small>/yr pace</small>";
+      var r30 = r.r30 != null ? rt(r.r30) + (r.h !== 2030 ? "<small>to " + r.h + "</small>" : "") : '<span class="pct">n/a</span>';
+      return '<tr title="' + (DATA.prices[r.k].name || r.k) + (r.extra ? " - " + r.extra : "") + '"><td>' + (i + 1) + "</td><td>" + sn(r.k) + "</td><td>" + m(r.px) + "</td><td>" + tp(r.lo, r.px) + "</td><td><b>" + m(r.base) + "</b><small>" + byLab + ", n=" + r.n + "</small></td><td>" + tp(r.hi, r.px) +
+        "</td><td>" + r12 + "</td><td>" + r30 + "</td><td>" + pc(r.c) + "</td><td>" + navTxt + "</td><td>" + r.wins + "/" + n + "<small>" + (r.edge >= 0 ? "+" : "") + (r.edge * 100).toFixed(1) + " pts</small></td><td>" + (r.bestVs ? sn(r.bestVs) + "<small>" + Math.round(r.minPct * 100) + "th pct</small>" : "") + "</td></tr>";
     }).join("");
     document.getElementById("best-method").innerHTML =
       "<h4>How it works</h4><ol>" +
-      "<li><b>Targets.</b> Low, median and high price targets per asset, shown with the % move from today's price. \"By\" is the target date (2030 unless noted; \"12 mo\" = analyst 12-month consensus only).</li>" +
+      "<li><b>Targets.</b> Low, median and high price targets per asset, with the % move from today's price. Every ranked asset has at least 3 independent forecasters (n = how many); the median is the median of their base cases. Under the median: the target date (\"12 mo\" = analyst 12-month consensus only).</li>" +
       "<li><b>Avg 12-mo return</b> = the 12-month analyst consensus vs today's price where one exists; otherwise the yearly pace implied by the long-range target (marked /yr). <b>Avg 2030 return</b> = total move from today to the median target (n/a where only a 12-month target exists). <b>CAGR</b> = yearly return to the median target.</li>" +
       "<li><b>Treasury companies.</b> Target = coin target x coins per share x an assumed NAV multiple halfway (log terms) between today's and 1.0x. <b>At NAV 1.0x</b> shows what today's share price is worth in coin terms, and the share price if the coin hits its median target and the stock trades at exactly its holdings.</li>" +
-      "<li><b>Pairs.</b> Each asset vs every other: edge = difference in CAGR + up to +/-10 points when the pair ratio sits at the low/high of its 3-year range. Ranked by share of pairs won, then average edge.</li>" +
-      "<li>Forecasts, not facts; long-range targets are far less certain than 12-month ones. " + (skipped.length ? "Not ranked (no target): " + skipped.map(sn).join(", ") + ". " : "") + "Not investment advice.</li></ol>";
+      "<li><b>Pairs.</b> Each asset vs every other: edge = difference in CAGR + up to +/-10 points when the pair ratio sits at the low/high of its 3-year range. Ranked by share of pairs won (average edge underneath). \"Cheapest vs\" = the asset it is most discounted against, by 3-year percentile.</li>" +
+      "<li>Forecasts, not facts; long-range targets are far less certain than 12-month ones. " + (skipped.length ? "Not ranked (fewer than 3 forecasters): " + skipped.map(sn).join(", ") + ". " : "") + "Not investment advice.</li></ol>";
   }
   // Debt clock: latest Treasury "Debt to the Penny" figure, run forward at its average pace over the past year
   function debtClock(dc) {

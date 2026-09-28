@@ -56,58 +56,52 @@ TREASURY_HIST = [("MTPLF", "Metaplanet (MTPLF)"), ("RIOT", "Riot Platforms"), ("
                  ("GLXY", "Galaxy Digital"), ("HSDT", "Solana Company (HSDT)")]
 AUX = [("SI=F", "Silver (futures, $/oz)")]   # used only to convert silver targets to SLV
 
-# Price targets for the "Current Best Buy" ranking. Edit here; the page recomputes everything.
-#   kind "long":      long-range target (horizon = year, target reached by Dec 31 of that year)
-#   kind "consensus": analyst 12-month consensus (horizon = 1 year) -- used where no long-range target exists
-#   kind "nav":       treasury company, derived from its coin's long-range target (see page for method)
-#   kind "proxy":     target given for an underlying (e.g. silver $/oz) converted at today's ratio
-IA_SANDBAG = "InvestAnswers, 2030 \"PT Sandbag\" table (YouTube; screenshot provided by Tyler, video not confirmed)"
+# Price targets for the "Current Best Buy" ranking. Every ranked asset needs 3+ independent forecasters.
+# Each source: (forecaster, base, low, high); low/high may be None. Target range = lowest low/base to
+# highest high/base across sources; median = median of the base cases. n = number of forecasters.
+#   kind "long": horizon year;  "consensus": 12-month analyst consensus (n = analyst count);
+#   "nav": treasury company derived from its coin's target;  "proxy": underlying target converted at today's ratio.
+import statistics
+def T(kind, horizon, srcs, **kw):
+    bases = [b for _, b, _, _ in srcs if b is not None]
+    lows = [x for _, b, lo, _ in srcs for x in (lo, b) if x is not None]
+    highs = [x for _, b, _, hi in srcs for x in (hi, b) if x is not None]
+    d = {"kind": kind, "horizon": horizon, "n": len(srcs), "low": min(lows), "base": round(statistics.median(bases), 4),
+         "high": max(highs), "by": [x[0] for x in srcs]}
+    d.update(kw); return d
+def C(n, avg, lo, hi, **kw):   # 12-month consensus from n analysts (MarketBeat, late Sep 2026)
+    d = {"kind": "consensus", "horizon": "12m", "n": n, "low": lo, "base": avg, "high": hi, "by": ["%d analysts" % n]}
+    d.update(kw); return d
+SPX = 10.02   # SPY is about the S&P 500 divided by 10.02
 TARGETS = {
-    "BTC-USD": {"kind": "long", "horizon": 2030, "low": 300000, "base": 666391, "high": 1200000, "sources": [
-        [IA_SANDBAG, "2030 $622,782", ""],
-        ["ARK Invest, Bitcoin 2030 price target (Apr 24, 2025)", "bear $300k / base $710k / bull $1.5M", "https://www.ark-invest.com/articles/valuation-models/arks-bitcoin-price-target-2030"],
-        ["ARK Big Ideas 2026 (Jan 21, 2026)", "$16T market cap, about $780k per coin", "https://finance.yahoo.com/news/cathie-wood-ark-invest-forecasts-043459274.html"],
-        ["Standard Chartered (Dec 9, 2025; kept Feb 12, 2026)", "2030 $500k", "https://www.coindesk.com/markets/2026/02/12/standard-chartered-sees-bitcoin-sliding-to-usd50-000-ether-to-usd1-400-before-recovery"],
-        ["Cathie Wood on CNBC (Nov 2025)", "bull case trimmed to about $1.2M (used as high)", ""]]},
-    "ETH-USD": {"kind": "long", "horizon": 2030, "low": 360, "base": 31000, "high": 154000, "sources": [
-        ["Standard Chartered (Jan 12, 2026; kept Jun 2026)", "2030 $40,000", "https://www.coindesk.com/markets/2026/01/12/standard-chartered-predicts-ether-will-outperform-bitcoin-hit-usd40-000-by-2030"],
-        ["VanEck (Jun 5, 2024)", "bear $360 / base $22,000 / bull $154,000", "https://www.vaneck.com/us/en/blogs/digital-assets/matthew-sigel-eth-2030-price-target/"]]},
-    "SOL-USD": {"kind": "long", "horizon": 2030, "low": 9.81, "base": 2000, "high": 3211, "sources": [
-        [IA_SANDBAG, "2030 $2,153", ""],
-        ["Standard Chartered (Feb 3, 2026)", "2030 $2,000", "https://www.dlnews.com/articles/markets/solana-price-target-dropped-in-2025-but-raised-for-2030-standard-chartered/"],
-        ["VanEck (Oct 27, 2023)", "bear $9.81 / base $334.70 / bull $3,211", "https://www.vaneck.com/us/en/blogs/digital-assets/matthew-sigel-vanecks-base-bear-bull-case-solana-valuation-by-2030/"]]},
-    "TSLA": {"c12": 391.40, "kind": "long", "horizon": 2030, "low": 2000, "base": 2600, "high": 4794, "sources": [
-        [IA_SANDBAG, "2030 $4,794", ""],
-        ["InvestAnswers Substack (Nov 1, 2025)", "2030 $2,567 from robotaxi alone", "https://investanswers.substack.com/p/teslas-robotaxi-ramp"],
-        ["ARK Invest, Tesla 2029 model (Jun 12, 2024)", "bear $2,000 / base $2,600 / bull $3,100 (2029)", "https://www.ark-invest.com/articles/valuation-models/arks-tesla-price-target-2029"]]},
-    "SPCX": {"kind": "long", "horizon": 2030, "low": 125, "base": 184, "high": 229, "sources": [
-        ["ARK Invest, SpaceX 2030 expected value (Jun 10, 2025)", "enterprise value $1.7T / $2.5T / $3.1T, divided by 13.56B shares", "https://www.ark-invest.com/articles/valuation-models/ark-expected-value-spacex-2030"]]},
-    "SPY": {"kind": "long", "horizon": 2029, "low": 998, "base": 998, "high": 998, "sources": [
-        ["Ed Yardeni (Jun 16, 2026)", "S&P 500 10,000 by 2029 (SPY is about S&P / 10.02)", "https://www.benzinga.com/markets/market-summary/26/06/53215138/"]]},
-    "GC=F": {"kind": "long", "horizon": 2030, "low": 4500, "base": 5050, "high": 5600, "sources": [
-        ["Bernstein (Sep 2026)", "2030 $5,600/oz (cut from $6,100)", "https://www.investing.com/news/commodities-news/bernstein-unveils-new-gold-price-forecast-for-2030-4908919"],
-        ["JPMorgan (Feb 2026)", "long-term $4,500/oz (no year)", "https://www.thestreet.com/investing/jpmorgan-revamps-long-term-gold-price-target"]]},
-    "SLV": {"kind": "proxy", "of": "SI=F", "horizon": 2027, "low": 63.90, "base": 63.90, "high": 63.90, "sources": [
-        ["JPMorgan (Aug 13, 2026)", "silver 2027 average $63.90/oz (no institutional 2030 target found)", "https://www.jpmorgan.com/insights/global-research/commodities/silver-prices"]]},
-    "HG=F": {"kind": "long", "horizon": 2030, "low": 6.80, "base": 7.17, "high": 7.17, "sources": [
-        ["BMI / Fitch (Jul 16, 2026)", "2030 $15,800/t, about $7.17/lb", "https://www.mining.com/copper-price-bmi-hikes-forecasts-structural-deficits-to-bring-17000-next-decade/"],
-        ["Goldman Sachs (2025/26)", "2035 $15,000/t, about $6.80/lb", "https://www.goldmansachs.com/insights/articles/copper-prices-forecast-to-decline-from-record-highs-in-2026"]]},
-    "MSTR": {"c12": 226.85, "kind": "nav", "coin": "BTC-USD", "extra": [2489], "sources": [
-        [IA_SANDBAG, "2030 $2,489 (averaged with the NAV-derived base)", ""],
-        ["Nasdaq consensus (Sep 2026, 12-month)", "avg $226.85 ($136-$435); Bernstein $350 (Aug 26, 2026)", "https://www.nasdaq.com/market-activity/stocks/mstr/analyst-research"]]},
-    "MTPLF": {"kind": "nav", "coin": "BTC-USD", "sources": [["MarketScreener (Tokyo 3350)", "2 analysts, avg 596 yen (not used)", ""]]},
-    "FWDI": {"c12": 13.50, "kind": "nav", "coin": "SOL-USD", "sources": [["Nasdaq consensus (12-month)", "avg $13.50 ($11-$16), 2 analysts", "https://www.nasdaq.com/market-activity/stocks/fwdi/analyst-research"]]},
-    "DFDV": {"c12": 10.40, "kind": "nav", "coin": "SOL-USD", "sources": [["Nasdaq consensus (12-month)", "$10.40, 1 analyst", "https://www.nasdaq.com/market-activity/stocks/dfdv/analyst-research"]]},
-    "UPXI": {"c12": 2.00, "kind": "nav", "coin": "SOL-USD", "sources": [["Nasdaq consensus (12-month)", "$2.00, 1 analyst", "https://www.nasdaq.com/market-activity/stocks/upxi/analyst-research"]]},
-    "HSDT": {"c12": 3.50, "kind": "nav", "coin": "SOL-USD", "sources": [["Nasdaq consensus (12-month)", "avg $3.50 ($3-$4), 2 analysts", "https://www.nasdaq.com/market-activity/stocks/hsdt/analyst-research"]]},
+    "BTC-USD": T("long", 2030, [("InvestAnswers", 622782, None, None), ("ARK Invest", 710000, 300000, 1500000),
+                                ("Standard Chartered", 500000, None, None), ("Willy Woo (3-5 yr range midpoint)", 410000, 220000, 600000)]),
+    "ETH-USD": T("long", 2030, [("Standard Chartered", 40000, None, None), ("VanEck", 22000, 360, 154000),
+                                ("Fundstrat / Tom Lee", 22000, 12000, 62500), ("Bitwise", 10000, None, None),
+                                ("Finder expert panel", 11712, None, None), ("24/7 Wall St", 10000, 1500, 40000)]),
+    "SOL-USD": T("long", 2030, [("InvestAnswers", 2153, None, None), ("Standard Chartered", 2000, None, None),
+                                ("VanEck", 334.70, 9.81, 3211), ("Bitwise", None, 2318.90, 6636.88),
+                                ("Finder expert panel", 892, None, None), ("24/7 Wall St", 340, 330, 350)]),
+    "TSLA": T("long", 2030, [("InvestAnswers", 4794, 2567, None), ("ARK Invest (2029)", 2600, 2000, 3100), ("Baron Capital", 1500, None, None)],
+              c12=411.89, c12n=46),
+    "SPY": T("long", 2030, [("Yardeni (2029)", round(10000 / SPX, 2), None, None), ("Trivariate / Adam Parker", round(10000 / SPX, 2), None, None),
+                            ("Sanctuary Wealth", round(10000 / SPX, 2), None, round(13000 / SPX, 2))]),
+    "GC=F": T("long", 2030, [("Bernstein", 5600, None, None), ("Yardeni (end-2029)", 10000, None, None), ("JPMorgan (long-term)", 4500, None, None)]),
+    "SLV": T("proxy", 2027, [("UBS", 80, None, None), ("HSBC", 68, 65, None), ("BofA", 75, None, None), ("TD Securities", 70, None, None),
+                             ("OCBC", 95, None, None), ("JPMorgan", 63.90, None, None)], of="SI=F"),
+    "HG=F": T("long", 2027, [("UBS", 7.03, None, None), ("BofA", 6.12, None, 6.80), ("Macquarie", 4.99, None, None), ("Deutsche Bank", 10.00, None, None)]),
+    "SPCX": C(44, 219.24, 75, 800),
+    "MSTR": {"kind": "nav", "coin": "BTC-USD", "extra": [2489], "c12": 239.88, "c12n": 19},
+    "MTPLF": {"kind": "nav", "coin": "BTC-USD"},
+    "FWDI": {"kind": "nav", "coin": "SOL-USD", "c12": 12.50, "c12n": 5},
+    "DFDV": {"kind": "nav", "coin": "SOL-USD"},
+    "UPXI": {"kind": "nav", "coin": "SOL-USD"},
+    "HSDT": {"kind": "nav", "coin": "SOL-USD", "c12": 3.25, "c12n": 4},
+    "UUUU": C(7, 21.85, 16, 29.25), "MP": C(17, 76.29, 57, 112), "GLXY": C(14, 39.58, 21, 57),
+    "RIOT": C(22, 30.50, 22, 43), "HUT": C(24, 143.95, 80, 263), "NVDA": C(55, 324.14, 218, 515),
+    "AVGO": C(41, 527.20, 350, 715), "MU": C(45, 1348, 300, 2000),
 }
-for t, avg, lo, hi in [("NVDA", 324.32, 275, 465), ("AVGO", 519.21, 350, 630),
-                       ("MU", 1490.23, 1100, 2000), ("UUUU", 24.15, 16, 32.5),
-                       ("MP", 72.00, 57, 85), ("GLXY", 37.90, 26, 50), 
-                       ("RIOT", 33.54, 22, 43), ("HUT", 161.47, 96, 273)]:
-    TARGETS[t] = {"kind": "consensus", "horizon": "12m", "low": lo, "base": avg, "high": hi, "sources": [
-        ["Nasdaq analyst consensus (as of Sep 1, 2026)", "12-month avg $%s (low $%s, high $%s); no 2030 target found" % (avg, lo, hi),
-         "https://www.nasdaq.com/market-activity/stocks/%s/analyst-research" % t.lower()]]}
+assert all(v.get("n", 3) >= 3 for v in TARGETS.values())
 
 def get(url, headers, tries=3):
     for i in range(tries):
