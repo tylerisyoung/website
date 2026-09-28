@@ -312,7 +312,7 @@ CSVs) and refreshed every day by the GitHub Action in
 .fd .strip b{font-weight:600}.fd .up{color:var(--green)}.fd .dn{color:#c75b5b}
 .fd .ctrl{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.45rem;margin:.3rem 0 1rem}
 .fd .ctrl .lab{font-size:.88rem;color:#6b7686}
-.fd .paradigm{text-align:center;max-width:860px;margin:.2rem auto .8rem;font-size:.9rem;line-height:1.5;color:var(--ink);padding:.55rem 1rem;border-top:1px solid #f5dfa6;border-bottom:1px solid #f5dfa6}
+.fd .paradigm{text-align:center;max-width:860px;margin:1.6rem auto 1.7rem;font-size:.9rem;line-height:1.5;color:var(--ink);padding:.55rem 1rem;border-top:1px solid #f5dfa6;border-bottom:1px solid #f5dfa6}
 .fd .paradigm b{color:#b0833a}
 .fd .ctrl button{border:1px solid var(--line);background:#fff;border-radius:6px;padding:.32rem .85rem;font-size:.92rem;color:var(--ink);cursor:pointer}
 .fd .ctrl button.on{background:var(--blue);border-color:var(--blue);color:#fff}
@@ -348,7 +348,7 @@ CSVs) and refreshed every day by the GitHub Action in
     </script></div>
   </div>
   <div class="strip" id="fd-strip"></div>
-  <div class="paradigm"><b>Current Market Paradigm:</b> Rates remain restrictive but the market prevails while bonds are waving the white flag and saying something's got to give. Inflation expectations remain high, but deflation narratives could take over quickly after the AI buildout. Currently dollar cost averaging into key assets of the future regardless, with a focus on BTC, crypto, AI, and space; looking for LEAP opportunities on those assets, and using a rotational model to layer in and layer out at key regression levels.</div>
+  <div class="paradigm"><b>Current Market Paradigm:</b> Rates remain restrictive but the market prevails while bonds are waving the white flag and saying something's got to give. Inflation expectations remain high, but deflation narratives could take over quickly after the AI buildout. Finished rotation out of Silver and Uranium into the bottom of the bear for crypto. Currently dollar cost averaging into key assets of the future with a focus on BTC, Crypto, AI, and Space; looking for LEAP opportunities on those assets, and using a rotational model to layer in and layer out at key regression levels. Hold and stack only for now.</div>
   <div class="ctrl">
     <span class="lab">Timeframe</span>
     <button data-tf="D" class="on">Daily</button><button data-tf="W">Weekly</button><button data-tf="M">Monthly</button>
@@ -373,8 +373,8 @@ CSVs) and refreshed every day by the GitHub Action in
 (function () {
   var years = 3, tf = "D", logScale = true, DATA = null, charts = [];
   var FEATURED = [];
-  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "AMD", "NVDA", "MU", "FWDI", "DFDV", "UPXI", "MP", "BZ=F", "GC=F", "SLV", "SILJ", "UUUU", "CCJ", "ETH-USD"];
-  var PAIRS = [["BTC-USD", "MSTR"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["NVDA", "MU"], ["TSLA", "SPCX"], ["GC=F", "SLV"], ["SOL-USD", "ETH-USD"]];
+  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "AMD", "NVDA", "MU", "FWDI", "DFDV", "UPXI", "MP", "BZ=F", "GC=F", "SLV", "SILJ", "UUUU", "ETH-USD"];
+  var PAIRS = [["MSTR", "BTC-USD"], ["SOL-USD", "BTC-USD"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["NVDA", "MU"], ["TSLA", "SPCX"], ["SLV", "GLD"], ["SPY", "GLD"], ["SOL-USD", "ETH-USD"]];
   var SHORT = {"BTC-USD": "BTC", "SOL-USD": "SOL", "BZ=F": "Brent", "GC=F": "Gold", "ETH-USD": "ETH"};
   var sel = "BTC-USD";
   function sn(sym) { return SHORT[sym] || sym; }
