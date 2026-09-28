@@ -374,7 +374,7 @@ _________________________</p>
     <button data-tf="D" class="on">Daily</button><button data-tf="W">Weekly</button><button data-tf="M">Monthly</button>
     <span class="sep"></span>
     <span class="lab">Range</span>
-    <button data-r="1">1Y</button><button data-r="3" class="on">3Y</button><button data-r="5">5Y</button><button data-r="0">All</button>
+    <button data-r="0.02">1W</button><button data-r="0.08">1M</button><button data-r="1">1Y</button><button data-r="3" class="on">3Y</button><button data-r="5">5Y</button><button data-r="0">All</button>
     <span class="sep"></span>
     <button id="fd-log" class="on">Log scale (prices)</button>
   </div>
@@ -414,9 +414,13 @@ _________________________</p>
     walcl: function (v) { return "$" + v.toFixed(2) + "T"; }, icsa: function (v) { return Math.round(v) + "K"; },
     sahm: function (v) { return v.toFixed(2); }
   };
-  function cut(points) {
-    if (!years) return points;
-    var d = new Date(points[points.length - 1][0]); d.setFullYear(d.getFullYear() - years);
+  function cut(points, macro) {
+    var y = macro && years && years < 1 ? 1 : years;   // economy charts are monthly/weekly data: show at least 1 year
+    if (!y) return points;
+    var d = new Date(points[points.length - 1][0]);
+    if (y === 0.02) d.setDate(d.getDate() - 7);          // 1 week
+    else if (y === 0.08) d.setMonth(d.getMonth() - 1);   // 1 month
+    else d.setFullYear(d.getFullYear() - y);
     var s = d.toISOString().slice(0, 10);
     return points.filter(function (p) { return p[0] >= s; });
   }
@@ -445,7 +449,7 @@ _________________________</p>
     el.appendChild(c); return document.getElementById(id);
   }
   function draw(canvas, points, opts) {
-    var pts = resample(cut(points));
+    var pts = resample(cut(points, opts.macro));
     var bar = opts.bar, color = opts.color || "#3d6fd6";
     return new Chart(canvas, {
       type: bar ? "bar" : "line",
@@ -457,7 +461,7 @@ _________________________</p>
         interaction: { mode: "index", intersect: false },
         plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return opts.fmt(c.parsed.y); } } } },
         scales: {
-          x: { ticks: { maxTicksLimit: 5, maxRotation: 0, color: "#6b7686", font: { size: 10 }, callback: function (v) { var l = this.getLabelForValue(v); return l.slice(0, years && years <= 3 ? 7 : 4); } }, grid: { display: false } },
+          x: { ticks: { maxTicksLimit: 5, maxRotation: 0, color: "#6b7686", font: { size: 10 }, callback: function (v) { var l = this.getLabelForValue(v); return years && years < 1 && !opts.macro ? l.slice(5) : l.slice(0, years && years <= 3 ? 7 : 4); } }, grid: { display: false } },
           y: { type: opts.log ? "logarithmic" : "linear", position: "right", ticks: { maxTicksLimit: 5, color: "#6b7686", font: { size: 10 },
                callback: function (v) { return opts.axis ? opts.axis(v) : v; } }, grid: { color: "#f0f2f6" } }
         }
@@ -499,7 +503,7 @@ _________________________</p>
       var s = DATA.macro[k], pts = s.points, last = pts[pts.length - 1], f = MACRO_FMT[k] || function (v) { return v; };
       var cv = card(M, "m" + i, s.name, f(last[1]), s.unit + " &nbsp;·&nbsp; latest " + last[0]);
       var warm = ["fedfunds", "dgs10", "dgs30", "dgs2", "cpi_yoy", "cpi_cum", "shadow", "unrate", "icsa", "debt", "debt_gdp"].indexOf(k) >= 0;   // stress gauges in faded red
-      charts.push(draw(cv, pts, { bar: k === "payrolls", fmt: f, axis: null, color: warm ? "#d9736f" : "#3d6fd6", fill: warm ? "rgba(224,122,122,0.07)" : "rgba(61,111,214,0.08)" }));
+      charts.push(draw(cv, pts, { macro: true, bar: k === "payrolls", fmt: f, axis: null, color: warm ? "#d9736f" : "#3d6fd6", fill: warm ? "rgba(224,122,122,0.07)" : "rgba(61,111,214,0.08)" }));
     });
   }
   function strip() {
