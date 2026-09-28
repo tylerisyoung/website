@@ -60,6 +60,8 @@ def main():
     try:
         cpi = fred("CPIAUCSL")
         yoy = [[cpi[i][0], round((cpi[i][1] / cpi[i - 12][1] - 1) * 100, 2)] for i in range(12, len(cpi))]
+        base = [v for d, v in cpi if d.startswith("2020-01")][0]
+        cum = [[d, round((v / base - 1) * 100, 2)] for d, v in cpi if d >= "2020-01"]
         pay = fred("PAYEMS")
         chg = [[pay[i][0], round(pay[i][1] - pay[i - 1][1], 0)] for i in range(1, len(pay))]
         m2 = [[d, round(v / 1000, 3)] for d, v in fred("M2SL")]                  # $ trillions
@@ -76,6 +78,7 @@ def main():
             "icsa":     {"name": "Initial jobless claims (weekly)", "unit": "thousands", "points": since(icsa)},
             "sahm":     {"name": "Sahm rule recession indicator", "unit": "percentage points (0.5+ signals recession)", "points": since(fred("SAHMREALTIME"))},
             "cpi_yoy":  {"name": "CPI inflation (year over year)", "unit": "%", "points": since(yoy)},
+            "cpi_cum":  {"name": "Prices up since January 2020 (CPI, cumulative)", "unit": "% rise in the consumer price level", "points": cum},
             "real_gdp": {"name": "Real GDP", "unit": "$T (2017 dollars, annual rate)", "points": since(gdp_real)},
             "unrate":   {"name": "Unemployment rate", "unit": "%", "points": since(fred("UNRATE"))},
             "m2":       {"name": "M2 money supply", "unit": "$T", "points": since(m2)},

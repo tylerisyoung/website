@@ -2,7 +2,8 @@ name: Update financial dashboard data
 
 on:
   schedule:
-    - cron: "17 11 * * *"     # every day, 11:17 UTC (after US and crypto daily closes)
+    - cron: "*/15 * * * 1-5"  # every 15 minutes on weekdays
+    - cron: "7 * * * 0,6"     # hourly on weekends (crypto only moves)
   workflow_dispatch:           # allows a manual run from the Actions tab
 
 permissions:
