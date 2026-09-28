@@ -292,14 +292,25 @@ CSVs) and refreshed every day by the GitHub Action in
 .fd{--blue:#3d6fd6;--blue-lt:#a8c5f7;--red:#e07a7a;--yellow:#f2c46d;--green:#4f9d69;--ink:#2d3a4a;--muted:#6b7686;--line:#e6e9ef;
     font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);max-width:1180px;margin:0 auto}
 .fd h1{font:600 1.7rem Georgia,serif;margin:.4rem 0 .1rem}
+.fd .accent{height:4px;border-radius:4px;background:linear-gradient(90deg,#e8a0a0,#f2c46d 45%,#a8c5f7);margin:.3rem 0 .6rem;opacity:.8}
+.fd .live{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:.2rem 0 .8rem}
+@media(max-width:700px){.fd .live{grid-template-columns:1fr}}
+.fd .tile{border:1px solid #f1e3bd;border-left:4px solid #f2c46d;background:#fefaf0;border-radius:10px;padding:.5rem .9rem;height:96px;overflow:hidden}
+.fd .tile .k{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:#8a7338;font-weight:600}
+.fd .tile .big{font:600 1.8rem Georgia,serif;line-height:1.15;margin:.15rem 0}
+.fd .tile .tradingview-widget-container{margin:-4px -12px 0}
+.fd .tile .meta{font-size:.78rem;color:var(--muted)}
+.fd .tile .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#4f9d69;margin-right:.35rem;animation:fdp 2s infinite}
+@keyframes fdp{50%{opacity:.25}}
 .fd .sub{color:var(--muted);font-size:.85rem;margin-bottom:1rem}
-.fd .strip{display:flex;flex-wrap:wrap;gap:.4rem .9rem;padding:.6rem .8rem;border:1px solid var(--line);border-radius:10px;background:#fafbfd;margin-bottom:1rem;font-size:.86rem}
+.fd .strip{display:flex;flex-wrap:wrap;gap:.3rem .9rem;padding:.45rem .8rem;border:1px solid var(--line);border-radius:10px;background:#fafbfd;margin-bottom:.6rem;font-size:.8rem}
 .fd .strip b{font-weight:600}.fd .up{color:var(--green)}.fd .dn{color:#c75b5b}
 .fd .ctrl{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:.2rem 0 1rem}
 .fd .ctrl button{border:1px solid var(--line);background:#fff;border-radius:6px;padding:.25rem .7rem;font-size:.82rem;color:var(--ink);cursor:pointer}
 .fd .ctrl button.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.fd .ctrl button:hover,.fd .explorer .tabs button:hover{background:#fdf3d8}
 .fd .ctrl .sep{width:1px;height:20px;background:var(--line);margin:0 .3rem}
-.fd h2{font:600 1.05rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);margin:1.2rem 0 .6rem;border:0}
+.fd h2{font:600 1.05rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);margin:1rem 0 .6rem;border:0;padding-bottom:.25rem;border-bottom:2px solid #f5dfa6;display:inline-block}
 .fd .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
 .fd .card{border:1px solid var(--line);border-radius:10px;padding:.7rem .8rem .5rem;background:#fff}
 .fd .card .t{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem}
@@ -307,10 +318,11 @@ CSVs) and refreshed every day by the GitHub Action in
 .fd .card .v{font-weight:600;font-size:1.05rem;white-space:nowrap}
 .fd .card .c{font-size:.78rem;color:var(--muted);margin:.1rem 0 .3rem}
 .fd .card canvas{width:100%!important;height:190px!important}
-.fd .explorer{grid-column:1/-1}
+.fd .explorer{grid-column:1/-1;border-top:3px solid #f5dfa6}
 .fd .explorer .tabs{display:flex;flex-wrap:wrap;gap:.3rem;margin:.3rem 0 .5rem}
 .fd .explorer .tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:.2rem .65rem;font-size:.78rem;color:var(--ink);cursor:pointer}
 .fd .explorer .tabs button.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.fd .explorer .tabs button.pair.on{background:#d9736f;border-color:#d9736f}
 .fd .explorer .tabs .lab{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;align-self:center;margin-right:.2rem}
 .fd .explorer canvas{height:330px!important}
 .fd .foot{color:var(--muted);font-size:.75rem;margin:1.2rem 0 2rem}
@@ -318,7 +330,17 @@ CSVs) and refreshed every day by the GitHub Action in
 
 <div class="fd">
   <h1>Financial Dashboard</h1>
+  <div class="accent"></div>
   <div class="sub" id="fd-updated">Loading data…</div>
+  <div class="live">
+    <div class="tile"><div class="k"><span class="dot"></span>Bitcoin · live, 24/7</div>
+      <div class="big" id="btc-price">…</div><div class="meta" id="btc-meta">Coinbase BTC-USD</div></div>
+    <div class="tile"><div class="k"><span class="dot"></span>S&amp;P 500 futures · live</div>
+      <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+      {"symbol": "CAPITALCOM:US500", "width": "100%", "isTransparent": true, "colorTheme": "light", "height": 80, "locale": "en"}
+      </script></div></div>
+  </div>
   <div class="strip" id="fd-strip"></div>
   <div class="ctrl">
     <span style="font-size:.8rem;color:#6b7686">Range</span>
@@ -330,18 +352,18 @@ CSVs) and refreshed every day by the GitHub Action in
   <div class="grid" id="fd-prices"></div>
   <h2>Economy</h2>
   <div class="grid" id="fd-macro"></div>
-  <div class="foot">Prices: Yahoo Finance daily closes. Economic data: Federal Reserve Bank of St. Louis (FRED): FEDFUNDS, DGS10, WALCL, ICSA, SAHMREALTIME, CPIAUCSL, GDPC1, UNRATE, M2SL, PAYEMS, GFDEBTN, T10Y2Y, GDP. Ratios compare closing prices on days both traded. Updated automatically every day. Not investment advice.</div>
+  <div class="foot">Prices: Yahoo Finance daily closes. Economic data: Federal Reserve Bank of St. Louis (FRED): FEDFUNDS, DGS10, WALCL, ICSA, SAHMREALTIME, CPIAUCSL, GDPC1, UNRATE, M2SL, PAYEMS, GFDEBTN, T10Y2Y, GDP. Ratios compare closing prices on days both traded. Live bitcoin: Coinbase. Live S&amp;P 500: TradingView (Capital.com US500, which tracks the E-mini ES futures; CME does not allow ES1! itself in website widgets). Updated automatically every day. Not investment advice.</div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
 (function () {
   var years = 3, logScale = true, DATA = null, charts = [];
-  var FEATURED = ["BTC-USD", "SPY"];
-  var SINGLES = ["SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "AMD", "NVDA", "MU", "FWDI", "DFDV", "UPXI", "MP", "BZ=F"];
+  var FEATURED = [];
+  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "AMD", "NVDA", "MU", "FWDI", "DFDV", "UPXI", "MP", "BZ=F"];
   var PAIRS = [["BTC-USD", "MSTR"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["NVDA", "MU"], ["TSLA", "SPCX"]];
   var SHORT = {"BTC-USD": "BTC", "SOL-USD": "SOL", "BZ=F": "Brent"};
-  var sel = "SOL-USD";
+  var sel = "BTC-USD";
   function sn(sym) { return SHORT[sym] || sym; }
   function ratio(a, b) {           // a / b on the dates both traded
     var m = {}; DATA.prices[b].points.forEach(function (p) { m[p[0]] = p[1]; });
@@ -378,12 +400,12 @@ CSVs) and refreshed every day by the GitHub Action in
   }
   function draw(canvas, points, opts) {
     var pts = cut(points);
-    var bar = opts.bar, color = "#3d6fd6";
+    var bar = opts.bar, color = opts.color || "#3d6fd6";
     return new Chart(canvas, {
       type: bar ? "bar" : "line",
       data: { labels: pts.map(function (p) { return p[0]; }),
               datasets: [{ data: pts.map(function (p) { return p[1]; }), borderColor: color, borderWidth: 1.6, pointRadius: 0, tension: 0.1,
-                           backgroundColor: bar ? pts.map(function (p) { return p[1] >= 0 ? "#a8c5f7" : "#e07a7a"; }) : "rgba(61,111,214,0.08)", fill: !bar }] },
+                           backgroundColor: bar ? pts.map(function (p) { return p[1] >= 0 ? "#a8c5f7" : "#e07a7a"; }) : (opts.fill || "rgba(61,111,214,0.08)"), fill: !bar }] },
       options: {
         animation: false, responsive: true, maintainAspectRatio: false,
         interaction: { mode: "index", intersect: false },
@@ -420,16 +442,17 @@ CSVs) and refreshed every day by the GitHub Action in
     val = f(pts[pts.length - 1][1]);
     ex.innerHTML = '<div class="t"><span class="n">' + title + '</span><span class="v">' + val + '</span></div><div class="c">' + note + '</div>' +
       '<div class="tabs"><span class="lab">Tickers</span>' + SINGLES.map(function (k) { return '<button data-k="' + k + '"' + (k === sel ? ' class="on"' : '') + '>' + sn(k) + '</button>'; }).join("") + '</div>' +
-      '<div class="tabs"><span class="lab">Pairs</span>' + PAIRS.map(function (p) { var k = p[0] + "/" + p[1]; return '<button data-k="' + k + '"' + (k === sel ? ' class="on"' : '') + '>' + sn(p[0]) + "/" + sn(p[1]) + '</button>'; }).join("") + '</div>' +
+      '<div class="tabs"><span class="lab">Pairs</span>' + PAIRS.map(function (p) { var k = p[0] + "/" + p[1]; return '<button class="pair' + (k === sel ? ' on' : '') + '" data-k="' + k + '">' + sn(p[0]) + "/" + sn(p[1]) + '</button>'; }).join("") + '</div>' +
       '<canvas id="ex"></canvas>';
     P.appendChild(ex);
     ex.querySelectorAll("button[data-k]").forEach(function (b) { b.onclick = function () { sel = b.dataset.k; render(); }; });
-    charts.push(draw(document.getElementById("ex"), pts, { log: logScale, fmt: f, axis: isPair ? function (v) { return (+v).toPrecision(3); } : function (v) { return v >= 1000 ? "$" + (v / 1000).toFixed(v >= 10000 ? 0 : 1) + "k" : "$" + v; } }));
+    charts.push(draw(document.getElementById("ex"), pts, { log: logScale, fmt: f, color: isPair ? "#d9736f" : "#3d6fd6", fill: isPair ? "rgba(224,122,122,0.08)" : "rgba(61,111,214,0.08)", axis: isPair ? function (v) { return (+v).toPrecision(3); } : function (v) { return v >= 1000 ? "$" + (v / 1000).toFixed(v >= 10000 ? 0 : 1) + "k" : "$" + v; } }));
 
     Object.keys(DATA.macro).forEach(function (k, i) {
       var s = DATA.macro[k], pts = s.points, last = pts[pts.length - 1], f = MACRO_FMT[k] || function (v) { return v; };
       var cv = card(M, "m" + i, s.name, f(last[1]), s.unit + " &nbsp;·&nbsp; latest " + last[0]);
-      charts.push(draw(cv, pts, { bar: k === "payrolls", fmt: f, axis: null }));
+      var warm = ["fedfunds", "dgs10", "cpi_yoy", "unrate", "icsa", "sahm", "debt", "debt_gdp"].indexOf(k) >= 0;   // stress gauges in faded red
+      charts.push(draw(cv, pts, { bar: k === "payrolls", fmt: f, axis: null, color: warm ? "#d9736f" : "#3d6fd6", fill: warm ? "rgba(224,122,122,0.07)" : "rgba(61,111,214,0.08)" }));
     });
   }
   function strip() {
@@ -441,6 +464,16 @@ CSVs) and refreshed every day by the GitHub Action in
     b.onclick = function () { document.querySelectorAll(".fd .ctrl button[data-r]").forEach(function (x) { x.classList.remove("on"); }); b.classList.add("on"); years = +b.dataset.r; render(); };
   });
   document.getElementById("fd-log").onclick = function () { logScale = !logScale; this.classList.toggle("on", logScale); render(); };
+  // Live bitcoin price from Coinbase (public, updates every 10 seconds)
+  function btcLive() {
+    fetch("https://api.exchange.coinbase.com/products/BTC-USD/stats").then(function (r) { return r.json(); }).then(function (d) {
+      var last = +d.last, open = +d.open, ch = (last / open - 1) * 100;
+      document.getElementById("btc-price").textContent = "$" + last.toLocaleString(undefined, {maximumFractionDigits: 0});
+      document.getElementById("btc-meta").innerHTML = "24h " + chg(ch) + " &nbsp;·&nbsp; high $" + (+d.high).toLocaleString(undefined, {maximumFractionDigits: 0}) +
+        " &nbsp;·&nbsp; low $" + (+d.low).toLocaleString(undefined, {maximumFractionDigits: 0}) + " &nbsp;·&nbsp; " + new Date().toLocaleTimeString();
+    }).catch(function () {});
+  }
+  btcLive(); setInterval(btcLive, 10000);
   fetch("data/markets.json?v=" + Date.now()).then(function (r) { return r.json(); }).then(function (d) {
     DATA = d; document.getElementById("fd-updated").textContent = "Updated " + d.updated + " · refreshed daily";
     strip(); render();
