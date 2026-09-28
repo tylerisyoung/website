@@ -11,7 +11,6 @@ output:
 
 
 ---
-https://www.tylerisyoung.com/ongoingta.html
 <br>
 <br>
 
@@ -26,13 +25,12 @@ https://www.tylerisyoung.com/ongoingta.html
  _________________________
  
  <br>
- Read my [Blog](https://www.tylerisyoung.com/ongoingta.html)
+ Read my [Blog](./FinancialDashboard.html)
  <br>
  <br>
  
  <h4>
- <details><summary>[***List of All Articles***]</summary>
-[ ](./n/a.html) 
+ ***All Articles***
 
 Article: [Gendered and Racialized Buzzwords](./GenderedandRacializedBuzzwords.html)  
 
@@ -76,8 +74,6 @@ Story: [Rafting the Deschutes](https://www.lightheartedhumans.com/storytelling/2
 
 --->
 
-</details>
-</details>
 <br> 
 <h3>
 ***Topics:***  

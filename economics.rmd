@@ -34,7 +34,7 @@ output:
 <details><summary>***Investing***</summary>
 [ ](./n/a.html)  
 
-[*Financial Markets and Crypto Technical Analysis (Ongonig)*](./ongoingta.html) 
+[*Financial Markets and Crypto Technical Analysis (Ongonig)*](./FinancialDashboard.html) 
 
 <!---
 

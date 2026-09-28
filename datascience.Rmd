@@ -67,7 +67,7 @@ Current Projects: [Here](./ig.html)
 
 Modern Monetary Theory - Slow at first, then all at once.                                                     |  Ongoing Technical Analysis of Financial Markets 
 :------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------:
-[Read Here:](./mmt.html)                                                                                      |  [Read Here:](./ongoingta.html)
+[Read Here:](./mmt.html)                                                                                      |  [Read Here:](./FinancialDashboard.html)
 ![](./images/DOTPLOT_2.png)                                                                                   |  ![](./images/ONGOINGTA.jpg)
                                          
 
