@@ -40,6 +40,7 @@ CSVs) and refreshed every day by the GitHub Action in
 .fd .ctrl .lab{font-size:.88rem;color:#6b7686}
 .fd .paradigm{text-align:center;max-width:860px;margin:1.6rem auto 1.7rem;font-size:.9rem;line-height:1.5;color:var(--ink);padding:.55rem 1rem;border-top:1px solid #f5dfa6;border-bottom:1px solid #f5dfa6}
 .fd .paradigm b{color:#b0833a}
+.fd .paradigm .ph{font-weight:700;font-size:1rem;color:#b0833a;text-align:center;margin-bottom:.35rem}
 .fd .ctrl button{border:1px solid var(--line);background:#fff;border-radius:6px;padding:.32rem .85rem;font-size:.92rem;color:var(--ink);cursor:pointer}
 .fd .ctrl button.on{background:var(--blue);border-color:var(--blue);color:#fff}
 .fd .ctrl button:hover,.fd .explorer .tabs button:hover{background:#fdf3d8}
@@ -76,7 +77,7 @@ CSVs) and refreshed every day by the GitHub Action in
     </script></div>
   </div>
   <div class="strip" id="fd-strip"></div>
-  <div class="paradigm"><b>Current Market Paradigm:</b> Rates remain restrictive but the market prevails while bonds are waving the white flag and saying something's got to give. Inflation expectations remain high, but deflation narratives could take over quickly after the AI buildout. Finished rotation out of Silver and Uranium into the bottom of the bear for crypto. Currently dollar cost averaging into key assets of the future with a focus on BTC, Crypto, AI, and Space. Silver, Copper, and Uranium are safe commodity plays that should outperform the S&amp;P; looking for LEAP opportunities on those assets, and using a rotational model to layer in and layer out at key regression levels. Hold and stack only for now.</div>
+  <div class="paradigm"><div class="ph">Current Market Paradigm <i>September 28, 2026</i></div>Rates remain restrictive but the market prevails while bonds are waving the white flag and saying something's got to give. Inflation expectations remain high, but deflation narratives could take over quickly after the AI buildout. Finished rotation out of Silver and Uranium into the mid-term year Q4 bottom of the bear for crypto. Currently dollar cost averaging into key assets of the future with a focus on BTC, Crypto, AI, and Space. Silver, Copper, and Uranium remain safe commodity plays that should outperform the S&amp;P, and Broadcom is the current safe AI play which does not yet have a crazy P/E, but aiming for these only up to 1/4 of portfolio as core positions. Looking for LEAP opportunities on those assets, and using a rotational model to layer in and layer out at key regression levels. Hold and stack only for now.</div>
   <div class="ctrl">
     <span class="lab">Timeframe</span>
     <button data-tf="D" class="on">Daily</button><button data-tf="W">Weekly</button><button data-tf="M">Monthly</button>
