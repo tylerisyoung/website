@@ -319,9 +319,9 @@ _________________________</p>
 .fd .tre-wrap{overflow-x:auto}
 .fd .tre table{width:100%;border-collapse:collapse;font-size:.82rem;font-variant-numeric:tabular-nums;white-space:nowrap}
 .fd .tre th{background:var(--ink);color:#fff;font-weight:600;padding:.4rem .5rem;text-align:right;cursor:pointer;user-select:none;border-left:1px solid #46546a}
-.fd .tre th:first-child{text-align:left}.fd .tre th.b{color:#f2c46d}.fd .tre th:nth-child(5){border-left:3px solid #f2c46d}
+.fd .tre th:first-child{text-align:left}.fd .tre th.b{color:#f2c46d}.fd .tre th:nth-child(6){border-left:3px solid #f2c46d}.fd .tre td:nth-child(2){text-align:center;font-weight:600;color:#6b7686}
 .fd .tre td{padding:.28rem .5rem;text-align:right;border-bottom:1px solid var(--line)}
-.fd .tre td:first-child{text-align:left;font-weight:700}.fd .tre td:nth-child(5){border-left:3px solid #f2c46d;color:#b0833a;font-weight:600}
+.fd .tre td:first-child{text-align:left;font-weight:700}.fd .tre td:nth-child(6){border-left:3px solid #f2c46d;color:#b0833a;font-weight:600}
 .fd .tre tr:hover td{background:#fdf8ea}
 .fd .tre-foot{font-size:.72rem;color:var(--muted);margin-top:.5rem;line-height:1.45}
 .fd .debtclock{border:1px solid #f1d0d0;border-left:4px solid #e07a7a;background:#fdf6f5;border-radius:10px;padding:.6rem 1rem;margin-bottom:12px;text-align:center}
@@ -397,14 +397,14 @@ _________________________</p>
     <div class="num" id="fd-debt">$—</div>
     <div class="meta" id="fd-debt-meta">Treasury, Debt to the Penny</div></div>
   <div class="grid" id="fd-macro"></div>
-  <h2>Bitcoin Treasury Companies</h2>
+  <h2>BTC and Solana Treasury Companies</h2>
   <div class="tre">
-    <div class="tre-top"><div><span class="k">BTC</span> <b id="tre-btc">…</b></div><div><span class="k">BTC market cap</span> <b id="tre-mcap">…</b></div><div class="tre-note">Sorted by NAV premium, smallest first. Green = below 1 (stock is cheaper than its bitcoin), red = above 1. Click a column to re-sort.</div></div>
+    <div class="tre-top"><div><span class="k">BTC</span> <b id="tre-btc">…</b></div><div><span class="k">SOL</span> <b id="tre-sol">…</b></div><div><span class="k">BTC market cap</span> <b id="tre-mcap">…</b></div><div class="tre-note">Sorted by NAV premium, smallest first. Green = below 1 (stock is cheaper than its coins), red = above 1. Click a column to re-sort.</div></div>
     <div class="tre-wrap"><table id="tre-table"><thead><tr>
-      <th data-s="t">Ticker</th><th data-s="price">Share Price</th><th data-s="mcap">Market Cap</th><th data-s="hold">HOLD Assets</th>
-      <th data-s="btc" class="b">BTC HOLD QTY</th><th data-s="hold" class="b">BTC HOLD $</th><th data-s="per" class="b">BTC Per $ Invested</th><th data-s="nav" class="b">NAV Premium</th>
+      <th data-s="t">Ticker</th><th data-s="coin">Coin</th><th data-s="price">Share Price</th><th data-s="mcap">Market Cap</th><th data-s="hold">HOLD Assets</th>
+      <th data-s="qty" class="b">HOLD QTY</th><th data-s="hold" class="b">HOLD $</th><th data-s="per" class="b">Crypto Per $ Invested</th><th data-s="nav" class="b">NAV Premium</th>
     </tr></thead><tbody></tbody></table></div>
-    <div class="tre-foot">BTC per $ invested = bitcoin held ÷ market cap. NAV premium = market cap ÷ bitcoin held (below 1 = the stock trades for less than its bitcoin). Bitcoin holdings and share counts as of <span id="tre-asof"></span>, from the InvestAnswers treasury model; share prices from Yahoo Finance (every 15 minutes) and bitcoin live from Coinbase. Market caps count only shares, not debt or preferred stock, and other assets are ignored.</div>
+    <div class="tre-foot">Crypto per $ invested = BTC or SOL held ÷ market cap. NAV premium = market cap ÷ crypto held (below 1 = the stock trades for less than its coins). BTC companies: holdings and share counts as of <span id="tre-asof"></span>, from the InvestAnswers treasury model. SOL companies: holdings from CoinGecko's Solana treasury list (<span id="tre-solasof"></span>), share counts from Yahoo Finance. Share prices from Yahoo Finance (every 15 minutes); BTC and SOL live from Coinbase. Market caps count only shares, not debt or preferred stock, and other assets are ignored.</div>
   </div>
   <div class="foot">Prices: Yahoo Finance daily closes. Economic data: Federal Reserve Bank of St. Louis (FRED): FEDFUNDS, DGS10, DGS30, DGS2, WALCL, ICSA, CPIAUCSL, GDPC1, UNRATE, M2SL, PAYEMS, GFDEBTN, T10Y2Y, GDP. Ratios compare closing prices on days both traded. Live bitcoin: Coinbase. Live S&amp;P 500: TradingView (Capital.com US500, which tracks the E-mini ES futures; CME does not allow ES1! itself in website widgets). Debt clock: U.S. Treasury, Debt to the Penny, extended at its past-year pace. ShadowStats-style line is an estimate (official CPI + 7 points; Saville, TSI Blog, 2015), not ShadowStats data. Updated automatically every 15 minutes. Not investment advice.</div>
 </div>
@@ -550,38 +550,42 @@ _________________________</p>
   }
   setInterval(cryptoLive, 60000);
   // Bitcoin treasury companies table
-  var TRE = null, treBtc = null, treSort = "nav", treDir = 1;
+  var TRE = null, treBtc = null, treSolP = null, treSort = "nav", treDir = 1;
   function money(v, d) { return "$" + v.toLocaleString("en-US", { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }); }
   function heat(t, good) {   // t in 0..1 (rank); faded green for good, faded red for bad
     var g = [79, 157, 105], r = [224, 122, 122], w = [255, 255, 255], c = good ? g : r, a = 0.15 + 0.55 * t;
     return "rgba(" + c.join(",") + "," + a.toFixed(2) + ")";
   }
   function treRender() {
-    if (!TRE || !treBtc) return;
+    if (!TRE || !treBtc || !treSolP) return;
     var days = (Date.now() - Date.parse("2026-09-14T00:00:00Z")) / 864e5;
     var supply = 19884000 + 450 * days;   // circulating BTC: ~19.884M on 2026-09-14, plus 450 BTC mined per day
     document.getElementById("tre-btc").textContent = money(treBtc, 2);
     document.getElementById("tre-mcap").textContent = money(treBtc * supply);
     document.getElementById("tre-asof").textContent = TRE.holdings_asof;
-    var rows = TRE.rows.filter(function (r) { return r.price; }).map(function (r) {
-      var mcap = r.price * r.shares, hold = r.btc * treBtc;
-      return { t: r.t, name: r.name, price: r.price, mcap: mcap, hold: hold, btc: r.btc, per: hold / mcap, nav: mcap / hold };
+    document.getElementById("tre-sol").textContent = money(treSolP, 2);
+    document.getElementById("tre-solasof").textContent = TRE.sol_asof || "";
+    var rows = TRE.rows.filter(function (r) { return r.price && r.shares; }).map(function (r) {
+      var coin = r.coin || "BTC", qty = r.qty || r.btc, mcap = r.price * r.shares, hold = qty * (coin === "SOL" ? treSolP : treBtc);
+      return { t: r.t, name: r.name, coin: coin, price: r.price, mcap: mcap, hold: hold, qty: qty, per: hold / mcap, nav: mcap / hold };
     });
     rows.sort(function (a, b) { var x = a[treSort], y = b[treSort]; return (typeof x === "string" ? x.localeCompare(y) : x - y) * treDir; });
     document.querySelector("#tre-table tbody").innerHTML = rows.map(function (r) {
       // green below 1x NAV, red above; stronger the further from 1 (log scale, full strength at 10x)
       var bg = heat(0.4 + 0.6 * Math.min(1, Math.abs(Math.log10(r.nav))), r.nav < 1), perBg = bg, navBg = bg;
-      return '<tr title="' + r.name + '"><td>' + r.t + "</td><td>" + money(r.price, 2) + "</td><td>" + money(r.mcap) + "</td><td>" + money(r.hold) +
-        "</td><td>" + r.btc.toLocaleString("en-US") + "</td><td>" + money(r.hold) + '</td><td style="background:' + perBg + '">' + money(r.per, 2) +
+      return '<tr title="' + r.name + '"><td>' + r.t + "</td><td>" + r.coin + "</td><td>" + money(r.price, 2) + "</td><td>" + money(r.mcap) + "</td><td>" + money(r.hold) +
+        "</td><td>" + r.qty.toLocaleString("en-US") + "</td><td>" + money(r.hold) + '</td><td style="background:' + perBg + '">' + money(r.per, 2) +
         '</td><td style="background:' + navBg + '">' + r.nav.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "</td></tr>";
     }).join("");
   }
   document.querySelectorAll("#tre-table th").forEach(function (th) {
-    th.onclick = function () { var k = th.dataset.s; treDir = treSort === k ? -treDir : (k === "t" || k === "nav" ? 1 : -1); treSort = k; treRender(); };
+    th.onclick = function () { var k = th.dataset.s; treDir = treSort === k ? -treDir : (k === "t" || k === "coin" || k === "nav" ? 1 : -1); treSort = k; treRender(); };
   });
   function treLive() {
     fetch("https://api.exchange.coinbase.com/products/BTC-USD/stats").then(function (r) { return r.json(); })
       .then(function (d) { if (+d.last) { treBtc = +d.last; treRender(); } }).catch(function () {});
+    fetch("https://api.exchange.coinbase.com/products/SOL-USD/stats").then(function (r) { return r.json(); })
+      .then(function (d) { if (+d.last) { treSolP = +d.last; treRender(); } }).catch(function () {});
   }
   setInterval(treLive, 60000);
   // Debt clock: latest Treasury "Debt to the Penny" figure, run forward at its average pace over the past year
@@ -597,7 +601,7 @@ _________________________</p>
   fetch("data/markets.json?v=" + Date.now()).then(function (r) { return r.json(); }).then(function (d) {
     DATA = d; document.getElementById("fd-updated").textContent = "Updated " + d.updated + " · market data refreshed every 15 minutes; bitcoin and S&P futures stream live";
     strip(); render(); cryptoLive(); debtClock(d.debt_clock);
-    if (d.treasury) { TRE = d.treasury; var bp = d.prices["BTC-USD"].points; treBtc = bp[bp.length - 1][1]; treRender(); treLive(); }
+    if (d.treasury) { TRE = d.treasury; var bp = d.prices["BTC-USD"].points, sp = d.prices["SOL-USD"].points; treBtc = bp[bp.length - 1][1]; treSolP = sp[sp.length - 1][1]; treRender(); treLive(); }
   }).catch(function () { document.getElementById("fd-updated").textContent = "Data could not be loaded."; });
 })();
 </script>

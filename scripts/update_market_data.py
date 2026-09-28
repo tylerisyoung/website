@@ -4,7 +4,7 @@
 Prices: Yahoo Finance daily closes. Macro: FRED public CSV downloads.
 Run locally (python3 scripts/update_market_data.py) or by the daily GitHub Action.
 """
-import csv, io, json, os, sys, time, urllib.request, datetime as dt
+import csv, io, json, os, sys, time, urllib.request, urllib.parse, datetime as dt
 
 UA_YAHOO = {"User-Agent": "Mozilla/5.0"}
 UA_FRED = {"User-Agent": "curl/8.0"}   # FRED rejects browser-like agents from scripts
@@ -24,7 +24,6 @@ TREASURY = [(t, n, round(mc / p), q) for t, n, p, mc, q in [
     ("MTPLF", "Metaplanet", 1.79, 2405411848, 43000),
     ("MSTR", "Strategy", 160.85, 52690000000, 847666),
     ("MARA", "MARA Holdings", 12.37, 4779254919, 35577),
-    ("CAN", "Canaan", 0.37, 269800050, 1230),
     ("CLSK", "CleanSpark", 13.73, 3511972523, 13703),
     ("RIOT", "Riot Platforms", 22.19, 8289693903, 11380),
     ("HUT", "Hut 8", 94.34, 11688689127, 10278),
@@ -33,6 +32,29 @@ TREASURY = [(t, n, round(mc / p), q) for t, n, p, mc, q in [
     ("SPCX", "SpaceX", 146.82, 1990861138189, 18712),
     ("TSLA", "Tesla", 359.59, 1421876454039, 11509),
 ]]
+
+# Solana treasury companies: (ticker, name, SOL held). Holdings from CoinGecko's Solana
+# treasury list (2026-09-28); share counts are fetched from Yahoo Finance on each run.
+SOL_TREASURY_ASOF = "2026-09-28"
+SOL_TREASURY = [
+    ("FWDI", "Forward Industries", 7550000),
+    ("DFDV", "DeFi Development", 2490304),
+    ("UPXI", "Upexi", 2173204),
+    ("SKYA", "SkyAI", 2077799),
+    ("HSDT", "Solana Company", 2064717),
+]
+
+def yahoo_shares(symbols):
+    """Shares outstanding from Yahoo's quote API (needs a session cookie and crumb)."""
+    import http.cookiejar
+    op = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
+    try: op.open(urllib.request.Request("https://fc.yahoo.com", headers=UA_YAHOO), timeout=20)
+    except Exception: pass
+    crumb = op.open(urllib.request.Request("https://query1.finance.yahoo.com/v1/test/getcrumb", headers=UA_YAHOO), timeout=20).read().decode()
+    u = ("https://query1.finance.yahoo.com/v7/finance/quote?fields=sharesOutstanding&symbols="
+         + ",".join(symbols) + "&crumb=" + urllib.parse.quote(crumb))
+    j = json.loads(op.open(urllib.request.Request(u, headers=UA_YAHOO), timeout=20).read())
+    return {q["symbol"]: q.get("sharesOutstanding") for q in j["quoteResponse"]["result"]}
 
 def get(url, headers, tries=3):
     for i in range(tries):
@@ -113,10 +135,22 @@ def main():
 
     # Bitcoin treasury companies. BTC held and share counts: InvestAnswers model, 2026-09-14
     # (shares = that model's market cap / share price). Edit TREASURY to update holdings.
-    tre = {"holdings_asof": TREASURY_ASOF, "rows": []}
+    tre = {"holdings_asof": TREASURY_ASOF, "sol_asof": SOL_TREASURY_ASOF, "rows": []}
     olds = {r["t"]: r for r in old.get("treasury", {}).get("rows", [])}
     for t, name, shares, qty in TREASURY:
-        row = {"t": t, "name": name, "shares": shares, "btc": qty, "price": None}
+        row = {"t": t, "name": name, "coin": "BTC", "shares": shares, "qty": qty, "price": None}
+        try:
+            j = json.loads(get(f"https://query1.finance.yahoo.com/v8/finance/chart/{t}?range=5d&interval=1d", UA_YAHOO))
+            row["price"] = round(j["chart"]["result"][0]["meta"]["regularMarketPrice"], 4)
+        except Exception as e:
+            print("treasury price failed", t, e, file=sys.stderr)
+            if t in olds: row["price"] = olds[t]["price"]
+        tre["rows"].append(row)
+    try: sh = yahoo_shares([t for t, _, _ in SOL_TREASURY])
+    except Exception as e:
+        print("sol shares failed", e, file=sys.stderr); sh = {}
+    for t, name, qty in SOL_TREASURY:
+        row = {"t": t, "name": name, "coin": "SOL", "shares": sh.get(t) or olds.get(t, {}).get("shares"), "qty": qty, "price": None}
         try:
             j = json.loads(get(f"https://query1.finance.yahoo.com/v8/finance/chart/{t}?range=5d&interval=1d", UA_YAHOO))
             row["price"] = round(j["chart"]["result"][0]["meta"]["regularMarketPrice"], 4)
