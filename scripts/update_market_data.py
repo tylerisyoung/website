@@ -56,6 +56,68 @@ def yahoo_shares(symbols):
     j = json.loads(op.open(urllib.request.Request(u, headers=UA_YAHOO), timeout=20).read())
     return {q["symbol"]: q.get("sharesOutstanding") for q in j["quoteResponse"]["result"]}
 
+# Treasury companies not already in TICKERS (price history for the Markets chart)
+TREASURY_HIST = [("MTPLF", "Metaplanet (MTPLF)"), ("MARA", "MARA Holdings"), ("CLSK", "CleanSpark"),
+                 ("RIOT", "Riot Platforms"), ("HUT", "Hut 8"), ("GLXY", "Galaxy Digital"), ("COIN", "Coinbase"),
+                 ("SKYA", "SkyAI"), ("HSDT", "Solana Company (HSDT)")]
+AUX = [("SI=F", "Silver (futures, $/oz)")]   # used only to convert silver targets to SLV
+
+# Price targets for the "Current Best Buy" ranking. Edit here; the page recomputes everything.
+#   kind "long":      long-range target (horizon = year, target reached by Dec 31 of that year)
+#   kind "consensus": analyst 12-month consensus (horizon = 1 year) -- used where no long-range target exists
+#   kind "nav":       treasury company, derived from its coin's long-range target (see page for method)
+#   kind "proxy":     target given for an underlying (e.g. silver $/oz) converted at today's ratio
+IA_SANDBAG = "InvestAnswers, 2030 \"PT Sandbag\" table (YouTube; screenshot provided by Tyler, video not confirmed)"
+TARGETS = {
+    "BTC-USD": {"kind": "long", "horizon": 2030, "low": 300000, "base": 666391, "high": 1200000, "sources": [
+        [IA_SANDBAG, "2030 $622,782", ""],
+        ["ARK Invest, Bitcoin 2030 price target (Apr 24, 2025)", "bear $300k / base $710k / bull $1.5M", "https://www.ark-invest.com/articles/valuation-models/arks-bitcoin-price-target-2030"],
+        ["ARK Big Ideas 2026 (Jan 21, 2026)", "$16T market cap, about $780k per coin", "https://finance.yahoo.com/news/cathie-wood-ark-invest-forecasts-043459274.html"],
+        ["Standard Chartered (Dec 9, 2025; kept Feb 12, 2026)", "2030 $500k", "https://www.coindesk.com/markets/2026/02/12/standard-chartered-sees-bitcoin-sliding-to-usd50-000-ether-to-usd1-400-before-recovery"],
+        ["Cathie Wood on CNBC (Nov 2025)", "bull case trimmed to about $1.2M (used as high)", ""]]},
+    "ETH-USD": {"kind": "long", "horizon": 2030, "low": 360, "base": 31000, "high": 154000, "sources": [
+        ["Standard Chartered (Jan 12, 2026; kept Jun 2026)", "2030 $40,000", "https://www.coindesk.com/markets/2026/01/12/standard-chartered-predicts-ether-will-outperform-bitcoin-hit-usd40-000-by-2030"],
+        ["VanEck (Jun 5, 2024)", "bear $360 / base $22,000 / bull $154,000", "https://www.vaneck.com/us/en/blogs/digital-assets/matthew-sigel-eth-2030-price-target/"]]},
+    "SOL-USD": {"kind": "long", "horizon": 2030, "low": 9.81, "base": 2000, "high": 3211, "sources": [
+        [IA_SANDBAG, "2030 $2,153", ""],
+        ["Standard Chartered (Feb 3, 2026)", "2030 $2,000", "https://www.dlnews.com/articles/markets/solana-price-target-dropped-in-2025-but-raised-for-2030-standard-chartered/"],
+        ["VanEck (Oct 27, 2023)", "bear $9.81 / base $334.70 / bull $3,211", "https://www.vaneck.com/us/en/blogs/digital-assets/matthew-sigel-vanecks-base-bear-bull-case-solana-valuation-by-2030/"]]},
+    "TSLA": {"kind": "long", "horizon": 2030, "low": 2000, "base": 2600, "high": 4794, "sources": [
+        [IA_SANDBAG, "2030 $4,794", ""],
+        ["InvestAnswers Substack (Nov 1, 2025)", "2030 $2,567 from robotaxi alone", "https://investanswers.substack.com/p/teslas-robotaxi-ramp"],
+        ["ARK Invest, Tesla 2029 model (Jun 12, 2024)", "bear $2,000 / base $2,600 / bull $3,100 (2029)", "https://www.ark-invest.com/articles/valuation-models/arks-tesla-price-target-2029"]]},
+    "SPCX": {"kind": "long", "horizon": 2030, "low": 125, "base": 184, "high": 229, "sources": [
+        ["ARK Invest, SpaceX 2030 expected value (Jun 10, 2025)", "enterprise value $1.7T / $2.5T / $3.1T, divided by 13.56B shares", "https://www.ark-invest.com/articles/valuation-models/ark-expected-value-spacex-2030"]]},
+    "SPY": {"kind": "long", "horizon": 2029, "low": 998, "base": 998, "high": 998, "sources": [
+        ["Ed Yardeni (Jun 16, 2026)", "S&P 500 10,000 by 2029 (SPY is about S&P / 10.02)", "https://www.benzinga.com/markets/market-summary/26/06/53215138/"]]},
+    "GC=F": {"kind": "long", "horizon": 2030, "low": 4500, "base": 5050, "high": 5600, "sources": [
+        ["Bernstein (Sep 2026)", "2030 $5,600/oz (cut from $6,100)", "https://www.investing.com/news/commodities-news/bernstein-unveils-new-gold-price-forecast-for-2030-4908919"],
+        ["JPMorgan (Feb 2026)", "long-term $4,500/oz (no year)", "https://www.thestreet.com/investing/jpmorgan-revamps-long-term-gold-price-target"]]},
+    "SLV": {"kind": "proxy", "of": "SI=F", "horizon": 2027, "low": 63.90, "base": 63.90, "high": 63.90, "sources": [
+        ["JPMorgan (Aug 13, 2026)", "silver 2027 average $63.90/oz (no institutional 2030 target found)", "https://www.jpmorgan.com/insights/global-research/commodities/silver-prices"]]},
+    "HG=F": {"kind": "long", "horizon": 2030, "low": 6.80, "base": 7.17, "high": 7.17, "sources": [
+        ["BMI / Fitch (Jul 16, 2026)", "2030 $15,800/t, about $7.17/lb", "https://www.mining.com/copper-price-bmi-hikes-forecasts-structural-deficits-to-bring-17000-next-decade/"],
+        ["Goldman Sachs (2025/26)", "2035 $15,000/t, about $6.80/lb", "https://www.goldmansachs.com/insights/articles/copper-prices-forecast-to-decline-from-record-highs-in-2026"]]},
+    "BZ=F": {"kind": "long", "horizon": 2027, "low": 62, "base": 62, "high": 62, "sources": [
+        ["JPMorgan", "Brent in the low $60s from 2H 2027 (no 2030 target found)", "https://www.jpmorgan.com/insights/global-research/commodities/oil-prices"]]},
+    "MSTR": {"kind": "nav", "coin": "BTC-USD", "extra": [2489], "sources": [
+        [IA_SANDBAG, "2030 $2,489 (averaged with the NAV-derived base)", ""],
+        ["Nasdaq consensus (Sep 2026, 12-month)", "avg $226.85 ($136-$435); Bernstein $350 (Aug 26, 2026)", "https://www.nasdaq.com/market-activity/stocks/mstr/analyst-research"]]},
+    "MTPLF": {"kind": "nav", "coin": "BTC-USD", "sources": [["MarketScreener (Tokyo 3350)", "2 analysts, avg 596 yen (not used)", ""]]},
+    "FWDI": {"kind": "nav", "coin": "SOL-USD", "sources": [["Nasdaq consensus (12-month)", "avg $13.50 ($11-$16), 2 analysts", "https://www.nasdaq.com/market-activity/stocks/fwdi/analyst-research"]]},
+    "DFDV": {"kind": "nav", "coin": "SOL-USD", "sources": [["Nasdaq consensus (12-month)", "$10.40, 1 analyst", "https://www.nasdaq.com/market-activity/stocks/dfdv/analyst-research"]]},
+    "UPXI": {"kind": "nav", "coin": "SOL-USD", "sources": [["Nasdaq consensus (12-month)", "$2.00, 1 analyst", "https://www.nasdaq.com/market-activity/stocks/upxi/analyst-research"]]},
+    "SKYA": {"kind": "nav", "coin": "SOL-USD", "sources": []},
+    "HSDT": {"kind": "nav", "coin": "SOL-USD", "sources": [["Nasdaq consensus (12-month)", "avg $3.50 ($3-$4), 2 analysts", "https://www.nasdaq.com/market-activity/stocks/hsdt/analyst-research"]]},
+}
+for t, avg, lo, hi in [("COIN", 206.15, 95, 330), ("NVDA", 324.32, 275, 465), ("AVGO", 519.21, 350, 630),
+                       ("AMD", 648.07, 465, 1250), ("MU", 1490.23, 1100, 2000), ("UUUU", 24.15, 16, 32.5),
+                       ("MP", 72.00, 57, 85), ("GLXY", 37.90, 26, 50), ("MARA", 15.11, 10, 27),
+                       ("RIOT", 33.54, 22, 43), ("CLSK", 23.85, 21, 26), ("HUT", 161.47, 96, 273)]:
+    TARGETS[t] = {"kind": "consensus", "horizon": "12m", "low": lo, "base": avg, "high": hi, "sources": [
+        ["Nasdaq analyst consensus (as of Sep 1, 2026)", "12-month avg $%s (low $%s, high $%s); no 2030 target found" % (avg, lo, hi),
+         "https://www.nasdaq.com/market-activity/stocks/%s/analyst-research" % t.lower()]]}
+
 def get(url, headers, tries=3):
     for i in range(tries):
         try:
@@ -90,9 +152,10 @@ def main():
         except Exception: old = {}
     data = {"updated": dt.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC"), "prices": {}, "macro": {}}
 
-    for sym, name in TICKERS:
+    for sym, name, group in [(a, b, None) for a, b in TICKERS] + [(a, b, "treasury") for a, b in TREASURY_HIST] + [(a, b, "aux") for a, b in AUX]:
         try:
             data["prices"][sym] = {"name": name, "points": yahoo(sym)}
+            if group: data["prices"][sym]["group"] = group
         except Exception as e:
             print("price failed", sym, e, file=sys.stderr)
             if sym in old.get("prices", {}): data["prices"][sym] = old["prices"][sym]
@@ -159,6 +222,8 @@ def main():
             if t in olds: row["price"] = olds[t]["price"]
         tre["rows"].append(row)
     data["treasury"] = tre
+
+    data["targets"] = TARGETS
 
     # Debt clock: latest Treasury "Debt to the Penny" figure and the one about a year earlier
     try:

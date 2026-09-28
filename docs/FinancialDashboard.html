@@ -324,6 +324,19 @@ _________________________</p>
 .fd .tre td:first-child{text-align:left;font-weight:700}.fd .tre td:nth-child(6){border-left:3px solid #f2c46d;color:#b0833a;font-weight:600}
 .fd .tre tr:hover td{background:#fdf8ea}
 .fd .tre-foot{font-size:.72rem;color:var(--muted);margin-top:.5rem;line-height:1.45}
+.fd .best{border:1px solid var(--line);border-top:3px solid #f5dfa6;border-radius:10px;background:#fff;padding:.7rem .8rem;margin-bottom:12px}
+.fd .best-sub{font-size:.8rem;color:var(--muted);margin-bottom:.4rem}
+.fd .best-chart{position:relative}
+.fd .best table{width:100%;border-collapse:collapse;font-size:.8rem;font-variant-numeric:tabular-nums;white-space:nowrap;margin-top:.6rem}
+.fd .best th{background:var(--ink);color:#fff;font-weight:600;padding:.35rem .45rem;text-align:right}
+.fd .best th:nth-child(2),.fd .best td:nth-child(2),.fd .best th:nth-child(10),.fd .best td:nth-child(10),.fd .best td:nth-child(5),.fd .best th:nth-child(5){text-align:left}
+.fd .best td{padding:.26rem .45rem;text-align:right;border-bottom:1px solid var(--line)}
+.fd .best td:nth-child(2){font-weight:700}
+.fd .best tr:hover td{background:#fdf8ea}
+.fd .best-method{font-size:.78rem;color:var(--ink);line-height:1.5;margin-top:.7rem}
+.fd .best-method h4{font-size:.85rem;margin:.6rem 0 .2rem;color:#b0833a}
+.fd .best-method ol,.fd .best-method ul{margin:.2rem 0 .2rem 1.1rem;padding:0}
+.fd .best-method .src{font-size:.74rem;color:var(--muted)}
 .fd .debtclock{border:1px solid #f1d0d0;border-left:4px solid #e07a7a;background:#fdf6f5;border-radius:10px;padding:.6rem 1rem;margin-bottom:12px;text-align:center}
 .fd .debtclock .lab{font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;color:#b25a5a;font-weight:700}
 .fd .debtclock .num{font:700 2.4rem/1.15 "SFMono-Regular",Menlo,Consolas,monospace;color:#c0392b;letter-spacing:.02em;font-variant-numeric:tabular-nums;margin:.15rem 0}
@@ -392,6 +405,15 @@ _________________________</p>
   </div>
   <h2>Markets</h2>
   <div class="grid" id="fd-prices"></div>
+  <h2>Current Best Buy</h2>
+  <div class="best">
+    <div class="best-sub">Every asset compared against every other one, pair by pair. Score = share of head-to-head pairs won, based on expected return to its price target plus how cheap the pair ratio is versus its own 3-year history. Updates with every price refresh.</div>
+    <div class="best-chart"><canvas id="best-chart"></canvas></div>
+    <div class="tre-wrap"><table id="best-table"><thead><tr>
+      <th>#</th><th>Ticker</th><th>Price</th><th>Target (low / base / high)</th><th>By</th><th>CAGR base (low / high)</th><th>Price / target</th><th>Pairs won</th><th>Avg pair edge</th><th>Most discounted vs</th>
+    </tr></thead><tbody></tbody></table></div>
+    <div class="best-method" id="best-method"></div>
+  </div>
   <h2>Economy</h2>
   <div class="debtclock"><div class="lab">U.S. National Debt</div>
     <div class="num" id="fd-debt">$—</div>
@@ -415,7 +437,8 @@ _________________________</p>
   var years = 3, tf = "D", logScale = true, DATA = null, charts = [];
   var FEATURED = [];
   var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "AMD", "NVDA", "MU", "FWDI", "DFDV", "UPXI", "MP", "BZ=F", "GC=F", "SLV", "SILJ", "UUUU", "HG=F", "ETH-USD"];
-  var PAIRS = [["MSTR", "BTC-USD"], ["SOL-USD", "BTC-USD"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["AVGO", "NVDA"], ["NVDA", "MU"], ["TSLA", "SPCX"], ["SLV", "GLD"], ["HG=F", "SLV"], ["SPY", "GLD"], ["SOL-USD", "ETH-USD"]];
+  var TREASURY_T = ["MSTR", "MTPLF", "MARA", "CLSK", "RIOT", "HUT", "GLXY", "COIN", "SPCX", "TSLA", "FWDI", "DFDV", "UPXI", "SKYA", "HSDT"];
+  var PAIRS = [["ETH-USD", "BTC-USD"], ["BTC-USD", "GC=F"], ["FWDI", "SOL-USD"], ["MSTR", "BTC-USD"], ["SOL-USD", "BTC-USD"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["AVGO", "NVDA"], ["NVDA", "MU"], ["TSLA", "SPCX"], ["SLV", "GLD"], ["HG=F", "SLV"], ["SPY", "GLD"], ["SOL-USD", "ETH-USD"]];
   var SHORT = {"BTC-USD": "BTC", "SOL-USD": "SOL", "BZ=F": "Brent", "GC=F": "Gold", "HG=F": "Copper", "ETH-USD": "ETH"};
   var sel = "BTC-USD";
   function sn(sym) { return SHORT[sym] || sym; }
@@ -514,6 +537,7 @@ _________________________</p>
     ex.innerHTML = '<div class="t"><span class="n">' + title + '</span><span class="v">' + val + '</span></div><div class="c">' + note + '</div>' +
       '<div class="tabs"><span class="lab">Tickers</span>' + SINGLES.map(function (k) { return '<button data-k="' + k + '"' + (k === sel ? ' class="on"' : '') + '>' + sn(k) + '</button>'; }).join("") + '</div>' +
       '<div class="tabs"><span class="lab">Pairs</span>' + PAIRS.map(function (p) { var k = p[0] + "/" + p[1]; return '<button class="pair' + (k === sel ? ' on' : '') + '" data-k="' + k + '">' + sn(p[0]) + "/" + sn(p[1]) + '</button>'; }).join("") + '</div>' +
+      '<div class="tabs"><span class="lab">Treasury companies</span>' + TREASURY_T.filter(function (k) { return DATA.prices[k]; }).map(function (k) { return '<button data-k="' + k + '"' + (k === sel ? ' class="on"' : '') + '>' + sn(k) + '</button>'; }).join("") + '</div>' +
       '<canvas id="ex"></canvas>';
     P.appendChild(ex);
     ex.querySelectorAll("button[data-k]").forEach(function (b) { b.onclick = function () { sel = b.dataset.k; render(); }; });
@@ -528,7 +552,7 @@ _________________________</p>
     });
   }
   function strip() {
-    document.getElementById("fd-strip").innerHTML = Object.keys(DATA.prices).map(function (sym) {
+    document.getElementById("fd-strip").innerHTML = Object.keys(DATA.prices).filter(function (sym) { return !DATA.prices[sym].group; }).map(function (sym) {
       var pts = DATA.prices[sym].points; return "<span id=\"st-" + sym + "\"><b>" + sn(sym) + "</b> " + fmtMoney(pts[pts.length - 1][1]) + " " + chg(pctChange(pts, 1)) + "</span>";
     }).join("");
   }
@@ -588,6 +612,92 @@ _________________________</p>
       .then(function (d) { if (+d.last) { treSolP = +d.last; treRender(); } }).catch(function () {});
   }
   setInterval(treLive, 60000);
+
+  // ---------- Current Best Buy: pairwise ranking against price targets ----------
+  var bestChart = null;
+  var RV_WEIGHT = 0.20;   // a pair ratio at its 3-year low adds +10 points of annual return (at its high, -10)
+  function yearsTo(h) { return h === "12m" ? 1 : Math.max(0.25, (Date.parse(h + "-12-31T00:00:00Z") - Date.now()) / 3.15576e10); }
+  function cagr(p, t, y) { return t > 0 ? Math.pow(t / p, 1 / y) - 1 : -1; }
+  function median(a) { a = a.slice().sort(function (x, y) { return x - y; }); var m = a.length >> 1; return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2; }
+  function lastPx(k) { var p = DATA.prices[k].points; return p[p.length - 1][1]; }
+  function ratioPct(a, b) {   // where today's a/b ratio sits in its own 3-year range (0 = lowest, 1 = highest)
+    var r = ratio(a, b); if (r.length < 250) return 0.5;
+    var cutoff = new Date(Date.parse(r[r.length - 1][0]) - 3 * 3.15576e10).toISOString().slice(0, 10);
+    r = r.filter(function (p) { return p[0] >= cutoff; }); var last = r[r.length - 1][1], below = 0;
+    r.forEach(function (p) { if (p[1] <= last) below++; }); return below / r.length;
+  }
+  function bestBuy() {
+    var T = DATA.targets, trow = {}; if (!T) return;
+    (DATA.treasury ? DATA.treasury.rows : []).forEach(function (r) { trow[r.t] = r; });
+    var univ = SINGLES.concat(TREASURY_T).filter(function (k, i, a) { return a.indexOf(k) === i && DATA.prices[k]; });
+    var rows = [], skipped = [];
+    univ.forEach(function (k) {
+      var t = T[k]; if (!t) { skipped.push(k); return; }
+      var px = lastPx(k), lo, base, hi, h = t.horizon, kind = t.kind, extra = "";
+      if (kind === "nav") {   // treasury company: coin target x coins per share x assumed 2030 NAV multiple
+        var tr = trow[k], c = T[t.coin]; if (!tr || !tr.shares || !c) { skipped.push(k); return; }
+        var cps = tr.qty / tr.shares, mnav = px / (cps * lastPx(t.coin)), m30 = Math.sqrt(mnav);
+        lo = c.low * cps * m30; base = c.base * cps * m30; hi = c.high * cps * m30; h = c.horizon;
+        if (t.extra) base = median([base].concat(t.extra));
+        extra = "NAV " + mnav.toFixed(2) + "x now, assumed " + m30.toFixed(2) + "x in " + h;
+      } else if (kind === "proxy") {
+        var k2 = px / lastPx(t.of); lo = t.low * k2; base = t.base * k2; hi = t.high * k2;
+      } else { lo = t.low; base = t.base; hi = t.high; }
+      var y = yearsTo(h);
+      rows.push({ k: k, px: px, lo: lo, base: base, hi: hi, h: h, kind: kind, extra: extra,
+                  c: cagr(px, base, y), cl: cagr(px, lo, y), ch: cagr(px, hi, y), pt: px / base });
+    });
+    // head-to-head pairs
+    rows.forEach(function (a) { a.wins = 0; a.edgeSum = 0; a.bestVs = null; a.minPct = 2; });
+    for (var i = 0; i < rows.length; i++) for (var j = i + 1; j < rows.length; j++) {
+      var a = rows[i], b = rows[j], pct = ratioPct(a.k, b.k);
+      var e = (a.c - b.c) + RV_WEIGHT * (0.5 - pct);   // edge of a over b; b over a is -e
+      if (e > 0) a.wins++; else b.wins++;
+      a.edgeSum += e; b.edgeSum -= e;
+      if (pct < a.minPct) { a.minPct = pct; a.bestVs = b.k; }
+      if (1 - pct < b.minPct) { b.minPct = 1 - pct; b.bestVs = a.k; }
+    }
+    var n = rows.length - 1;
+    rows.forEach(function (r) { r.win = r.wins / n; r.edge = r.edgeSum / n; });
+    rows.sort(function (a, b) { return b.win - a.win || b.edge - a.edge; });
+    // chart
+    var cv = document.getElementById("best-chart");
+    cv.parentNode.style.height = (rows.length * 19 + 40) + "px";
+    if (bestChart) bestChart.destroy();
+    bestChart = new Chart(cv, { type: "bar",
+      data: { labels: rows.map(function (r) { return sn(r.k); }),
+              datasets: [{ data: rows.map(function (r) { return Math.round(r.win * 1000) / 10; }),
+                           backgroundColor: rows.map(function (r) { return r.win >= 0.5 ? "rgba(79,157,105," + (0.35 + 0.6 * (r.win - 0.5) * 2) + ")" : "rgba(224,122,122," + (0.35 + 0.6 * (0.5 - r.win) * 2) + ")"; }),
+                           borderRadius: 3 }] },
+      options: { indexAxis: "y", responsive: true, maintainAspectRatio: false, animation: false,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { var r = rows[c.dataIndex];
+          return "Won " + r.wins + " of " + n + " pairs; CAGR " + (r.c * 100).toFixed(1) + "%; avg edge " + (r.edge * 100).toFixed(1) + " pts"; } } } },
+        scales: { x: { min: 0, max: 100, ticks: { callback: function (v) { return v + "%"; }, color: "#6b7686", font: { size: 10 } }, grid: { color: "#eef1f5" },
+                       title: { display: true, text: "Head-to-head pairs won", color: "#6b7686", font: { size: 11 } } },
+                  y: { ticks: { color: "#2d3a4a", font: { size: 11, weight: "600" } }, grid: { display: false } } } } });
+    // table
+    function pc(v) { return (v * 100).toFixed(1) + "%"; }
+    function m(v) { return v >= 1000 ? money(v) : "$" + v.toPrecision(v < 1 ? 3 : 4); }
+    document.querySelector("#best-table tbody").innerHTML = rows.map(function (r, i) {
+      var byLab = r.kind === "consensus" ? "12 mo (consensus)" : r.kind === "nav" ? r.h + " (NAV method)" : r.h;
+      return '<tr title="' + (DATA.prices[r.k].name || r.k) + (r.extra ? " - " + r.extra : "") + '"><td>' + (i + 1) + "</td><td>" + sn(r.k) + "</td><td>" + m(r.px) + "</td><td>" + m(r.lo) + " / <b>" + m(r.base) + "</b> / " + m(r.hi) +
+        "</td><td>" + byLab + "</td><td><b>" + pc(r.c) + "</b> (" + pc(r.cl) + " / " + pc(r.ch) + ")</td><td>" + r.pt.toFixed(3) + "</td><td>" + r.wins + "/" + n + " (" + Math.round(r.win * 100) + "%)</td><td>" +
+        (r.edge >= 0 ? "+" : "") + (r.edge * 100).toFixed(1) + " pts</td><td>" + (r.bestVs ? sn(r.bestVs) + " (" + Math.round(r.minPct * 100) + "th pct)" : "") + "</td></tr>";
+    }).join("");
+    // methods + sources
+    var src = Object.keys(T).filter(function (k) { return T[k].sources && T[k].sources.length && DATA.prices[k]; }).map(function (k) {
+      return "<li><b>" + sn(k) + ":</b> " + T[k].sources.map(function (x) { return x[2] ? '<a href="' + x[2] + '" target="_blank" rel="noopener">' + x[0] + "</a>: " + x[1] : x[0] + ": " + x[1]; }).join("; ") + "</li>";
+    }).join("");
+    document.getElementById("best-method").innerHTML =
+      "<h4>Method</h4><ol>" +
+      "<li><b>Price target range.</b> For each asset the low, base and high target come from the sources below. Base = the median of the published base cases (2030 where one exists); low and high = the lowest bear and highest bull case.</li>" +
+      "<li><b>Expected return (CAGR).</b> (base target / today's price)^(1 / years to the target date) - 1, using Dec 31 of the target year. Assets with no long-range target use the analysts' 12-month consensus as a 1-year return, so they are compared on the same per-year basis (these are shorter-range and usually more conservative).</li>" +
+      "<li><b>Treasury companies (NAV method).</b> Target = the coin's target x coins held per share x an assumed NAV multiple. The multiple is assumed to move halfway (in log terms) from today's toward 1.0x by the target year, e.g. 0.49x becomes 0.70x and 4x becomes 2x. This ignores future dilution, debt and new coin purchases. For MSTR the result is averaged with InvestAnswers' 2030 target.</li>" +
+      "<li><b>Pairs.</b> Every asset is compared with every other (" + (rows.length * (rows.length - 1) / 2) + " pairs). Edge of A over B = A's CAGR - B's CAGR + " + (RV_WEIGHT * 100) + " x (0.5 - where the A/B ratio sits in its 3-year range). A ratio at its 3-year low adds up to +" + (RV_WEIGHT * 50) + " points, at its high up to -" + (RV_WEIGHT * 50) + ". Pairs with under a year of shared history count as neutral.</li>" +
+      "<li><b>Ranking.</b> Share of head-to-head pairs won, then average edge. \"Price / target\" below 1 means the price is under the base target (lower = more upside). \"Most discounted vs\" is the asset whose pair ratio is lowest in its own 3-year range.</li>" +
+      "<li><b>Limits.</b> Targets are other people's forecasts and change often; long-range targets are far more uncertain than 12-month ones, and mixing them favors assets with bold long-range calls (crypto, Tesla). " + (skipped.length ? "Not ranked (no credible target found): " + skipped.map(sn).join(", ") + ". " : "") + "Not investment advice.</li></ol>" +
+      "<h4>Price targets and sources</h4><ul class=\"src\">" + src + "</ul>";
+  }
   // Debt clock: latest Treasury "Debt to the Penny" figure, run forward at its average pace over the past year
   function debtClock(dc) {
     if (!dc) return;
@@ -601,6 +711,7 @@ _________________________</p>
   fetch("data/markets.json?v=" + Date.now()).then(function (r) { return r.json(); }).then(function (d) {
     DATA = d; document.getElementById("fd-updated").textContent = "Updated " + d.updated + " · market data refreshed every 15 minutes; bitcoin and S&P futures stream live";
     strip(); render(); cryptoLive(); debtClock(d.debt_clock);
+    try { bestBuy(); } catch (e) { console.log("best buy", e); }
     if (d.treasury) { TRE = d.treasury; var bp = d.prices["BTC-USD"].points, sp = d.prices["SOL-USD"].points; treBtc = bp[bp.length - 1][1]; treSolP = sp[sp.length - 1][1]; treRender(); treLive(); }
   }).catch(function () { document.getElementById("fd-updated").textContent = "Data could not be loaded."; });
 })();
