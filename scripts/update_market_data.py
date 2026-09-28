@@ -56,40 +56,40 @@ TREASURY_HIST = [("MTPLF", "Metaplanet (MTPLF)"), ("RIOT", "Riot Platforms"), ("
                  ("GLXY", "Galaxy Digital"), ("HSDT", "Solana Company (HSDT)")]
 AUX = [("SI=F", "Silver (futures, $/oz)")]   # used only to convert silver targets to SLV
 
-# Price targets for the "Current Best Buy" ranking. Every ranked asset needs 3+ independent forecasters.
-# Each source: (forecaster, base, low, high); low/high may be None. Target range = lowest low/base to
-# highest high/base across sources; median = median of the base cases. n = number of forecasters.
-#   kind "long": horizon year;  "consensus": 12-month analyst consensus (n = analyst count);
+# Price targets for the "Current Best Buy" ranking (checked 2026-09-28).
+# Rules: base cases only (no bear/bull scenarios); forecasters are analysts/firms, not media in-house
+# estimates; published within the last two years; at least 3 forecasters per ranked asset.
+# Range = lowest to highest base case; median = median of base cases; n = number of forecasters.
+#   kind "long": horizon year;  "consensus": 12-month analyst consensus (n = analyst count, MarketBeat);
 #   "nav": treasury company derived from its coin's target;  "proxy": underlying target converted at today's ratio.
 import statistics
 def T(kind, horizon, srcs, **kw):
-    bases = [b for _, b, _, _ in srcs if b is not None]
-    lows = [x for _, b, lo, _ in srcs for x in (lo, b) if x is not None]
-    highs = [x for _, b, _, hi in srcs for x in (hi, b) if x is not None]
-    d = {"kind": kind, "horizon": horizon, "n": len(srcs), "low": min(lows), "base": round(statistics.median(bases), 4),
-         "high": max(highs), "by": [x[0] for x in srcs]}
+    b = [v for _, v in srcs]
+    d = {"kind": kind, "horizon": horizon, "n": len(srcs), "low": min(b), "base": round(statistics.median(b), 4),
+         "high": max(b), "by": [x[0] for x in srcs]}
     d.update(kw); return d
-def C(n, avg, lo, hi, **kw):   # 12-month consensus from n analysts (MarketBeat, late Sep 2026)
+def C(n, avg, lo, hi, **kw):
     d = {"kind": "consensus", "horizon": "12m", "n": n, "low": lo, "base": avg, "high": hi, "by": ["%d analysts" % n]}
     d.update(kw); return d
 SPX = 10.02   # SPY is about the S&P 500 divided by 10.02
 TARGETS = {
-    "BTC-USD": T("long", 2030, [("InvestAnswers", 622782, None, None), ("ARK Invest", 710000, 300000, 1500000),
-                                ("Standard Chartered", 500000, None, None), ("Willy Woo (3-5 yr range midpoint)", 410000, 220000, 600000)]),
-    "ETH-USD": T("long", 2030, [("Standard Chartered", 40000, None, None), ("VanEck", 22000, 360, 154000),
-                                ("Fundstrat / Tom Lee", 22000, 12000, 62500), ("Bitwise", 10000, None, None),
-                                ("Finder expert panel", 11712, None, None), ("24/7 Wall St", 10000, 1500, 40000)]),
-    "SOL-USD": T("long", 2030, [("InvestAnswers", 2153, None, None), ("Standard Chartered", 2000, None, None),
-                                ("VanEck", 334.70, 9.81, 3211), ("Bitwise", None, 2318.90, 6636.88),
-                                ("Finder expert panel", 892, None, None), ("24/7 Wall St", 340, 330, 350)]),
-    "TSLA": T("long", 2030, [("InvestAnswers", 4794, 2567, None), ("ARK Invest (2029)", 2600, 2000, 3100), ("Baron Capital", 1500, None, None)],
-              c12=411.89, c12n=46),
-    "SPY": T("long", 2030, [("Yardeni (2029)", round(10000 / SPX, 2), None, None), ("Trivariate / Adam Parker", round(10000 / SPX, 2), None, None),
-                            ("Sanctuary Wealth", round(10000 / SPX, 2), None, round(13000 / SPX, 2))]),
-    "GC=F": T("long", 2030, [("Bernstein", 5600, None, None), ("Yardeni (end-2029)", 10000, None, None), ("JPMorgan (long-term)", 4500, None, None)]),
-    "SLV": T("proxy", 2027, [("UBS", 80, None, None), ("HSBC", 68, 65, None), ("BofA", 75, None, None), ("TD Securities", 70, None, None),
-                             ("OCBC", 95, None, None), ("JPMorgan", 63.90, None, None)], of="SI=F"),
-    "HG=F": T("long", 2027, [("UBS", 7.03, None, None), ("BofA", 6.12, None, 6.80), ("Macquarie", 4.99, None, None), ("Deutsche Bank", 10.00, None, None)]),
+    # BTC: InvestAnswers 2030 "sandbag" table (Tyler's screenshot), ARK Big Ideas 2026 base, Standard Chartered end-2030,
+    #      Willy Woo River-model range $220k-600k for 2029-31 (midpoint)
+    "BTC-USD": T("long", 2030, [("InvestAnswers", 622782), ("ARK Invest", 710000), ("Standard Chartered", 500000), ("Willy Woo", 410000)]),
+    # ETH: Standard Chartered 2030; Bitwise "$10k+ by end of decade" (Nov 2025); Finder panel end-2030 (May 2026)
+    "ETH-USD": T("long", 2030, [("Standard Chartered", 40000), ("Bitwise", 10000), ("Finder expert panel", 8488)]),
+    # SOL: InvestAnswers 2030; Standard Chartered 2030; Finder panel end-2030 (Apr 2025)
+    "SOL-USD": T("long", 2030, [("InvestAnswers", 2153), ("Standard Chartered", 2000), ("Finder expert panel", 892)]),
+    # S&P 500: Yardeni 10,000 end-2029; Trivariate 10,000 by 2030; Sanctuary 10,000-13,000 by 2030 (midpoint)
+    "SPY": T("long", 2030, [("Yardeni", round(10000 / SPX, 2)), ("Trivariate", round(10000 / SPX, 2)), ("Sanctuary Wealth", round(11500 / SPX, 2))]),
+    # Gold $/oz: Bernstein 2030 (Sep 2026); Yardeni end-2029; JPMorgan long-term
+    "GC=F": T("long", 2030, [("Bernstein", 5600), ("Yardeni", 10000), ("JPMorgan", 4500)]),
+    # Silver $/oz, 2027: UBS Sep-2027; HSBC 2027 avg; BofA Q2-2027; OCBC Sep-2027 ($64-74 midpoint, Jul 2026); JPMorgan 2027 avg
+    "SLV": T("proxy", 2027, [("UBS", 80), ("HSBC", 68), ("BofA", 75), ("OCBC", 69), ("JPMorgan", 63.90)], of="SI=F"),
+    # Copper $/lb, 2027: UBS $15,500/t (Jun-2027); BofA $13,501/t 2027 avg; Deutsche Bank $22,050/t Q2-2027 (bullish call)
+    "HG=F": T("long", 2027, [("UBS", 7.03), ("BofA", 6.12), ("Deutsche Bank", 10.00)]),
+    # TSLA: no 3 current long-range forecasters (ARK 2029 model is from 2024; Baron's $1,500 from 2023), so 12-month consensus
+    "TSLA": C(46, 411.89, 25.28, 840),
     "SPCX": C(44, 219.24, 75, 800),
     "MSTR": {"kind": "nav", "coin": "BTC-USD", "extra": [2489], "c12": 239.88, "c12n": 19},
     "MTPLF": {"kind": "nav", "coin": "BTC-USD"},

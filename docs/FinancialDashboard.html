@@ -640,7 +640,7 @@ _________________________</p>
         var tr = trow[k], c = T[t.coin]; if (!tr || !tr.shares || !c || c.n < 3) { skipped.push(k); return; }
         var cps = tr.qty / tr.shares, mnav = px / (cps * lastPx(t.coin)), m30 = Math.sqrt(mnav);
         lo = c.low * cps * m30; base = c.base * cps * m30; hi = c.high * cps * m30; h = c.horizon;
-        if (t.extra) base = median([base].concat(t.extra));
+        if (t.extra) { base = median([base].concat(t.extra)); lo = Math.min.apply(null, [lo].concat(t.extra)); hi = Math.max.apply(null, [hi].concat(t.extra)); }
         extra = "NAV " + mnav.toFixed(2) + "x now, assumed " + m30.toFixed(2) + "x in " + h;
       } else if (kind === "proxy") {
         var k2 = px / lastPx(t.of); lo = t.low * k2; base = t.base * k2; hi = t.high * k2;
@@ -699,7 +699,7 @@ _________________________</p>
     }).join("");
     document.getElementById("best-method").innerHTML =
       "<h4>How it works</h4><ol>" +
-      "<li><b>Targets.</b> Low, median and high price targets per asset, with the % move from today's price. Every ranked asset has at least 3 independent forecasters (n = how many); the median is the median of their base cases. Under the median: the target date (\"12 mo\" = analyst 12-month consensus only).</li>" +
+      "<li><b>Targets.</b> Low, median and high = the lowest, middle and highest <i>base-case</i> target among the forecasters (bear and bull scenarios are not used), with the % move from today's price. Every ranked asset has at least 3 independent forecasters (n = how many), all analysts or firms publishing within the last two years. For 12-month consensus assets, low and high are the lowest and highest individual analyst targets. Under the median: the target date (\"12 mo\" = analyst 12-month consensus).</li>" +
       "<li><b>Avg 12-mo return</b> = the 12-month analyst consensus vs today's price where one exists; otherwise the yearly pace implied by the long-range target (marked /yr). <b>Avg 2030 return</b> = total move from today to the median target (n/a where only a 12-month target exists). <b>CAGR</b> = yearly return to the median target.</li>" +
       "<li><b>Treasury companies.</b> Target = coin target x coins per share x an assumed NAV multiple halfway (log terms) between today's and 1.0x. <b>At NAV 1.0x</b> shows what today's share price is worth in coin terms, and the share price if the coin hits its median target and the stock trades at exactly its holdings.</li>" +
       "<li><b>Pairs.</b> Each asset vs every other: edge = difference in CAGR + up to +/-10 points when the pair ratio sits at the low/high of its 3-year range. Ranked by share of pairs won (average edge underneath). \"Cheapest vs\" = the asset it is most discounted against, by 3-year percentile.</li>" +
