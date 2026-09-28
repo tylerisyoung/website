@@ -310,8 +310,11 @@ CSVs) and refreshed every day by the GitHub Action in
 .fd .sub{color:var(--muted);font-size:.85rem;margin-bottom:1rem}
 .fd .strip{display:flex;flex-wrap:wrap;gap:.3rem .9rem;padding:.45rem .8rem;border:1px solid var(--line);border-radius:10px;background:#fafbfd;margin-bottom:.6rem;font-size:.8rem}
 .fd .strip b{font-weight:600}.fd .up{color:var(--green)}.fd .dn{color:#c75b5b}
-.fd .ctrl{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:.2rem 0 1rem}
-.fd .ctrl button{border:1px solid var(--line);background:#fff;border-radius:6px;padding:.25rem .7rem;font-size:.82rem;color:var(--ink);cursor:pointer}
+.fd .ctrl{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.45rem;margin:.3rem 0 1rem}
+.fd .ctrl .lab{font-size:.88rem;color:#6b7686}
+.fd .paradigm{text-align:center;max-width:860px;margin:.2rem auto .8rem;font-size:.9rem;line-height:1.5;color:var(--ink);padding:.55rem 1rem;border-top:1px solid #f5dfa6;border-bottom:1px solid #f5dfa6}
+.fd .paradigm b{color:#b0833a}
+.fd .ctrl button{border:1px solid var(--line);background:#fff;border-radius:6px;padding:.32rem .85rem;font-size:.92rem;color:var(--ink);cursor:pointer}
 .fd .ctrl button.on{background:var(--blue);border-color:var(--blue);color:#fff}
 .fd .ctrl button:hover,.fd .explorer .tabs button:hover{background:#fdf3d8}
 .fd .ctrl .sep{width:1px;height:20px;background:var(--line);margin:0 .3rem}
@@ -345,8 +348,12 @@ CSVs) and refreshed every day by the GitHub Action in
     </script></div>
   </div>
   <div class="strip" id="fd-strip"></div>
+  <div class="paradigm"><b>Current Market Paradigm:</b> Rates remain restrictive but the market prevails while bonds are waving the white flag and saying something's got to give. Inflation expectations remain high, but deflation narratives could take over quickly after the AI buildout. Currently dollar cost averaging into key assets of the future regardless, with a focus on BTC, crypto, AI, and space; looking for LEAP opportunities on those assets, and using a rotational model to layer in and layer out at key regression levels.</div>
   <div class="ctrl">
-    <span style="font-size:.8rem;color:#6b7686">Range</span>
+    <span class="lab">Timeframe</span>
+    <button data-tf="D" class="on">Daily</button><button data-tf="W">Weekly</button><button data-tf="M">Monthly</button>
+    <span class="sep"></span>
+    <span class="lab">Range</span>
     <button data-r="1">1Y</button><button data-r="3" class="on">3Y</button><button data-r="5">5Y</button><button data-r="0">All</button>
     <span class="sep"></span>
     <button id="fd-log" class="on">Log scale (prices)</button>
@@ -364,11 +371,11 @@ CSVs) and refreshed every day by the GitHub Action in
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
 (function () {
-  var years = 3, logScale = true, DATA = null, charts = [];
+  var years = 3, tf = "D", logScale = true, DATA = null, charts = [];
   var FEATURED = [];
-  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "AMD", "NVDA", "MU", "FWDI", "DFDV", "UPXI", "MP", "BZ=F"];
-  var PAIRS = [["BTC-USD", "MSTR"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["NVDA", "MU"], ["TSLA", "SPCX"]];
-  var SHORT = {"BTC-USD": "BTC", "SOL-USD": "SOL", "BZ=F": "Brent"};
+  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "AMD", "NVDA", "MU", "FWDI", "DFDV", "UPXI", "MP", "BZ=F", "GC=F", "SLV", "SILJ", "UUUU", "CCJ", "ETH-USD"];
+  var PAIRS = [["BTC-USD", "MSTR"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["NVDA", "MU"], ["TSLA", "SPCX"], ["GC=F", "SLV"], ["SOL-USD", "ETH-USD"]];
+  var SHORT = {"BTC-USD": "BTC", "SOL-USD": "SOL", "BZ=F": "Brent", "GC=F": "Gold", "ETH-USD": "ETH"};
   var sel = "BTC-USD";
   function sn(sym) { return SHORT[sym] || sym; }
   function ratio(a, b) {           // a / b on the dates both traded
@@ -393,6 +400,18 @@ CSVs) and refreshed every day by the GitHub Action in
     var s = d.toISOString().slice(0, 10);
     return points.filter(function (p) { return p[0] >= s; });
   }
+  // Weekly / monthly timeframe: keep the last value in each week (Mon-Sun) or month
+  function resample(points) {
+    if (tf === "D") return points;
+    var out = [], key = null;
+    points.forEach(function (p) {
+      var k;
+      if (tf === "M") k = p[0].slice(0, 7);
+      else { var d = new Date(p[0] + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); k = d.toISOString().slice(0, 10); }
+      if (k === key) out[out.length - 1] = p; else { out.push(p); key = k; }
+    });
+    return out;
+  }
   function pctChange(points, daysBack) {
     var last = points[points.length - 1], d = new Date(last[0]); d.setDate(d.getDate() - daysBack);
     var s = d.toISOString().slice(0, 10), base = null;
@@ -406,7 +425,7 @@ CSVs) and refreshed every day by the GitHub Action in
     el.appendChild(c); return document.getElementById(id);
   }
   function draw(canvas, points, opts) {
-    var pts = cut(points);
+    var pts = resample(cut(points));
     var bar = opts.bar, color = opts.color || "#3d6fd6";
     return new Chart(canvas, {
       type: bar ? "bar" : "line",
@@ -468,6 +487,9 @@ CSVs) and refreshed every day by the GitHub Action in
       var pts = DATA.prices[sym].points; return "<span id=\"st-" + sym + "\"><b>" + sn(sym) + "</b> " + fmtMoney(pts[pts.length - 1][1]) + " " + chg(pctChange(pts, 1)) + "</span>";
     }).join("");
   }
+  document.querySelectorAll(".fd .ctrl button[data-tf]").forEach(function (b) {
+    b.onclick = function () { document.querySelectorAll(".fd .ctrl button[data-tf]").forEach(function (x) { x.classList.remove("on"); }); b.classList.add("on"); tf = b.dataset.tf; render(); };
+  });
   document.querySelectorAll(".fd .ctrl button[data-r]").forEach(function (b) {
     b.onclick = function () { document.querySelectorAll(".fd .ctrl button[data-r]").forEach(function (x) { x.classList.remove("on"); }); b.classList.add("on"); years = +b.dataset.r; render(); };
   });

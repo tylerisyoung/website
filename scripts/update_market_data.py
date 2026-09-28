@@ -14,7 +14,9 @@ TICKERS = [("BTC-USD", "Bitcoin"), ("SPY", "S&P 500 (SPY)"),
            ("SOL-USD", "Solana"), ("MSTR", "Strategy (MSTR)"), ("TSLA", "Tesla"), ("SPCX", "SpaceX (SPCX)"),
            ("AVGO", "Broadcom"), ("AMD", "AMD"), ("NVDA", "Nvidia"), ("MU", "Micron (MU)"),
            ("FWDI", "Forward Industries (FWDI)"), ("DFDV", "DeFi Development (DFDV)"), ("UPXI", "Upexi (UPXI)"),
-           ("MP", "MP Materials"), ("BZ=F", "Brent crude oil")]
+           ("MP", "MP Materials"), ("BZ=F", "Brent crude oil"),
+           ("GC=F", "Gold (futures)"), ("SLV", "Silver (SLV)"), ("SILJ", "Junior silver miners (SILJ)"),
+           ("UUUU", "Energy Fuels (UUUU)"), ("CCJ", "Cameco (CCJ)"), ("ETH-USD", "Ethereum")]
 
 def get(url, headers, tries=3):
     for i in range(tries):
@@ -77,7 +79,7 @@ def main():
             "walcl":    {"name": "Fed balance sheet (total assets)", "unit": "$T", "points": since(walcl)},
             "icsa":     {"name": "Initial jobless claims (weekly)", "unit": "thousands", "points": since(icsa)},
             "cpi_yoy":  {"name": "CPI inflation (year over year)", "unit": "%", "points": since(yoy)},
-            "shadow":   {"name": "ShadowStats-style alternate inflation (estimate)", "unit": "% y/y; official CPI + 7 pts, the typical gap to ShadowStats' 1980-method series since the late 1990s (Saville, TSI 2015); the real series is subscription-only", "points": [[d, round(v + 7, 2)] for d, v in since(yoy)]},
+            "shadow":   {"name": "ShadowStats-style alternate inflation (estimate)", "unit": "% y/y; official CPI + 7 pts, the typical gap to ShadowStats' 1980-method series since the late 1990s (Saville, TSI 2015)", "points": [[d, round(v + 7, 2)] for d, v in since(yoy)]},
             "cpi_cum":  {"name": "Prices up since January 2020 (CPI, cumulative)", "unit": "% rise in the consumer price level", "points": cum},
             "real_gdp": {"name": "Real GDP", "unit": "$T (2017 dollars, annual rate)", "points": since(gdp_real)},
             "unrate":   {"name": "Unemployment rate", "unit": "%", "points": since(fred("UNRATE"))},
