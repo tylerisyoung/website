@@ -63,10 +63,12 @@ AUX = [("SI=F", "Silver (futures, $/oz)")]   # used only to convert silver targe
 #   kind "long": horizon year;  "consensus": 12-month analyst consensus (n = analyst count, MarketBeat);
 #   "nav": treasury company derived from its coin's target;  "proxy": underlying target converted at today's ratio.
 import statistics
-def T(kind, horizon, srcs, **kw):
-    b = [v for _, v in srcs]
-    d = {"kind": kind, "horizon": horizon, "n": len(srcs), "low": min(b), "base": round(statistics.median(b), 4),
-         "high": max(b), "by": [x[0] for x in srcs]}
+def T(kind, horizon, srcs, ia=None, **kw):
+    """ia = the InvestAnswers target from Tyler's photo: weighted 50%, the other forecasters' average 50%."""
+    b = [v for _, v in srcs] + ([ia] if ia else [])
+    base = 0.5 * ia + 0.5 * statistics.mean([v for _, v in srcs]) if ia else statistics.median(b)
+    d = {"kind": kind, "horizon": horizon, "n": len(b), "low": min(b), "base": round(base, 4),
+         "high": max(b), "by": [x[0] for x in srcs] + (["InvestAnswers (50% weight)"] if ia else [])}
     d.update(kw); return d
 def C(n, avg, lo, hi, **kw):
     d = {"kind": "consensus", "horizon": "12m", "n": n, "low": lo, "base": avg, "high": hi, "by": ["%d analysts" % n]}
@@ -75,19 +77,24 @@ SPX = 10.02   # SPY is about the S&P 500 divided by 10.02
 TARGETS = {
     # BTC: InvestAnswers 2030 "sandbag" table (Tyler's screenshot), ARK Big Ideas 2026 base, Standard Chartered end-2030,
     #      Willy Woo River-model range $220k-600k for 2029-31 (midpoint)
-    "BTC-USD": T("long", 2030, [("InvestAnswers", 622782), ("ARK Invest", 710000), ("Standard Chartered", 500000), ("Willy Woo", 410000)]),
+    "BTC-USD": T("long", 2030, [("ARK Invest", 710000), ("Standard Chartered", 500000), ("Willy Woo", 410000)], ia=622782),
     # ETH: Standard Chartered 2030; Bitwise "$10k+ by end of decade" (Nov 2025); Finder panel end-2030 (May 2026)
     "ETH-USD": T("long", 2030, [("Standard Chartered", 40000), ("Bitwise", 10000), ("Finder expert panel", 8488)]),
     # SOL: InvestAnswers 2030; Standard Chartered 2030; Finder panel end-2030 (Apr 2025)
-    "SOL-USD": T("long", 2030, [("InvestAnswers", 2153), ("Standard Chartered", 2000), ("Finder expert panel", 892)]),
+    "SOL-USD": T("long", 2030, [("Standard Chartered", 2000), ("Finder expert panel", 892)], ia=2153),
     # S&P 500: Yardeni 10,000 end-2029; Trivariate 10,000 by 2030; Sanctuary 10,000-13,000 by 2030 (midpoint)
     "SPY": T("long", 2030, [("Yardeni", round(10000 / SPX, 2)), ("Trivariate", round(10000 / SPX, 2)), ("Sanctuary Wealth", round(11500 / SPX, 2))]),
     # Gold $/oz: Bernstein 2030 (Sep 2026); Yardeni end-2029; JPMorgan long-term
     "GC=F": T("long", 2030, [("Bernstein", 5600), ("Yardeni", 10000), ("JPMorgan", 4500)]),
     # Silver $/oz, 2027: UBS Sep-2027; HSBC 2027 avg; BofA Q2-2027; OCBC Sep-2027 ($64-74 midpoint, Jul 2026); JPMorgan 2027 avg
-    "SLV": T("proxy", 2027, [("UBS", 80), ("HSBC", 68), ("BofA", 75), ("OCBC", 69), ("JPMorgan", 63.90)], of="SI=F"),
-    # Copper $/lb, 2027: UBS $15,500/t (Jun-2027); BofA $13,501/t 2027 avg; Deutsche Bank $22,050/t Q2-2027 (bullish call)
-    "HG=F": T("long", 2027, [("UBS", 7.03), ("BofA", 6.12), ("Deutsche Bank", 10.00)]),
+    # (no credible 2030 silver forecasts exist; banks stop at 2027. World Bank 2027 avg; Macquarie end-2027 added)
+    "SLV": T("proxy", 2027, [("UBS", 80), ("HSBC", 68), ("BofA", 75), ("OCBC", 69), ("JPMorgan", 63.90), ("World Bank", 65), ("Macquarie", 65)], of="SI=F"),
+    # Copper $/lb, 2030 / long-term: BMI $15,800/t (2030); Goldman $12,250/t (2030); JPMorgan $12,000/t (next-decade avg);
+    # Macquarie $10,200/t (long-term, 2025 dollars)
+    "HG=F": T("long", 2030, [("BMI / Fitch", 7.17), ("Goldman Sachs", 5.56), ("JPMorgan", 5.44), ("Macquarie", 4.63)]),
+    # Uranium $/lb (sector outlook for UUUU): Morgans ~$100 FY29 / $105-110 FY31 (2030 ~ $102.5); Jefferies LT $95;
+    # Macquarie base $95; Shaw and Partners LT $120; Bell Potter LT $90. Spot $89.50 (Trading Economics, Sep 25, 2026)
+    "URANIUM": T("sector", 2030, [("Morgans", 102.5), ("Jefferies", 95), ("Macquarie", 95), ("Shaw and Partners", 120), ("Bell Potter", 90)], spot=89.50),
     # TSLA: no 3 current long-range forecasters (ARK 2029 model is from 2024; Baron's $1,500 from 2023), so 12-month consensus
     "TSLA": C(46, 411.89, 25.28, 840),
     "SPCX": C(44, 219.24, 75, 800),

@@ -136,7 +136,7 @@ CSVs) and refreshed every day by the GitHub Action in
     <div class="best-sub">Every asset compared against every other one, pair by pair. Score = share of head-to-head pairs won. Updates with every price refresh.</div>
     <div class="best-chart"><canvas id="best-chart"></canvas></div>
     <div><table id="best-table"><thead><tr>
-      <th>#</th><th>Ticker</th><th>Price</th><th>Low target</th><th>Median target</th><th>High target</th><th>Avg 12-mo return</th><th>Avg 2030 return</th><th>CAGR</th><th>At NAV 1.0x</th><th>Pairs won</th><th>Cheapest vs</th>
+      <th>#</th><th>Ticker</th><th>Price</th><th>Low target</th><th>Median target</th><th>High target</th><th>Avg 12-mo return</th><th>Avg 2030 return</th><th>Expected yr return</th><th>At NAV 1.0x</th><th>Pairs won</th><th>Cheapest vs</th>
     </tr></thead><tbody></tbody></table></div>
     <div class="best-method" id="best-method"></div>
   </div>
@@ -356,9 +356,16 @@ CSVs) and refreshed every day by the GitHub Action in
     var T = DATA.targets, trow = {}; if (!T) return;
     (DATA.treasury ? DATA.treasury.rows : []).forEach(function (r) { trow[r.t] = r; });
     var univ = SINGLES.concat(TREASURY_T).filter(function (k, i, a) { return a.indexOf(k) === i && DATA.prices[k]; });
-    var rows = [], skipped = [];
+    var rows = [], skipped = [], pending = [];
+    // Assets without their own 2030 targets borrow a sector's 2030 outlook (yearly rate)
+    var SECTOR = { "UUUU": "URANIUM", "MP": "HG=F", "SILJ": "SLV", "GLXY": "BTC-USD", "RIOT": "BTC-USD", "HUT": "BTC-USD",
+                   "NVDA": "SPY", "AVGO": "SPY", "MU": "SPY", "SPCX": "SPY", "TSLA": "SPY" };
+    var SECTOR_NAME = { "URANIUM": "uranium", "HG=F": "copper", "SLV": "silver", "BTC-USD": "BTC", "SPY": "S&P 500" };
+    var y30 = yearsTo(2030);
     univ.forEach(function (k) {
-      var t = T[k]; if (!t || (t.kind !== "nav" && (t.n || 0) < 3)) { skipped.push(k); return; }
+      var t = T[k];
+      if (!t && SECTOR[k]) { pending.push(k); return; }   // no targets at all: sector outlook only (filled in below)
+      if (!t || (t.kind !== "nav" && (t.n || 0) < 3)) { skipped.push(k); return; }
       var px = lastPx(k), lo, base, hi, h = t.horizon, kind = t.kind, extra = "";
       if (kind === "nav") {   // treasury company: coin target x coins per share x assumed 2030 NAV multiple
         var tr = trow[k], c = T[t.coin]; if (!tr || !tr.shares || !c || c.n < 3) { skipped.push(k); return; }
@@ -372,13 +379,30 @@ CSVs) and refreshed every day by the GitHub Action in
       var y = yearsTo(h);
       var nav1 = null;
       if (kind === "nav") { var cp = lastPx(t.coin); nav1 = { coin: sn(t.coin), now: px / cps, tgt: c.base * cps, cbase: c.base }; }
-      var y30 = yearsTo(2030);
       var r12 = t.c12 ? t.c12 / px - 1 : (kind === "consensus" ? base / px - 1 : null);
       var r30 = kind === "consensus" ? null : Math.pow(base / px, Math.min(1, y30 / y)) - 1;
       rows.push({ k: k, px: px, lo: lo, base: base, hi: hi, h: h, kind: kind, extra: extra, nav1: nav1, r12: r12, r30: r30, y: y,
                   n: kind === "nav" ? T[t.coin].n : t.n, c12n: t.c12n || (kind === "consensus" ? t.n : null),
-                  c: cagr(px, base, y), cl: cagr(px, lo, y), ch: cagr(px, hi, y), pt: px / base });
+                  own: kind === "consensus" ? null : cagr(px, base, y), pt: px / base });
     });
+    // sector 2030 outlooks (yearly), from the sector asset's own targets
+    function sectorRate(sk) {
+      if (sk === "URANIUM") { var u = T.URANIUM; return cagr(u.spot, u.base, yearsTo(u.horizon)); }
+      var r = rows.filter(function (x) { return x.k === sk; })[0]; return r ? r.own : null;
+    }
+    pending.forEach(function (k) {
+      rows.push({ k: k, px: lastPx(k), lo: null, base: null, hi: null, h: 2030, kind: "sector", extra: "", nav1: null, r12: null, r30: null, n: null, c12n: null, own: null });
+    });
+    rows.forEach(function (r) {
+      r.sec = r.own == null && SECTOR[r.k] ? SECTOR[r.k] : null;
+      var g30 = r.own != null ? r.own : (r.sec ? sectorRate(r.sec) : null);
+      if (r.sec && g30 != null) r.r30 = Math.pow(1 + g30, y30) - 1;
+      r.g30 = g30;
+      // expected yearly return: favor 2030 (2/3) and include the 12-month consensus (1/3) when both exist
+      r.c = g30 != null && r.r12 != null ? (2 * g30 + r.r12) / 3 : (g30 != null ? g30 : r.r12);
+      r.blend = g30 != null && r.r12 != null;
+    });
+    rows = rows.filter(function (r) { if (r.c == null) { skipped.push(r.k); return false; } return true; });
     // head-to-head pairs
     rows.forEach(function (a) { a.wins = 0; a.edgeSum = 0; a.bestVs = null; a.minPct = 2; });
     for (var i = 0; i < rows.length; i++) for (var j = i + 1; j < rows.length; j++) {
@@ -416,17 +440,18 @@ CSVs) and refreshed every day by the GitHub Action in
     document.querySelector("#best-table tbody").innerHTML = rows.map(function (r, i) {
       var byLab = r.kind === "consensus" ? "12 mo" : (r.kind === "nav" ? "from " + r.nav1.coin + ", " : "") + r.h;
       var navTxt = r.nav1 ? "now = " + r.nav1.coin + " " + k$(r.nav1.now) + "<small>" + r.nav1.coin + " " + k$(r.nav1.cbase) + " = " + m(r.nav1.tgt) + "</small>" : "";
-      var r12 = r.r12 != null ? rt(r.r12) + "<small>" + r.c12n + " analysts</small>" : rt(r.c) + "<small>/yr pace</small>";
-      var r30 = r.r30 != null ? rt(r.r30) + (r.h !== 2030 ? "<small>to " + r.h + "</small>" : "") : '<span class="pct">n/a</span>';
-      return '<tr title="' + (DATA.prices[r.k].name || r.k) + (r.extra ? " - " + r.extra : "") + '"><td>' + (i + 1) + "</td><td>" + sn(r.k) + "</td><td>" + m(r.px) + "</td><td>" + tp(r.lo, r.px) + "</td><td><b>" + m(r.base) + "</b><small>" + byLab + ", n=" + r.n + "</small></td><td>" + tp(r.hi, r.px) +
-        "</td><td>" + r12 + "</td><td>" + r30 + "</td><td>" + pc(r.c) + "</td><td>" + navTxt + "</td><td>" + r.wins + "/" + n + "<small>" + (r.edge >= 0 ? "+" : "") + (r.edge * 100).toFixed(1) + " pts</small></td><td>" + (r.bestVs ? sn(r.bestVs) + "<small>" + Math.round(r.minPct * 100) + "th pct</small>" : "") + "</td></tr>";
+      var r12 = r.r12 != null ? rt(r.r12) + "<small>" + r.c12n + " analysts</small>" : '<span class="pct">n/a</span>';
+      var r30 = r.r30 != null ? rt(r.r30) + (r.sec ? "<small>via " + SECTOR_NAME[r.sec] + " outlook</small>" : (r.h !== 2030 ? "<small>to " + r.h + "</small>" : "")) : '<span class="pct">n/a</span>';
+      return '<tr title="' + (DATA.prices[r.k].name || r.k) + (r.extra ? " - " + r.extra : "") + '"><td>' + (i + 1) + "</td><td>" + sn(r.k) + "</td><td>" + m(r.px) + "</td><td>" + (r.base == null ? '<span class="pct">none</span></td><td><span class="pct">sector outlook only</span></td><td><span class="pct">none</span>' : tp(r.lo, r.px) + "</td><td><b>" + m(r.base) + "</b><small>" + byLab + ", n=" + r.n + "</small></td><td>" + tp(r.hi, r.px)) +
+        "</td><td>" + r12 + "</td><td>" + r30 + "</td><td>" + pc(r.c) + (r.blend ? "<small>2030 + 12 mo</small>" : "<small>" + (r.g30 != null ? "2030" : "12 mo") + "</small>") + "</td><td>" + navTxt + "</td><td>" + r.wins + "/" + n + "<small>" + (r.edge >= 0 ? "+" : "") + (r.edge * 100).toFixed(1) + " pts</small></td><td>" + (r.bestVs ? sn(r.bestVs) + "<small>" + Math.round(r.minPct * 100) + "th pct</small>" : "") + "</td></tr>";
     }).join("");
     document.getElementById("best-method").innerHTML =
       "<h4>How it works</h4><ol>" +
       "<li><b>Targets.</b> Low, median and high = the lowest, middle and highest <i>base-case</i> target among the forecasters (bear and bull scenarios are not used), with the % move from today's price. Every ranked asset has at least 3 independent forecasters (n = how many), all analysts or firms publishing within the last two years. For 12-month consensus assets, low and high are the lowest and highest individual analyst targets. Under the median: the target date (\"12 mo\" = analyst 12-month consensus).</li>" +
-      "<li><b>Avg 12-mo return</b> = the 12-month analyst consensus vs today's price where one exists; otherwise the yearly pace implied by the long-range target (marked /yr). <b>Avg 2030 return</b> = total move from today to the median target (n/a where only a 12-month target exists). <b>CAGR</b> = yearly return to the median target.</li>" +
+      "<li><b>2030 first.</b> Avg 2030 return = total move from today to the asset's own median 2030 target. Assets without their own 2030 targets use a sector's 2030 outlook: Energy Fuels = uranium (5 forecasters), MP = copper, SILJ = silver, Galaxy/Riot/Hut 8 = BTC, chips/SpaceX/Tesla = S&P 500. Silver forecasts stop at 2027, so silver uses those. <b>Avg 12-mo return</b> = analyst consensus (3+ analysts). <b>Expected yr return</b> = 2/3 the 2030 yearly rate + 1/3 the 12-month return when both exist, otherwise whichever exists.</li>" +
+      "<li><b>BTC and SOL</b> median targets weight the InvestAnswers 2030 targets at 50% and the average of the other forecasters at 50%.</li>" +
       "<li><b>Treasury companies.</b> Target = coin target x coins per share x an assumed NAV multiple halfway (log terms) between today's and 1.0x. <b>At NAV 1.0x</b> shows what today's share price is worth in coin terms, and the share price if the coin hits its median target and the stock trades at exactly its holdings.</li>" +
-      "<li><b>Pairs.</b> Each asset vs every other: edge = difference in CAGR + up to +/-10 points when the pair ratio sits at the low/high of its 3-year range. Ranked by share of pairs won (average edge underneath). \"Cheapest vs\" = the asset it is most discounted against, by 3-year percentile.</li>" +
+      "<li><b>Pairs.</b> Each asset vs every other: edge = difference in expected yearly return + up to +/-10 points when the pair ratio sits at the low/high of its 3-year range. Ranked by share of pairs won (average edge underneath). \"Cheapest vs\" = the asset it is most discounted against, by 3-year percentile.</li>" +
       "<li>Forecasts, not facts; long-range targets are far less certain than 12-month ones. " + (skipped.length ? "Not ranked (fewer than 3 forecasters): " + skipped.map(sn).join(", ") + ". " : "") + "Not investment advice.</li></ol>";
   }
   // Debt clock: latest Treasury "Debt to the Penny" figure, run forward at its average pace over the past year
