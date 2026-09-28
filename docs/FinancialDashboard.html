@@ -307,6 +307,12 @@ CSVs) and refreshed every day by the GitHub Action in
 .fd .card .v{font-weight:600;font-size:1.05rem;white-space:nowrap}
 .fd .card .c{font-size:.78rem;color:var(--muted);margin:.1rem 0 .3rem}
 .fd .card canvas{width:100%!important;height:190px!important}
+.fd .explorer{grid-column:1/-1}
+.fd .explorer .tabs{display:flex;flex-wrap:wrap;gap:.3rem;margin:.3rem 0 .5rem}
+.fd .explorer .tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:.2rem .65rem;font-size:.78rem;color:var(--ink);cursor:pointer}
+.fd .explorer .tabs button.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.fd .explorer .tabs .lab{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;align-self:center;margin-right:.2rem}
+.fd .explorer canvas{height:330px!important}
 .fd .foot{color:var(--muted);font-size:.75rem;margin:1.2rem 0 2rem}
 </style>
 
@@ -324,20 +330,33 @@ CSVs) and refreshed every day by the GitHub Action in
   <div class="grid" id="fd-prices"></div>
   <h2>Economy</h2>
   <div class="grid" id="fd-macro"></div>
-  <div class="foot">Prices: Yahoo Finance daily closes. Economic data: Federal Reserve Bank of St. Louis (FRED): CPIAUCSL, GDPC1, UNRATE, M2SL, PAYEMS, GFDEBTN, T10Y2Y, GDP. Updated automatically every day. Not investment advice.</div>
+  <div class="foot">Prices: Yahoo Finance daily closes. Economic data: Federal Reserve Bank of St. Louis (FRED): FEDFUNDS, DGS10, WALCL, ICSA, SAHMREALTIME, CPIAUCSL, GDPC1, UNRATE, M2SL, PAYEMS, GFDEBTN, T10Y2Y, GDP. Ratios compare closing prices on days both traded. Updated automatically every day. Not investment advice.</div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
 (function () {
   var years = 3, logScale = true, DATA = null, charts = [];
+  var FEATURED = ["BTC-USD", "SPY"];
+  var SINGLES = ["SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "AMD", "NVDA", "MU", "FWDI", "DFDV", "UPXI", "MP", "BZ=F"];
+  var PAIRS = [["BTC-USD", "MSTR"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["NVDA", "MU"], ["TSLA", "SPCX"]];
+  var SHORT = {"BTC-USD": "BTC", "SOL-USD": "SOL", "BZ=F": "Brent"};
+  var sel = "SOL-USD";
+  function sn(sym) { return SHORT[sym] || sym; }
+  function ratio(a, b) {           // a / b on the dates both traded
+    var m = {}; DATA.prices[b].points.forEach(function (p) { m[p[0]] = p[1]; });
+    return DATA.prices[a].points.filter(function (p) { return m[p[0]]; }).map(function (p) { return [p[0], +(p[1] / m[p[0]]).toPrecision(5)]; });
+  }
   var fmtMoney = function (v) { return v >= 1000 ? "$" + v.toLocaleString(undefined, {maximumFractionDigits: 0}) : "$" + v.toLocaleString(undefined, {maximumFractionDigits: v < 10 ? 3 : 2}); };
   var MACRO_FMT = {
     cpi_yoy: function (v) { return v.toFixed(1) + "%"; }, unrate: function (v) { return v.toFixed(1) + "%"; },
     t10y2y: function (v) { return v.toFixed(2) + " pts"; }, debt_gdp: function (v) { return v.toFixed(1) + "%"; },
     m2: function (v) { return "$" + v.toFixed(2) + "T"; }, debt: function (v) { return "$" + v.toFixed(2) + "T"; },
     real_gdp: function (v) { return "$" + v.toFixed(2) + "T"; },
-    payrolls: function (v) { return (v >= 0 ? "+" : "") + Math.round(v).toLocaleString() + "K"; }
+    payrolls: function (v) { return (v >= 0 ? "+" : "") + Math.round(v).toLocaleString() + "K"; },
+    fedfunds: function (v) { return v.toFixed(2) + "%"; }, dgs10: function (v) { return v.toFixed(2) + "%"; },
+    walcl: function (v) { return "$" + v.toFixed(2) + "T"; }, icsa: function (v) { return Math.round(v) + "K"; },
+    sahm: function (v) { return v.toFixed(2); }
   };
   function cut(points) {
     if (!years) return points;
@@ -381,11 +400,32 @@ CSVs) and refreshed every day by the GitHub Action in
     charts.forEach(function (c) { c.destroy(); }); charts = [];
     var P = document.getElementById("fd-prices"), M = document.getElementById("fd-macro");
     P.innerHTML = ""; M.innerHTML = "";
-    Object.keys(DATA.prices).forEach(function (sym, i) {
+    FEATURED.forEach(function (sym, i) {
       var s = DATA.prices[sym], pts = s.points, last = pts[pts.length - 1];
       var cv = card(P, "p" + i, s.name, fmtMoney(last[1]), "1D " + chg(pctChange(pts, 1)) + " &nbsp; 1Y " + chg(pctChange(pts, 365)) + " &nbsp; as of " + last[0]);
       charts.push(draw(cv, pts, { log: logScale, fmt: fmtMoney, axis: function (v) { return v >= 1000 ? "$" + (v / 1000).toFixed(v >= 10000 ? 0 : 1) + "k" : "$" + v; } }));
     });
+    // Explorer: one chart, click between tickers and pairs
+    var ex = document.createElement("div"); ex.className = "card explorer";
+    var isPair = sel.indexOf("/") > 0, pts, title, val, note, f;
+    if (isPair) {
+      var ab = sel.split("/"); pts = ratio(ab[0], ab[1]);
+      title = sn(ab[0]) + " / " + sn(ab[1]) + " ratio";
+      f = function (v) { return v.toPrecision(4); };
+      note = "How many " + sn(ab[1]) + " one " + sn(ab[0]) + " buys. Rising = " + sn(ab[0]) + " outperforming. 1Y " + chg(pctChange(pts, 365));
+    } else {
+      pts = DATA.prices[sel].points; title = DATA.prices[sel].name; f = fmtMoney;
+      note = "1D " + chg(pctChange(pts, 1)) + " &nbsp; 1Y " + chg(pctChange(pts, 365)) + " &nbsp; as of " + pts[pts.length - 1][0];
+    }
+    val = f(pts[pts.length - 1][1]);
+    ex.innerHTML = '<div class="t"><span class="n">' + title + '</span><span class="v">' + val + '</span></div><div class="c">' + note + '</div>' +
+      '<div class="tabs"><span class="lab">Tickers</span>' + SINGLES.map(function (k) { return '<button data-k="' + k + '"' + (k === sel ? ' class="on"' : '') + '>' + sn(k) + '</button>'; }).join("") + '</div>' +
+      '<div class="tabs"><span class="lab">Pairs</span>' + PAIRS.map(function (p) { var k = p[0] + "/" + p[1]; return '<button data-k="' + k + '"' + (k === sel ? ' class="on"' : '') + '>' + sn(p[0]) + "/" + sn(p[1]) + '</button>'; }).join("") + '</div>' +
+      '<canvas id="ex"></canvas>';
+    P.appendChild(ex);
+    ex.querySelectorAll("button[data-k]").forEach(function (b) { b.onclick = function () { sel = b.dataset.k; render(); }; });
+    charts.push(draw(document.getElementById("ex"), pts, { log: logScale, fmt: f, axis: isPair ? function (v) { return (+v).toPrecision(3); } : function (v) { return v >= 1000 ? "$" + (v / 1000).toFixed(v >= 10000 ? 0 : 1) + "k" : "$" + v; } }));
+
     Object.keys(DATA.macro).forEach(function (k, i) {
       var s = DATA.macro[k], pts = s.points, last = pts[pts.length - 1], f = MACRO_FMT[k] || function (v) { return v; };
       var cv = card(M, "m" + i, s.name, f(last[1]), s.unit + " &nbsp;·&nbsp; latest " + last[0]);
@@ -394,7 +434,7 @@ CSVs) and refreshed every day by the GitHub Action in
   }
   function strip() {
     document.getElementById("fd-strip").innerHTML = Object.keys(DATA.prices).map(function (sym) {
-      var pts = DATA.prices[sym].points; return "<span><b>" + sym + "</b> " + fmtMoney(pts[pts.length - 1][1]) + " " + chg(pctChange(pts, 1)) + "</span>";
+      var pts = DATA.prices[sym].points; return "<span><b>" + sn(sym) + "</b> " + fmtMoney(pts[pts.length - 1][1]) + " " + chg(pctChange(pts, 1)) + "</span>";
     }).join("");
   }
   document.querySelectorAll(".fd .ctrl button[data-r]").forEach(function (b) {

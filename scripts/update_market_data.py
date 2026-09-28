@@ -10,8 +10,11 @@ UA_YAHOO = {"User-Agent": "Mozilla/5.0"}
 UA_FRED = {"User-Agent": "curl/8.0"}   # FRED rejects browser-like agents from scripts
 OUT = os.path.join(os.path.dirname(__file__), "..", "docs", "data", "markets.json")
 
-TICKERS = [("BTC-USD", "Bitcoin"), ("SOL-USD", "Solana"), ("MSTR", "Strategy (MSTR)"), ("TSLA", "Tesla"),
-           ("SPCX", "SpaceX (SPCX)"), ("AVGO", "Broadcom"), ("AMD", "AMD"), ("SPY", "S&P 500 (SPY)")]
+TICKERS = [("BTC-USD", "Bitcoin"), ("SPY", "S&P 500 (SPY)"),
+           ("SOL-USD", "Solana"), ("MSTR", "Strategy (MSTR)"), ("TSLA", "Tesla"), ("SPCX", "SpaceX (SPCX)"),
+           ("AVGO", "Broadcom"), ("AMD", "AMD"), ("NVDA", "Nvidia"), ("MU", "Micron (MU)"),
+           ("FWDI", "Forward Industries (FWDI)"), ("DFDV", "DeFi Development (DFDV)"), ("UPXI", "Upexi (UPXI)"),
+           ("MP", "MP Materials"), ("BZ=F", "Brent crude oil")]
 
 def get(url, headers, tries=3):
     for i in range(tries):
@@ -64,7 +67,14 @@ def main():
         debt = {d: v / 1e6 for d, v in fred("GFDEBTN")}                           # millions -> $ trillions
         gdp_nom = {d: v / 1e3 for d, v in fred("GDP")}                            # billions -> $ trillions
         dtg = [[d, round(debt[d] / gdp_nom[d] * 100, 1)] for d in sorted(debt) if d in gdp_nom]
+        walcl = [[d, round(v / 1e6, 3)] for d, v in fred("WALCL")]              # millions -> $ trillions
+        icsa = [[d, round(v / 1000, 1)] for d, v in fred("ICSA")]               # thousands
         data["macro"] = {
+            "fedfunds": {"name": "Federal funds rate", "unit": "%", "points": since(fred("FEDFUNDS"))},
+            "dgs10":    {"name": "10-year Treasury yield", "unit": "%", "points": since(fred("DGS10"))},
+            "walcl":    {"name": "Fed balance sheet (total assets)", "unit": "$T", "points": since(walcl)},
+            "icsa":     {"name": "Initial jobless claims (weekly)", "unit": "thousands", "points": since(icsa)},
+            "sahm":     {"name": "Sahm rule recession indicator", "unit": "percentage points (0.5+ signals recession)", "points": since(fred("SAHMREALTIME"))},
             "cpi_yoy":  {"name": "CPI inflation (year over year)", "unit": "%", "points": since(yoy)},
             "real_gdp": {"name": "Real GDP", "unit": "$T (2017 dollars, annual rate)", "points": since(gdp_real)},
             "unrate":   {"name": "Unemployment rate", "unit": "%", "points": since(fred("UNRATE"))},
