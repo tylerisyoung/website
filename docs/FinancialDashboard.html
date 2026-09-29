@@ -522,7 +522,7 @@ _________________________</p>
     <p><b>Weekly buying:</b> target weight per pick <code>= bucket weight ÷ bucket's picks</code>; <code>gap = max(0, target × (portfolio + $135) − current value)</code>; the $135 is split in proportion to the gaps (any leftover by target weight).</p>
     <p><b>Monthly (first Monday):</b> for any bucket above <code>bucket weight × portfolio</code>, the excess is sold in equal dollar amounts from its holdings above <code>bucket target ÷ holdings in the bucket</code> (never below that, never a whole position). Proceeds + the $135 go to underweight buckets by how far under they are.</p>
     <p><b>Stats:</b> <i>Money-weighted return</i> = the yearly rate that makes every $135 deposit grow into the ending value (IRR, the right measure for DCA). <i>Time-weighted return</i> = yearly growth of the portfolio with deposits stripped out. <i>Volatility</i> = standard deviation of weekly returns × √52. <i>Max drawdown</i> = worst peak-to-trough fall of the time-weighted line. <i>Sharpe ratio</i> = (weekly return − fed funds rate) ÷ weekly volatility × √52; above 1 is strong.</p>
-    <p><b>Prices:</b> dividend-adjusted closes where they exist (SPY, AVGO, NVDA, MU, SILJ); gold and copper via GLD and CPER. Assets join once they have 30 days of prices (SPCX from July 2026; treasury companies from when they started holding coins).</p>
+    <p><b>Prices:</b> dividend-adjusted closes where they exist (SPY, AVGO, NVDA, MU, MRVL, SILJ); gold and copper via GLD and CPER. Assets join once they have 30 days of prices (SPCX from July 2026; treasury companies from when they started holding coins).</p>
     <p><b>Limits:</b> Backtests 2–4 rank on today's 2030 price targets for every past week, which flatters them (they "know" where forecasts ended up). Backtest 1 (value only) and Backtest 5 (equal weight) use prices only. Today's coin holdings are used for past weeks. All five also carry <i>survivorship bias</i>: the 20 names were chosen in 2026, knowing which ones made it (SOL, NVDA, MU), so every backtest beats what someone picking in 2020 could have done. No trading costs. A backtest, not a promise.</p>
   </div></details>
   <br><br><br><br><br>
@@ -583,9 +583,9 @@ _________________________</p>
 (function () {
   var years = 3, tf = "D", logScale = true, DATA = null, charts = [];
   var FEATURED = [];
-  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "NVDA", "MU", "FWDI", "DFDV", "UPXI", "MP", "GLD", "SLV", "SILJ", "UUUU", "CPER", "ETH-USD"];
+  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "NVDA", "MU", "MRVL", "FWDI", "DFDV", "UPXI", "MP", "GLD", "SLV", "SILJ", "UUUU", "CPER", "ETH-USD"];
   var TREASURY_T = ["MSTR", "MTPLF", "SPCX", "TSLA", "FWDI", "DFDV", "UPXI", "HSDT"];
-  var PAIRS = [["ETH-USD", "BTC-USD"], ["BTC-USD", "GC=F"], ["FWDI", "SOL-USD"], ["MSTR", "BTC-USD"], ["SOL-USD", "BTC-USD"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["AVGO", "NVDA"], ["NVDA", "MU"], ["TSLA", "SPCX"], ["SLV", "GLD"], ["HG=F", "SLV"], ["SPY", "GLD"], ["SOL-USD", "ETH-USD"]];
+  var PAIRS = [["ETH-USD", "BTC-USD"], ["BTC-USD", "GC=F"], ["FWDI", "SOL-USD"], ["MSTR", "BTC-USD"], ["SOL-USD", "BTC-USD"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["AVGO", "NVDA"], ["NVDA", "MU"], ["MRVL", "AVGO"], ["MRVL", "NVDA"], ["TSLA", "SPCX"], ["SLV", "GLD"], ["HG=F", "SLV"], ["SPY", "GLD"], ["SOL-USD", "ETH-USD"]];
   var SHORT = {"BTC-USD": "BTC", "SOL-USD": "SOL", "BZ=F": "Brent", "GC=F": "Gold", "HG=F": "Copper", "ETH-USD": "ETH"};
   var sel = "BTC-USD";
   function sn(sym) { return SHORT[sym] || sym; }
@@ -925,7 +925,7 @@ _________________________</p>
   }
   // ---------- Fair value: log regression trendline per asset ----------
   var INCEPTION = { "BTC-USD": "2009-01-03", "ETH-USD": "2015-07-30", "SOL-USD": "2020-03-16", "SPY": "1993-01-22", "TSLA": "2010-06-29", "NVDA": "1999-01-22",
-                    "AVGO": "2009-08-06", "MU": "1984-06-01", "MP": "2020-06-01", "GLD": "2004-11-18", "SLV": "2006-04-28", "SILJ": "2012-11-29", "CPER": "2011-11-15", "UUUU": "2013-12-01" };
+                    "AVGO": "2009-08-06", "MU": "1984-06-01", "MRVL": "2000-06-27", "MP": "2020-06-01", "GLD": "2004-11-18", "SLV": "2006-04-28", "SILJ": "2012-11-29", "CPER": "2011-11-15", "UUUU": "2013-12-01" };
   var fvChart = null, fvLine = null, FV = {};
   function fairValue(k) {
     var pts = resampleW(DATA.prices[k].points); if (pts.length < 104) return null;   // needs 2 years of weekly closes
@@ -1033,7 +1033,7 @@ _________________________</p>
 
   // ---------- Backtests ----------
   var SIMCH = {}, PICK_CACHE = {}, TOPN = 5;
-  var BUCKETS = [{ n: "AI", w: 0.4, k: ["TSLA", "SPCX", "NVDA", "AVGO", "MU"] },
+  var BUCKETS = [{ n: "AI", w: 0.4, k: ["TSLA", "SPCX", "NVDA", "AVGO", "MU", "MRVL"] },
                  { n: "Crypto", w: 0.4, k: ["BTC-USD", "ETH-USD", "SOL-USD", "MSTR", "MTPLF", "FWDI", "DFDV", "UPXI", "HSDT"] },
                  { n: "Commodities", w: 0.2, k: ["GLD", "SLV", "SILJ", "CPER", "UUUU", "MP"] }];
   function tradePts(k) { return DATA.prices[k].adj || DATA.prices[k].points; }   // dividend-adjusted where Yahoo has it
@@ -1295,8 +1295,8 @@ _________________________</p>
   }).catch(function () { document.getElementById("fd-updated").textContent = "Data could not be loaded."; });
 })();
 </script>
-<br>
 <p><br><br><br><br><br><br><br><br><br><br></p>
+<br>
 <hr>
 <div id="ongoing-ta">
 <h2 style="text-align:center">

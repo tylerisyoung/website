@@ -12,7 +12,7 @@ OUT = os.path.join(os.path.dirname(__file__), "..", "docs", "data", "markets.jso
 
 TICKERS = [("BTC-USD", "Bitcoin"), ("SPY", "S&P 500 (SPY)"),
            ("SOL-USD", "Solana"), ("MSTR", "Strategy (MSTR)"), ("TSLA", "Tesla"), ("SPCX", "SpaceX (SPCX)"),
-           ("AVGO", "Broadcom"), ("NVDA", "Nvidia"), ("MU", "Micron (MU)"),
+           ("AVGO", "Broadcom"), ("NVDA", "Nvidia"), ("MU", "Micron (MU)"), ("MRVL", "Marvell Technology (MRVL)"),
            ("FWDI", "Forward Industries (FWDI)"), ("DFDV", "DeFi Development (DFDV)"), ("UPXI", "Upexi (UPXI)"),
            ("MP", "MP Materials"), ("GC=F", "Gold (futures)"), ("SLV", "Silver (SLV)"), ("SILJ", "Junior silver miners (SILJ)"),
            ("UUUU", "Energy Fuels (UUUU)"), ("GLD", "Gold ETF (GLD)"), ("HG=F", "Copper (futures)"), ("CPER", "Copper ETF (CPER)"), ("ETH-USD", "Ethereum")]
@@ -70,7 +70,7 @@ AUX = [("SI=F", "Silver (futures, $/oz)")]   # used only to convert silver targe
 # (e.g. USER_INPUT["MP"] = 90). Leave None to ignore.
 import statistics
 USER_INPUT = {"BTC-USD": None, "ETH-USD": None, "SOL-USD": None, "SPY": None, "GC=F": None, "SLV": None, "HG=F": None,
-              "TSLA": None, "SPCX": None, "NVDA": None, "AVGO": None, "MU": None, "MP": None, "UUUU": None, "SILJ": None}
+              "TSLA": None, "SPCX": None, "NVDA": None, "AVGO": None, "MU": None, "MRVL": None, "MP": None, "UUUU": None, "SILJ": None}
 
 TARGETS_ASOF = "2026-09-28"   # date the targets were checked; sector targets are locked to prices on this date
 MON = {m: i for i, m in enumerate(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], 1)}
@@ -215,6 +215,11 @@ TARGETS = {
         S("24/7 Wall St (Vandita Jadeja)", 1025, "2030", "2026-05", "https://247wallst.com/investing/2026/05/13/will-micron-be-a-trillion-dollar-stock-by-2030-the-answer-is-yes/", "Base case"),
         S("watcher.guru (Loredana Harsana)", 1000, "2030", "2026-08", "https://watcher.guru/news/what-will-mu-stock-be-worth-in-2030-micron-is-entering-a-different-era", "Midpoint of $800-1,200")],
       "cons": {"by": "MarketBeat", "avg": 1348.03, "low": 300, "high": 2000, "n": 45, "date": "2026-09-28", "url": MB + "NASDAQ/MU/forecast/"}},
+    "MRVL": {"kind": "direct", "unit": "$", "long": [
+        S("Motley Fool (Harsh Chauhan)", 703, "2030", "2026-09", "https://www.fool.com/investing/2026/09/21/prediction-heres-what-a-5000-investment-in-marvell/", "CY2030 EPS $23.42 x 30"),
+        S("24/7 Wall St (Vandita Jadeja)", 339, "2030", "2026-09", "https://247wallst.com/investing/2026/09/25/marvells-203-ytd-surge-sets-high-bar-but-we-see-more-runway-ahead/", "Base case"),
+        S("24/7 Wall St price-prediction model", 333.29, "2030", "2026-09", "https://247wallst.com/companies/MRVL/price-prediction/", "Model base case")],
+      "cons": {"by": "MarketBeat", "avg": 272.00, "low": 105, "high": 400, "n": 39, "date": "2026-09-29", "url": MB + "NASDAQ/MRVL/forecast/"}},
     # No named 2030 targets exist for these three; they use a sector's 2030 outlook, converted at today's price
     "MP": {"kind": "sector", "sector": "COMMOD", "unit": "$",
       "cons": {"by": "MarketBeat", "avg": 76.29, "low": 57, "high": 112, "n": 17, "date": "2026-09-28", "url": MB + "NYSE/MP/forecast/"}},
