@@ -394,7 +394,7 @@ _________________________</p>
 .fd .explorer .tabs button.pair.on{background:#d9736f;border-color:#d9736f}
 .fd .explorer .tabs .lab{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;align-self:center;margin-right:.2rem}
 .fd .explorer canvas{height:330px!important}
-.fd .perf canvas{height:720px!important}
+.fd .perf canvas{height:580px!important}
 .fd .foot{color:var(--muted);font-size:.75rem;margin:1.2rem 0 2rem}
 </style>
 
@@ -658,20 +658,32 @@ _________________________</p>
     ds = green.concat(yellow, red);
     ds.push({ label: "S&P 500", data: spyV, borderColor: "#111", borderWidth: 2.4, order: 2, pointRadius: 0, tension: 0.4, pin: true });
     if (rf) ds.push({ label: "10Y Treasury", data: rf, borderColor: "#b23a3a", borderWidth: 2.4, order: 1, borderDash: [7, 4], pointRadius: 0, tension: 0, pin: true });
-    var yMin = Math.pow(10, Math.floor(Math.log10(Math.min.apply(null, ds.map(function (d) { return Math.min.apply(null, d.data.filter(function (x) { return x != null; })); })))));
+    // Split log scale: normal log above -50%; below that the scale is compressed so the losers fit in the bottom quarter
+    var all = []; ds.forEach(function (d) { d.data.forEach(function (x) { if (x != null) all.push(x); }); });
+    var Lmax = Math.log10(Math.max.apply(null, all)), Lmin = Math.log10(Math.min.apply(null, all)), TB = Math.log10(0.5);
+    var K = Lmin < TB ? Math.min(1, ((Lmax - TB) / 3) / (TB - Lmin)) : 1;
+    function fY(v) { var L = Math.log10(v); return L >= TB ? L : TB - (TB - L) * K; }
+    function invY(y) { return y >= TB ? Math.pow(10, y) : Math.pow(10, TB - (TB - y) / K); }
+    ds.forEach(function (d) { d.raw = d.data; d.data = d.data.map(function (x) { return x == null ? null : fY(x); }); });
+    var TICKS = [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000].filter(function (v) { var L = Math.log10(v); return L <= Lmax + 0.15 && L >= Lmin - 0.5; });
+    var gapLine = { id: "gapLine", beforeDatasetsDraw: function (ch) { if (K >= 1) return; var y = ch.scales.y.getPixelForValue(TB), A = ch.chartArea, ctx = ch.ctx;
+      ctx.save(); ctx.strokeStyle = "#9aa3b2"; ctx.setLineDash([3, 3]); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(A.left, y); ctx.lineTo(A.right, y); ctx.stroke();
+      ctx.fillStyle = "#8a93a3"; ctx.font = "italic 10px system-ui,sans-serif"; ctx.textBaseline = "top"; ctx.fillText("scale compressed below −50%", A.left + 6, y + 3); ctx.restore(); } };
     function pctOf(v) { var p = (v - 1) * 100; if (p >= 0) return "+" + Math.round(p).toLocaleString("en-US") + "%";
       var q = 100 + p, dec = q >= 1 ? 0 : Math.min(6, Math.ceil(-Math.log10(q)) + 1); return "−" + (100 - q).toFixed(dec).replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "") + "%"; }
     var c = document.createElement("div"); c.className = "card explorer perf";
     c.innerHTML = '<div class="t"><span class="n">Every ticker vs the S&amp;P 500 and the 10-year Treasury</span><span class="v" style="font-size:1rem">since April 2020</span></div>' +
-      '<div class="c">Total % return since April 2020, log scale, weekly closes smoothed over 13 weeks. Thick black = S&amp;P 500 (SPY); dashed red = earning the 10-year Treasury yield (the risk-free rate). Green = beat the S&amp;P, yellow = between the S&amp;P and the 10-year, red = trailed the 10-year. Names on the right are in end-value order; thin lines join each to its line. Later starters join at the S&amp;P\'s level on their first day. Click a name in the key to hide it.</div><canvas id="perf"></canvas>';
+      '<div class="c">Total % return since April 2020, log scale (compressed below −50% so the biggest losers fit), weekly closes smoothed over 13 weeks. Thick black = S&amp;P 500 (SPY); dashed red = earning the 10-year Treasury yield (the risk-free rate). Green = beat the S&amp;P, yellow = between the S&amp;P and the 10-year, red = trailed the 10-year. Names on the right are in end-value order; thin lines join each to its line. Later starters join at the S&amp;P\'s level on their first day. Click a name in the key to hide it.</div><canvas id="perf"></canvas>';
     P.appendChild(c);
-    charts.push(new Chart(document.getElementById("perf"), { type: "line", data: { labels: dates, datasets: ds }, plugins: [endLabels],
+    charts.push(new Chart(document.getElementById("perf"), { type: "line", data: { labels: dates, datasets: ds }, plugins: [endLabels, gapLine],
       options: { animation: false, responsive: true, maintainAspectRatio: false, layout: { padding: { right: 110 } },
         interaction: { mode: "nearest", intersect: false },
         plugins: { legend: { display: true, position: "bottom", labels: { boxWidth: 10, boxHeight: 2, font: { size: 10 }, color: "#2d3a4a" } },
-                   tooltip: { callbacks: { label: function (x) { return x.dataset.label + ": " + pctOf(x.parsed.y); } } } },
+                   tooltip: { callbacks: { label: function (x) { return x.dataset.label + ": " + pctOf(x.dataset.raw[x.dataIndex]); } } } },
         scales: { x: { ticks: { maxTicksLimit: 6, maxRotation: 0, color: "#6b7686", font: { size: 10 }, callback: function (v) { return this.getLabelForValue(v).slice(0, 7); } }, grid: { display: false } },
-                  y: { type: "logarithmic", position: "left", min: yMin, ticks: { color: "#6b7686", font: { size: 10 }, callback: function (v) { var l = Math.log10(v); return Math.abs(l - Math.round(l)) < 1e-9 || [0.5, 2, 5, 20, 50].indexOf(+v) >= 0 ? pctOf(v) : ""; } }, grid: { color: "#f0f2f6" } } } } }));
+                  y: { type: "linear", position: "left", min: fY(Math.min.apply(null, all)) - 0.05, max: Lmax + 0.1,
+                       afterBuildTicks: function (ax) { ax.ticks = TICKS.map(function (v) { return { value: fY(v) }; }); },
+                       ticks: { color: "#6b7686", font: { size: 10 }, callback: function (y) { return pctOf(invY(y)); } }, grid: { color: "#f0f2f6" } } } } }));
   }
   function resampleW(points) {
     var out = [], key = null;
