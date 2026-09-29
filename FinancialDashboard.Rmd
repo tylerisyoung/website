@@ -119,6 +119,7 @@ CSVs) and refreshed every day by the GitHub Action in
 .fd .explorer .tabs button.pair.on{background:#d9736f;border-color:#d9736f}
 .fd .explorer .tabs .lab{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;align-self:center;margin-right:.2rem}
 .fd .explorer canvas{height:330px!important}
+.fd .perf canvas{height:560px!important}
 .fd .foot{color:var(--muted);font-size:.75rem;margin:1.2rem 0 2rem}
 </style>
 
@@ -307,6 +308,7 @@ CSVs) and refreshed every day by the GitHub Action in
     P.appendChild(ex);
     ex.querySelectorAll("button[data-k]").forEach(function (b) { b.onclick = function () { sel = b.dataset.k; render(); }; });
     charts.push(draw(document.getElementById("ex"), pts, { log: logScale, fmt: f, color: isPair ? "#d9736f" : "#3d6fd6", fill: isPair ? "rgba(224,122,122,0.08)" : "rgba(61,111,214,0.08)", axis: isPair ? function (v) { return (+v).toPrecision(3); } : function (v) { return v >= 1000 ? "$" + (v / 1000).toFixed(v >= 10000 ? 0 : 1) + "k" : "$" + v; } }));
+    perfChart(P);
 
     var ORDER = ["debt_gdp", "cpi_cum", "cpi_yoy", "shadow", "fedfunds", "walcl", "unrate", "icsa", "payrolls", "real_gdp", "m2", "debt", "dgs10", "dgs30", "dgs2", "t10y2y"];
     ORDER.filter(function (k) { return DATA.macro[k]; }).forEach(function (k, i) {
@@ -315,6 +317,60 @@ CSVs) and refreshed every day by the GitHub Action in
       var warm = ["fedfunds", "dgs10", "dgs30", "dgs2", "cpi_yoy", "cpi_cum", "shadow", "unrate", "icsa", "debt", "debt_gdp"].indexOf(k) >= 0;   // stress gauges in faded red
       charts.push(draw(cv, pts, { macro: true, bar: k === "payrolls", fmt: f, axis: null, color: warm ? "#d9736f" : "#3d6fd6", fill: warm ? "rgba(224,122,122,0.07)" : "rgba(61,111,214,0.08)" }));
     });
+  }
+  // Performance: every ticker vs the S&P 500 and the 10-year Treasury, growth of $1 over the last 5 years (log scale)
+  var PERF_COLORS = ["#3d6fd6", "#e07a7a", "#e0b04a", "#4f9d69", "#7fa6ee", "#d9736f", "#b0833a", "#6fbf8c", "#5b7fd0", "#e8a0a0",
+                     "#c9a24a", "#3f8a57", "#9fb8ea", "#c75b5b", "#d9c07a", "#86c89c", "#8a7338", "#a8c5f7", "#e39a6f", "#5aa6a0", "#b58ad6"];
+  var endLabels = { id: "endLabels", afterDatasetsDraw: function (ch) {
+    var ctx = ch.ctx, items = [];
+    ch.data.datasets.forEach(function (ds, i) { var meta = ch.getDatasetMeta(i); if (meta.hidden) return;
+      for (var k = ds.data.length - 1; k >= 0; k--) { if (ds.data[k] != null) { var pt = meta.data[k]; var off = pt.y > ch.chartArea.bottom; items.push({ y: off ? ch.chartArea.bottom - 4 : pt.y, x: off ? ch.chartArea.right : pt.x, t: ds.label + (off ? " ↓ off chart" : ""), c: ds.borderColor, b: ds.borderWidth > 2 }); break; } } });
+    items.sort(function (a, b) { return a.y - b.y; });
+    for (var n = 1; n < items.length; n++) if (items[n].y - items[n - 1].y < 11) items[n].y = items[n - 1].y + 11;
+    ctx.save(); ctx.textBaseline = "middle";
+    items.forEach(function (it) { ctx.font = (it.b ? "700 11px" : "600 10px") + " system-ui,sans-serif"; ctx.fillStyle = it.c; ctx.fillText(it.t, it.x + 5, it.y); });
+    ctx.restore();
+  } };
+  function perfChart(P) {
+    var spy = DATA.prices["SPY"]; if (!spy) return;
+    var start = new Date(); start.setFullYear(start.getFullYear() - 5); var s0 = start.toISOString().slice(0, 10);
+    var base = resampleW(spy.points.filter(function (p) { return p[0] >= s0; }));
+    var dates = base.map(function (p) { return p[0]; });
+    function onDates(points) {   // last close on or before each date; null before the series starts
+      var out = [], i = 0, last = null;
+      dates.forEach(function (d) { while (i < points.length && points[i][0] <= d) { last = points[i][1]; i++; } out.push(last); });
+      return out;
+    }
+    var spyV = base.map(function (p) { return p[1] / base[0][1]; });
+    var ds = [], idx = 0;
+    bestUniverse().filter(function (k) { return k !== "SPY"; }).forEach(function (k) {
+      var v = onDates(DATA.prices[k].points), f = null;
+      var out = v.map(function (x, i) { if (x == null) return null; if (f == null) f = spyV[i] / x; return x * f; });   // late starters join at the S&P's level
+      ds.push({ label: sn(k), data: out, borderColor: PERF_COLORS[idx++ % PERF_COLORS.length], borderWidth: 1.1, pointRadius: 0, tension: 0.1, spanGaps: true });
+    });
+    ds.push({ label: "S&P 500", data: spyV, borderColor: "#111", borderWidth: 3.5, pointRadius: 0, tension: 0.1 });
+    var ty = DATA.macro.dgs10 ? onDates(DATA.macro.dgs10.points) : null;
+    if (ty) {   // $1 compounding at the 10-year yield in force each week
+      var g = 1, rf = ty.map(function (y, i) { if (i > 0) { var dd = (Date.parse(dates[i]) - Date.parse(dates[i - 1])) / 864e5; g *= Math.pow(1 + (ty[i - 1] || 0) / 100, dd / 365); } return g; });
+      ds.push({ label: "10Y Treasury", data: rf, borderColor: "#8a7338", borderWidth: 3.5, borderDash: [7, 4], pointRadius: 0, tension: 0 });
+    }
+    var c = document.createElement("div"); c.className = "card explorer perf";
+    c.innerHTML = '<div class="t"><span class="n">Every ticker vs the S&amp;P 500 and the 10-year Treasury</span><span class="v" style="font-size:1rem">last 5 years</span></div>' +
+      '<div class="c">Growth of $1, log scale, weekly closes. Thick black = S&amp;P 500 (SPY); thick dashed gold = $1 earning the 10-year Treasury yield (the risk-free rate). Above the black line = beat the market. Assets that started trading later join at the S&amp;P\'s level on their first day; anything that fell below $0.05 runs off the bottom (marked ↓). Click a name below the chart to hide it.</div><canvas id="perf"></canvas>';
+    P.appendChild(c);
+    charts.push(new Chart(document.getElementById("perf"), { type: "line", data: { labels: dates, datasets: ds }, plugins: [endLabels],
+      options: { animation: false, responsive: true, maintainAspectRatio: false, layout: { padding: { right: 120 } },
+        interaction: { mode: "nearest", intersect: false },
+        plugins: { legend: { display: true, position: "bottom", labels: { boxWidth: 10, boxHeight: 2, font: { size: 10 }, color: "#2d3a4a" } },
+                   tooltip: { callbacks: { label: function (x) { return x.dataset.label + ": $1 → $" + x.parsed.y.toFixed(2) + " (" + ((x.parsed.y - 1) * 100 >= 0 ? "+" : "") + Math.round((x.parsed.y - 1) * 100) + "%)"; } } } },
+        scales: { x: { ticks: { maxTicksLimit: 6, maxRotation: 0, color: "#6b7686", font: { size: 10 }, callback: function (v) { return this.getLabelForValue(v).slice(0, 7); } }, grid: { display: false } },
+                  y: { type: "logarithmic", position: "left", min: 0.05, ticks: { color: "#6b7686", font: { size: 10 }, callback: function (v) { var l = Math.log10(v); return Math.abs(l - Math.round(l)) < 1e-9 || [0.2, 0.5, 2, 5, 20, 50].indexOf(+v) >= 0 ? "$" + v : ""; } }, grid: { color: "#f0f2f6" } } } } }));
+  }
+  function resampleW(points) {
+    var out = [], key = null;
+    points.forEach(function (p) { var d = new Date(p[0] + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); var k = d.toISOString().slice(0, 10);
+      if (k === key) out[out.length - 1] = p; else { out.push(p); key = k; } });
+    return out;
   }
   function strip() {
     document.getElementById("fd-strip").innerHTML = Object.keys(DATA.prices).filter(function (sym) { return !DATA.prices[sym].group; }).map(function (sym) {
