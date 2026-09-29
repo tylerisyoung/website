@@ -136,7 +136,10 @@ TARGETS = {
     "SLV": {"kind": "proxy", "of": "SI=F", "unit": "silver $/oz", "long": [
         S("InvestingHaven", 82, "2030", "2026", "https://investinghaven.com/forecasts/silver-price-prediction/", "Independent forecaster"),
         S("GoldRepublic (from JPMorgan)", 80, "2030", "2026-09", "https://www.goldrepublic.com/en-us/silver-price/forecast", "JPMorgan's 2027 forecast carried forward"),
-        S("BlackRock / JPMorgan (as reported)", 100, "2030", "2025", "https://finance.yahoo.com/personal-finance/investing/article/silver-price-predictions-what-can-investors-expect-over-the-next-10-years-130000730.html", "Loosely attributed; weakest source")],
+        S("BlackRock / JPMorgan (as reported)", 100, "2030", "2025", "https://finance.yahoo.com/personal-finance/investing/article/silver-price-predictions-what-can-investors-expect-over-the-next-10-years-130000730.html", "Loosely attributed; weakest source"),
+        # High-end calls added at Tyler's request (not bank base cases)
+        S("Robert Kiyosaki", 200, "2026 call, held to 2030", "2025-12", "https://www.kucoin.com/news/flash/robert-kiyosaki-predicts-silver-price-surge-to-200-per-ounce-by-2026", "Author/investor; his $200 view was for 2026"),
+        S("Michael Oliver (MSA Research)", 150, "2026 call, held to 2030", "2025", "https://theoregongroup.com/commodities/gold/can-silver-hit-150-in-2026/", "Technical analyst; midpoint of his $100-200 scenario")],
       "short": [
         S("UBS (Dominic Schnider)", 80, "Sep-2027", "2026-09", "https://finance.yahoo.com/markets/commodities/articles/ubs-forecasts-silver-80-september-142821460.html"),
         S("HSBC", 68, "2027 avg", "2026-05", "https://finance.yahoo.com/markets/commodities/articles/hsbc-raises-silver-forecasts-2026-113000675.html"),

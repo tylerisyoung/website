@@ -130,7 +130,6 @@ CSVs) and refreshed every day by the GitHub Action in
     </script></div>
   </div>
   <div class="strip" id="fd-strip"></div>
-  <div class="paradigm"><div class="ph">Current Market Paradigm <i>September 28, 2026</i></div>Rates remain restrictive but the market prevails while bonds are waving the white flag and saying something's got to give. Inflation expectations remain high, but deflation narratives could take over quickly after the AI buildout. Silver, Copper, and Uranium remain safe commodity plays that should equal the S&amp;P without the risk, and Broadcom is a safe AI play which does not yet have a crazy P/E, but aiming for these only up to 1/5 of portfolio as long term core positions. Finished rotation out of Silver and Uranium into the mid-term year Q4 bottom of the bear for crypto. Currently dollar cost averaging into key assets of the future with a focus on AI, BTC, Crypto, and Space. Looking for LEAP opportunities on those assets, and using a rotational model to layer in/layer out at key regression levels. Hold &amp; stack only for now.</div>
   <div class="ctrl">
     <span class="lab">Timeframe</span>
     <button data-tf="D" class="on">Daily</button><button data-tf="W">Weekly</button><button data-tf="M">Monthly</button>
@@ -160,11 +159,6 @@ CSVs) and refreshed every day by the GitHub Action in
       <p class="note">Every forecaster behind the low, median and high targets, with the date it was published and a link. To add your own 2030 target for any asset, set it in <code>USER_INPUT</code> at the top of the targets section in <code>scripts/update_market_data.py</code>; it then counts as one more source.</p>
       <div class="body" id="best-sources"></div></details>
   </div>
-  <h2>Economy</h2>
-  <div class="debtclock"><div class="lab">U.S. National Debt</div>
-    <div class="num" id="fd-debt">$—</div>
-    <div class="meta" id="fd-debt-meta">Treasury, Debt to the Penny</div></div>
-  <div class="grid" id="fd-macro"></div>
   <h2>BTC and Solana Treasury Companies</h2>
   <div class="tre">
     <div class="tre-top"><div><span class="k">BTC</span> <b id="tre-btc">…</b></div><div><span class="k">SOL</span> <b id="tre-sol">…</b></div><div><span class="k">BTC market cap</span> <b id="tre-mcap">…</b></div><div class="tre-note">Sorted by NAV premium, smallest first. Green = below 1 (stock is cheaper than its coins), red = above 1. Click a column to re-sort.</div></div>
@@ -174,6 +168,11 @@ CSVs) and refreshed every day by the GitHub Action in
     </tr></thead><tbody></tbody></table></div>
     <div class="tre-foot">Crypto per $ invested = BTC or SOL held ÷ market cap. NAV premium = market cap ÷ crypto held (below 1 = the stock trades for less than its coins). BTC companies: holdings and share counts as of <span id="tre-asof"></span>, from the InvestAnswers treasury model. SOL companies: holdings from CoinGecko's Solana treasury list (<span id="tre-solasof"></span>), share counts from Yahoo Finance. Share prices from Yahoo Finance (every 15 minutes); BTC and SOL live from Coinbase. Market caps count only shares, not debt or preferred stock, and other assets are ignored.</div>
   </div>
+  <h2>Economy</h2>
+  <div class="debtclock"><div class="lab">U.S. National Debt</div>
+    <div class="num" id="fd-debt">$—</div>
+    <div class="meta" id="fd-debt-meta">Treasury, Debt to the Penny</div></div>
+  <div class="grid" id="fd-macro"></div>
   <div class="foot">Prices: Yahoo Finance daily closes. Economic data: Federal Reserve Bank of St. Louis (FRED): FEDFUNDS, DGS10, DGS30, DGS2, WALCL, ICSA, CPIAUCSL, GDPC1, UNRATE, M2SL, PAYEMS, GFDEBTN, T10Y2Y, GDP. Ratios compare closing prices on days both traded. Live bitcoin: Coinbase. Live S&amp;P 500: TradingView (Capital.com US500, which tracks the E-mini ES futures; CME does not allow ES1! itself in website widgets). Debt clock: U.S. Treasury, Debt to the Penny, extended at its past-year pace. ShadowStats-style line is an estimate (official CPI + 7 points; Saville, TSI Blog, 2015), not ShadowStats data. Updated automatically every 15 minutes. Not investment advice.</div>
 </div>
 
@@ -551,6 +550,12 @@ CSVs) and refreshed every day by the GitHub Action in
 14m Read: [Modern Monetary Theory - Slow at first, then all at once.](./mmt.html)  
 </center>
 <br>  
+
+```{=html}
+<br><br><br><br><br>
+<div class="paradigm" style="text-align:center;max-width:860px;margin:0 auto;font-size:1.1rem;line-height:1.6;padding:.7rem 1rem;border-top:1px solid #f5dfa6;border-bottom:1px solid #f5dfa6"><div class="ph" style="font-weight:700;font-size:1.2rem;color:#b0833a;margin-bottom:.4rem">Current Market Paradigm <i>September 28, 2026</i></div>Rates remain restrictive but the market prevails while bonds are waving the white flag and saying something's got to give. Inflation expectations remain high, but deflation narratives could take over quickly after the AI buildout. Silver, Copper, and Uranium remain safe commodity plays that should equal the S&amp;P without the risk, and Broadcom is a safe AI play which does not yet have a crazy P/E, but aiming for these only up to 1/5 of portfolio as long term core positions. Finished rotation out of Silver and Uranium into the mid-term year Q4 bottom of the bear for crypto. Currently dollar cost averaging into key assets of the future with a focus on AI, BTC, Crypto, and Space. Looking for LEAP opportunities on those assets, and using a rotational model to layer in/layer out at key regression levels. Hold &amp; stack only for now.</div>
+<br><br><br><br><br><br><br><br><br><br>
+```
 
 <h4>
 <br>
