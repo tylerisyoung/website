@@ -535,6 +535,18 @@ _________________________</p>
     <p>First Monday of each month: trimming is the same as Backtest 2 (only an overrun bucket's excess, sold equally from holdings above an equal share, never a whole position). Proceeds + the $135 go to underweight buckets by how far under they are; there, split equally across the bucket's <b>unowned</b> names (30+ days of price history). If it owns them all, to holdings below <code>bucket value ÷ holdings</code>, furthest below first.</p>
     <p>Same limits as the other backtests: today's 2030 targets and coin holdings are used for every past week (hindsight); gold and copper use futures prices; no trading costs.</p>
   </div></details>
+  <br><br><br><br><br>
+  <h2>Backtest 4: Equal Weight, Every Name</h2>
+  <div class="bt-sub">DCA $7,000 a year into a Roth IRA, invested weekly since March 2020, split equally across the whole list</div>
+  <div class="bt-exp">No picks, no buckets, no trimming: <b>about $135 every Monday</b> is split <b>equally across every name on the list</b> (all 20 tickers below, excluding the S&amp;P itself), and <b>nothing is ever sold</b>. A name joins once it has 30 days of price history, so early on the money is spread across fewer names (SOL from May 2020, MSTR from September 2020, the other treasury companies from 2024–25, SPCX from July 2026). This is the "own everything, never touch it" baseline to compare the ranking-driven backtests against. The S&amp;P line is the same $135 a week into SPY.</div>
+  <div class="bt-buckets" id="bt-buckets4"></div>
+  <div class="sim"><div class="sim-t">Backtest 4 since March 2020 <span id="sim4-res"></span></div>
+    <div class="sim-c"><canvas id="sim4-chart"></canvas></div>
+    <details class="srcs"><summary>Week-by-week buys (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Bought equally that week</th><th>Strategy</th><th>S&amp;P DCA</th></tr></thead><tbody id="sim4-log"></tbody></table></div></details></div>
+  <details class="srcs picks-f"><summary>Backtest rules (click to open)</summary><div class="fbody">
+    <p>Every Monday since March 2, 2020: <code>buy = $7,000 ÷ 52 ÷ number of names with 30+ days of prices</code> in each name. No rankings, no targets, no rebalancing, no selling. Buckets are shown only to group the names; they don't set weights here.</p>
+    <p>Unlike Backtests 2 and 3 there's no hindsight from price targets; it uses prices only. Gold and copper use futures prices (an IRA would hold GLD or CPER); no trading costs.</p>
+  </div></details>
   <br><br><br><br><br><br><br><br><br><br>
   <h2>Economy</h2>
   <div class="debtclock"><div class="lab">U.S. National Debt</div>
@@ -946,7 +958,11 @@ _________________________</p>
       });
       var V = value(day), C = WEEKLY, total = V + C, month = day.slice(0, 7), note;
       contrib += C; spyUnits += C / pxAt("SPY", day);
-      if (month !== lastMonth) {   // first Monday of the month: bring each bucket back to its weight without selling anything entirely
+      if (cfg.mode === "all") {   // Backtest 4: the $135 split equally across every name on the list that has 30+ days of prices; never sold or trimmed
+        var allK = [].concat.apply([], BUCKETS.map(function (b) { return b.k; })).filter(function (k) { return PX[k] && idxAt(PX[k], day) >= 29; });
+        tw = {}; allK.forEach(function (k) { tw[k] = 1 / allK.length; hold[k] = (hold[k] || 0) + C / allK.length / pxAt(k, day); });
+        note = "equal split across " + allK.length + " names";
+      } else if (month !== lastMonth) {   // first Monday of the month: bring each bucket back to its weight without selling anything entirely
         var P0 = function (k) { return pxAt(k, day); }, pool = C, added = [], trimmed = [];
         var bv = BUCKETS.map(function (b) { var ks = b.k.filter(function (k) { return hold[k] > 0; }); return { b: b, ks: ks, v: ks.reduce(function (s2, k) { return s2 + hold[k] * P0(k); }, 0), t: total * b.w }; });
         bv.forEach(function (x) {   // overrun bucket: sell the excess equally from its holdings above an equal share, never a whole position
@@ -989,7 +1005,7 @@ _________________________</p>
     document.getElementById(cfg.id + "-res").textContent = $(contrib) + " put in → strategy " + $(pe) + " (" + pc((pe / contrib - 1) * 100) + ") vs S&P DCA " + $(se) + " (" + pc((se / contrib - 1) * 100) + ")";
     document.getElementById(cfg.id + "-log").innerHTML = BT_LOG.slice().reverse().map(function (x) {
       var tgt = BUCKETS.map(function (b) { var m = Object.keys(x.tw).filter(function (k) { return b.k.indexOf(k) >= 0; }); return "<b>" + b.n + "</b> " + m.map(sn).join(", "); }).join(" · ");
-      return "<tr><td>" + x.d + "</td><td>" + tgt + (x.note.indexOf("rebalanced") === 0 ? ' <i class="rb">' + x.note + '</i>' : "") + "</td><td>" + $(x.v) + "</td><td>" + $(x.s) + "</td></tr>"; }).join("");
+      return "<tr><td>" + x.d + "</td><td>" + tgt + (x.note.indexOf("rebalanced") === 0 || x.note.indexOf("equal split") === 0 ? ' <i class="rb">' + x.note + '</i>' : "") + "</td><td>" + $(x.v) + "</td><td>" + $(x.s) + "</td></tr>"; }).join("");
     if (SIMCH[cfg.id]) SIMCH[cfg.id].destroy();
     var lab = { id: "simLab", afterDatasetsDraw: function (ch) { var ctx = ch.ctx; ctx.save(); ctx.textBaseline = "middle"; ctx.font = "700 11px system-ui,sans-serif";
       var its = ch.data.datasets.map(function (dd, i) { var pt = ch.getDatasetMeta(i).data[dd.data.length - 1]; return { x: pt.x, y: pt.y, c: dd.borderColor, t: dd.label + " " + $(dd.data[dd.data.length - 1]) }; });
@@ -1011,7 +1027,7 @@ _________________________</p>
     var html = BUCKETS.map(function (b) {
       return '<div class="bk"><div class="bk-h">' + b.n + " <span>" + Math.round(b.w * 100) + "%</span></div><div class=\"bk-t\">" +
         b.k.map(function (k) { return '<span class="' + (top.indexOf(k) >= 0 ? "on" : "") + '">$' + sn(k) + "</span>"; }).join(" ") + "</div></div>"; }).join("");
-    ["bt-buckets", "bt-buckets2", "bt-buckets3"].forEach(function (id) { var el = document.getElementById(id); if (el) el.innerHTML = html; });
+    ["bt-buckets", "bt-buckets2", "bt-buckets3", "bt-buckets4"].forEach(function (id) { var el = document.getElementById(id); if (el) el.innerHTML = html; });
   }
   // This week's best buys: average of the Comparative Value rank and the Projected Growth rank (each as 0-100)
   function weekPicks() {
@@ -1023,7 +1039,8 @@ _________________________</p>
     bucketCards(top.map(function (r) { return r.k; }));
     simPicks({ id: "sim" });
     setTimeout(function () { try { simPicks({ id: "sim2", start: "2020-03-02" }); } catch (e) { console.log("backtest 2020", e); }
-                             try { simPicks({ id: "sim3", start: "2020-03-02", mode: "div" }); } catch (e) { console.log("backtest 3", e); } }, 50);
+                             try { simPicks({ id: "sim3", start: "2020-03-02", mode: "div" }); } catch (e) { console.log("backtest 3", e); }
+                             try { simPicks({ id: "sim4", start: "2020-03-02", mode: "all" }); } catch (e) { console.log("backtest 4", e); } }, 50);
     document.getElementById("picks-row").innerHTML = top.map(function (r, i) { return '<span class="pk"><span class="rk">#' + (i + 1) + '</span><span class="tk" title="Overall ' + r.o.toFixed(0) + ' (value ' + r.v.toFixed(0) + ', growth ' + r.g.toFixed(0) + ')">$' + sn(r.k) + "</span></span>"; }).join("");
   }
   // Chart 2 + table, Projected Growth: today's price vs median 2030 target
