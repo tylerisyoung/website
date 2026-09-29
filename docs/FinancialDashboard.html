@@ -290,8 +290,7 @@ CSVs) and refreshed every day by the GitHub Action in
 -->
 <p><br> <br></p>
 <h2>
-<strong>Ongoing Technical Analysis of Financial markets and
-Crypto</strong>
+<strong>Ongoing Technical Analysis of Financial Markets</strong>
 </h2>
 <h6>
 <br> <strong><em>For sure financial advice - More on Substack &amp;
@@ -340,6 +339,10 @@ _________________________</p>
 .fd .srcs .a b{font-size:.84rem}.fd .srcs .a i{color:var(--muted);font-style:normal}
 .fd .srcs ul{margin:.1rem 0 .2rem 1rem;padding:0}.fd .srcs li{margin:.05rem 0}
 .fd .srcs .lab{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:#8a7338;font-weight:700;margin-top:.2rem}
+.fd .fx{background:#fdf3d0;border:1px solid #f1e3bd;border-radius:6px;padding:.4rem .7rem;font:.76rem/1.5 ui-monospace,Menlo,Consolas,monospace;margin:.3rem 0 .6rem;color:#5a4a1e}
+.fd .srcs .fbody{columns:auto;padding:.1rem .9rem .7rem;font-size:.78rem;line-height:1.55}
+.fd .srcs .fbody code{background:#fdf3d0;padding:0 .2rem;border-radius:3px;font-size:.76rem}
+.fd .srcs .fbody p{margin:.25rem 0}
 .fd .srcs .note{font-size:.76rem;color:var(--muted);padding:0 .9rem;margin:0}
 .fd .best .pct{color:var(--muted);font-size:.72rem}.fd .best .up{color:#3f8a57}.fd .best .dn{color:#c75b5b}
 .fd .best td{padding:.22rem .3rem;text-align:right;border-bottom:1px solid var(--line);vertical-align:top}
@@ -350,7 +353,7 @@ _________________________</p>
 .fd .best-method h4{font-size:.85rem;margin:.6rem 0 .2rem;color:#b0833a}
 .fd .best-method ol,.fd .best-method ul{margin:.2rem 0 .2rem 1.1rem;padding:0}
 .fd .best-method .src{font-size:.74rem;color:var(--muted)}
-.fd .debtclock{border:1px solid #f1d0d0;border-left:4px solid #e07a7a;background:#fdf6f5;border-radius:10px;padding:.6rem 1rem;margin-bottom:12px;text-align:center}
+.fd .debtclock{border:1px solid #f1d0d0;border-left:4px solid #e07a7a;background:#fdf6f5;border-radius:10px;padding:3.6rem 1rem;margin-bottom:12px;text-align:center}
 .fd .debtclock .lab{font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;color:#b25a5a;font-weight:700}
 .fd .debtclock .num{font:700 2.4rem/1.15 "SFMono-Regular",Menlo,Consolas,monospace;color:#c0392b;letter-spacing:.02em;font-variant-numeric:tabular-nums;margin:.15rem 0}
 @media(max-width:700px){.fd .debtclock .num{font-size:1.5rem}}
@@ -406,6 +409,7 @@ _________________________</p>
     </script></div>
   </div>
   <div class="strip" id="fd-strip"></div>
+  <br><br><br><br><br><br><br><br><br><br>
   <div class="ctrl">
     <span class="lab">Timeframe</span>
     <button data-tf="D" class="on">Daily</button><button data-tf="W">Weekly</button><button data-tf="M">Monthly</button>
@@ -417,11 +421,18 @@ _________________________</p>
   </div>
   <h2>Markets</h2>
   <div class="grid" id="fd-prices"></div>
+  <br><br><br><br><br><br><br><br><br><br>
   <h2>Current Best Buy</h2>
   <div class="best">
     <h3>Comparative Value<span>which asset is most beaten down against the others</span></h3>
     <div class="best-sub">Every asset compared against every other one, pair by pair. Score = share of head-to-head pairs won for deepest value and largest negative deviation to 20week ema &amp; 200day EMA. Those further from ATH also rank higher. Updates with every price refresh.</div>
     <div class="best-chart"><canvas id="cv-chart"></canvas></div>
+    <details class="srcs"><summary>Formulas (click to open)</summary><div class="fbody">
+      <p><b>Each asset:</b> <code>DD = 1 − Price ÷ ATH</code> (ATH = highest daily close, up to 10 years) · <code>vs EMA = Price ÷ EMA − 1</code></p>
+      <p><b>EMA:</b> <code>EMAₜ = α·xₜ + (1 − α)·EMAₜ₋₁</code>, with α = 2/21 on weekly closes (20-week) and α = 2/201 on daily closes (200-day), over the last ~2 years.</p>
+      <p><b>Each pair A vs B:</b> <code>R = A ÷ B</code> on shared trading days (last 520). <code>Edge = [ ln(R ÷ EMA₂₀w(R)) + ln(R ÷ EMA₂₀₀d(R)) + (DD_B − DD_A) ] ÷ 3</code>. Edge &lt; 0 → A wins. Pairs with under 30 shared days are skipped.</p>
+      <p><b>Score (bar):</b> <code>pairs won ÷ pairs played</code>. Ties go to the more negative average edge.</p>
+    </div></details>
   </div>
   <div class="best">
     <h3>Projected Growth<span>today's price vs the forecasters' 2030 targets</span></h3>
@@ -431,6 +442,13 @@ _________________________</p>
       <th>Ticker</th><th>Price</th><th>Below ATH</th><th>vs 20-wk EMA</th><th>vs 200-day EMA</th><th>Value pairs won</th><th>Low target</th><th>Median target</th><th>High target</th><th>Avg 12-mo return</th><th>At NAV 1.0x</th><th>CAGR to 2030</th><th>Avg 2030 return</th>
     </tr></thead><tbody></tbody></table></div>
     <div class="best-method" id="best-method"></div>
+    <details class="srcs"><summary>Formulas (click to open)</summary><div class="fbody">
+      <p><b>Targets:</b> Low / High = lowest / highest 2030 target. Median = median of all 2030 targets, except BTC, SOL, TSLA: <code>0.5 × InvestAnswers + 0.5 × average of the others</code>.</p>
+      <p><b>Conversions:</b> SLV <code>= silver target × SLV ÷ silver spot</code> · SPY <code>= S&amp;P 500 target ÷ 10.02</code> · copper <code>$/lb = $/t ÷ 2,204.62</code> · UUUU, SILJ, MP <code>= Price × sector 2030 target ÷ sector spot</code> (uranium, silver, avg of uranium/silver/gold/copper).</p>
+      <p><b>Treasury companies:</b> <code>CPS = coins ÷ shares</code> · <code>mNAV = Price ÷ (CPS × coin price)</code> · <code>Target = coin 2030 target × CPS × √mNAV</code> (NAV assumed halfway back to 1.0x) · At NAV 1.0x <code>= Price ÷ CPS</code> and <code>CPS × coin median target</code>.</p>
+      <p><b>Returns:</b> <code>Avg 2030 return = Median ÷ Price − 1</code> (ranking) · <code>CAGR = (Median ÷ Price)^(1/Y) − 1</code>, Y = years to Dec 31, 2030 (bar) · <code>Avg 12-mo = average ~1-year target ÷ Price − 1</code> (analyst consensus for stocks).</p>
+      <p><b>Colors:</b> yellow → green by rank; faded red = negative return.</p>
+    </div></details>
     <details class="srcs"><summary>Sources for every price target (click to open)</summary>
       <p class="note">Every forecaster behind the low, median and high targets, with the date it was published and a link. To add your own 2030 target for any asset, set it in <code>USER_INPUT</code> at the top of the targets section in <code>scripts/update_market_data.py</code>; it then counts as one more source.</p>
       <div class="body" id="best-sources"></div></details>
@@ -444,6 +462,7 @@ _________________________</p>
     </tr></thead><tbody></tbody></table></div>
     <div class="tre-foot">Crypto per $ invested = BTC or SOL held ÷ market cap. NAV premium = market cap ÷ crypto held (below 1 = the stock trades for less than its coins). BTC companies: holdings and share counts as of <span id="tre-asof"></span>, from the InvestAnswers treasury model. SOL companies: holdings from CoinGecko's Solana treasury list (<span id="tre-solasof"></span>), share counts from Yahoo Finance. Share prices from Yahoo Finance (every 15 minutes); BTC and SOL live from Coinbase. Market caps count only shares, not debt or preferred stock, and other assets are ignored.</div>
   </div>
+  <br><br><br><br><br><br><br><br><br><br>
   <h2>Economy</h2>
   <div class="debtclock"><div class="lab">U.S. National Debt</div>
     <div class="num" id="fd-debt">$—</div>
@@ -647,7 +666,7 @@ _________________________</p>
     cv.parentNode.style.height = (rows.length * 19 + 40) + "px";
     return new Chart(cv, { type: "bar",
       data: { labels: rows.map(function (r) { return sn(r.k); }),
-              datasets: [{ data: vals, backgroundColor: rows.map(function (r, i) { return gyBar(r.t); }), borderRadius: 3 }] },
+              datasets: [{ data: vals, backgroundColor: rows.map(function (r, i) { return vals[i] < 0 ? "rgba(224,122,122,0.55)" : gyBar(r.t); }), borderRadius: 3 }] },
       options: { indexAxis: "y", responsive: true, maintainAspectRatio: false, animation: false,
         plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return tip(rows[c.dataIndex]); } } } },
         scales: { x: Object.assign({ ticks: { callback: function (v) { return v + "%"; }, color: "#6b7686", font: { size: 10 } }, grid: { color: "#eef1f5" } }, xopts),
@@ -736,7 +755,7 @@ _________________________</p>
     // table
     function gy(t) { t = Math.max(0, Math.min(1, t)); var a = [252, 236, 178], b = [183, 226, 196];
       return "rgb(" + a.map(function (x, i) { return Math.round(x + (b[i] - x) * t); }).join(",") + ")"; }
-    function shade(v, cap) { return v == null ? "" : ' style="background:' + gy(Math.log(1 + Math.max(0, v)) / Math.log(1 + cap)) + '"'; }
+    function shade(v, cap) { return v == null ? "" : ' style="background:' + (v < 0 ? "rgba(224,122,122,0.35)" : gy(Math.log(1 + v) / Math.log(1 + cap))) + '"'; }
     function tp(v, px) { var g = v / px - 1; return m(v) + "<small>" + (g >= 0 ? "+" : "") + Math.round(g * 100).toLocaleString("en-US") + "%</small>"; }
     function pc1(x) { return (x >= 0 ? "+" : "") + (x * 100).toFixed(1) + "%"; }
     function k$(v) { return v >= 1e6 ? "$" + (v / 1e6).toFixed(2) + "M" : v >= 1e3 ? "$" + (v / 1e3).toFixed(1) + "k" : "$" + v.toFixed(v < 10 ? 2 : 0); }
@@ -774,20 +793,13 @@ _________________________</p>
       (T.URANIUM ? block("URANIUM", "Uranium <i>sector outlook used for Energy Fuels and MP</i>") : "");
     document.getElementById("best-method").innerHTML =
       "<h4>How it works: Comparative Value</h4><ul>" +
-      "<li>Every asset is paired with every other one, for example SOL vs BTC. For each pair we look at the price ratio: how much of one asset a single unit of the other buys.</li>" +
-      "<li>Three things decide who wins each pair, weighted equally: (1) how far that ratio is below its 20-week moving average, (2) how far it is below its 200-day moving average (both exponential, or EMA), and (3) which asset is further below its own all-time high.</li>" +
-      "<li>Whichever asset comes out more beaten down wins the pair as the better value. The bet is that stretched ratios drift back toward their average, and that deep drawdowns leave more room to recover.</li>" +
-      "<li>Score = the share of pairs an asset wins. Top of the chart = the best value against the most other assets. Ties go to the one with the bigger average gap.</li>" +
-      "<li>In the table: <b>Below ATH</b> = how far today's price is under the highest close in the data (up to 10 years; for treasury companies that can include years before they held coins). <b>vs 20-wk / 200-day EMA</b> = the asset's own price against its own averages, a quick read on the same idea. <b>Value pairs won</b> = the chart score.</li>" +
-      "<li>This chart ignores price targets completely. It only says what is cheap relative to its own past and to the other assets, not that it will recover.</li></ul>" +
+      "<li>Every asset is paired with every other one. It wins a pair when their price ratio sits further below its 20-week and 200-day EMAs and it is further below its all-time high (three factors, equal weight). Score = share of pairs won; top = best value against the most assets.</li>" +
+      "<li>Table: <b>Below ATH</b>, <b>vs 20-wk / 200-day EMA</b> (the asset on its own) and <b>Value pairs won</b> (the score). Ignores price targets: cheap can stay cheap.</li></ul>" +
+      '<div class="fx">Edge(A vs B) = [ ln(R ÷ EMA₂₀w) + ln(R ÷ EMA₂₀₀d) + (DD_B − DD_A) ] ÷ 3 &nbsp;·&nbsp; R = A ÷ B, DD = 1 − Price ÷ ATH &nbsp;·&nbsp; A wins if Edge &lt; 0 &nbsp;·&nbsp; Score = wins ÷ pairs</div>' +
       "<h4>How it works: Projected Growth</h4><ul>" +
-      "<li>For each asset we collected 2030 price targets from at least 3 named forecasters (every one is listed with its link in the Sources list below). Only their main (base-case) calls, not bull or bear scenarios.</li>" +
-      "<li><b>Low / median / high target</b> = the smallest, middle and largest of those 2030 targets. For BTC, SOL and TSLA the InvestAnswers target counts for half and the other forecasters share the other half.</li>" +
-      "<li><b>Avg 2030 return</b> = the total move from today's price to the median 2030 target. The list is ranked by this. <b>CAGR to 2030</b> (and the bar) = the same move as a yearly compound rate.</li>" +
-      "<li><b>Avg 12-mo return</b> = the move to the average of the roughly one-year targets: the Wall Street analyst average for stocks, and bank and research-firm forecasts for crypto and commodities.</li>" +
-      "<li><b>Treasury companies</b> (MSTR, Metaplanet, FWDI, DFDV, UPXI, HSDT) are priced off their coin: coin's 2030 target x coins each share holds x a premium or discount to holdings (NAV) that is assumed to move halfway back to 1.0x by 2030. <b>At NAV 1.0x</b> shows what one share is worth in coin terms today, and what it would be worth if the coin hits its median target and the stock trades exactly at its holdings.</li>" +
-      "<li>MP, Energy Fuels and SILJ have no named 2030 targets, so they borrow a sector outlook: Energy Fuels = uranium, SILJ = silver, MP = the average of uranium, silver, gold and copper.</li>" +
-      "<li>Forecasts, not facts: 2030 targets are far less reliable than 12-month ones. " + (skipped.length ? "Not ranked (no targets): " + skipped.map(sn).join(", ") + ". " : "") + "Not investment advice.</li></ul>";
+      "<li>Low / median / high = smallest, middle and largest 2030 target from 3+ named forecasters (all in Sources; InvestAnswers counts for half on BTC, SOL, TSLA). Ranked by <b>Avg 2030 return</b>; the bar and <b>CAGR to 2030</b> show it per year. <b>Avg 12-mo</b> = move to the average ~1-year target.</li>" +
+      "<li>Treasury companies are priced off their coin, with the NAV premium assumed halfway back to 1.0x; <b>At NAV 1.0x</b> = the share in coin terms today and at the coin's median target. MP, UUUU and SILJ borrow a sector outlook. Forecasts, not facts. " + (skipped.length ? "Not ranked: " + skipped.map(sn).join(", ") + ". " : "") + "Not investment advice.</li></ul>" +
+      '<div class="fx">Avg 2030 return = Median ÷ Price − 1 &nbsp;·&nbsp; CAGR = (Median ÷ Price)^(1/Y) − 1 &nbsp;·&nbsp; Treasury target = coin target × coins per share × √mNAV</div>';
   }
   // Debt clock: latest Treasury "Debt to the Penny" figure, run forward at its average pace over the past year
   function debtClock(dc) {
@@ -809,6 +821,7 @@ _________________________</p>
 })();
 </script>
 <br>
+<p><br><br><br><br><br><br><br><br><br><br></p>
 <hr>
 <div id="ongoing-ta">
 <h2 style="text-align:center">
