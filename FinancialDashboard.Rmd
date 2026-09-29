@@ -398,12 +398,12 @@ CSVs) and refreshed every day by the GitHub Action in
       var q = 100 + p, dec = q >= 1 ? 0 : Math.min(6, Math.ceil(-Math.log10(q)) + 1); return "−" + (100 - q).toFixed(dec).replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "") + "%"; }
     var c = document.createElement("div"); c.className = "card explorer perf";
     c.innerHTML = '<div class="t"><span class="n">Every ticker vs the S&amp;P 500 and the 10-year Treasury</span><span class="v" style="font-size:1rem">since April 2020</span></div>' +
-      '<div class="c">Total % return since April 2020, log scale (compressed below −50% so the biggest losers fit), weekly closes smoothed over 13 weeks. Thick black = S&amp;P 500 (SPY); dashed red = earning the 10-year Treasury yield (the risk-free rate). Green = beat the S&amp;P, yellow = between the S&amp;P and the 10-year, red = trailed the 10-year. Names on the right are in end-value order; thin lines join each to its line. Later starters join at the S&amp;P\'s level on their first day. Click a name in the key to hide it.</div><canvas id="perf"></canvas>';
+      '<div class="c">Total % return since April 2020, log scale (compressed below −50% so the biggest losers fit), weekly closes smoothed over 13 weeks. Thick black = S&amp;P 500 (SPY); dashed red = earning the 10-year Treasury yield (the risk-free rate). Green = beat the S&amp;P, yellow = between the S&amp;P and the 10-year, red = trailed the 10-year. Names on the right are in end-value order; thin lines join each to its line. Later starters join at the S&amp;P\'s level on their first day.</div><canvas id="perf"></canvas>';
     P.appendChild(c);
     charts.push(new Chart(document.getElementById("perf"), { type: "line", data: { labels: dates, datasets: ds }, plugins: [endLabels, gapLine],
       options: { animation: false, responsive: true, maintainAspectRatio: false, layout: { padding: { right: 110 } },
         interaction: { mode: "nearest", intersect: false },
-        plugins: { legend: { display: true, position: "bottom", labels: { boxWidth: 10, boxHeight: 2, font: { size: 10 }, color: "#2d3a4a" } },
+        plugins: { legend: { display: false },
                    tooltip: { callbacks: { label: function (x) { return x.dataset.label + ": " + pctOf(x.dataset.raw[x.dataIndex]); } } } },
         scales: { x: { ticks: { maxTicksLimit: 6, maxRotation: 0, color: "#6b7686", font: { size: 10 }, callback: function (v) { return this.getLabelForValue(v).slice(0, 7); } }, grid: { display: false } },
                   y: { type: "linear", position: "left", min: fY(Math.min.apply(null, all)) - 0.05, max: Lmax + 0.1,
