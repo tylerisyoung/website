@@ -394,7 +394,7 @@ _________________________</p>
 .fd .explorer .tabs button.pair.on{background:#d9736f;border-color:#d9736f}
 .fd .explorer .tabs .lab{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;align-self:center;margin-right:.2rem}
 .fd .explorer canvas{height:330px!important}
-.fd .perf canvas{height:560px!important}
+.fd .perf canvas{height:720px!important}
 .fd .foot{color:var(--muted);font-size:.75rem;margin:1.2rem 0 2rem}
 </style>
 
@@ -601,13 +601,12 @@ _________________________</p>
     ch.data.datasets.forEach(function (ds, i) { var meta = ch.getDatasetMeta(i); if (!ch.isDatasetVisible(i)) return;
       for (var k = ds.data.length - 1; k >= 0; k--) if (ds.data[k] != null) {
         var pt = meta.data[k], off = pt.y > A.bottom;
-        items.push({ y0: Math.min(pt.y, A.bottom), x0: pt.x, v: ds.data[k], t: ds.label + (off ? " ↓" : ""), c: ds.borderColor, pin: ds.pin }); break; } });
+        items.push({ y0: Math.min(pt.y, A.bottom), x0: pt.x, v: ds.data[k], t: ds.label, c: ds.borderColor, pin: ds.pin }); break; } });
     ctx.save(); ctx.textBaseline = "middle";
     // S&P 500 and 10-year: labelled right on their own lines
     items.filter(function (it) { return it.pin; }).forEach(function (it) {
       ctx.font = "700 11px system-ui,sans-serif"; var w = ctx.measureText(it.t).width;
-      ctx.fillStyle = "rgba(255,255,255,0.85)"; ctx.fillRect(it.x0 - w - 10, it.y0 - 8, w + 6, 16);
-      ctx.fillStyle = it.c; ctx.fillText(it.t, it.x0 - w - 7, it.y0);
+      ctx.fillStyle = it.c; ctx.fillText(it.t, it.x0 - w - 7, it.y0 + (it.t === "S&P 500" ? -10 : 10));
     });
     // everything else: a column in top-to-bottom order, each joined to its line by a thin connector
     var rest = items.filter(function (it) { return !it.pin; }).sort(function (a, b) { return b.v - a.v; });
@@ -659,17 +658,20 @@ _________________________</p>
     ds = green.concat(yellow, red);
     ds.push({ label: "S&P 500", data: spyV, borderColor: "#111", borderWidth: 2.4, order: 2, pointRadius: 0, tension: 0.4, pin: true });
     if (rf) ds.push({ label: "10Y Treasury", data: rf, borderColor: "#b23a3a", borderWidth: 2.4, order: 1, borderDash: [7, 4], pointRadius: 0, tension: 0, pin: true });
+    var yMin = Math.pow(10, Math.floor(Math.log10(Math.min.apply(null, ds.map(function (d) { return Math.min.apply(null, d.data.filter(function (x) { return x != null; })); })))));
+    function pctOf(v) { var p = (v - 1) * 100; if (p >= 0) return "+" + Math.round(p).toLocaleString("en-US") + "%";
+      var q = 100 + p, dec = q >= 1 ? 0 : Math.min(6, Math.ceil(-Math.log10(q)) + 1); return "−" + (100 - q).toFixed(dec).replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "") + "%"; }
     var c = document.createElement("div"); c.className = "card explorer perf";
     c.innerHTML = '<div class="t"><span class="n">Every ticker vs the S&amp;P 500 and the 10-year Treasury</span><span class="v" style="font-size:1rem">since April 2020</span></div>' +
-      '<div class="c">Growth of $1, log scale, weekly closes smoothed over 13 weeks. Thick black = S&amp;P 500 (SPY); thick dashed red = $1 earning the 10-year Treasury yield (the risk-free rate). Green = beat the S&amp;P, yellow = between the S&amp;P and the 10-year, red = trailed the 10-year. Names on the right are in end-value order; thin lines join each to its line. Later starters join at the S&amp;P\'s level on their first day; anything below $0.05 runs off the bottom (↓). Click a name in the key to hide it.</div><canvas id="perf"></canvas>';
+      '<div class="c">Total % return since April 2020, log scale, weekly closes smoothed over 13 weeks. Thick black = S&amp;P 500 (SPY); dashed red = earning the 10-year Treasury yield (the risk-free rate). Green = beat the S&amp;P, yellow = between the S&amp;P and the 10-year, red = trailed the 10-year. Names on the right are in end-value order; thin lines join each to its line. Later starters join at the S&amp;P\'s level on their first day. Click a name in the key to hide it.</div><canvas id="perf"></canvas>';
     P.appendChild(c);
     charts.push(new Chart(document.getElementById("perf"), { type: "line", data: { labels: dates, datasets: ds }, plugins: [endLabels],
       options: { animation: false, responsive: true, maintainAspectRatio: false, layout: { padding: { right: 110 } },
         interaction: { mode: "nearest", intersect: false },
         plugins: { legend: { display: true, position: "bottom", labels: { boxWidth: 10, boxHeight: 2, font: { size: 10 }, color: "#2d3a4a" } },
-                   tooltip: { callbacks: { label: function (x) { return x.dataset.label + ": $1 → $" + x.parsed.y.toFixed(2) + " (" + ((x.parsed.y - 1) * 100 >= 0 ? "+" : "") + Math.round((x.parsed.y - 1) * 100) + "%)"; } } } },
+                   tooltip: { callbacks: { label: function (x) { return x.dataset.label + ": " + pctOf(x.parsed.y); } } } },
         scales: { x: { ticks: { maxTicksLimit: 6, maxRotation: 0, color: "#6b7686", font: { size: 10 }, callback: function (v) { return this.getLabelForValue(v).slice(0, 7); } }, grid: { display: false } },
-                  y: { type: "logarithmic", position: "left", min: 0.05, ticks: { color: "#6b7686", font: { size: 10 }, callback: function (v) { var l = Math.log10(v); return Math.abs(l - Math.round(l)) < 1e-9 || [0.2, 0.5, 2, 5, 20, 50].indexOf(+v) >= 0 ? "$" + v : ""; } }, grid: { color: "#f0f2f6" } } } } }));
+                  y: { type: "logarithmic", position: "left", min: yMin, ticks: { color: "#6b7686", font: { size: 10 }, callback: function (v) { var l = Math.log10(v); return Math.abs(l - Math.round(l)) < 1e-9 || [0.5, 2, 5, 20, 50].indexOf(+v) >= 0 ? pctOf(v) : ""; } }, grid: { color: "#f0f2f6" } } } } }));
   }
   function resampleW(points) {
     var out = [], key = null;
