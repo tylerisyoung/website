@@ -68,6 +68,7 @@ CSVs) and refreshed every day by the GitHub Action in
 .fd .srcs .fbody{columns:auto;padding:.1rem .9rem .7rem;font-size:.78rem;line-height:1.55}
 .fd .srcs .fbody code{background:#fdf3d0;padding:0 .2rem;border-radius:3px;font-size:.76rem}
 .fd .srcs .fbody p{margin:.25rem 0}
+.fd .picks-f{margin-top:0}
 .fd .srcs .note{font-size:.76rem;color:var(--muted);padding:0 .9rem;margin:0}
 .fd .best .pct{color:var(--muted);font-size:.72rem}.fd .best .up{color:#3f8a57}.fd .best .dn{color:#c75b5b}
 .fd .best td{padding:.22rem .3rem;text-align:right;border-bottom:1px solid var(--line);vertical-align:top}
@@ -82,6 +83,11 @@ CSVs) and refreshed every day by the GitHub Action in
 .fd .debtclock .lab{font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;color:#b25a5a;font-weight:700}
 .fd .debtclock .num{font:700 2.4rem/1.15 "SFMono-Regular",Menlo,Consolas,monospace;color:#c0392b;letter-spacing:.02em;font-variant-numeric:tabular-nums;margin:.15rem 0}
 @media(max-width:700px){.fd .debtclock .num{font-size:1.5rem}}
+.fd .picks{border:1px solid #c9dafa;border-left:4px solid #3d6fd6;background:#f1f6fe;border-radius:10px;padding:3.6rem 1rem;margin-bottom:12px;text-align:center}
+.fd .picks .row{display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem 2.6rem}
+.fd .picks .tk{font:700 2.4rem/1.15 "SFMono-Regular",Menlo,Consolas,monospace;color:var(--blue);letter-spacing:.02em}
+@media(max-width:700px){.fd .picks .tk{font-size:1.5rem}}
+.fd .picks .meta{font-size:.76rem;color:var(--muted);margin-top:.5rem}
 .fd .debtclock .meta{font-size:.76rem;color:var(--muted)}
 .fd .tile{border:1px solid #f1e3bd;border-left:4px solid #f2c46d;background:#fefaf0;border-radius:10px;padding:.5rem .9rem;height:96px;overflow:hidden}
 .fd .tile .k{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:#8a7338;font-weight:600}
@@ -188,6 +194,14 @@ CSVs) and refreshed every day by the GitHub Action in
     </tr></thead><tbody></tbody></table></div>
     <div class="tre-foot">Crypto per $ invested = BTC or SOL held ÷ market cap. NAV premium = market cap ÷ crypto held (below 1 = the stock trades for less than its coins). BTC companies: holdings and share counts as of <span id="tre-asof"></span>, from the InvestAnswers treasury model. SOL companies: holdings from CoinGecko's Solana treasury list (<span id="tre-solasof"></span>), share counts from Yahoo Finance. Share prices from Yahoo Finance (every 15 minutes); BTC and SOL live from Coinbase. Market caps count only shares, not debt or preferred stock, and other assets are ignored.</div>
   </div>
+  <h2>This Week's Best Buys</h2>
+  <br><br><br><br><br>
+  <div class="picks"><div class="row" id="picks-row"><span class="tk">…</span></div>
+    <div class="meta" id="picks-meta">Top 5 by combined rank in Comparative Value and Projected Growth</div></div>
+  <details class="srcs picks-f"><summary>Formula (click to open)</summary><div class="fbody">
+    <p>Each asset gets two ranks, turned into a 0–100 score (100 = 1st place): <b>Value</b> = its place on the Comparative Value chart, <b>Growth</b> = its place on the Projected Growth chart (avg 2030 return).</p>
+    <p><code>Overall = (Value score + Growth score) ÷ 2</code>. The five highest overall are shown; ties go to the higher Growth score. Assets must appear on both charts. Recalculated with every price refresh.</p>
+  </div></details>
   <br><br><br><br><br><br><br><br><br><br>
   <h2>Economy</h2>
   <div class="debtclock"><div class="lab">U.S. National Debt</div>
@@ -506,7 +520,7 @@ CSVs) and refreshed every day by the GitHub Action in
       var k = d.toISOString().slice(0, 10); if (k === key) out[out.length - 1] = p[1]; else { out.push(p[1]); key = k; } });
     return out;
   }
-  var VALUE = {};   // per-asset Comparative Value results, also shown in the table
+  var VALUE = {}, GROWTH = [];   // per-asset Comparative Value results, also shown in the table
   function compValue() {
     var univ = bestUniverse(), rows = univ.map(function (k) {
       var pts = DATA.prices[k].points, v = pts.map(function (p) { return p[1]; }), last = v[v.length - 1], ath = Math.max.apply(null, v);
@@ -539,6 +553,16 @@ CSVs) and refreshed every day by the GitHub Action in
       { min: 0, max: 100 });
   }
 
+  // This week's best buys: average of the Comparative Value rank and the Projected Growth rank (each as 0-100)
+  function weekPicks() {
+    var vOrder = Object.keys(VALUE).sort(function (a, b) { return VALUE[b].score - VALUE[a].score || VALUE[a].dev - VALUE[b].dev; });
+    function pctRank(list, k) { var i = list.indexOf(k); return i < 0 ? null : (list.length > 1 ? 100 * (1 - i / (list.length - 1)) : 100); }
+    var rows = GROWTH.filter(function (k) { return VALUE[k]; }).map(function (k) { var v = pctRank(vOrder, k), g = pctRank(GROWTH, k); return { k: k, v: v, g: g, o: (v + g) / 2 }; });
+    rows.sort(function (a, b) { return b.o - a.o || b.g - a.g; });
+    var top = rows.slice(0, 5);
+    document.getElementById("picks-row").innerHTML = top.map(function (r) { return '<span class="tk" title="Overall ' + r.o.toFixed(0) + ' (value ' + r.v.toFixed(0) + ', growth ' + r.g.toFixed(0) + ')">$' + sn(r.k) + "</span>"; }).join("");
+    document.getElementById("picks-meta").textContent = "Top 5 by combined rank in Comparative Value and Projected Growth · overall scores " + top.map(function (r) { return sn(r.k) + " " + r.o.toFixed(0); }).join(", ") + " · not investment advice";
+  }
   // Chart 2 + table, Projected Growth: today's price vs median 2030 target
   function bestBuy() {
     var T = DATA.targets, trow = {}; if (!T) return;
@@ -569,6 +593,7 @@ CSVs) and refreshed every day by the GitHub Action in
       rows.push(row);
     });
     rows.sort(function (a, b) { return b.r30 - a.r30; });
+    GROWTH = rows.map(function (r) { return r.k; });
     rows.forEach(function (r, i) { r.t = rows.length > 1 ? 1 - i / (rows.length - 1) : 1; });
     function rt(v) { return (v >= 0 ? "+" : "") + Math.round(v * 100).toLocaleString("en-US") + "%"; }
     function m(v) { return v >= 1000 ? money(v) : "$" + v.toPrecision(v < 1 ? 3 : 4); }
@@ -641,6 +666,7 @@ CSVs) and refreshed every day by the GitHub Action in
     strip(); render(); cryptoLive(); debtClock(d.debt_clock);
     try { compValue(); } catch (e) { console.log("comparative value", e); }
     try { bestBuy(); } catch (e) { console.log("best buy", e); }
+    try { weekPicks(); } catch (e) { console.log("picks", e); }
     if (d.treasury) { TRE = d.treasury; var bp = d.prices["BTC-USD"].points, sp = d.prices["SOL-USD"].points; treBtc = bp[bp.length - 1][1]; treSolP = sp[sp.length - 1][1]; treRender(); treLive(); }
   }).catch(function () { document.getElementById("fd-updated").textContent = "Data could not be loaded."; });
 })();
