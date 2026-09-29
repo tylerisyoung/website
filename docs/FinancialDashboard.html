@@ -497,40 +497,42 @@ _________________________</p>
   <br><br><br><br><br>
   <h2>Backtest</h2>
   <div class="bt-sub">DCA $7,000 into a Roth IRA, invested weekly over 12 months</div>
-  <div class="bt-exp">$7,000 ÷ 52 ≈ <b>$135 goes in every Monday</b>. The money is split across three buckets: <b>AI 40%, Crypto 40%, Commodities 20%</b>. Inside each bucket, its share is split equally among that bucket's assets in that Monday's top 10 (if none made the top 10, the bucket's best-ranked asset gets it). Each week the new money goes to whatever is furthest <i>below</i> its target weight in the current portfolio, so winners that have grown past their target get nothing new and laggards are topped up. Winners can still drift overweight, so on the <b>first Monday of each month the whole portfolio is rebalanced</b> back to the target weights (no tax on selling inside a Roth IRA), and the weekly buying starts again from equal footing. The S&amp;P line is the same $135 a week into SPY.</div>
+  <div class="bt-exp">$7,000 ÷ 52 ≈ <b>$135 goes in every Monday</b>, split across three buckets: <b>AI 40%, Crypto 40%, Commodities 20%</b>. Inside each bucket, its share is split equally among that bucket's assets in that Monday's top 10 (if none made the top 10, the bucket's best-ranked asset gets it). Each week the new money goes to whatever is furthest <i>below</i> its target in the current portfolio, so winners get nothing new and laggards are topped up. <b>Nothing is ever sold entirely.</b> On the <b>first Monday of each month</b> each bucket is checked against its 40/40/20 weight: if a bucket has run over, only the excess is sold, taken <b>equally from its holdings that sit above an equal share</b> of the bucket (no tax inside a Roth IRA). That money, plus the week's $135, goes to the bucket(s) that fell below their weight. Underweight buckets put it into their current picks. Winners are kept, just trimmed. The S&amp;P line is the same $135 a week into SPY.</div>
   <div class="bt-buckets" id="bt-buckets"></div>
   <div class="sim"><div class="sim-t">12-month backtest <span id="sim-res"></span></div>
     <div class="sim-c"><canvas id="sim-chart"></canvas></div>
     <details class="srcs"><summary>Week-by-week targets (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Target holdings that week</th><th>Strategy</th><th>S&amp;P DCA</th></tr></thead><tbody id="sim-log"></tbody></table></div></details></div>
   <details class="srcs picks-f"><summary>Backtest rules (click to open)</summary><div class="fbody">
     <p>Every Monday for the past year, both rankings are rerun using only prices known that day, giving that week's top 10. Target weight per asset <code>= bucket weight ÷ number of that bucket's assets in the top 10</code>.</p>
-    <p>Non-rebalance weeks: <code>gap = max(0, target weight × (portfolio + $135) − current value)</code>; the $135 is split in proportion to the gaps (any leftover goes by target weight). First Monday of each month: sell and rebuy so every holding equals <code>target weight × portfolio</code>; assets that dropped out of the top 10 are sold then.</p>
+    <p>Non-rebalance weeks: <code>gap = max(0, target weight × (portfolio + $135) − current value)</code>; the $135 is split in proportion to the gaps (any leftover goes by target weight).</p>
+    <p>First Monday of each month: for any bucket above <code>bucket weight × portfolio</code>, the excess is sold in equal dollar amounts from its holdings above <code>bucket target ÷ holdings in the bucket</code> (never below that share, never a whole position). Proceeds + the $135 are split among underweight buckets by how far under they are; there, they go to the bucket's current picks, furthest below target first.</p>
     <p>Limits: uses today's 2030 price targets and coin holdings for every past week; gold and copper use futures prices (in an IRA you'd hold an ETF such as GLD or CPER); no trading costs. A backtest, not a promise.</p>
   </div></details>
   <br><br><br><br><br>
   <h2>Backtest Since March 2020</h2>
   <div class="bt-sub">DCA $7,000 a year into a Roth IRA, invested weekly since March 2020</div>
-  <div class="bt-exp">Same rules as above, run from the first Monday of March 2020 to today: <b>about $135 every Monday</b> ($7,000 a year), split across <b>AI 40%, Crypto 40%, Commodities 20%</b>. Inside each bucket, its share is split equally among that bucket's assets in that Monday's top 10 (if none made the top 10, the bucket's best-ranked asset gets it). New money goes to whatever is furthest <i>below</i> its target weight in the current portfolio, so holdings that have run up get nothing new and laggards are topped up. On the <b>first Monday of each month the whole portfolio is rebalanced</b> back to the targets (no tax inside a Roth IRA). Assets only join once they have 30 days of price history, so early on the buckets hold fewer names: no SPCX until June 2026, and each treasury company only from when it started holding coins. The S&amp;P line is the same $135 a week into SPY.</div>
+  <div class="bt-exp">Same rules as above, run from the first Monday of March 2020 to today: <b>about $135 every Monday</b> ($7,000 a year), split across <b>AI 40%, Crypto 40%, Commodities 20%</b>, with new money going to that week's top-10 picks that are furthest <i>below</i> target. <b>Nothing is ever sold entirely.</b> On the <b>first Monday of each month</b> each bucket is checked against its 40/40/20 weight: if a bucket has run over, only the excess is sold, taken <b>equally from its holdings that sit above an equal share</b> of the bucket (no tax inside a Roth IRA). That money, plus the week's $135, goes to the bucket(s) that fell below their weight. Underweight buckets put it into their current picks. Assets only join once they have 30 days of price history, so early on the buckets hold fewer names (no SPCX until June 2026; treasury companies only from when they started holding coins). The S&amp;P line is the same $135 a week into SPY.</div>
   <div class="bt-buckets" id="bt-buckets2"></div>
   <div class="sim"><div class="sim-t">Backtest since March 2020 <span id="sim2-res"></span></div>
     <div class="sim-c"><canvas id="sim2-chart"></canvas></div>
     <details class="srcs"><summary>Week-by-week targets (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Target holdings that week</th><th>Strategy</th><th>S&amp;P DCA</th></tr></thead><tbody id="sim2-log"></tbody></table></div></details></div>
   <details class="srcs picks-f"><summary>Backtest rules (click to open)</summary><div class="fbody">
-    <p>Every Monday since March 2, 2020, both rankings are rerun using only prices known that day, giving that week's top 10. Target weight per asset <code>= bucket weight ÷ number of that bucket's assets in the top 10</code>. Weekly contribution <code>= $7,000 ÷ 52</code>.</p>
-    <p>Non-rebalance weeks: <code>gap = max(0, target weight × (portfolio + $135) − current value)</code>; the $135 is split in proportion to the gaps (any leftover goes by target weight). First Monday of each month: every holding is reset to <code>target weight × portfolio</code>.</p>
+    <p>Every Monday since March 2, 2020, both rankings are rerun using only prices known that day, giving that week's top 10. Target weight per pick <code>= bucket weight ÷ number of that bucket's assets in the top 10</code>. Weekly contribution <code>= $7,000 ÷ 52</code>.</p>
+    <p>Non-rebalance weeks: <code>gap = max(0, target weight × (portfolio + $135) − current value)</code>; the $135 is split in proportion to the gaps (any leftover goes by target weight).</p>
+    <p>First Monday of each month: for any bucket above <code>bucket weight × portfolio</code>, the excess is sold in equal dollar amounts from its holdings above <code>bucket target ÷ holdings in the bucket</code> (never below that share, never a whole position). Proceeds + the $135 are split among underweight buckets by how far under they are; there, they go to the bucket's current picks, furthest below target first.</p>
     <p>Limits: uses today's 2030 price targets and coin holdings for every past week, which flatters the early years (the model "knows" where targets ended up); gold and copper use futures prices (an IRA would hold GLD or CPER); no trading costs. A backtest, not a promise.</p>
   </div></details>
   <br><br><br><br><br>
   <h2>Backtest 3: Rebalance Into New Names</h2>
   <div class="bt-sub">DCA $7,000 a year into a Roth IRA, invested weekly since March 2020, rebalancing into assets not yet owned</div>
-  <div class="bt-exp">Same weekly buying as Backtest 2: <b>about $135 every Monday</b>, <b>AI 40%, Crypto 40%, Commodities 20%</b>, with new money going to that week's top-10 picks that are furthest <i>below</i> their target weight. The difference is the <b>monthly rebalance</b>. Instead of selling everything back into the current picks, each bucket is reset to its 40/40/20 weight by <b>trimming any holding that has grown above an equal share of its bucket</b> and putting that money into the bucket's assets <b>not already owned</b>. Nothing is sold outright, and over time the portfolio spreads across every name in each bucket. Once a bucket owns all its names, the trimmed money tops up the holdings that have fallen below an equal share. The S&amp;P line is the same $135 a week into SPY.</div>
+  <div class="bt-exp">Same weekly buying and the same monthly trimming as Backtest 2: <b>about $135 every Monday</b>, <b>AI 40%, Crypto 40%, Commodities 20%</b>, new money to that week's top-10 picks that are furthest <i>below</i> target, and <b>nothing ever sold entirely</b>; an overrun bucket only sells its excess, equally from its holdings above an equal share. The difference is <b>where the trimmed money goes</b>: underweight buckets put it first into their names <b>not already owned</b>, so the portfolio spreads across every name. Once a bucket owns all its names, the money tops up the holdings furthest below an equal share. The S&amp;P line is the same $135 a week into SPY.</div>
   <div class="bt-buckets" id="bt-buckets3"></div>
   <div class="sim"><div class="sim-t">Backtest 3 since March 2020 <span id="sim3-res"></span></div>
     <div class="sim-c"><canvas id="sim3-chart"></canvas></div>
     <details class="srcs"><summary>Week-by-week targets (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Weekly-buy targets that week</th><th>Strategy</th><th>S&amp;P DCA</th></tr></thead><tbody id="sim3-log"></tbody></table></div></details></div>
   <details class="srcs picks-f"><summary>Backtest rules (click to open)</summary><div class="fbody">
     <p>Weekly buys are identical to Backtest 2: <code>target weight = bucket weight ÷ bucket's assets in the top 10</code>, and the $135 is split in proportion to <code>max(0, target × portfolio − current value)</code>.</p>
-    <p>First Monday of each month, per bucket: <code>share = bucket weight × portfolio ÷ (owned names + unowned names)</code>. Any owned holding above <code>share</code> is trimmed to it; <code>bucket target − what's kept</code> is split equally across the bucket's unowned names (only names with 30+ days of price history that day). If every name is already owned, it goes to the holdings below <code>share</code>.</p>
+    <p>First Monday of each month: trimming is the same as Backtest 2 (only an overrun bucket's excess, sold equally from holdings above an equal share, never a whole position). Proceeds + the $135 go to underweight buckets by how far under they are; there, split equally across the bucket's <b>unowned</b> names (30+ days of price history). If it owns them all, to holdings below <code>bucket value ÷ holdings</code>, furthest below first.</p>
     <p>Same limits as the other backtests: today's 2030 targets and coin holdings are used for every past week (hindsight); gold and copper use futures prices; no trading costs.</p>
   </div></details>
   <br><br><br><br><br><br><br><br><br><br>
@@ -944,21 +946,33 @@ _________________________</p>
       });
       var V = value(day), C = WEEKLY, total = V + C, month = day.slice(0, 7), note;
       contrib += C; spyUnits += C / pxAt("SPY", day);
-      if (month !== lastMonth && cfg.mode === "div") {   // monthly rebalance into names NOT already owned in each bucket
-        var nh = {}, added = [];
-        BUCKETS.forEach(function (b) {
-          var Vb = total * b.w, own = b.k.filter(function (k) { return hold[k] > 0; }), fresh = rank.filter(function (k) { return b.k.indexOf(k) >= 0 && !(hold[k] > 0); });
-          if (!own.length && !fresh.length) return;
-          var share = Vb / (own.length + fresh.length), kept = 0, under = [];
-          own.forEach(function (k) { var v = hold[k] * pxAt(k, day); if (v > share) { nh[k] = share / pxAt(k, day); kept += share; } else { nh[k] = hold[k]; kept += v; under.push(k); } });
-          var avail = Vb - kept;   // what was trimmed from the winners (plus any bucket shortfall)
-          if (fresh.length) { fresh.forEach(function (k) { nh[k] = avail / fresh.length / pxAt(k, day); added.push(k); }); }
-          else if (under.length) { under.forEach(function (k) { nh[k] += avail / under.length / pxAt(k, day); }); }
-          else own.forEach(function (k) { nh[k] += avail / own.length / pxAt(k, day); });
+      if (month !== lastMonth) {   // first Monday of the month: bring each bucket back to its weight without selling anything entirely
+        var P0 = function (k) { return pxAt(k, day); }, pool = C, added = [], trimmed = [];
+        var bv = BUCKETS.map(function (b) { var ks = b.k.filter(function (k) { return hold[k] > 0; }); return { b: b, ks: ks, v: ks.reduce(function (s2, k) { return s2 + hold[k] * P0(k); }, 0), t: total * b.w }; });
+        bv.forEach(function (x) {   // overrun bucket: sell the excess equally from its holdings above an equal share, never a whole position
+          var E = x.v - x.t; if (E <= 0 || !x.ks.length) return;
+          var share = x.t / x.ks.length, room = {}; x.ks.forEach(function (k) { room[k] = Math.max(0, hold[k] * P0(k) - share); });
+          var need = E, act = x.ks.filter(function (k) { return room[k] > 0; });
+          while (need > 1e-6 && act.length) { var each = need / act.length; act.forEach(function (k) { var s2 = Math.min(each, room[k]); room[k] -= s2; need -= s2; hold[k] -= s2 / P0(k); if (trimmed.indexOf(k) < 0) trimmed.push(k); }); act = act.filter(function (k) { return room[k] > 1e-6; }); }
+          pool += E - need; x.v -= E - need;
         });
-        hold = nh; note = "rebalanced" + (added.length ? " into " + added.map(sn).join(", ") : "");
-      } else if (month !== lastMonth) {   // first Monday of the month: rebalance everything to the target weights (no tax in a Roth IRA)
-        hold = {}; Object.keys(tw).forEach(function (k) { hold[k] = total * tw[k] / pxAt(k, day); }); note = "rebalanced";
+        var short = bv.map(function (x) { return Math.max(0, x.t - x.v); }), S2 = short.reduce(function (s2, v) { return s2 + v; }, 0);
+        bv.forEach(function (x, bi) {   // proceeds + this week's $135 go to the underweight buckets
+          var A = S2 > 0 ? pool * short[bi] / S2 : pool * x.b.w; if (A <= 0) return;
+          var targets;
+          if (cfg.mode === "div") {   // Backtest 3: first into the bucket's names not owned yet, else holdings below an equal share
+            var fresh = rank.filter(function (k) { return x.b.k.indexOf(k) >= 0 && !(hold[k] > 0); });
+            if (fresh.length) { fresh.forEach(function (k) { hold[k] = A / fresh.length / P0(k); added.push(k); }); return; }
+            var own = x.b.k.filter(function (k) { return hold[k] > 0; }), sh = (x.v + A) / Math.max(1, own.length);
+            targets = {}; own.forEach(function (k) { targets[k] = Math.max(0, sh - hold[k] * P0(k)); });
+          } else {                    // Backtests 1 and 2: into that week's picks in the bucket, furthest below target first
+            targets = {}; Object.keys(tw).filter(function (k) { return x.b.k.indexOf(k) >= 0; }).forEach(function (k) { targets[k] = Math.max(0, total * tw[k] - (hold[k] || 0) * P0(k)); });
+          }
+          var ks = Object.keys(targets); if (!ks.length) return;
+          var G2 = ks.reduce(function (s2, k) { return s2 + targets[k]; }, 0);
+          ks.forEach(function (k) { var buy = G2 > A ? A * targets[k] / G2 : targets[k] + (A - G2) / ks.length; hold[k] = (hold[k] || 0) + buy / P0(k); });
+        });
+        note = "rebalanced" + (trimmed.length ? " (trimmed " + trimmed.map(sn).join(", ") + ")" : "") + (added.length ? " into " + added.map(sn).join(", ") : "");
       } else {                     // other weeks: new money only, into whatever is furthest under its target
         var gap = {}, G = 0; Object.keys(tw).forEach(function (k) { var cur = (hold[k] || 0) * pxAt(k, day); gap[k] = Math.max(0, total * tw[k] - cur); G += gap[k]; });
         Object.keys(tw).forEach(function (k) { var buy = G > C ? C * gap[k] / G : gap[k] + (C - G) * tw[k]; hold[k] = (hold[k] || 0) + buy / pxAt(k, day); });
