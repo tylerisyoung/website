@@ -15,7 +15,7 @@ TICKERS = [("BTC-USD", "Bitcoin"), ("SPY", "S&P 500 (SPY)"),
            ("AVGO", "Broadcom"), ("NVDA", "Nvidia"), ("MU", "Micron (MU)"),
            ("FWDI", "Forward Industries (FWDI)"), ("DFDV", "DeFi Development (DFDV)"), ("UPXI", "Upexi (UPXI)"),
            ("MP", "MP Materials"), ("GC=F", "Gold (futures)"), ("SLV", "Silver (SLV)"), ("SILJ", "Junior silver miners (SILJ)"),
-           ("UUUU", "Energy Fuels (UUUU)"), ("GLD", "Gold ETF (GLD)"), ("HG=F", "Copper (futures)"), ("ETH-USD", "Ethereum")]
+           ("UUUU", "Energy Fuels (UUUU)"), ("GLD", "Gold ETF (GLD)"), ("HG=F", "Copper (futures)"), ("CPER", "Copper ETF (CPER)"), ("ETH-USD", "Ethereum")]
 
 TREASURY_ASOF = "2026-09-14"
 # (ticker, name, shares outstanding, BTC held)
@@ -72,8 +72,25 @@ import statistics
 USER_INPUT = {"BTC-USD": None, "ETH-USD": None, "SOL-USD": None, "SPY": None, "GC=F": None, "SLV": None, "HG=F": None,
               "TSLA": None, "SPCX": None, "NVDA": None, "AVGO": None, "MU": None, "MP": None, "UUUU": None, "SILJ": None}
 
+TARGETS_ASOF = "2026-09-28"   # date the targets were checked; sector targets are locked to prices on this date
+MON = {m: i for i, m in enumerate(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], 1)}
+def hdate(h, date):
+    """Target date for a ~12-month forecast, so the page can rescale it to exactly 12 months from today."""
+    import calendar, re
+    end = lambda y, m: "%d-%02d-%02d" % (y, m, calendar.monthrange(y, m)[1])
+    h = h.strip()
+    if re.fullmatch(r"end-\d{4}", h): return end(int(h[4:]), 12)
+    if re.fullmatch(r"mid-\d{4}", h): return end(int(h[4:]), 6)
+    if re.fullmatch(r"\d{4}( avg)?", h): return end(int(h[:4]), 6)
+    if re.fullmatch(r"Q[1-4]-\d{4}", h): return end(int(h[3:]), 3 * int(h[1]))
+    if re.fullmatch(r"[A-Z][a-z]{2}-\d{4}", h) and h[:3] in MON: return end(int(h[4:]), MON[h[:3]])
+    if h.startswith("FY") and re.match(r"FY\d{4}-\d{2}", h): return end(int(h[2:6]), 12)   # Australian FY Jul-Jun: midpoint
+    if h == "12 months" and re.match(r"\d{4}(-\d{2})?", date or ""):
+        y, m = int(date[:4]), int(date[5:7]) if len(date) > 4 else 6
+        return end(y + 1, m)
+    return None
 def S(by, v, h, date, url="", note=""):
-    return {"by": by, "v": v, "h": h, "date": date, "url": url, "note": note}
+    return {"by": by, "v": v, "h": h, "hd": hdate(h, date), "date": date, "url": url, "note": note}
 SPX = 10.02   # SPY is about the S&P 500 divided by 10.02
 def spx(by, v, h, date, url="", note=""):
     return S(by, round(v / SPX, 2), h, date, url, ("S&P 500 %s" % format(v, ",")) + ("; " + note if note else ""))
@@ -126,7 +143,7 @@ TARGETS = {
         spx("Yardeni Research", 8400, "mid-2027", "2026-09", "https://stocktwits.com/news-articles/markets/equity/ed-yardeni-says-phenomenal-earnings-keep-bull-case-intact-but-pushes-his-s-and-p-500-target-of-8-400-to-mid-2027/cZMStMIRBQK"),
         spx("UBS Global Wealth Management", 8400, "mid-2027", "2026-08", "https://www.bitget.com/news/detail/12560605712730"),
         spx("Morgan Stanley (Mike Wilson)", 8300, "12 months", "2026-05", "https://www.investing.com/news/stock-market-news/morgan-stanley-ups-sp-500-price-target-to-8300-on-robust-earnings-4683562")]},
-    "GC=F": {"kind": "direct", "unit": "$/oz", "long": [
+    "GLD": {"kind": "proxy", "of": "GC=F", "unit": "gold $/oz", "long": [
         S("Bernstein (Bob Brackett)", 5600, "2030", "2026-09", "https://www.investing.com/news/commodities-news/bernstein-unveils-new-gold-price-forecast-for-2030-4908919"),
         S("Yardeni Research", 10000, "end-2029", "2026-03", "https://uk.finance.yahoo.com/news/yardeni-sticks-long-term-gold-114209690.html"),
         S("Rockefeller Global (Doug Moglia)", 8000, "2030", "2026-05", "https://www.kitco.com/news/article/2026-05-27/gold-will-top-5500-2027-could-reach-10000-2030-silvers-upside-will-narrow"),
@@ -151,7 +168,7 @@ TARGETS = {
         S("BofA (Michael Widmer)", 75, "Q2-2027", "2026-05", "https://www.kitco.com/news/article/2026-05-27/silver-can-reach-100-ounce-year-momentum-wont-last-bank-america"),
         S("OCBC", 74, "Sep-2027", "2026-07", "https://finance.yahoo.com/markets/commodities/articles/ocbc-cuts-gold-silver-forecasts-135236505.html"),
         S("JPMorgan", 63.90, "2027 avg", "2026-08", "https://www.jpmorgan.com/insights/global-research/commodities/silver-prices")]},
-    "HG=F": {"kind": "direct", "unit": "$/lb", "long": [
+    "CPER": {"kind": "proxy", "of": "HG=F", "unit": "copper $/lb", "long": [
         S("BMI (Fitch Solutions)", LB(15800), "2030", "2026-07", "https://www.mining.com/copper-price-bmi-hikes-forecasts-structural-deficits-to-bring-17000-next-decade/", "$15,800/t"),
         S("Goldman Sachs", LB(12250), "2029-30", "2025", "https://www.itiger.com/news/1199775788", "$12,250/t"),
         S("JPMorgan", LB(12000), "long-term", "2026-02", "https://goldinvest.de/en/copper-price-in-focus-j-p-morgan-raises-long-term-forecast-to-12000-per-tonne", "$12,000/t"),
@@ -237,7 +254,7 @@ for k, t in TARGETS.items():
         t.update(low=min(vals), high=max(vals), n=len(vals),
                  base=round(0.5 * ia[0] + 0.5 * statistics.mean(others), 4) if ia and others else statistics.median(vals))
     if t.get("short"): t["avg12"] = round(statistics.mean([s["v"] for s in t["short"]]), 4); t["n12"] = len(t["short"])
-    if t.get("cons"): t["avg12"] = t["cons"]["avg"]; t["n12"] = t["cons"]["n"]
+    if t.get("cons"): t["avg12"] = t["cons"]["avg"]; t["n12"] = t["cons"]["n"]; t["cons"]["hd"] = hdate("12 months", t["cons"]["date"])
 assert all(t.get("n", 3) >= 3 for t in TARGETS.values())
 
 def get(url, headers, tries=3):
@@ -249,12 +266,20 @@ def get(url, headers, tries=3):
             if i == tries - 1: raise
             time.sleep(3 * (i + 1))
 
+HISTORY_START = 1451606400   # 2016-01-01: fixed start, so older history never drops out of the backtests
+
 def yahoo(sym):
-    j = json.loads(get(f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?range=10y&interval=1d", UA_YAHOO))
+    """Daily closes since 2016, plus dividend-adjusted closes (None when they never differ from the close)."""
+    j = json.loads(get(f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?period1={HISTORY_START}&period2={int(time.time())}&interval=1d", UA_YAHOO))
     r = j["chart"]["result"][0]
     ts, cl = r["timestamp"], r["indicators"]["quote"][0]["close"]
-    pts = [[dt.datetime.utcfromtimestamp(t).strftime("%Y-%m-%d"), round(c, 4 if c < 10 else 2)] for t, c in zip(ts, cl) if c is not None]
-    return pts
+    ac = (r["indicators"].get("adjclose") or [{}])[0].get("adjclose") or [None] * len(ts)
+    rd = lambda c: round(c, 4 if c < 10 else 2)
+    day = lambda t: dt.datetime.fromtimestamp(t, dt.timezone.utc).strftime("%Y-%m-%d")
+    pts = [[day(t), rd(c)] for t, c in zip(ts, cl) if c is not None]
+    adj = [[day(t), rd(a)] for t, c, a in zip(ts, cl, ac) if c is not None and a is not None]
+    if not adj or all(abs(a[1] / p[1] - 1) < 0.002 for a, p in zip(adj, pts) if p[1]): adj = None
+    return pts, adj
 
 def fred(series):
     rows = list(csv.reader(io.StringIO(get(f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={series}", UA_FRED))))[1:]
@@ -272,13 +297,16 @@ def main():
     if os.path.exists(OUT):
         try: old = json.load(open(OUT))
         except Exception: old = {}
-    data = {"updated": dt.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC"), "prices": {}, "macro": {}}
+    data = {"updated": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"), "prices": {}, "macro": {}}
 
     for sym, name, group in [(a, b, None) for a, b in TICKERS] + [(a, b, "treasury") for a, b in TREASURY_HIST] + [(a, b, "aux") for a, b in AUX]:
         try:
-            pts = yahoo(sym)
-            if sym in TREASURY_START: pts = [q for q in pts if q[0] >= TREASURY_START[sym]]
+            pts, adj = yahoo(sym)
+            if sym in TREASURY_START:
+                pts = [q for q in pts if q[0] >= TREASURY_START[sym]]
+                if adj: adj = [q for q in adj if q[0] >= TREASURY_START[sym]]
             data["prices"][sym] = {"name": name, "points": pts}
+            if adj: data["prices"][sym]["adj"] = adj   # dividend-adjusted, used for backtest returns
             if group: data["prices"][sym]["group"] = group
         except Exception as e:
             print("price failed", sym, e, file=sys.stderr)
@@ -304,7 +332,7 @@ def main():
             "walcl":    {"name": "Fed balance sheet (total assets)", "unit": "$T", "points": since(walcl)},
             "icsa":     {"name": "Initial jobless claims (weekly)", "unit": "thousands", "points": since(icsa)},
             "cpi_yoy":  {"name": "CPI inflation (year over year)", "unit": "%", "points": since(yoy)},
-            "shadow":   {"name": "ShadowStats-style alternate inflation (estimate)", "unit": "% y/y; official CPI + 7 pts, the typical gap to ShadowStats' 1980-method series since the late 1990s (Saville, TSI 2015)", "points": [[d, round(v + 7, 2)] for d, v in since(yoy)]},
+            "shadow":   {"name": "ShadowStats-style alternate inflation (estimate range)", "unit": "% y/y; official CPI + 4 to + 7 pts, the typical range of the gap to ShadowStats' 1980-method series since the late 1990s (Saville, TSI 2015)", "points": [[d, round(v + 7, 2)] for d, v in since(yoy)], "band": 3},
             "cpi_cum":  {"name": "Prices up since January 2020 (CPI, cumulative)", "unit": "% rise in the consumer price level", "points": cum},
             "real_gdp": {"name": "Real GDP", "unit": "$T (2017 dollars, annual rate)", "points": since(gdp_real)},
             "unrate":   {"name": "Unemployment rate", "unit": "%", "points": since(fred("UNRATE"))},
@@ -320,24 +348,32 @@ def main():
         print("macro failed", e, file=sys.stderr)
         data["macro"] = old.get("macro", {})
 
-    # Bitcoin treasury companies. BTC held and share counts: InvestAnswers model, 2026-09-14
-    # (shares = that model's market cap / share price). Edit TREASURY to update holdings.
-    tre = {"holdings_asof": TREASURY_ASOF, "sol_asof": SOL_TREASURY_ASOF, "rows": []}
+    # Treasury companies. Coin holdings (CoinGecko public treasury API) and share counts (Yahoo Finance)
+    # are refreshed once a month; in between, the last fetched values are reused. The lists at the top are the fallback.
+    oh = old.get("holdings") or {}
+    today = dt.date.today().isoformat()
+    stale = not oh.get("asof") or (dt.date.today() - dt.date.fromisoformat(oh["asof"])).days >= 30
+    if stale:
+        fresh = {"asof": today, "qty": {}, "shares": {}}
+        CG = {"MSTR": "MSTR", "MTPLF": "3350", "SPCX": "SPCX", "TSLA": "TSLA", "FWDI": "FWDI", "DFDV": "DFDV", "UPXI": "UPXI", "HSDT": "HSDT"}
+        for coin in ("bitcoin", "solana"):
+            try:
+                for c in json.loads(get("https://api.coingecko.com/api/v3/companies/public_treasury/" + coin, UA_YAHOO))["companies"]:
+                    for t, pre in CG.items():
+                        if (c.get("symbol") or "").upper().startswith(pre) and c.get("total_holdings"): fresh["qty"][t] = c["total_holdings"]
+            except Exception as e: print("holdings failed", coin, e, file=sys.stderr)
+        base_sh = {**{t: sh for t, _, sh, _ in TREASURY}, **oh.get("shares", {}), **{r["t"]: r["shares"] for r in old.get("treasury", {}).get("rows", []) if r.get("shares")}}
+        try:   # a share count that jumps by more than a third is usually a data glitch (e.g. only one share class): keep the old one
+            fresh["shares"] = {k: v for k, v in yahoo_shares(list(CG)).items() if v and (k not in base_sh or 0.75 < v / base_sh[k] < 1.33)}
+        except Exception as e: print("shares failed", e, file=sys.stderr)
+        if fresh["qty"] or fresh["shares"]:
+            fresh["qty"] = {**oh.get("qty", {}), **fresh["qty"]}; fresh["shares"] = {**oh.get("shares", {}), **fresh["shares"]}; oh = fresh
+    data["holdings"] = oh
+    tre = {"holdings_asof": oh.get("asof", TREASURY_ASOF), "sol_asof": oh.get("asof", SOL_TREASURY_ASOF), "rows": []}
     olds = {r["t"]: r for r in old.get("treasury", {}).get("rows", [])}
-    for t, name, shares, qty in TREASURY:
-        row = {"t": t, "name": name, "coin": "BTC", "shares": shares, "qty": qty, "price": None}
-        try:
-            j = json.loads(get(f"https://query1.finance.yahoo.com/v8/finance/chart/{t}?range=5d&interval=1d", UA_YAHOO))
-            row["price"] = round(j["chart"]["result"][0]["meta"]["regularMarketPrice"], 4)
-        except Exception as e:
-            print("treasury price failed", t, e, file=sys.stderr)
-            if t in olds: row["price"] = olds[t]["price"]
-        tre["rows"].append(row)
-    try: sh = yahoo_shares([t for t, _, _ in SOL_TREASURY])
-    except Exception as e:
-        print("sol shares failed", e, file=sys.stderr); sh = {}
-    for t, name, qty in SOL_TREASURY:
-        row = {"t": t, "name": name, "coin": "SOL", "shares": sh.get(t) or olds.get(t, {}).get("shares"), "qty": qty, "price": None}
+    for t, name, coin, shares, qty in [(t, n, "BTC", sh, q) for t, n, sh, q in TREASURY] + [(t, n, "SOL", None, q) for t, n, q in SOL_TREASURY]:
+        row = {"t": t, "name": name, "coin": coin, "shares": oh.get("shares", {}).get(t) or olds.get(t, {}).get("shares") or shares,
+               "qty": oh.get("qty", {}).get(t) or qty, "price": None}
         try:
             j = json.loads(get(f"https://query1.finance.yahoo.com/v8/finance/chart/{t}?range=5d&interval=1d", UA_YAHOO))
             row["price"] = round(j["chart"]["result"][0]["meta"]["regularMarketPrice"], 4)
@@ -348,6 +384,7 @@ def main():
     data["treasury"] = tre
 
     data["targets"] = TARGETS
+    data["targets_asof"] = TARGETS_ASOF
 
     # Debt clock: latest Treasury "Debt to the Penny" figure and the one about a year earlier
     try:

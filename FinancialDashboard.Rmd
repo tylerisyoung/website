@@ -69,6 +69,10 @@ CSVs) and refreshed every day by the GitHub Action in
 .fd .srcs .fbody code{background:#fdf3d0;padding:0 .2rem;border-radius:3px;font-size:.76rem}
 .fd .srcs .fbody p{margin:.25rem 0}
 .fd .picks-f{margin-top:0}
+.fd .spec{display:grid;grid-template-columns:max-content 1fr;gap:.18rem .9rem;font-size:.82rem;line-height:1.45;max-width:1000px;margin:.2rem 0 .7rem;padding:.55rem .8rem;border:1px solid var(--line);border-radius:8px;background:#fafbfd}
+.fd .spec .sl{color:var(--muted);font-weight:600;white-space:nowrap}.fd .spec .sv b{color:#b0833a}
+.fd .btstats{width:100%;border-collapse:collapse;font-size:.76rem;font-variant-numeric:tabular-nums;margin:.35rem 0 .2rem}.fd .btstats th{color:var(--muted);font-weight:600;text-align:right;padding:.2rem .4rem;border-bottom:1px solid var(--line)}.fd .btstats td{text-align:right;padding:.2rem .4rem;border-bottom:1px solid #f3f4f7}.fd .btstats td:first-child,.fd .btstats th:first-child{text-align:left;font-weight:600}
+.fd .best tr.grp th{background:#4a5870;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;text-align:center}.fd .best .g1{border-left:3px solid #f2c46d}
 .fd .sim{border:1px solid var(--line);border-radius:10px;background:#fff;padding:.5rem .8rem .3rem;margin-bottom:12px}
 .fd .sim-t{font-weight:600;font-size:.92rem}.fd .sim-t span{font-weight:400;font-size:.8rem;color:var(--muted);margin-left:.4rem}
 .fd .sim-c{position:relative;height:170px}
@@ -173,33 +177,34 @@ CSVs) and refreshed every day by the GitHub Action in
   <br><br><br><br><br><br><br><br><br><br>
   <h2>Current Best Buy</h2>
   <div class="best">
-    <h3>Comparative Value<span>which asset is most beaten down against the others</span></h3>
-    <div class="best-sub">Every asset compared against every other one, pair by pair. Score = share of head-to-head pairs won for deepest value and largest negative deviation to 20week ema &amp; 200day EMA. Those further from ATH also rank higher. Updates with every price refresh.</div>
+    <h3>Comparative Value<span>which asset is most beaten down against its own history</span></h3>
+    <div class="best-sub">Every asset scored for deepest value: largest negative deviation to its 20-week EMA &amp; 200-day EMA, measured in its own typical swings (z-score) so volatile assets aren't automatically the cheapest. Those further from ATH also rank higher. Updates with every price refresh.</div>
     <div class="best-chart"><canvas id="cv-chart"></canvas></div>
     <details class="srcs"><summary>Formulas (click to open)</summary><div class="fbody">
-      <p><b>Each asset:</b> <code>DD = 1 − Price ÷ ATH</code> (ATH = highest daily close, up to 10 years; treasury companies only since they started holding coins) · <code>vs EMA = Price ÷ EMA − 1</code></p>
-      <p><b>EMA:</b> <code>EMAₜ = α·xₜ + (1 − α)·EMAₜ₋₁</code>, with α = 2/21 on weekly closes (20-week) and α = 2/201 on daily closes (200-day), over the last ~2 years.</p>
-      <p><b>Each pair A vs B:</b> <code>R = A ÷ B</code> on shared trading days (last 520). <code>Edge = [ ln(R ÷ EMA₂₀w(R)) + ln(R ÷ EMA₂₀₀d(R)) + (DD_B − DD_A) ] ÷ 3</code>. Edge &lt; 0 → A wins. Pairs with under 30 shared days are skipped.</p>
-      <p><b>Score (bar):</b> <code>pairs won ÷ pairs played</code>. Ties go to the more negative average edge.</p>
+      <p><b>Gaps:</b> <code>g₂₀w = ln(Price ÷ EMA₂₀w)</code> and <code>g₂₀₀d = ln(Price ÷ EMA₂₀₀d)</code>, with <code>EMAₜ = α·xₜ + (1 − α)·EMAₜ₋₁</code>, α = 2/21 on weekly closes and 2/201 on daily closes.</p>
+      <p><b>Volatility-adjusted (z-score):</b> <code>z = g ÷ standard deviation of g over the last ~2 years (520 trading days)</code>. A −10% gap is a big deal for SPY (≈ −2σ) but routine for a SOL treasury stock (≈ −0.5σ).</p>
+      <p><b>ATH bonus:</b> <code>DD = 1 − Price ÷ ATH</code> (highest close since 2016; treasury companies only since they started holding coins).</p>
+      <p><b>Value score (bar):</b> <code>−(z₂₀w + z₂₀₀d) ÷ 2 + 0.75 × DD</code>. Higher = cheaper. Assets need 30 days of history.</p>
     </div></details>
   </div>
   <div class="best">
     <h3>Projected Growth<span>today's price vs the forecasters' 2030 targets</span></h3>
     <div class="best-sub">Ranked by average 2030 return (today's price to the median 2030 target). Bars show that return as a CAGR (yearly compound growth) so big and small numbers fit on one chart.</div>
     <div class="best-chart"><canvas id="best-chart"></canvas></div>
-    <div class="best-wrap"><table id="best-table"><thead><tr>
-      <th>Ticker</th><th>Price</th><th>Below ATH</th><th>vs 20-wk EMA</th><th>vs 200-day EMA</th><th>Value pairs won</th><th>Low target</th><th>Median target</th><th>High target</th><th>Avg 12-mo return</th><th>At NAV 1.0x</th><th>CAGR to 2030</th><th>Avg 2030 return</th>
-    </tr></thead><tbody></tbody></table></div>
+    <div class="best-wrap"><table id="best-table"><thead>
+      <tr class="grp"><th colspan="2"></th><th colspan="4" class="g1">Value signals</th><th colspan="7" class="g1">Price targets</th></tr>
+      <tr><th>Ticker</th><th>Price</th><th class="g1">Below ATH</th><th>vs 20-wk EMA</th><th>vs 200-day EMA</th><th>Value score</th><th class="g1">Low target</th><th>Median target</th><th>High target</th><th>Avg 12-mo return</th><th>At NAV 1.0x</th><th>CAGR to 2030</th><th>Avg 2030 return</th></tr>
+    </thead><tbody></tbody></table></div>
     <div class="best-method" id="best-method"></div>
     <details class="srcs"><summary>Formulas (click to open)</summary><div class="fbody">
       <p><b>Targets:</b> Low / High = lowest / highest 2030 target. Median = median of all 2030 targets, except BTC, SOL, TSLA: <code>0.5 × InvestAnswers + 0.5 × average of the others</code>.</p>
-      <p><b>Conversions:</b> SLV <code>= silver target × SLV ÷ silver spot</code> · SPY <code>= S&amp;P 500 target ÷ 10.02</code> · copper <code>$/lb = $/t ÷ 2,204.62</code> · UUUU, SILJ, MP <code>= Price × sector 2030 target ÷ sector spot</code> (uranium, silver, avg of uranium/silver/gold/copper).</p>
+      <p><b>Conversions:</b> GLD, SLV, CPER <code>= metal target × ETF price ÷ metal price today</code> · SPY <code>= S&amp;P 500 target ÷ 10.02</code> · copper <code>$/lb = $/t ÷ 2,204.62</code> · UUUU, SILJ, MP <code>= price on the target date × sector 2030 target ÷ sector price on that date</code> (uranium, silver, avg of uranium/silver/gold/copper), locked in dollars.</p>
       <p><b>Treasury companies:</b> <code>CPS = coins ÷ shares</code> · <code>mNAV = Price ÷ (CPS × coin price)</code> · <code>Target = coin 2030 target × CPS × √mNAV</code> (NAV assumed halfway back to 1.0x) · At NAV 1.0x <code>= Price ÷ CPS</code> and <code>CPS × coin median target</code>.</p>
-      <p><b>Returns:</b> <code>Avg 2030 return = Median ÷ Price − 1</code> (ranking) · <code>CAGR = (Median ÷ Price)^(1/Y) − 1</code>, Y = years to Dec 31, 2030 (bar) · <code>Avg 12-mo = average ~1-year target ÷ Price − 1</code> (analyst consensus for stocks).</p>
-      <p><b>Colors:</b> yellow → green by rank; faded red = negative return.</p>
+      <p><b>12-month return:</b> each ~1-year target is restated to exactly 12 months from today: if it's further out, <code>Price × (Target ÷ Price)^(12 ÷ months)</code>; if it's sooner, it's carried forward along the path to the median 2030 target. Expired targets are dropped. Stocks use the analyst consensus (12 months from its date).</p>
+      <p><b>Returns:</b> <code>Avg 2030 return = Median ÷ Price − 1</code> (ranking) · <code>CAGR = (Median ÷ Price)^(1/Y) − 1</code>, Y = years to Dec 31, 2030 (bar) · <b>Colors:</b> yellow → green by rank; faded red = negative.</p>
     </div></details>
     <details class="srcs"><summary>Sources for every price target (click to open)</summary>
-      <p class="note">Every forecaster behind the low, median and high targets, with the date it was published and a link. To add your own 2030 target for any asset, set it in <code>USER_INPUT</code> at the top of the targets section in <code>scripts/update_market_data.py</code>; it then counts as one more source.</p>
+      <p class="note">Every forecaster behind the low, median and high targets, with the date it was published and a link. Targets checked <span id="tgt-asof"></span>. To add your own 2030 target for any asset, set it in <code>USER_INPUT</code> at the top of the targets section in <code>scripts/update_market_data.py</code>; it then counts as one more source.</p>
       <div class="body" id="best-sources"></div></details>
   </div>
   <h2>BTC and Solana Treasury Companies</h2>
@@ -209,76 +214,78 @@ CSVs) and refreshed every day by the GitHub Action in
       <th data-s="t">Ticker</th><th data-s="coin">Coin</th><th data-s="price">Share Price</th><th data-s="mcap">Market Cap</th><th data-s="hold">HOLD Assets</th>
       <th data-s="qty" class="b">HOLD QTY</th><th data-s="hold" class="b">HOLD $</th><th data-s="per" class="b">Crypto Per $ Invested</th><th data-s="nav" class="b">NAV Premium</th>
     </tr></thead><tbody></tbody></table></div>
-    <div class="tre-foot">Crypto per $ invested = BTC or SOL held ÷ market cap. NAV premium = market cap ÷ crypto held (below 1 = the stock trades for less than its coins). BTC companies: holdings and share counts as of <span id="tre-asof"></span>, from the InvestAnswers treasury model. SOL companies: holdings from CoinGecko's Solana treasury list (<span id="tre-solasof"></span>), share counts from Yahoo Finance. Share prices from Yahoo Finance (every 15 minutes); BTC and SOL live from Coinbase. Market caps count only shares, not debt or preferred stock, and other assets are ignored.</div>
+    <div class="tre-foot">Crypto per $ invested = BTC or SOL held ÷ market cap. NAV premium = market cap ÷ crypto held (below 1 = the stock trades for less than its coins). Coin holdings from CoinGecko's public treasury data and share counts from Yahoo Finance, both refreshed monthly (last <span id="tre-asof"></span><span id="tre-solasof" style="display:none"></span>). Share prices from Yahoo Finance (about every 2 hours); BTC and SOL live from Coinbase. Market caps count only shares, not debt or preferred stock, and other assets are ignored.</div>
   </div>
   <h2>This Week's Best Buys</h2>
   <br><br><br><br><br>
   <div class="picks"><div class="row" id="picks-row"><span class="tk">…</span></div>
-    <div class="meta" id="picks-meta">Top 10 by combined rank in Comparative Value and Projected Growth</div></div>
+    <div class="meta" id="picks-meta">Top 10 by combined rank in Comparative Value and Projected Growth · recalculated with every price refresh</div></div>
   <details class="srcs picks-f"><summary>Formula (click to open)</summary><div class="fbody">
     <p>Each asset gets two ranks, turned into a 0–100 score (100 = 1st place): <b>Value</b> = its place on the Comparative Value chart, <b>Growth</b> = its place on the Projected Growth chart (avg 2030 return).</p>
-    <p><code>Overall = (Value score + Growth score) ÷ 2</code>. The ten highest overall are shown; ties go to the higher Growth score. Assets must appear on both charts. Treasury companies only count price history from when they started holding coins. Recalculated with every price refresh.</p>
+    <p><code>Overall = (Value score + Growth score) ÷ 2</code>. The ten highest overall are shown; ties go to the higher Growth score. The backtests buy the top 5.</p>
   </div></details>
   <br><br><br><br><br>
-  <h2>Backtest</h2>
-  <div class="bt-sub">DCA $7,000 into a Roth IRA, invested weekly over 12 months</div>
-  <div class="bt-exp">$7,000 ÷ 52 ≈ <b>$135 goes in every Monday</b>, split across three buckets: <b>AI 40%, Crypto 40%, Commodities 20%</b>. Inside each bucket, its share is split equally among that bucket's assets in that Monday's top 10 (if none made the top 10, the bucket's best-ranked asset gets it). Each week the new money goes to whatever is furthest <i>below</i> its target in the current portfolio, so winners get nothing new and laggards are topped up. <b>Nothing is ever sold entirely.</b> On the <b>first Monday of each month</b> each bucket is checked against its 40/40/20 weight: if a bucket has run over, only the excess is sold, taken <b>equally from its holdings that sit above an equal share</b> of the bucket (no tax inside a Roth IRA). That money, plus the week's $135, goes to the bucket(s) that fell below their weight. Underweight buckets put it into their current picks. Winners are kept, just trimmed. The S&amp;P line is the same $135 a week into SPY.</div>
-  <div class="bt-buckets" id="bt-buckets"></div>
-  <div class="sim"><div class="sim-t">12-month backtest <span id="sim-res"></span></div>
-    <div class="sim-c"><canvas id="sim-chart"></canvas></div>
-    <details class="srcs"><summary>Week-by-week targets (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Target holdings that week</th><th>Strategy</th><th>S&amp;P DCA</th></tr></thead><tbody id="sim-log"></tbody></table></div></details></div>
-  <details class="srcs picks-f"><summary>Backtest rules (click to open)</summary><div class="fbody">
-    <p>Every Monday for the past year, both rankings are rerun using only prices known that day, giving that week's top 10. Target weight per asset <code>= bucket weight ÷ number of that bucket's assets in the top 10</code>.</p>
-    <p>Non-rebalance weeks: <code>gap = max(0, target weight × (portfolio + $135) − current value)</code>; the $135 is split in proportion to the gaps (any leftover goes by target weight).</p>
-    <p>First Monday of each month: for any bucket above <code>bucket weight × portfolio</code>, the excess is sold in equal dollar amounts from its holdings above <code>bucket target ÷ holdings in the bucket</code> (never below that share, never a whole position). Proceeds + the $135 are split among underweight buckets by how far under they are; there, they go to the bucket's current picks, furthest below target first.</p>
-    <p>Limits: uses today's 2030 price targets and coin holdings for every past week; gold and copper use futures prices (in an IRA you'd hold an ETF such as GLD or CPER); no trading costs. A backtest, not a promise.</p>
+  <h2>Backtests</h2>
+  <div class="bt-sub">How the picks would have done: $7,000 a year into a Roth IRA, invested every Monday</div>
+  <div class="bt-exp">Five versions of the same weekly plan. Each one lists the same rules in the same order; <b>bold</b> marks what differs from the standard version (Backtest 3). Highlighted tickers in the bucket cards are this week's top 5. Every backtest reruns the rankings each Monday using only prices known that day.</div>
+  <details class="srcs picks-f"><summary>Backtest formulas, stats &amp; limits (click to open)</summary><div class="fbody">
+    <p><b>Weekly buying:</b> target weight per pick <code>= bucket weight ÷ bucket's picks</code>; <code>gap = max(0, target × (portfolio + $135) − current value)</code>; the $135 is split in proportion to the gaps (any leftover by target weight).</p>
+    <p><b>Monthly (first Monday):</b> for any bucket above <code>bucket weight × portfolio</code>, the excess is sold in equal dollar amounts from its holdings above <code>bucket target ÷ holdings in the bucket</code> (never below that, never a whole position). Proceeds + the $135 go to underweight buckets by how far under they are.</p>
+    <p><b>Stats:</b> <i>Money-weighted return</i> = the yearly rate that makes every $135 deposit grow into the ending value (IRR, the right measure for DCA). <i>Time-weighted return</i> = yearly growth of the portfolio with deposits stripped out. <i>Volatility</i> = standard deviation of weekly returns × √52. <i>Max drawdown</i> = worst peak-to-trough fall of the time-weighted line. <i>Sharpe ratio</i> = (weekly return − fed funds rate) ÷ weekly volatility × √52; above 1 is strong.</p>
+    <p><b>Prices:</b> dividend-adjusted closes where they exist (SPY, AVGO, NVDA, MU, SILJ); gold and copper via GLD and CPER. Assets join once they have 30 days of prices (SPCX from July 2026; treasury companies from when they started holding coins).</p>
+    <p><b>Limits:</b> Backtests 2–4 rank on today's 2030 price targets for every past week, which flatters them (they "know" where forecasts ended up). Backtest 1 (value only) and Backtest 5 (equal weight) use prices only. Today's coin holdings are used for past weeks. All five also carry <i>survivorship bias</i>: the 20 names were chosen in 2026, knowing which ones made it (SOL, NVDA, MU), so every backtest beats what someone picking in 2020 could have done. No trading costs. A backtest, not a promise.</p>
   </div></details>
   <br><br><br><br><br>
-  <h2>Backtest Since March 2020</h2>
-  <div class="bt-sub">DCA $7,000 a year into a Roth IRA, invested weekly since March 2020</div>
-  <div class="bt-exp">Same rules as above, run from the first Monday of March 2020 to today: <b>about $135 every Monday</b> ($7,000 a year), split across <b>AI 40%, Crypto 40%, Commodities 20%</b>, with new money going to that week's top-10 picks that are furthest <i>below</i> target. <b>Nothing is ever sold entirely.</b> On the <b>first Monday of each month</b> each bucket is checked against its 40/40/20 weight: if a bucket has run over, only the excess is sold, taken <b>equally from its holdings that sit above an equal share</b> of the bucket (no tax inside a Roth IRA). That money, plus the week's $135, goes to the bucket(s) that fell below their weight. Underweight buckets put it into their current picks. Assets only join once they have 30 days of price history, so early on the buckets hold fewer names (no SPCX until June 2026; treasury companies only from when they started holding coins). The S&amp;P line is the same $135 a week into SPY.</div>
-  <div class="bt-buckets" id="bt-buckets2"></div>
-  <div class="sim"><div class="sim-t">Backtest since March 2020 <span id="sim2-res"></span></div>
+  <h2>Backtest 1: Value Score Only, Top 5, Since March 2020</h2>
+  <div class="bt-sub">Weekly DCA into the top 5 by Value score alone (no price targets, so no hindsight), bucket-weighted, trimmed monthly</div>
+  <div class="spec"><div class="sl">Period</div><div class="sv">Mar 2, 2020 – today</div><div class="sl">Contribution</div><div class="sv">$7,000 a year into a Roth IRA = ~$135 every Monday</div><div class="sl">Picks each week</div><div class="sv"><b>top 5 by Value score only (no price targets, no hindsight)</b></div><div class="sl">Weights</div><div class="sv">AI 40% · Crypto 40% · Commodities 20%, each bucket split equally among its picks (no pick in the top 5 → the bucket's best-ranked name)</div><div class="sl">Weekly buying</div><div class="sv">new money goes to the picks furthest below their target weight</div><div class="sl">Monthly rule</div><div class="sv">an overrun bucket sells only its excess, equally from holdings above an equal share; nothing is ever sold entirely</div><div class="sl">Trim money goes to</div><div class="sv">underweight buckets' current picks</div><div class="sl">Benchmark</div><div class="sv">same $135 a week into SPY, dividends reinvested</div></div>
+  <div class="bt-buckets"></div>
+  <div class="sim"><div class="sim-t">Backtest 1 <span id="sim1-res"></span></div>
+    <div class="sim-c"><canvas id="sim1-chart"></canvas></div>
+    <div id="sim1-stats"></div>
+    <details class="srcs"><summary>Week-by-week buys (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Buying that week</th><th>Strategy</th><th>S&amp;P</th></tr></thead><tbody id="sim1-log"></tbody></table></div></details></div>
+  <br><br><br><br><br>
+  <h2>Backtest 2: Top 5, Last 12 Months</h2>
+  <div class="bt-sub">Weekly DCA into the top 5, bucket-weighted, trimmed monthly, over the past 52 weeks</div>
+  <div class="spec"><div class="sl">Period</div><div class="sv"><b>the last 52 Mondays</b></div><div class="sl">Contribution</div><div class="sv">$7,000 a year into a Roth IRA = ~$135 every Monday</div><div class="sl">Picks each week</div><div class="sv">top 5 by overall rank (Value + Growth)</div><div class="sl">Weights</div><div class="sv">AI 40% · Crypto 40% · Commodities 20%, each bucket split equally among its picks (no pick in the top 5 → the bucket's best-ranked name)</div><div class="sl">Weekly buying</div><div class="sv">new money goes to the picks furthest below their target weight</div><div class="sl">Monthly rule</div><div class="sv">an overrun bucket sells only its excess, equally from holdings above an equal share; nothing is ever sold entirely</div><div class="sl">Trim money goes to</div><div class="sv">underweight buckets' current picks</div><div class="sl">Benchmark</div><div class="sv">same $135 a week into SPY, dividends reinvested</div></div>
+  <div class="bt-buckets"></div>
+  <div class="sim"><div class="sim-t">Backtest 2 <span id="sim2-res"></span></div>
     <div class="sim-c"><canvas id="sim2-chart"></canvas></div>
-    <details class="srcs"><summary>Week-by-week targets (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Target holdings that week</th><th>Strategy</th><th>S&amp;P DCA</th></tr></thead><tbody id="sim2-log"></tbody></table></div></details></div>
-  <details class="srcs picks-f"><summary>Backtest rules (click to open)</summary><div class="fbody">
-    <p>Every Monday since March 2, 2020, both rankings are rerun using only prices known that day, giving that week's top 10. Target weight per pick <code>= bucket weight ÷ number of that bucket's assets in the top 10</code>. Weekly contribution <code>= $7,000 ÷ 52</code>.</p>
-    <p>Non-rebalance weeks: <code>gap = max(0, target weight × (portfolio + $135) − current value)</code>; the $135 is split in proportion to the gaps (any leftover goes by target weight).</p>
-    <p>First Monday of each month: for any bucket above <code>bucket weight × portfolio</code>, the excess is sold in equal dollar amounts from its holdings above <code>bucket target ÷ holdings in the bucket</code> (never below that share, never a whole position). Proceeds + the $135 are split among underweight buckets by how far under they are; there, they go to the bucket's current picks, furthest below target first.</p>
-    <p>Limits: uses today's 2030 price targets and coin holdings for every past week, which flatters the early years (the model "knows" where targets ended up); gold and copper use futures prices (an IRA would hold GLD or CPER); no trading costs. A backtest, not a promise.</p>
-  </div></details>
+    <div id="sim2-stats"></div>
+    <details class="srcs"><summary>Week-by-week buys (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Buying that week</th><th>Strategy</th><th>S&amp;P</th></tr></thead><tbody id="sim2-log"></tbody></table></div></details></div>
   <br><br><br><br><br>
-  <h2>Backtest 3: Rebalance Into New Names</h2>
-  <div class="bt-sub">DCA $7,000 a year into a Roth IRA, invested weekly since March 2020, rebalancing into assets not yet owned</div>
-  <div class="bt-exp">Same weekly buying and the same monthly trimming as Backtest 2: <b>about $135 every Monday</b>, <b>AI 40%, Crypto 40%, Commodities 20%</b>, new money to that week's top-10 picks that are furthest <i>below</i> target, and <b>nothing ever sold entirely</b>; an overrun bucket only sells its excess, equally from its holdings above an equal share. The difference is <b>where the trimmed money goes</b>: underweight buckets put it first into their names <b>not already owned</b>, so the portfolio spreads across every name. Once a bucket owns all its names, the money tops up the holdings furthest below an equal share. The S&amp;P line is the same $135 a week into SPY.</div>
-  <div class="bt-buckets" id="bt-buckets3"></div>
-  <div class="sim"><div class="sim-t">Backtest 3 since March 2020 <span id="sim3-res"></span></div>
+  <h2>Backtest 3: Top 5, Since March 2020</h2>
+  <div class="bt-sub">Weekly DCA into the top 5, bucket-weighted, trimmed monthly (the standard version)</div>
+  <div class="spec"><div class="sl">Period</div><div class="sv">Mar 2, 2020 – today</div><div class="sl">Contribution</div><div class="sv">$7,000 a year into a Roth IRA = ~$135 every Monday</div><div class="sl">Picks each week</div><div class="sv">top 5 by overall rank (Value + Growth)</div><div class="sl">Weights</div><div class="sv">AI 40% · Crypto 40% · Commodities 20%, each bucket split equally among its picks (no pick in the top 5 → the bucket's best-ranked name)</div><div class="sl">Weekly buying</div><div class="sv">new money goes to the picks furthest below their target weight</div><div class="sl">Monthly rule</div><div class="sv">an overrun bucket sells only its excess, equally from holdings above an equal share; nothing is ever sold entirely</div><div class="sl">Trim money goes to</div><div class="sv">underweight buckets' current picks</div><div class="sl">Benchmark</div><div class="sv">same $135 a week into SPY, dividends reinvested</div></div>
+  <div class="bt-buckets"></div>
+  <div class="sim"><div class="sim-t">Backtest 3 <span id="sim3-res"></span></div>
     <div class="sim-c"><canvas id="sim3-chart"></canvas></div>
-    <details class="srcs"><summary>Week-by-week targets (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Weekly-buy targets that week</th><th>Strategy</th><th>S&amp;P DCA</th></tr></thead><tbody id="sim3-log"></tbody></table></div></details></div>
-  <details class="srcs picks-f"><summary>Backtest rules (click to open)</summary><div class="fbody">
-    <p>Weekly buys are identical to Backtest 2: <code>target weight = bucket weight ÷ bucket's assets in the top 10</code>, and the $135 is split in proportion to <code>max(0, target × portfolio − current value)</code>.</p>
-    <p>First Monday of each month: trimming is the same as Backtest 2 (only an overrun bucket's excess, sold equally from holdings above an equal share, never a whole position). Proceeds + the $135 go to underweight buckets by how far under they are; there, split equally across the bucket's <b>unowned</b> names (30+ days of price history). If it owns them all, to holdings below <code>bucket value ÷ holdings</code>, furthest below first.</p>
-    <p>Same limits as the other backtests: today's 2030 targets and coin holdings are used for every past week (hindsight); gold and copper use futures prices; no trading costs.</p>
-  </div></details>
+    <div id="sim3-stats"></div>
+    <details class="srcs"><summary>Week-by-week buys (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Buying that week</th><th>Strategy</th><th>S&amp;P</th></tr></thead><tbody id="sim3-log"></tbody></table></div></details></div>
   <br><br><br><br><br>
-  <h2>Backtest 4: Equal Weight, Every Name</h2>
-  <div class="bt-sub">DCA $7,000 a year into a Roth IRA, invested weekly since March 2020, split equally across the whole list</div>
-  <div class="bt-exp">No picks, no buckets, no trimming: <b>about $135 every Monday</b> is split <b>equally across every name on the list</b> (all 20 tickers below, excluding the S&amp;P itself), and <b>nothing is ever sold</b>. A name joins once it has 30 days of price history, so early on the money is spread across fewer names (SOL from May 2020, MSTR from September 2020, the other treasury companies from 2024–25, SPCX from July 2026). This is the "own everything, never touch it" baseline to compare the ranking-driven backtests against. The S&amp;P line is the same $135 a week into SPY.</div>
-  <div class="bt-buckets" id="bt-buckets4"></div>
-  <div class="sim"><div class="sim-t">Backtest 4 since March 2020 <span id="sim4-res"></span></div>
+  <h2>Backtest 4: Top 5 + Unowned Names, Since March 2020</h2>
+  <div class="bt-sub">Weekly DCA into the top 5, bucket-weighted; monthly trims go into names not yet owned</div>
+  <div class="spec"><div class="sl">Period</div><div class="sv">Mar 2, 2020 – today</div><div class="sl">Contribution</div><div class="sv">$7,000 a year into a Roth IRA = ~$135 every Monday</div><div class="sl">Picks each week</div><div class="sv">top 5 by overall rank (Value + Growth)</div><div class="sl">Weights</div><div class="sv">AI 40% · Crypto 40% · Commodities 20%, each bucket split equally among its picks (no pick in the top 5 → the bucket's best-ranked name)</div><div class="sl">Weekly buying</div><div class="sv">new money goes to the picks furthest below their target weight</div><div class="sl">Monthly rule</div><div class="sv">an overrun bucket sells only its excess, equally from holdings above an equal share; nothing is ever sold entirely</div><div class="sl">Trim money goes to</div><div class="sv"><b>first the bucket's names not yet owned, split equally; once it owns them all, the holdings furthest below an equal share</b></div><div class="sl">Benchmark</div><div class="sv">same $135 a week into SPY, dividends reinvested</div></div>
+  <div class="bt-buckets"></div>
+  <div class="sim"><div class="sim-t">Backtest 4 <span id="sim4-res"></span></div>
     <div class="sim-c"><canvas id="sim4-chart"></canvas></div>
-    <details class="srcs"><summary>Week-by-week buys (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Bought equally that week</th><th>Strategy</th><th>S&amp;P DCA</th></tr></thead><tbody id="sim4-log"></tbody></table></div></details></div>
-  <details class="srcs picks-f"><summary>Backtest rules (click to open)</summary><div class="fbody">
-    <p>Every Monday since March 2, 2020: <code>buy = $7,000 ÷ 52 ÷ number of names with 30+ days of prices</code> in each name. No rankings, no targets, no rebalancing, no selling. Buckets are shown only to group the names; they don't set weights here.</p>
-    <p>Unlike Backtests 2 and 3 there's no hindsight from price targets; it uses prices only. Gold and copper use futures prices (an IRA would hold GLD or CPER); no trading costs.</p>
-  </div></details>
+    <div id="sim4-stats"></div>
+    <details class="srcs"><summary>Week-by-week buys (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Buying that week</th><th>Strategy</th><th>S&amp;P</th></tr></thead><tbody id="sim4-log"></tbody></table></div></details></div>
+  <br><br><br><br><br>
+  <h2>Backtest 5: Equal Weight, All 20 Names, Since March 2020</h2>
+  <div class="bt-sub">Weekly DCA split equally across every name on the list, never sold</div>
+  <div class="spec"><div class="sl">Period</div><div class="sv">Mar 2, 2020 – today</div><div class="sl">Contribution</div><div class="sv">$7,000 a year into a Roth IRA = ~$135 every Monday</div><div class="sl">Picks each week</div><div class="sv"><b>none: every name on the list with 30+ days of prices</b></div><div class="sl">Weights</div><div class="sv"><b>equal across all names (buckets only group them)</b></div><div class="sl">Weekly buying</div><div class="sv"><b>the $135 split equally across every name</b></div><div class="sl">Monthly rule</div><div class="sv"><b>none: nothing is ever trimmed or sold</b></div><div class="sl">Trim money goes to</div><div class="sv"><b>n/a</b></div><div class="sl">Benchmark</div><div class="sv">same $135 a week into SPY, dividends reinvested</div></div>
+  <div class="bt-buckets"></div>
+  <div class="sim"><div class="sim-t">Backtest 5 <span id="sim5-res"></span></div>
+    <div class="sim-c"><canvas id="sim5-chart"></canvas></div>
+    <div id="sim5-stats"></div>
+    <details class="srcs"><summary>Week-by-week buys (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Buying that week</th><th>Strategy</th><th>S&amp;P</th></tr></thead><tbody id="sim5-log"></tbody></table></div></details></div>
   <br><br><br><br><br><br><br><br><br><br>
   <h2>Economy</h2>
   <div class="debtclock"><div class="lab">U.S. National Debt</div>
     <div class="num" id="fd-debt">$—</div>
     <div class="meta" id="fd-debt-meta">Treasury, Debt to the Penny</div></div>
   <div class="grid" id="fd-macro"></div>
-  <div class="foot">Prices: Yahoo Finance daily closes. Economic data: Federal Reserve Bank of St. Louis (FRED): FEDFUNDS, DGS10, DGS30, DGS2, WALCL, ICSA, CPIAUCSL, GDPC1, UNRATE, M2SL, PAYEMS, GFDEBTN, T10Y2Y, GDP. Ratios compare closing prices on days both traded. Live bitcoin: Coinbase. Live S&amp;P 500: TradingView (Capital.com US500, which tracks the E-mini ES futures; CME does not allow ES1! itself in website widgets). Debt clock: U.S. Treasury, Debt to the Penny, extended at its past-year pace. ShadowStats-style line is an estimate (official CPI + 7 points; Saville, TSI Blog, 2015), not ShadowStats data. Updated automatically every 15 minutes. Not investment advice.</div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -286,7 +293,7 @@ CSVs) and refreshed every day by the GitHub Action in
 (function () {
   var years = 3, tf = "D", logScale = true, DATA = null, charts = [];
   var FEATURED = [];
-  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "NVDA", "MU", "FWDI", "DFDV", "UPXI", "MP", "GC=F", "SLV", "SILJ", "UUUU", "HG=F", "ETH-USD"];
+  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "NVDA", "MU", "FWDI", "DFDV", "UPXI", "MP", "GLD", "SLV", "SILJ", "UUUU", "CPER", "ETH-USD"];
   var TREASURY_T = ["MSTR", "MTPLF", "SPCX", "TSLA", "FWDI", "DFDV", "UPXI", "HSDT"];
   var PAIRS = [["ETH-USD", "BTC-USD"], ["BTC-USD", "GC=F"], ["FWDI", "SOL-USD"], ["MSTR", "BTC-USD"], ["SOL-USD", "BTC-USD"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["AVGO", "NVDA"], ["NVDA", "MU"], ["TSLA", "SPCX"], ["SLV", "GLD"], ["HG=F", "SLV"], ["SPY", "GLD"], ["SOL-USD", "ETH-USD"]];
   var SHORT = {"BTC-USD": "BTC", "SOL-USD": "SOL", "BZ=F": "Brent", "GC=F": "Gold", "HG=F": "Copper", "ETH-USD": "ETH"};
@@ -399,6 +406,15 @@ CSVs) and refreshed every day by the GitHub Action in
       var s = DATA.macro[k], pts = s.points, last = pts[pts.length - 1], f = MACRO_FMT[k] || function (v) { return v; };
       var cv = card(M, "m" + i, s.name, f(last[1]), s.unit + " &nbsp;·&nbsp; latest " + last[0]);
       var warm = ["fedfunds", "dgs10", "dgs30", "dgs2", "cpi_yoy", "cpi_cum", "shadow", "unrate", "icsa", "debt", "debt_gdp"].indexOf(k) >= 0;   // stress gauges in faded red
+      if (s.band) {   // estimate range: official CPI + (7 - band) to CPI + 7
+        var lo = pts.map(function (p) { return [p[0], +(p[1] - s.band).toFixed(2)]; });
+        cv.parentNode.querySelector(".v").textContent = "~" + (last[1] - s.band).toFixed(1) + "–" + last[1].toFixed(1) + "%";
+        var ch = draw(cv, lo, { macro: true, fmt: f, axis: null, color: "#d9736f", fill: "rgba(0,0,0,0)" });
+        var hp = resample(cut(pts, true)); ch.data.datasets[0].fill = false;
+        ch.data.datasets.push({ data: hp.map(function (p) { return p[1]; }), borderColor: "#d9736f", borderWidth: 1.6, pointRadius: 0, tension: 0.1, fill: "-1", backgroundColor: "rgba(224,122,122,0.18)" });
+        ch.options.plugins.tooltip.callbacks.label = function (c) { return (c.datasetIndex ? "CPI + 7: " : "CPI + 4: ") + c.parsed.y.toFixed(1) + "%"; };
+        ch.update(); charts.push(ch); return;
+      }
       charts.push(draw(cv, pts, { macro: true, bar: k === "payrolls", fmt: f, axis: null, color: warm ? "#d9736f" : "#3d6fd6", fill: warm ? "rgba(224,122,122,0.07)" : "rgba(61,111,214,0.08)" }));
     });
   }
@@ -582,115 +598,116 @@ CSVs) and refreshed every day by the GitHub Action in
                   y: { ticks: { color: "#2d3a4a", font: { size: 11, weight: "600" } }, grid: { display: false } } } } });
   }
 
-  // Chart 1, Comparative Value: for every pair, where the price ratio sits vs its own 20-week and 200-day EMAs
+  // ---------- Value signals (Comparative Value) ----------
+  // Every asset, every day: how far price sits from its 20-week and 200-day EMAs (log gap), each divided by how big
+  // that gap usually is for this asset over the past ~2 years (a z-score, so volatile assets aren't automatically "cheapest"),
+  // plus a small bonus for distance below its all-time high. Higher score = deeper value.
+  var ATH_BONUS = 0.75, ZWIN = 520, VSER = {};
   function ema(v, n) { var a = 2 / (n + 1), e = v[0]; for (var i = 1; i < v.length; i++) e = a * v[i] + (1 - a) * e; return e; }
-  function weeklyClose(pts) {
-    var out = [], key = null;
-    pts.forEach(function (p) { var d = new Date(p[0] + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
-      var k = d.toISOString().slice(0, 10); if (k === key) out[out.length - 1] = p[1]; else { out.push(p[1]); key = k; } });
-    return out;
-  }
-  var VALUE = {}, GROWTH = [], GROWTH_FN = {};   // per-asset Comparative Value results, also shown in the table
-  function compValue() {
-    var univ = bestUniverse(), rows = univ.map(function (k) {
-      var pts = DATA.prices[k].points, v = pts.map(function (p) { return p[1]; }), last = v[v.length - 1], ath = Math.max.apply(null, v);
-      var recent = pts.slice(-520);
-      return { k: k, wins: 0, pairs: 0, devSum: 0, worst: 0, worstVs: null, short: false, ath: ath, dd: 1 - last / ath,
-               dev20: last / ema(weeklyClose(recent), 20) - 1, dev200: last / ema(recent.map(function (p) { return p[1]; }), 200) - 1 };
-    });
-    for (var i = 0; i < rows.length; i++) for (var j = i + 1; j < rows.length; j++) {
-      var a = rows[i], b = rows[j], r = ratio(a.k, b.k).slice(-520);   // about 2 years of shared trading days
-      if (r.length < 30) continue;
-      var v = r.map(function (p) { return p[1]; }), last = v[v.length - 1];
-      var d200 = Math.log(last / ema(v, 200)), d20w = Math.log(last / ema(weeklyClose(r), 20));
-      var dATH = b.dd - a.dd;            // below 0: a is further below its all-time high than b
-      var dev = (d200 + d20w + dATH) / 3; // below 0: a is the better value against b
-      if (dev < 0) a.wins++; else b.wins++;
-      a.pairs++; b.pairs++; a.devSum += dev; b.devSum -= dev;
-      if (dev < a.worst) { a.worst = dev; a.worstVs = b.k; }
-      if (-dev < b.worst) { b.worst = -dev; b.worstVs = a.k; }
-      if (r.length < 200) { a.short = true; b.short = true; }
+  function idxAt(pts, day) { var lo = 0, hi = pts.length - 1, r = -1; while (lo <= hi) { var m = (lo + hi) >> 1; if (pts[m][0] <= day) { r = m; lo = m + 1; } else hi = m - 1; } return r; }
+  function pxOn(k, day) { var p = DATA.prices[k].points, i = idxAt(p, day); return i < 0 ? null : p[i][1]; }
+  function valueSeries(k) {
+    if (VSER[k]) return VSER[k];
+    var p = DATA.prices[k].points, n = p.length, a2 = 2 / 201, a20 = 2 / 21, e2 = null, ew = null, wk = null, lastC = null, mx = -1;
+    var g20 = new Float64Array(n), g200 = new Float64Array(n), dd = new Float64Array(n), ath = new Float64Array(n);
+    for (var i = 0; i < n; i++) {
+      var d = new Date(p[i][0] + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); var kk = d.toISOString().slice(0, 10);
+      if (kk !== wk) { if (lastC != null) ew = ew == null ? lastC : a20 * lastC + (1 - a20) * ew; wk = kk; }   // close out last week
+      var x = p[i][1]; lastC = x; e2 = e2 == null ? x : a2 * x + (1 - a2) * e2;
+      var w20 = ew == null ? x : a20 * x + (1 - a20) * ew;                                                    // this week so far
+      g20[i] = Math.log(x / w20); g200[i] = Math.log(x / e2); mx = Math.max(mx, x); ath[i] = mx; dd[i] = 1 - x / mx;
     }
-    rows = rows.filter(function (r) { return r.pairs; });
-    rows.forEach(function (r) { r.score = r.wins / r.pairs; r.dev = r.devSum / r.pairs; r.t = r.score; });
-    rows.sort(function (a, b) { return b.score - a.score || a.dev - b.dev; });
-    VALUE = {}; rows.forEach(function (r) { VALUE[r.k] = r; });
+    function z(g) {   // gap ÷ its own standard deviation over the trailing window
+      var s1 = new Float64Array(n + 1), s2 = new Float64Array(n + 1), out = new Float64Array(n);
+      for (var i = 0; i < n; i++) { s1[i + 1] = s1[i] + g[i]; s2[i + 1] = s2[i] + g[i] * g[i]; }
+      for (i = 0; i < n; i++) { var lo = Math.max(0, i - ZWIN + 1), c = i - lo + 1, a = s1[i + 1] - s1[lo], b = s2[i + 1] - s2[lo];
+        var sd = c > 1 ? Math.sqrt(Math.max(0, (b - a * a / c) / (c - 1))) : 0; out[i] = c >= 30 && sd > 0 ? g[i] / sd : NaN; }
+      return out;
+    }
+    var z20 = z(g20), z200 = z(g200), score = new Float64Array(n);
+    for (i = 0; i < n; i++) score[i] = -(z20[i] + z200[i]) / 2 + ATH_BONUS * dd[i];
+    return (VSER[k] = { p: p, g20: g20, g200: g200, z20: z20, z200: z200, dd: dd, ath: ath, score: score });
+  }
+  function valueAt(k, day) {   // null until an asset has 30 days of history
+    var s = valueSeries(k), i = day ? idxAt(s.p, day) : s.p.length - 1;
+    if (i < 29 || isNaN(s.score[i])) return null;
+    return { i: i, score: s.score[i], z20: s.z20[i], z200: s.z200[i], dev20: Math.exp(s.g20[i]) - 1, dev200: Math.exp(s.g200[i]) - 1, dd: s.dd[i], ath: s.ath[i] };
+  }
+  var VALUE = {}, GROWTH = [], GROWTH_FN = {};
+  function compValue() {
+    var rows = [];
+    bestUniverse().forEach(function (k) { var v = valueAt(k); if (v) { v.k = k; rows.push(v); } });
+    rows.sort(function (a, b) { return b.score - a.score; });
+    VALUE = {}; rows.forEach(function (r, i) { r.rank = i + 1; r.t = rows.length > 1 ? 1 - i / (rows.length - 1) : 1; VALUE[r.k] = r; });
     function pc(x) { return (x >= 0 ? "+" : "") + (x * 100).toFixed(1) + "%"; }
+    function zs(x) { return (x >= 0 ? "+" : "−") + Math.abs(x).toFixed(1) + "σ"; }
     if (cvChart) cvChart.destroy();
-    cvChart = barChart(document.getElementById("cv-chart"), rows, rows.map(function (r) { return Math.round(r.score * 1000) / 10; }),
-      function (r) { return "Better value in " + r.wins + " of " + r.pairs + " pairs; " + Math.round(r.dd * 100) + "% below ATH; vs 20-wk EMA " + pc(r.dev20) +
-        ", vs 200-day EMA " + pc(r.dev200) + (r.worstVs ? "; cheapest vs " + sn(r.worstVs) : "") + (r.short ? "; short price history" : ""); },
-      { min: 0, max: 100 });
+    cvChart = barChart(document.getElementById("cv-chart"), rows, rows.map(function (r) { return Math.round(r.score * 100) / 100; }),
+      function (r) { return "Value score " + r.score.toFixed(2) + " · vs 20-wk EMA " + pc(r.dev20) + " (" + zs(r.z20) + ") · vs 200-day EMA " + pc(r.dev200) + " (" + zs(r.z200) + ") · " +
+        Math.round(r.dd * 100) + "% below ATH (+" + (ATH_BONUS * r.dd).toFixed(2) + ")"; },
+      { ticks: { color: "#6b7686", font: { size: 10 } } });
   }
 
-  // Backtest: every Monday for the past year, rerun both rankings with only the prices known that day (top 10),
-  // then invest that week's $7,000 / 52 toward bucket target weights (AI 40%, Crypto 40%, Commodities 20%), rebalancing monthly.
-  var SIMCH = {}, BT_CACHE = null;
+  // ---------- Backtests ----------
+  var SIMCH = {}, PICK_CACHE = {}, TOPN = 5;
   var BUCKETS = [{ n: "AI", w: 0.4, k: ["TSLA", "SPCX", "NVDA", "AVGO", "MU"] },
                  { n: "Crypto", w: 0.4, k: ["BTC-USD", "ETH-USD", "SOL-USD", "MSTR", "MTPLF", "FWDI", "DFDV", "UPXI", "HSDT"] },
-                 { n: "Commodities", w: 0.2, k: ["GC=F", "SLV", "SILJ", "HG=F", "UUUU", "MP"] }];
-  function simPicks(cfg) {   // cfg.id = element prefix; cfg.start = first date (else the last 52 weeks)
-    var univ = Object.keys(VALUE).filter(function (k) { return GROWTH_FN[k]; });
+                 { n: "Commodities", w: 0.2, k: ["GLD", "SLV", "SILJ", "CPER", "UUUU", "MP"] }];
+  function tradePts(k) { return DATA.prices[k].adj || DATA.prices[k].points; }   // dividend-adjusted where Yahoo has it
+  function tpx(k, day) { var p = tradePts(k), i = idxAt(p, day); return i < 0 ? null : p[i][1]; }
+  function rankAt(day, mode) {   // full ranking on a given day, using only prices known that day
+    var key = mode + day; if (PICK_CACHE[key]) return PICK_CACHE[key];
+    var V = {}, live = bestUniverse().filter(function (k) { return GROWTH_FN[k] && (V[k] = valueAt(k, day)); });
+    var vs = live.slice().sort(function (a, b) { return V[b].score - V[a].score; });
+    if (mode === "value") return (PICK_CACHE[key] = vs);
+    var P = function (k) { return pxOn(k, day); };
+    var gs = live.slice().sort(function (x, y) { return GROWTH_FN[y](P) / P(y) - GROWTH_FN[x](P) / P(x); });
+    function pr(list, k) { var i = list.indexOf(k); return list.length > 1 ? 100 * (1 - i / (list.length - 1)) : 100; }
+    return (PICK_CACHE[key] = live.map(function (k) { var v = pr(vs, k), g = pr(gs, k); return { k: k, o: (v + g) / 2, g: g }; })
+      .sort(function (x, y) { return y.o - x.o || y.g - x.g; }).map(function (x) { return x.k; }));
+  }
+  function btStats(dates, vals, buys, C, rfPts) {   // time-weighted & money-weighted returns, volatility, max drawdown, Sharpe
+    var r = [], rf = [], idx = [1];
+    for (var i = 1; i < vals.length; i++) if (vals[i - 1] > 0) {
+      var x = (vals[i] - (buys[i] ? C : 0)) / vals[i - 1] - 1; r.push(x); idx.push(idx[idx.length - 1] * (1 + x));
+      rf.push(rfPts ? rfPts[Math.max(0, idxAt(rfPts, dates[i]))][1] / 100 / 52 : 0);
+    }
+    var t0 = Date.parse(dates[0]), yrs = (Date.parse(dates[dates.length - 1]) - t0) / 3.15576e10;
+    var mean = r.reduce(function (s, x) { return s + x; }, 0) / r.length;
+    var sd = Math.sqrt(r.reduce(function (s, x) { return s + (x - mean) * (x - mean); }, 0) / Math.max(1, r.length - 1));
+    var exm = r.reduce(function (s, x, i) { return s + x - rf[i]; }, 0) / r.length;
+    var peak = 1, mdd = 0; idx.forEach(function (v) { peak = Math.max(peak, v); mdd = Math.min(mdd, v / peak - 1); });
+    var VE = vals[vals.length - 1];
+    function npv(k) { var s = VE / Math.pow(1 + k, yrs); dates.forEach(function (d, i) { if (buys[i]) s -= C / Math.pow(1 + k, (Date.parse(d) - t0) / 3.15576e10); }); return s; }
+    var lo = -0.99, hi = 20; for (var it = 0; it < 100; it++) { var mid = (lo + hi) / 2; if (npv(mid) > 0) lo = mid; else hi = mid; }
+    return { end: VE, twr: Math.pow(idx[idx.length - 1], 1 / yrs) - 1, irr: (lo + hi) / 2, vol: sd * Math.sqrt(52), mdd: mdd, sharpe: sd > 0 ? exm / sd * Math.sqrt(52) : 0 };
+  }
+  function simPicks(cfg) {   // cfg.id = element prefix; cfg.start = first date (else the last 52 weeks); cfg.mode = "value" | "div" | "all" | undefined
     var spy = DATA.prices["SPY"].points, end = spy[spy.length - 1][0];
     var mondays = [], d = new Date(cfg.start ? Date.parse(cfg.start) : Date.parse(end) - 3.15576e10); d.setUTCDate(d.getUTCDate() + ((8 - d.getUTCDay()) % 7));
     for (; d.toISOString().slice(0, 10) <= end; d.setUTCDate(d.getUTCDate() + 7)) mondays.push(d.toISOString().slice(0, 10));
-    function idxAt(pts, day) { var lo = 0, hi = pts.length - 1, r = -1; while (lo <= hi) { var m = (lo + hi) >> 1; if (pts[m][0] <= day) { r = m; lo = m + 1; } else hi = m - 1; } return r; }
-    var PX = {}, RUNMAX = {}; univ.concat(["SPY", "SI=F", "BTC-USD", "SOL-USD"]).forEach(function (k) { if (!DATA.prices[k]) return; var p = DATA.prices[k].points, mx = -1; PX[k] = p; RUNMAX[k] = p.map(function (q) { mx = Math.max(mx, q[1]); return mx; }); });
-    function pxAt(k, day) { var i = idxAt(PX[k], day); return i < 0 ? null : PX[k][i][1]; }
-    // pair ratios with running EMAs, built once and shared by all backtests (keeps the page fast)
-    if (!BT_CACHE) { BT_CACHE = { pair: {}, picks: {} };
-      for (var i = 0; i < univ.length; i++) for (var j = i + 1; j < univ.length; j++) {
-        var r0 = ratio(univ[i], univ[j]), a2 = 2 / 201, a20 = 2 / 21, e2 = null, ew = null, wk = null, lastC = null, dl = new Array(r0.length);
-        r0.forEach(function (p, n) {
-          var dd = new Date(p[0] + "T00:00:00Z"); dd.setUTCDate(dd.getUTCDate() - ((dd.getUTCDay() + 6) % 7)); var kk = dd.toISOString().slice(0, 10);
-          if (kk !== wk) { if (lastC != null) ew = ew == null ? lastC : a20 * lastC + (1 - a20) * ew; wk = kk; }   // close out last week
-          lastC = p[1]; e2 = e2 == null ? p[1] : a2 * p[1] + (1 - a2) * e2;
-          var w20 = ew == null ? p[1] : a20 * p[1] + (1 - a20) * ew;   // this week's close so far
-          dl[n] = Math.log(p[1] / e2) + Math.log(p[1] / w20);
-        });
-        BT_CACHE.pair[univ[i] + "|" + univ[j]] = { r: r0, dl: dl };
-      } }
-    var PAIR = BT_CACHE.pair;
-    function picksAt(day) { if (BT_CACHE.picks[day]) return BT_CACHE.picks[day]; var out = picksAt0(day); BT_CACHE.picks[day] = out; return out; }
-    function picksAt0(day) {
-      var live = univ.filter(function (k) { var ix = idxAt(PX[k], day); return ix >= 29; });   // needs at least 30 days of history that day
-      var S = {}; live.forEach(function (k) { var ix = idxAt(PX[k], day); S[k] = { k: k, wins: 0, pairs: 0, dev: 0, dd: 1 - PX[k][ix][1] / RUNMAX[k][ix] }; });
-      for (var a = 0; a < live.length; a++) for (var b = a + 1; b < live.length; b++) {
-        var A = S[live[a]], B = S[live[b]], flip = univ.indexOf(A.k) > univ.indexOf(B.k), key = flip ? B.k + "|" + A.k : A.k + "|" + B.k;
-        var pc2 = PAIR[key], ix = idxAt(pc2.r, day); if (ix < 29) continue;
-        var dl = pc2.dl[ix];   // ratio's gap to its 200-day + 20-week EMAs on that day
-        var dev = ((flip ? -dl : dl) + (B.dd - A.dd)) / 3;   // same edge as the chart: (d20w + d200 + dATH) / 3, below 0 = A is the better value
-        if (dev < 0) A.wins++; else B.wins++; A.pairs++; B.pairs++; A.dev += dev; B.dev -= dev;
-      }
-      var vs = live.filter(function (k) { return S[k].pairs; });
-      vs.sort(function (x, y) { var X = S[x], Y = S[y]; return Y.wins / Y.pairs - X.wins / X.pairs || X.dev / X.pairs - Y.dev / Y.pairs; });
-      var P = function (k) { return pxAt(k, day); };
-      var gs = vs.slice().sort(function (x, y) { return GROWTH_FN[y](P) / P(y) - GROWTH_FN[x](P) / P(x); });
-      function pr(list, k) { var i = list.indexOf(k); return list.length > 1 ? 100 * (1 - i / (list.length - 1)) : 100; }
-      return vs.map(function (k) { var v = pr(vs, k), g = pr(gs, k); return { k: k, o: (v + g) / 2, g: g }; })
-               .sort(function (x, y) { return y.o - x.o || y.g - x.g; }).map(function (x) { return x.k; });   // full ranking, best first
-    }
     if (!cfg.start) mondays = mondays.slice(-52);   // exactly 52 weekly buys
     var WEEKLY = 7000 / 52, hold = {}, spyUnits = 0, contrib = 0, lastMonth = null;
-    var labels = [], port = [], spyV = [], paid = [], BT_LOG = [];
-    function value(day) { var v = 0; Object.keys(hold).forEach(function (k) { if (hold[k] > 0) v += hold[k] * pxAt(k, day); }); return v; }
+    var labels = [], port = [], spyV = [], paid = [], buys = [], BT_LOG = [];
+    function value(day) { var v = 0; Object.keys(hold).forEach(function (k) { if (hold[k] > 0) v += hold[k] * tpx(k, day); }); return v; }
     mondays.forEach(function (day) {
-      var rank = picksAt(day), top = rank.slice(0, 10), tw = {};
-      BUCKETS.forEach(function (b) {   // bucket weight split equally among its assets in this week's top 10; if none, its best-ranked asset
+      var rank = cfg.mode === "all" ? [] : rankAt(day, cfg.mode === "value" ? "value" : "overall"), top = rank.slice(0, TOPN), tw = {};
+      BUCKETS.forEach(function (b) {   // bucket weight split equally among its assets in this week's top 5; if none, its best-ranked asset
         var m = top.filter(function (k) { return b.k.indexOf(k) >= 0; });
         if (!m.length) m = rank.filter(function (k) { return b.k.indexOf(k) >= 0; }).slice(0, 1);
         m.forEach(function (k) { tw[k] = b.w / m.length; });
       });
-      var V = value(day), C = WEEKLY, total = V + C, month = day.slice(0, 7), note;
-      contrib += C; spyUnits += C / pxAt("SPY", day);
-      if (cfg.mode === "all") {   // Backtest 4: the $135 split equally across every name on the list that has 30+ days of prices; never sold or trimmed
-        var allK = [].concat.apply([], BUCKETS.map(function (b) { return b.k; })).filter(function (k) { return PX[k] && idxAt(PX[k], day) >= 29; });
-        tw = {}; allK.forEach(function (k) { tw[k] = 1 / allK.length; hold[k] = (hold[k] || 0) + C / allK.length / pxAt(k, day); });
+      var V = value(day), C = WEEKLY, total = V + C, month = day.slice(0, 7), note = "";
+      contrib += C; spyUnits += C / tpx("SPY", day);
+      var P0 = function (k) { return tpx(k, day); };
+      if (cfg.mode === "all") {   // equal split across every name with 30+ days of prices; never sold or trimmed
+        var allK = [].concat.apply([], BUCKETS.map(function (b) { return b.k; })).filter(function (k) { return DATA.prices[k] && idxAt(DATA.prices[k].points, day) >= 29; });
+        tw = {}; allK.forEach(function (k) { tw[k] = 1 / allK.length; hold[k] = (hold[k] || 0) + C / allK.length / P0(k); });
         note = "equal split across " + allK.length + " names";
       } else if (month !== lastMonth) {   // first Monday of the month: bring each bucket back to its weight without selling anything entirely
-        var P0 = function (k) { return pxAt(k, day); }, pool = C, added = [], trimmed = [];
+        var pool = C, added = [], trimmed = [];
         var bv = BUCKETS.map(function (b) { var ks = b.k.filter(function (k) { return hold[k] > 0; }); return { b: b, ks: ks, v: ks.reduce(function (s2, k) { return s2 + hold[k] * P0(k); }, 0), t: total * b.w }; });
-        bv.forEach(function (x) {   // overrun bucket: sell the excess equally from its holdings above an equal share, never a whole position
+        bv.forEach(function (x) {   // overrun bucket: sell only the excess, equally from its holdings above an equal share
           var E = x.v - x.t; if (E <= 0 || !x.ks.length) return;
           var share = x.t / x.ks.length, room = {}; x.ks.forEach(function (k) { room[k] = Math.max(0, hold[k] * P0(k) - share); });
           var need = E, act = x.ks.filter(function (k) { return room[k] > 0; });
@@ -700,51 +717,51 @@ CSVs) and refreshed every day by the GitHub Action in
         var short = bv.map(function (x) { return Math.max(0, x.t - x.v); }), S2 = short.reduce(function (s2, v) { return s2 + v; }, 0);
         bv.forEach(function (x, bi) {   // proceeds + this week's $135 go to the underweight buckets
           var A = S2 > 0 ? pool * short[bi] / S2 : pool * x.b.w; if (A <= 0) return;
-          var targets;
-          if (cfg.mode === "div") {   // Backtest 3: first into the bucket's names not owned yet, else holdings below an equal share
-            var fresh = rank.filter(function (k) { return x.b.k.indexOf(k) >= 0 && !(hold[k] > 0); });
+          var targets = {};
+          if (cfg.mode === "div") {   // first into the bucket's names not owned yet, else holdings below an equal share
+            var fresh = bestUniverse().filter(function (k) { return x.b.k.indexOf(k) >= 0 && !(hold[k] > 0) && valueAt(k, day); });
             if (fresh.length) { fresh.forEach(function (k) { hold[k] = A / fresh.length / P0(k); added.push(k); }); return; }
             var own = x.b.k.filter(function (k) { return hold[k] > 0; }), sh = (x.v + A) / Math.max(1, own.length);
-            targets = {}; own.forEach(function (k) { targets[k] = Math.max(0, sh - hold[k] * P0(k)); });
-          } else {                    // Backtests 1 and 2: into that week's picks in the bucket, furthest below target first
-            targets = {}; Object.keys(tw).filter(function (k) { return x.b.k.indexOf(k) >= 0; }).forEach(function (k) { targets[k] = Math.max(0, total * tw[k] - (hold[k] || 0) * P0(k)); });
-          }
+            own.forEach(function (k) { targets[k] = Math.max(0, sh - hold[k] * P0(k)); });
+          } else Object.keys(tw).filter(function (k) { return x.b.k.indexOf(k) >= 0; }).forEach(function (k) { targets[k] = Math.max(0, total * tw[k] - (hold[k] || 0) * P0(k)); });
           var ks = Object.keys(targets); if (!ks.length) return;
           var G2 = ks.reduce(function (s2, k) { return s2 + targets[k]; }, 0);
           ks.forEach(function (k) { var buy = G2 > A ? A * targets[k] / G2 : targets[k] + (A - G2) / ks.length; hold[k] = (hold[k] || 0) + buy / P0(k); });
         });
         note = "rebalanced" + (trimmed.length ? " (trimmed " + trimmed.map(sn).join(", ") + ")" : "") + (added.length ? " into " + added.map(sn).join(", ") : "");
-      } else {                     // other weeks: new money only, into whatever is furthest under its target
-        var gap = {}, G = 0; Object.keys(tw).forEach(function (k) { var cur = (hold[k] || 0) * pxAt(k, day); gap[k] = Math.max(0, total * tw[k] - cur); G += gap[k]; });
-        Object.keys(tw).forEach(function (k) { var buy = G > C ? C * gap[k] / G : gap[k] + (C - G) * tw[k]; hold[k] = (hold[k] || 0) + buy / pxAt(k, day); });
-        note = "new money to underweights";
+      } else {                     // other weeks: new money only, into the picks furthest under their target
+        var gap = {}, G = 0; Object.keys(tw).forEach(function (k) { gap[k] = Math.max(0, total * tw[k] - (hold[k] || 0) * P0(k)); G += gap[k]; });
+        Object.keys(tw).forEach(function (k) { var buy = G > C ? C * gap[k] / G : gap[k] + (C - G) * tw[k]; hold[k] = (hold[k] || 0) + buy / P0(k); });
       }
       lastMonth = month;
-      labels.push(day); port.push(value(day)); spyV.push(spyUnits * pxAt("SPY", day)); paid.push(contrib);
-      BT_LOG.push({ d: day, top: top, tw: tw, note: note, v: port[port.length - 1], s: spyV[spyV.length - 1] });
+      labels.push(day); port.push(value(day)); spyV.push(spyUnits * tpx("SPY", day)); paid.push(contrib); buys.push(true);
+      BT_LOG.push({ d: day, tw: tw, note: note, v: port[port.length - 1], s: spyV[spyV.length - 1] });
     });
-    if (labels[labels.length - 1] !== end) { labels.push(end); port.push(value(end)); spyV.push(spyUnits * pxAt("SPY", end)); paid.push(contrib); }
+    if (labels[labels.length - 1] !== end) { labels.push(end); port.push(value(end)); spyV.push(spyUnits * tpx("SPY", end)); paid.push(contrib); buys.push(false); }
     function $(v) { return "$" + Math.round(v).toLocaleString("en-US"); }
-    function pc(v) { return (v >= 0 ? "+" : "") + v.toFixed(1) + "%"; }
-    var pe = port[port.length - 1], se = spyV[spyV.length - 1];
-    document.getElementById(cfg.id + "-res").textContent = $(contrib) + " put in → strategy " + $(pe) + " (" + pc((pe / contrib - 1) * 100) + ") vs S&P DCA " + $(se) + " (" + pc((se / contrib - 1) * 100) + ")";
+    function pc(v) { return (v >= 0 ? "+" : "") + (v * 100).toFixed(1) + "%"; }
+    var ff = DATA.macro.fedfunds ? DATA.macro.fedfunds.points : null, a = btStats(labels, port, buys, WEEKLY, ff), b = btStats(labels, spyV, buys, WEEKLY, ff);
+    document.getElementById(cfg.id + "-res").textContent = $(contrib) + " put in → strategy " + $(a.end) + " (" + pc(a.end / contrib - 1) + ") vs S&P " + $(b.end) + " (" + pc(b.end / contrib - 1) + ")";
+    function row(n, s) { return "<tr><td>" + n + "</td><td>" + $(s.end) + "</td><td>" + pc(s.irr) + "</td><td>" + pc(s.twr) + "</td><td>" + (s.vol * 100).toFixed(1) + "%</td><td>" + (s.mdd * 100).toFixed(1) + "%</td><td>" + s.sharpe.toFixed(2) + "</td></tr>"; }
+    document.getElementById(cfg.id + "-stats").innerHTML = "<table class=\"btstats\"><thead><tr><th></th><th>Ending value</th><th>Money-weighted return / yr</th><th>Time-weighted return / yr</th><th>Volatility / yr</th><th>Max drawdown</th><th>Sharpe ratio</th></tr></thead><tbody>" +
+      row("Strategy", a) + row("S&amp;P 500 DCA", b) + "</tbody></table>";
     document.getElementById(cfg.id + "-log").innerHTML = BT_LOG.slice().reverse().map(function (x) {
-      var tgt = BUCKETS.map(function (b) { var m = Object.keys(x.tw).filter(function (k) { return b.k.indexOf(k) >= 0; }); return "<b>" + b.n + "</b> " + m.map(sn).join(", "); }).join(" · ");
-      return "<tr><td>" + x.d + "</td><td>" + tgt + (x.note.indexOf("rebalanced") === 0 || x.note.indexOf("equal split") === 0 ? ' <i class="rb">' + x.note + '</i>' : "") + "</td><td>" + $(x.v) + "</td><td>" + $(x.s) + "</td></tr>"; }).join("");
+      var tgt = BUCKETS.map(function (bk) { var m = Object.keys(x.tw).filter(function (k) { return bk.k.indexOf(k) >= 0; }); return "<b>" + bk.n + "</b> " + m.map(sn).join(", "); }).join(" · ");
+      return "<tr><td>" + x.d + "</td><td>" + tgt + (x.note ? ' <i class="rb">' + x.note + '</i>' : "") + "</td><td>" + $(x.v) + "</td><td>" + $(x.s) + "</td></tr>"; }).join("");
     if (SIMCH[cfg.id]) SIMCH[cfg.id].destroy();
     var lab = { id: "simLab", afterDatasetsDraw: function (ch) { var ctx = ch.ctx; ctx.save(); ctx.textBaseline = "middle"; ctx.font = "700 11px system-ui,sans-serif";
       var its = ch.data.datasets.map(function (dd, i) { var pt = ch.getDatasetMeta(i).data[dd.data.length - 1]; return { x: pt.x, y: pt.y, c: dd.borderColor, t: dd.label + " " + $(dd.data[dd.data.length - 1]) }; });
-      its.sort(function (a, b) { return a.y - b.y; }); for (var n = 1; n < its.length; n++) if (its[n].y - its[n - 1].y < 14) its[n].y = its[n - 1].y + 14;
+      its.sort(function (p, q) { return p.y - q.y; }); for (var n = 1; n < its.length; n++) if (its[n].y - its[n - 1].y < 14) its[n].y = its[n - 1].y + 14;
       its.forEach(function (it) { ctx.fillStyle = it.c; ctx.fillText(it.t, it.x + 6, it.y); });
       ctx.restore(); } };
     SIMCH[cfg.id] = new Chart(document.getElementById(cfg.id + "-chart"), { type: "line", plugins: [lab],
       data: { labels: labels, datasets: [
-        { label: "Strategy", data: port, borderColor: "#3d6fd6", backgroundColor: "rgba(61,111,214,0.08)", fill: false, borderWidth: 2.2, pointRadius: 0, tension: 0.2 },
-        { label: "S&P DCA", data: spyV, borderColor: "#111", borderWidth: 1.8, pointRadius: 0, tension: 0.2 },
+        { label: "Strategy", data: port, borderColor: "#3d6fd6", fill: false, borderWidth: 2.2, pointRadius: 0, tension: 0.2 },
+        { label: "S&P 500", data: spyV, borderColor: "#111", borderWidth: 1.8, pointRadius: 0, tension: 0.2 },
         { label: "Put in", data: paid, borderColor: "#9aa3b2", borderDash: [5, 4], borderWidth: 1.2, pointRadius: 0, tension: 0 }] },
       options: { animation: false, responsive: true, maintainAspectRatio: false, layout: { padding: { right: 140 } }, interaction: { mode: "index", intersect: false },
         plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return c.dataset.label + ": " + $(c.parsed.y); },
-          afterBody: function (it) { var x = BT_LOG[it[0].dataIndex]; return x ? "Targets that week: " + Object.keys(x.tw).map(sn).join(", ") : ""; } } } },
+          afterBody: function (it) { var x = BT_LOG[it[0].dataIndex]; return x ? "Buying that week: " + Object.keys(x.tw).map(sn).join(", ") : ""; } } } },
         scales: { x: { ticks: { maxTicksLimit: 6, maxRotation: 0, color: "#6b7686", font: { size: 10 }, callback: function (v) { return this.getLabelForValue(v).slice(0, 7); } }, grid: { display: false } },
                   y: { ticks: { maxTicksLimit: 5, color: "#6b7686", font: { size: 10 }, callback: function (v) { return "$" + (v / 1000).toFixed(v >= 10000 ? 0 : 1) + "k"; } }, grid: { color: "#f0f2f6" } } } } });
   }
@@ -752,41 +769,48 @@ CSVs) and refreshed every day by the GitHub Action in
     var html = BUCKETS.map(function (b) {
       return '<div class="bk"><div class="bk-h">' + b.n + " <span>" + Math.round(b.w * 100) + "%</span></div><div class=\"bk-t\">" +
         b.k.map(function (k) { return '<span class="' + (top.indexOf(k) >= 0 ? "on" : "") + '">$' + sn(k) + "</span>"; }).join(" ") + "</div></div>"; }).join("");
-    ["bt-buckets", "bt-buckets2", "bt-buckets3", "bt-buckets4"].forEach(function (id) { var el = document.getElementById(id); if (el) el.innerHTML = html; });
+    document.querySelectorAll(".bt-buckets").forEach(function (el) { el.innerHTML = html; });
   }
-  // This week's best buys: average of the Comparative Value rank and the Projected Growth rank (each as 0-100)
+  // Best buys (top 10, recalculated on every refresh): average of the Value rank and the Projected Growth rank (each as 0-100)
   function weekPicks() {
-    var vOrder = Object.keys(VALUE).sort(function (a, b) { return VALUE[b].score - VALUE[a].score || VALUE[a].dev - VALUE[b].dev; });
+    var vOrder = Object.keys(VALUE).sort(function (a, b) { return VALUE[b].score - VALUE[a].score; });
     function pctRank(list, k) { var i = list.indexOf(k); return i < 0 ? null : (list.length > 1 ? 100 * (1 - i / (list.length - 1)) : 100); }
     var rows = GROWTH.filter(function (k) { return VALUE[k]; }).map(function (k) { var v = pctRank(vOrder, k), g = pctRank(GROWTH, k); return { k: k, v: v, g: g, o: (v + g) / 2 }; });
     rows.sort(function (a, b) { return b.o - a.o || b.g - a.g; });
     var top = rows.slice(0, 10);
-    bucketCards(top.map(function (r) { return r.k; }));
-    simPicks({ id: "sim" });
-    setTimeout(function () { try { simPicks({ id: "sim2", start: "2020-03-02" }); } catch (e) { console.log("backtest 2020", e); }
-                             try { simPicks({ id: "sim3", start: "2020-03-02", mode: "div" }); } catch (e) { console.log("backtest 3", e); }
-                             try { simPicks({ id: "sim4", start: "2020-03-02", mode: "all" }); } catch (e) { console.log("backtest 4", e); } }, 50);
     document.getElementById("picks-row").innerHTML = top.map(function (r, i) { return '<span class="pk"><span class="rk">#' + (i + 1) + '</span><span class="tk" title="Overall ' + r.o.toFixed(0) + ' (value ' + r.v.toFixed(0) + ', growth ' + r.g.toFixed(0) + ')">$' + sn(r.k) + "</span></span>"; }).join("");
+    bucketCards(top.slice(0, TOPN).map(function (r) { return r.k; }));
+    setTimeout(function () {
+      [{ id: "sim1", start: "2020-03-02", mode: "value" }, { id: "sim2" }, { id: "sim3", start: "2020-03-02" }, { id: "sim4", start: "2020-03-02", mode: "div" }, { id: "sim5", start: "2020-03-02", mode: "all" }]
+        .forEach(function (c) { try { simPicks(c); } catch (e) { console.log("backtest " + c.id, e); } });
+    }, 30);
   }
   // Chart 2 + table, Projected Growth: today's price vs median 2030 target
   function bestBuy() {
     var T = DATA.targets, trow = {}; if (!T) return;
+    var ASOF = DATA.targets_asof || "2026-09-28";   // sector targets are locked to prices on the date the targets were checked
+    var ta = document.getElementById("tgt-asof"); if (ta) ta.textContent = ASOF;
     (DATA.treasury ? DATA.treasury.rows : []).forEach(function (r) { trow[r.t] = r; });
     var y30 = yearsTo(2030), rows = [], skipped = [];
     var SECTOR_NAME = { "URANIUM": "uranium", "SLV": "silver", "COMMOD": "uranium, silver, gold & copper avg" };
-    function spotOf(k) { return k === "URANIUM" ? T.URANIUM.spot : lastPx(k === "SLV" ? "SI=F" : k); }
-    function mult(k) { var t = T[k]; return { lo: t.low / spotOf(k), base: t.base / spotOf(k), hi: t.high / spotOf(k), n: t.n }; }
-    function sector(sk) {   // 2030 target as a multiple of today's price
+    function spotAsof(k) { return k === "URANIUM" ? T.URANIUM.spot : pxOn(T[k].of || k, ASOF); }
+    function mult(k) { var t = T[k], s = spotAsof(k); return { lo: t.low / s, base: t.base / s, hi: t.high / s, n: t.n }; }
+    function sector(sk) {   // 2030 target as a multiple of the price on the target date
       if (sk !== "COMMOD") return mult(sk);
-      var ms = ["URANIUM", "SLV", "GC=F", "HG=F"].map(mult), avg = function (f) { return ms.reduce(function (s, m) { return s + f(m); }, 0) / ms.length; };
+      var ms = ["URANIUM", "SLV", "GLD", "CPER"].map(mult), avg = function (f) { return ms.reduce(function (s, m) { return s + f(m); }, 0) / ms.length; };
       return { lo: avg(function (m) { return m.lo; }), base: avg(function (m) { return m.base; }), hi: avg(function (m) { return m.hi; }), n: ms.reduce(function (s, m) { return s + m.n; }, 0) };
+    }
+    var M30 = (Date.parse("2030-12-31T00:00:00Z") - Date.now()) / 2.6298e9;   // months to end-2030
+    function to12(v, hd, px, base) {   // any ~1-year target, restated as exactly 12 months from today
+      var m = (Date.parse(hd + "T00:00:00Z") - Date.now()) / 2.6298e9; if (!(m > 0.5)) return null;   // expired
+      return m >= 12 ? px * Math.pow(v / px, 12 / m) : v * Math.pow(base / v, (12 - m) / Math.max(1, M30 - m));
     }
     bestUniverse().forEach(function (k) {
       var t = T[k]; if (!t) { skipped.push(k); return; }
-      var px = lastPx(k), row = { k: k, px: px, kind: t.kind, n: t.n, r12: t.avg12 != null ? t.avg12 / px - 1 : null, n12: t.n12, nav1: null, note: "" };
+      var px = lastPx(k), row = { k: k, px: px, kind: t.kind, n: t.n, nav1: null, note: "" }, f = 1;
       if (t.kind === "direct") { row.lo = t.low; row.base = t.base; row.hi = t.high; }
-      else if (t.kind === "proxy") { var f = px / lastPx(t.of); row.lo = t.low * f; row.base = t.base * f; row.hi = t.high * f; row.r12 = t.avg12 / lastPx(t.of) - 1; }
-      else if (t.kind === "sector") { var s = sector(t.sector); row.lo = s.lo * px; row.base = s.base * px; row.hi = s.hi * px; row.n = s.n; row.note = "via " + SECTOR_NAME[t.sector] + " 2030 outlook"; }
+      else if (t.kind === "proxy") { f = px / lastPx(t.of); row.lo = t.low * f; row.base = t.base * f; row.hi = t.high * f; }
+      else if (t.kind === "sector") { var s = sector(t.sector), anc = pxOn(k, ASOF); row.lo = s.lo * anc; row.base = s.base * anc; row.hi = s.hi * anc; row.n = s.n; row.note = "via " + SECTOR_NAME[t.sector] + " 2030 outlook"; }
       else if (t.kind === "nav") {   // coin target x coins per share x NAV multiple halfway (log terms) from today's to 1.0x
         var tr = trow[k], c = T[t.coin]; if (!tr || !tr.shares) { skipped.push(k); return; }
         var cps = tr.qty / tr.shares, mnav = px / (cps * lastPx(t.coin)), m30 = Math.sqrt(mnav);
@@ -794,10 +818,14 @@ CSVs) and refreshed every day by the GitHub Action in
         row.note = "from " + sn(t.coin) + " 2030 targets; NAV " + mnav.toFixed(2) + "x now, assumed " + m30.toFixed(2) + "x in 2030";
         row.nav1 = { coin: sn(t.coin), now: px / cps, tgt: c.base * cps, cbase: c.base };
       }
-      // median target as a function of prices on any day (used by the weekly backtest)
+      // 12-month return: every ~1-year target restated to exactly 12 months out, then averaged
+      var srcs = t.cons ? [{ v: t.cons.avg, hd: t.cons.hd }] : (t.short || []).map(function (s) { return { v: s.v * f, hd: s.hd }; });
+      var v12 = srcs.map(function (s) { return s.hd ? to12(s.v, s.hd, px, row.base) : null; }).filter(function (x) { return x != null && isFinite(x); });
+      row.r12 = v12.length ? v12.reduce(function (s2, x) { return s2 + x; }, 0) / v12.length / px - 1 : null; row.n12 = t.cons ? t.cons.n : v12.length;
+      // median target as a function of prices on any day (used by the weekly backtests)
       if (t.kind === "direct") GROWTH_FN[k] = function (P) { return t.base; };
       else if (t.kind === "proxy") GROWTH_FN[k] = function (P) { return t.base * P(k) / P(t.of); };
-      else if (t.kind === "sector") { var sb = sector(t.sector).base; GROWTH_FN[k] = function (P) { return sb * P(k); }; }
+      else if (t.kind === "sector") { var sb = row.base; GROWTH_FN[k] = function (P) { return sb; }; }
       else if (t.kind === "nav") { var cps2 = trow[k].qty / trow[k].shares, cb = T[t.coin].base; GROWTH_FN[k] = function (P) { return cb * cps2 * Math.sqrt(P(k) / (cps2 * P(t.coin))); }; }
       row.r30 = row.base / px - 1; row.yr = Math.pow(row.base / px, 1 / y30) - 1;
       rows.push(row);
@@ -810,29 +838,30 @@ CSVs) and refreshed every day by the GitHub Action in
     if (bestChart) bestChart.destroy();
     bestChart = barChart(document.getElementById("best-chart"), rows, rows.map(function (r) { return Math.round(r.yr * 1000) / 10; }),
       function (r) { return "Median 2030 target " + m(r.base) + " = " + rt(r.r30) + " total (" + (r.yr * 100).toFixed(1) + "% a year)" +
-        (r.r12 != null ? "; 12-mo avg " + rt(r.r12) : ""); },
-      { title: { display: true, text: "CAGR to the median 2030 target", color: "#6b7686", font: { size: 11 } } });
+        (r.r12 != null ? "; next 12 months " + rt(r.r12) : ""); },
+      { ticks: { callback: function (v) { return v + "%"; }, color: "#6b7686", font: { size: 10 } }, title: { display: true, text: "CAGR to the median 2030 target", color: "#6b7686", font: { size: 11 } } });
     // table
     function gy(t) { t = Math.max(0, Math.min(1, t)); var a = [252, 236, 178], b = [183, 226, 196];
       return "rgb(" + a.map(function (x, i) { return Math.round(x + (b[i] - x) * t); }).join(",") + ")"; }
     function shade(v, cap) { return v == null ? "" : ' style="background:' + (v < 0 ? "rgba(224,122,122,0.35)" : gy(Math.log(1 + v) / Math.log(1 + cap))) + '"'; }
     function tp(v, px) { var g = v / px - 1; return m(v) + "<small>" + (g >= 0 ? "+" : "") + Math.round(g * 100).toLocaleString("en-US") + "%</small>"; }
     function pc1(x) { return (x >= 0 ? "+" : "") + (x * 100).toFixed(1) + "%"; }
+    function zs(x) { return (x >= 0 ? "+" : "−") + Math.abs(x).toFixed(1) + "σ"; }
     function k$(v) { return v >= 1e6 ? "$" + (v / 1e6).toFixed(2) + "M" : v >= 1e3 ? "$" + (v / 1e3).toFixed(1) + "k" : "$" + v.toFixed(v < 10 ? 2 : 0); }
     document.querySelector("#best-table tbody").innerHTML = rows.map(function (r) {
       var navTxt = r.nav1 ? "now = " + r.nav1.coin + " " + k$(r.nav1.now) + "<small>" + r.nav1.coin + " " + k$(r.nav1.cbase) + " = " + m(r.nav1.tgt) + "</small>" : "";
       var t = T[r.k], who = t.cons ? "analysts" : "forecasters";
       var r12 = r.r12 != null ? rt(r.r12) + "<small>" + r.n12 + " " + who + "</small>" : '<span class="pct">n/a</span>';
-      var V = VALUE[r.k], vcells = V ? '<td style="background:' + gy(V.dd) + '">' + Math.round(V.dd * 100) + "%<small>ATH " + m(V.ath) + "</small></td>" +
-        '<td style="background:' + gy(-V.dev20 / 0.3) + '">' + pc1(V.dev20) + "</td>" + '<td style="background:' + gy(-V.dev200 / 0.3) + '">' + pc1(V.dev200) + "</td>" +
-        '<td style="background:' + gy(V.score) + '">' + V.wins + "/" + V.pairs + "<small>" + Math.round(V.score * 100) + "%</small></td>" : "<td></td><td></td><td></td><td></td>";
-      return '<tr title="' + (DATA.prices[r.k].name || r.k) + (r.note ? " - " + r.note : "") + '"><td>' + sn(r.k) + "</td><td>" + m(r.px) + "</td>" + vcells + "<td>" + tp(r.lo, r.px) +
+      var V = VALUE[r.k], vcells = V ? '<td class="g1" style="background:' + gy(V.dd) + '">' + Math.round(V.dd * 100) + "%<small>ATH " + m(V.ath) + "</small></td>" +
+        '<td style="background:' + gy(-V.z20 / 2) + '">' + pc1(V.dev20) + "<small>" + zs(V.z20) + "</small></td>" + '<td style="background:' + gy(-V.z200 / 2) + '">' + pc1(V.dev200) + "<small>" + zs(V.z200) + "</small></td>" +
+        '<td style="background:' + gy(V.t) + '"><b>' + V.score.toFixed(2) + "</b><small>#" + V.rank + "</small></td>" : '<td class="g1"></td><td></td><td></td><td></td>';
+      return '<tr title="' + (DATA.prices[r.k].name || r.k) + (r.note ? " - " + r.note : "") + '"><td>' + sn(r.k) + "</td><td>" + m(r.px) + "</td>" + vcells + '<td class="g1">' + tp(r.lo, r.px) +
         "</td><td><b>" + m(r.base) + "</b><small>" + (r.note ? r.note.split(";")[0] + ", " : "2030, ") + "n=" + r.n + "</small></td><td>" + tp(r.hi, r.px) +
         "</td><td" + shade(r.r12, 1) + ">" + r12 + "</td><td>" + navTxt + "</td><td" + shade(r.yr, 1) + ">" + (r.yr * 100).toFixed(1) + "%</td><td" + shade(r.r30, 10) + "><b>" + rt(r.r30) + "</b></td></tr>";
     }).join("");
     // sources
     function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
-    var UNIT = { "$/oz": "/oz", "silver $/oz": "/oz silver", "$/lb": "/lb", "uranium $/lb": "/lb uranium" };
+    var UNIT = { "$/oz": "/oz", "gold $/oz": "/oz gold", "silver $/oz": "/oz silver", "$/lb": "/lb", "copper $/lb": "/lb copper", "uranium $/lb": "/lb uranium" };
     function val(v, unit) { var s = v >= 1000 ? "$" + Math.round(v).toLocaleString("en-US") : "$" + (+v).toLocaleString("en-US", { maximumFractionDigits: 2 });
       return s + (UNIT[unit] || ""); }
     function li(s, unit) { return "<li>" + esc(s.by) + ": <b>" + val(s.v, unit) + "</b> <i>(" + esc(s.h) + (s.date ? ", published " + esc(s.date) : "") + ")</i>" +
@@ -842,24 +871,24 @@ CSVs) and refreshed every day by the GitHub Action in
       if (t.long) h += '<div class="lab">2030 targets</div><ul>' + t.long.map(function (s) { return li(s, u); }).join("") + "</ul>";
       else if (t.kind === "nav") h += '<div class="lab">2030 targets</div><ul><li>Worked out from the ' + sn(t.coin) + " 2030 targets listed under " + sn(t.coin) + ", the coins each share holds, and the NAV multiple (see How it works).</li></ul>";
       else if (t.kind === "sector") h += '<div class="lab">2030 targets</div><ul><li>No named forecaster publishes a 2030 target, so this uses the ' + SECTOR_NAME[t.sector] + " 2030 outlook (sources listed under " +
-        (t.sector === "COMMOD" ? "Uranium, SLV, Gold and Copper" : t.sector === "URANIUM" ? "Uranium" : "SLV") + "), applied to today's price.</li></ul>";
+        (t.sector === "COMMOD" ? "Uranium, SLV, GLD and CPER" : t.sector === "URANIUM" ? "Uranium" : "SLV") + "), applied to its price on " + ASOF + " and locked in dollars.</li></ul>";
       if (t.cons) h += '<div class="lab">12-month targets</div><ul><li>' + esc(t.cons.by) + " consensus of " + t.cons.n + " " + (t.cons.by.indexOf("TipRanks") === 0 ? "holdings" : "analysts") +
         ": <b>" + val(t.cons.avg) + "</b> average, range " + val(t.cons.low) + " to " + val(t.cons.high) + " <i>(" + t.cons.date + ")</i>" +
         ' <a href="' + t.cons.url + '" target="_blank" rel="noopener">link</a></li>' + (t.short ? t.short.map(function (s) { return li(s); }).join("") : "") + "</ul>";
-      else if (t.short) h += '<div class="lab">12-month targets</div><ul>' + t.short.map(function (s) { return li(s, u); }).join("") + "</ul>";
+      else if (t.short) h += '<div class="lab">~12-month targets (restated to 12 months from today)</div><ul>' + t.short.map(function (s) { return li(s, u); }).join("") + "</ul>";
       return h + "</div>";
     }
     document.getElementById("best-sources").innerHTML = rows.map(function (r) { return block(r.k, sn(r.k) + " <i>" + esc(DATA.prices[r.k].name || "") + "</i>"); }).join("") +
       (T.URANIUM ? block("URANIUM", "Uranium <i>sector outlook used for Energy Fuels and MP</i>") : "");
     document.getElementById("best-method").innerHTML =
       "<h4>How it works: Comparative Value</h4><ul>" +
-      "<li>Every asset is paired with every other one. It wins a pair when their price ratio sits further below its 20-week and 200-day EMAs and it is further below its all-time high (three factors, equal weight). Score = share of pairs won; top = best value against the most assets.</li>" +
-      "<li>Table: <b>Below ATH</b>, <b>vs 20-wk / 200-day EMA</b> (the asset on its own) and <b>Value pairs won</b> (the score). Ignores price targets: cheap can stay cheap.</li></ul>" +
-      '<div class="fx">Edge(A vs B) = [ ln(R ÷ EMA₂₀w) + ln(R ÷ EMA₂₀₀d) + (DD_B − DD_A) ] ÷ 3 &nbsp;·&nbsp; R = A ÷ B, DD = 1 − Price ÷ ATH &nbsp;·&nbsp; A wins if Edge &lt; 0 &nbsp;·&nbsp; Score = wins ÷ pairs</div>' +
+      "<li>Each asset is scored on how far it sits below its own 20-week and 200-day EMAs, measured in its own typical swings (a z-score, so a volatile coin needs a bigger dip than SPY to count as cheap), plus a small bonus for distance below its all-time high. Highest score = deepest value.</li>" +
+      "<li>Table: <b>Below ATH</b>, <b>vs 20-wk / 200-day EMA</b> (with the z-score under each) and <b>Value score</b> (with its rank). Ignores price targets: cheap can stay cheap.</li></ul>" +
+      '<div class="fx">Value score = −(z₂₀w + z₂₀₀d) ÷ 2 + ' + ATH_BONUS + ' × (1 − Price ÷ ATH) &nbsp;·&nbsp; z = ln(Price ÷ EMA) ÷ its standard deviation over the last ~2 years</div>' +
       "<h4>How it works: Projected Growth</h4><ul>" +
-      "<li>Low / median / high = smallest, middle and largest 2030 target from 3+ named forecasters (all in Sources; InvestAnswers counts for half on BTC, SOL, TSLA). Ranked by <b>Avg 2030 return</b>; the bar and <b>CAGR to 2030</b> show it per year. <b>Avg 12-mo</b> = move to the average ~1-year target.</li>" +
-      "<li>Treasury companies are priced off their coin, with the NAV premium assumed halfway back to 1.0x; <b>At NAV 1.0x</b> = the share in coin terms today and at the coin's median target. MP, UUUU and SILJ borrow a sector outlook. Forecasts, not facts. " + (skipped.length ? "Not ranked: " + skipped.map(sn).join(", ") + ". " : "") + "Not investment advice.</li></ul>" +
-      '<div class="fx">Avg 2030 return = Median ÷ Price − 1 &nbsp;·&nbsp; CAGR = (Median ÷ Price)^(1/Y) − 1 &nbsp;·&nbsp; Treasury target = coin target × coins per share × √mNAV</div>';
+      "<li>Low / median / high = smallest, middle and largest 2030 target from 3+ named forecasters (all in Sources; InvestAnswers counts for half on BTC, SOL, TSLA). Ranked by <b>Avg 2030 return</b>; the bar and <b>CAGR to 2030</b> show it per year. <b>Avg 12-mo</b> = every ~1-year target restated to exactly 12 months from today, then averaged.</li>" +
+      "<li>Treasury companies are priced off their coin, with the NAV premium assumed halfway back to 1.0x; <b>At NAV 1.0x</b> = the share in coin terms today and at the coin's median target. MP, UUUU and SILJ borrow a sector outlook, locked in dollars on " + ASOF + ". GLD, SLV and CPER use gold, silver and copper forecasts converted at today's ratio. Forecasts, not facts. " + (skipped.length ? "Not ranked: " + skipped.map(sn).join(", ") + ". " : "") + "</li></ul>" +
+      '<div class="fx">Avg 2030 return = Median ÷ Price − 1 &nbsp;·&nbsp; CAGR = (Median ÷ Price)^(1/Y) − 1 &nbsp;·&nbsp; Treasury target = coin target × coins per share × √mNAV &nbsp;·&nbsp; 12-mo = target restated to 12 months, averaged</div>';
   }
   // Debt clock: latest Treasury "Debt to the Penny" figure, run forward at its average pace over the past year
   function debtClock(dc) {
@@ -872,7 +901,7 @@ CSVs) and refreshed every day by the GitHub Action in
     (function tick() { el.textContent = "$" + Math.round(v0 + perMs * (Date.now() - t0)).toLocaleString("en-US"); setTimeout(tick, 60); })();
   }
   fetch("data/markets.json?v=" + Date.now()).then(function (r) { return r.json(); }).then(function (d) {
-    DATA = d; document.getElementById("fd-updated").textContent = "Updated " + d.updated + " · market data refreshed every 15 minutes; bitcoin and S&P futures stream live";
+    DATA = d; document.getElementById("fd-updated").textContent = "Updated " + d.updated + " · market data refreshed about every 2 hours; bitcoin and S&P futures stream live";
     strip(); render(); cryptoLive(); debtClock(d.debt_clock);
     try { compValue(); } catch (e) { console.log("comparative value", e); }
     try { bestBuy(); } catch (e) { console.log("best buy", e); }
