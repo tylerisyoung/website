@@ -594,18 +594,40 @@ _________________________</p>
     });
   }
   // Performance: every ticker vs the S&P 500 and the 10-year Treasury, growth of $1 over the last 5 years (log scale)
-  var PERF_COLORS = ["#3d6fd6", "#e07a7a", "#e0b04a", "#4f9d69", "#7fa6ee", "#d9736f", "#b0833a", "#6fbf8c", "#5b7fd0", "#e8a0a0",
-                     "#c9a24a", "#3f8a57", "#9fb8ea", "#c75b5b", "#d9c07a", "#86c89c", "#8a7338", "#a8c5f7", "#e39a6f", "#5aa6a0", "#b58ad6"];
+  // colors by where each line ends: above the S&P = dark to light green, between the S&P and the 10-year = yellow, below the 10-year = light to dark red
+  function mix(a, b, t) { return "rgb(" + a.map(function (x, i) { return Math.round(x + (b[i] - x) * t); }).join(",") + ")"; }
   var endLabels = { id: "endLabels", afterDatasetsDraw: function (ch) {
-    var ctx = ch.ctx, items = [];
-    ch.data.datasets.forEach(function (ds, i) { var meta = ch.getDatasetMeta(i); if (meta.hidden) return;
-      for (var k = ds.data.length - 1; k >= 0; k--) { if (ds.data[k] != null) { var pt = meta.data[k]; var off = pt.y > ch.chartArea.bottom; items.push({ y: off ? ch.chartArea.bottom - 4 : pt.y, x: off ? ch.chartArea.right : pt.x, t: ds.label + (off ? " ↓ off chart" : ""), c: ds.borderColor, b: ds.borderWidth > 2 }); break; } } });
-    items.sort(function (a, b) { return a.y - b.y; });
-    for (var n = 1; n < items.length; n++) if (items[n].y - items[n - 1].y < 11) items[n].y = items[n - 1].y + 11;
+    var ctx = ch.ctx, A = ch.chartArea, items = [], colX = A.right + 34;
+    ch.data.datasets.forEach(function (ds, i) { var meta = ch.getDatasetMeta(i); if (!ch.isDatasetVisible(i)) return;
+      for (var k = ds.data.length - 1; k >= 0; k--) if (ds.data[k] != null) {
+        var pt = meta.data[k], off = pt.y > A.bottom;
+        items.push({ y0: Math.min(pt.y, A.bottom), x0: pt.x, v: ds.data[k], t: ds.label + (off ? " ↓" : ""), c: ds.borderColor, pin: ds.pin }); break; } });
     ctx.save(); ctx.textBaseline = "middle";
-    items.forEach(function (it) { ctx.font = (it.b ? "700 11px" : "600 10px") + " system-ui,sans-serif"; ctx.fillStyle = it.c; ctx.fillText(it.t, it.x + 5, it.y); });
+    // S&P 500 and 10-year: labelled right on their own lines
+    items.filter(function (it) { return it.pin; }).forEach(function (it) {
+      ctx.font = "700 11px system-ui,sans-serif"; var w = ctx.measureText(it.t).width;
+      ctx.fillStyle = "rgba(255,255,255,0.85)"; ctx.fillRect(it.x0 - w - 10, it.y0 - 8, w + 6, 16);
+      ctx.fillStyle = it.c; ctx.fillText(it.t, it.x0 - w - 7, it.y0);
+    });
+    // everything else: a column in top-to-bottom order, each joined to its line by a thin connector
+    var rest = items.filter(function (it) { return !it.pin; }).sort(function (a, b) { return b.v - a.v; });
+    var step = rest.length > 1 ? Math.max(11, (A.bottom - A.top) / (rest.length - 1)) : 0;
+    rest.forEach(function (it, n) {
+      var y = A.top + n * step;
+      ctx.strokeStyle = it.c; ctx.globalAlpha = 0.55; ctx.lineWidth = 0.8;
+      ctx.beginPath(); ctx.moveTo(it.x0 + 2, it.y0); ctx.lineTo(A.right + 8, it.y0); ctx.lineTo(colX - 4, y); ctx.stroke();
+      ctx.globalAlpha = 1; ctx.font = "600 10.5px system-ui,sans-serif"; ctx.fillStyle = it.c; ctx.fillText(it.t, colX, y);
+    });
     ctx.restore();
   } };
+  function smoothLog(v, h) {   // centered moving average of log values; the window shrinks at the ends so the last point stays exact
+    return v.map(function (x, i) {
+      if (x == null) return null;
+      var w = Math.min(h, i, v.length - 1 - i), s = 0, n = 0;
+      for (var j = i - w; j <= i + w; j++) if (v[j] != null) { s += Math.log(v[j]); n++; }
+      return Math.exp(s / n);
+    });
+  }
   function perfChart(P) {
     var spy = DATA.prices["SPY"]; if (!spy) return;
     var start = new Date(); start.setFullYear(start.getFullYear() - 5); var s0 = start.toISOString().slice(0, 10);
@@ -616,25 +638,33 @@ _________________________</p>
       dates.forEach(function (d) { while (i < points.length && points[i][0] <= d) { last = points[i][1]; i++; } out.push(last); });
       return out;
     }
-    var spyV = base.map(function (p) { return p[1] / base[0][1]; });
-    var ds = [], idx = 0;
+    var H = 6;   // 13-week centered smoothing
+    var spyRaw = base.map(function (p) { return p[1] / base[0][1]; }), spyV = smoothLog(spyRaw, H);
+    var ds = [];
     bestUniverse().filter(function (k) { return k !== "SPY"; }).forEach(function (k) {
       var v = onDates(DATA.prices[k].points), f = null;
-      var out = v.map(function (x, i) { if (x == null) return null; if (f == null) f = spyV[i] / x; return x * f; });   // late starters join at the S&P's level
-      ds.push({ label: sn(k), data: out, borderColor: PERF_COLORS[idx++ % PERF_COLORS.length], borderWidth: 1.1, pointRadius: 0, tension: 0.1, spanGaps: true });
+      var out = v.map(function (x, i) { if (x == null) return null; if (f == null) f = spyRaw[i] / x; return x * f; });   // late starters join at the S&P's level
+      ds.push({ label: sn(k), data: smoothLog(out, H), borderWidth: 1.3, pointRadius: 0, tension: 0.4, spanGaps: true });
     });
-    ds.push({ label: "S&P 500", data: spyV, borderColor: "#111", borderWidth: 3.5, pointRadius: 0, tension: 0.1 });
-    var ty = DATA.macro.dgs10 ? onDates(DATA.macro.dgs10.points) : null;
-    if (ty) {   // $1 compounding at the 10-year yield in force each week
-      var g = 1, rf = ty.map(function (y, i) { if (i > 0) { var dd = (Date.parse(dates[i]) - Date.parse(dates[i - 1])) / 864e5; g *= Math.pow(1 + (ty[i - 1] || 0) / 100, dd / 365); } return g; });
-      ds.push({ label: "10Y Treasury", data: rf, borderColor: "#8a7338", borderWidth: 3.5, borderDash: [7, 4], pointRadius: 0, tension: 0 });
-    }
+    var rf = null, ty = DATA.macro.dgs10 ? onDates(DATA.macro.dgs10.points) : null;
+    if (ty) { var g = 1; rf = ty.map(function (y, i) { if (i > 0) { var dd = (Date.parse(dates[i]) - Date.parse(dates[i - 1])) / 864e5; g *= Math.pow(1 + (ty[i - 1] || 0) / 100, dd / 365); } return g; }); }
+    var spyEnd = spyV[spyV.length - 1], rfEnd = rf ? rf[rf.length - 1] : 0;
+    function lastOf(d) { for (var i = d.data.length - 1; i >= 0; i--) if (d.data[i] != null) return d.data[i]; return 0; }
+    var green = ds.filter(function (d) { return lastOf(d) >= spyEnd; }), yellow = ds.filter(function (d) { var x = lastOf(d); return x < spyEnd && x >= rfEnd; }),
+        red = ds.filter(function (d) { return lastOf(d) < rfEnd; });
+    [green, yellow, red].forEach(function (g) { g.sort(function (a, b) { return lastOf(b) - lastOf(a); }); });
+    green.forEach(function (d, i) { d.borderColor = mix([31, 110, 58], [168, 222, 180], green.length > 1 ? i / (green.length - 1) : 0); });
+    yellow.forEach(function (d, i) { d.borderColor = mix([214, 170, 40], [242, 206, 110], yellow.length > 1 ? i / (yellow.length - 1) : 0); });
+    red.forEach(function (d, i) { d.borderColor = mix([232, 150, 150], [165, 40, 40], red.length > 1 ? i / (red.length - 1) : 0); });
+    ds = green.concat(yellow, red);
+    ds.push({ label: "S&P 500", data: spyV, borderColor: "#111", borderWidth: 3.5, pointRadius: 0, tension: 0.4, pin: true });
+    if (rf) ds.push({ label: "10Y Treasury", data: rf, borderColor: "#b23a3a", borderWidth: 3.5, borderDash: [7, 4], pointRadius: 0, tension: 0, pin: true });
     var c = document.createElement("div"); c.className = "card explorer perf";
     c.innerHTML = '<div class="t"><span class="n">Every ticker vs the S&amp;P 500 and the 10-year Treasury</span><span class="v" style="font-size:1rem">last 5 years</span></div>' +
-      '<div class="c">Growth of $1, log scale, weekly closes. Thick black = S&amp;P 500 (SPY); thick dashed gold = $1 earning the 10-year Treasury yield (the risk-free rate). Above the black line = beat the market. Assets that started trading later join at the S&amp;P\'s level on their first day; anything that fell below $0.05 runs off the bottom (marked ↓). Click a name below the chart to hide it.</div><canvas id="perf"></canvas>';
+      '<div class="c">Growth of $1, log scale, weekly closes smoothed over 13 weeks. Thick black = S&amp;P 500 (SPY); thick dashed red = $1 earning the 10-year Treasury yield (the risk-free rate). Green = beat the S&amp;P, yellow = between the S&amp;P and the 10-year, red = trailed the 10-year. Names on the right are in end-value order; thin lines join each to its line. Later starters join at the S&amp;P\'s level on their first day; anything below $0.05 runs off the bottom (↓). Click a name in the key to hide it.</div><canvas id="perf"></canvas>';
     P.appendChild(c);
     charts.push(new Chart(document.getElementById("perf"), { type: "line", data: { labels: dates, datasets: ds }, plugins: [endLabels],
-      options: { animation: false, responsive: true, maintainAspectRatio: false, layout: { padding: { right: 120 } },
+      options: { animation: false, responsive: true, maintainAspectRatio: false, layout: { padding: { right: 110 } },
         interaction: { mode: "nearest", intersect: false },
         plugins: { legend: { display: true, position: "bottom", labels: { boxWidth: 10, boxHeight: 2, font: { size: 10 }, color: "#2d3a4a" } },
                    tooltip: { callbacks: { label: function (x) { return x.dataset.label + ": $1 → $" + x.parsed.y.toFixed(2) + " (" + ((x.parsed.y - 1) * 100 >= 0 ? "+" : "") + Math.round((x.parsed.y - 1) * 100) + "%)"; } } } },
