@@ -52,62 +52,183 @@ def yahoo_shares(symbols):
 TREASURY_HIST = [("MTPLF", "Metaplanet (MTPLF)"), ("HSDT", "Solana Company (HSDT)")]
 AUX = [("SI=F", "Silver (futures, $/oz)")]   # used only to convert silver targets to SLV
 
-# Price targets for the "Current Best Buy" ranking (checked 2026-09-28).
-# Rules: base cases only (no bear/bull scenarios); forecasters are analysts/firms, not media in-house
-# estimates; published within the last two years; at least 3 forecasters per ranked asset.
-# Range = lowest to highest base case; median = median of base cases; n = number of forecasters.
-#   kind "long": horizon year;  "consensus": 12-month analyst consensus (n = analyst count, MarketBeat);
-#   "nav": treasury company derived from its coin's target;  "proxy": underlying target converted at today's ratio.
+# Price targets for the "Projected Growth" ranking (checked 2026-09-28).
+# Rules: base cases only (no bear/bull scenarios); published within about the last two years;
+# at least 3 forecasters per asset. Every source is listed on the page with its link.
+#   long  = 2030 targets (a 2029 or "long-term" call counts as 2030; the horizon is shown on the page)
+#   short = roughly 12-month targets (end-2026 to end-2027)
+#   cons  = 12-month Wall Street analyst consensus (stocks)
+#   kind "direct": targets are in the asset's own price;  "proxy": targets are for the underlying
+#   (silver $/oz for SLV, uranium for UUUU, ...) and are converted at today's ratio;  "nav": treasury
+#   company, derived from its coin's 2030 targets.
+# USER_INPUT: your own 2030 target for any asset. Set a number and it becomes one more source
+# (e.g. USER_INPUT["MP"] = 90). Leave None to ignore.
 import statistics
-def T(kind, horizon, srcs, ia=None, **kw):
-    """ia = the InvestAnswers target from Tyler's photo: weighted 50%, the other forecasters' average 50%."""
-    b = [v for _, v in srcs] + ([ia] if ia else [])
-    base = 0.5 * ia + 0.5 * statistics.mean([v for _, v in srcs]) if ia else statistics.median(b)
-    d = {"kind": kind, "horizon": horizon, "n": len(b), "low": min(b), "base": round(base, 4),
-         "high": max(b), "by": [x[0] for x in srcs] + (["InvestAnswers (50% weight)"] if ia else [])}
-    d.update(kw); return d
-def C(n, avg, lo, hi, **kw):
-    d = {"kind": "consensus", "horizon": "12m", "n": n, "low": lo, "base": avg, "high": hi, "by": ["%d analysts" % n]}
-    d.update(kw); return d
+USER_INPUT = {"BTC-USD": None, "ETH-USD": None, "SOL-USD": None, "SPY": None, "GC=F": None, "SLV": None, "HG=F": None,
+              "TSLA": None, "SPCX": None, "NVDA": None, "AVGO": None, "MU": None, "MP": None, "UUUU": None, "SILJ": None}
+
+def S(by, v, h, date, url="", note=""):
+    return {"by": by, "v": v, "h": h, "date": date, "url": url, "note": note}
 SPX = 10.02   # SPY is about the S&P 500 divided by 10.02
+def spx(by, v, h, date, url="", note=""):
+    return S(by, round(v / SPX, 2), h, date, url, ("S&P 500 %s" % format(v, ",")) + ("; " + note if note else ""))
+def LB(t):   # copper $/t -> $/lb
+    return round(t / 2204.62, 2)
+
+FINDER = "https://www.finder.com/cryptocurrency/cryptocurrency-predictions"
+MB = "https://www.marketbeat.com/stocks/"
+REQ = "https://www.industry.gov.au/sites/default/files/2026-07/resources-and-energy-quarterly-june-2026.pdf"
+WB = "https://thedocs.worldbank.org/en/doc/f3138644a1e8e2bb631399ae11d6c408-0050012026/related/CMO-April-2026-Forecasts.pdf"
+IA_NOTE = "From Tyler's screenshot of the InvestAnswers 2030 model; weighted 50% (all other sources share the other 50%)"
+
 TARGETS = {
-    # BTC: InvestAnswers 2030 "sandbag" table (Tyler's screenshot), ARK Big Ideas 2026 base, Standard Chartered end-2030,
-    #      Willy Woo River-model range $220k-600k for 2029-31 (midpoint)
-    "BTC-USD": T("long", 2030, [("ARK Invest", 710000), ("Standard Chartered", 500000), ("Willy Woo", 410000)], ia=622782),
-    # ETH: Standard Chartered 2030; Bitwise "$10k+ by end of decade" (Nov 2025); Finder panel end-2030 (May 2026)
-    "ETH-USD": T("long", 2030, [("Standard Chartered", 40000), ("Bitwise", 10000), ("Finder expert panel", 8488)]),
-    # SOL: InvestAnswers 2030; Standard Chartered 2030; Finder panel end-2030 (Apr 2025)
-    "SOL-USD": T("long", 2030, [("Standard Chartered", 2000), ("Finder expert panel", 892)], ia=2153),
-    # S&P 500: Yardeni 10,000 end-2029; Trivariate 10,000 by 2030; Sanctuary 10,000-13,000 by 2030 (midpoint)
-    "SPY": T("long", 2030, [("Yardeni", round(10000 / SPX, 2)), ("Trivariate", round(10000 / SPX, 2)), ("Sanctuary Wealth", round(11500 / SPX, 2))]),
-    # Gold $/oz: Bernstein 2030 (Sep 2026); Yardeni end-2029; JPMorgan long-term
-    "GC=F": T("long", 2030, [("Bernstein", 5600), ("Yardeni", 10000), ("JPMorgan", 4500)]),
-    # Silver $/oz, 2027: UBS Sep-2027; HSBC 2027 avg; BofA Q2-2027; OCBC Sep-2027 ($64-74 midpoint, Jul 2026); JPMorgan 2027 avg
-    # (no credible 2030 silver forecasts exist; banks stop at 2027. World Bank 2027 avg; Macquarie end-2027 added)
-    "SLV": T("proxy", 2027, [("UBS", 80), ("HSBC", 68), ("BofA", 75), ("OCBC", 69), ("JPMorgan", 63.90), ("World Bank", 65), ("Macquarie", 65)], of="SI=F"),
-    # Copper $/lb, 2030 / long-term: BMI $15,800/t (2030); Goldman $12,250/t (2030); JPMorgan $12,000/t (next-decade avg);
-    # Macquarie $10,200/t (long-term, 2025 dollars)
-    # + UBS LT $5.50/lb (May 2026), Jefferies 2030-31 peak $8.00, Bernstein 2030 $10,700/t, Scotiabank LT $4.50,
-    #   Australia Resources & Energy Quarterly FY2030-31 $12,233/t (Jun 2026)
-    "HG=F": T("long", 2030, [("BMI / Fitch", 7.17), ("Goldman Sachs", 5.56), ("JPMorgan", 5.44), ("Macquarie", 4.63), ("UBS", 5.50),
-                             ("Jefferies", 8.00), ("Bernstein", 4.85), ("Scotiabank", 4.50), ("Australia REQ", 5.55)]),
-    # Uranium $/lb (sector outlook for UUUU): Morgans ~$100 FY29 / $105-110 FY31 (2030 ~ $102.5); Jefferies LT $95;
-    # Macquarie base $95; Shaw and Partners LT $120; Bell Potter LT $90. Spot $89.50 (Trading Economics, Sep 25, 2026)
-    "URANIUM": T("sector", 2030, [("Morgans", 102.5), ("Jefferies", 95), ("Macquarie", 95), ("Shaw and Partners", 120), ("Bell Potter", 90)], spot=89.50),
-    # TSLA 2030: InvestAnswers $4,794 (50% weight); ARK 2029 base $2,600; Ron Baron (2026) "$2,000 or $2,500" (midpoint)
-    "TSLA": T("long", 2030, [("ARK Invest", 2600), ("Baron Capital", 2250)], ia=4794, c12=411.89, c12n=46),
-    "SPCX": C(44, 219.24, 75, 800),
-    "MSTR": {"kind": "nav", "coin": "BTC-USD", "extra": [2489], "c12": 239.88, "c12n": 19},
-    "MTPLF": {"kind": "nav", "coin": "BTC-USD"},
-    "FWDI": {"kind": "nav", "coin": "SOL-USD", "c12": 12.50, "c12n": 5},
-    "DFDV": {"kind": "nav", "coin": "SOL-USD"},
-    "UPXI": {"kind": "nav", "coin": "SOL-USD"},
-    "HSDT": {"kind": "nav", "coin": "SOL-USD", "c12": 3.25, "c12n": 4},
-    "UUUU": C(7, 21.85, 16, 29.25), "MP": C(17, 76.29, 57, 112),
-    "NVDA": C(55, 324.14, 218, 515),
-    "AVGO": C(41, 527.20, 350, 715), "MU": C(45, 1348, 300, 2000),
+    "BTC-USD": {"kind": "direct", "unit": "$", "long": [
+        S("InvestAnswers", 622782, "2030", "2026", "", IA_NOTE),
+        S("ARK Invest", 710000, "end-2030", "2026-01", "https://www.ark-invest.com/articles/valuation-models/arks-bitcoin-price-target-2030", "Base case, reaffirmed in Big Ideas 2026"),
+        S("Standard Chartered (Geoff Kendrick)", 500000, "end-2030", "2026-08", "https://www.investing.com/news/cryptocurrency-news/stanchart-cuts-bitcoin-price-forecast-for-2026-here-is-the-new-target-4397979", "Pushed back from end-2028 in Dec 2025"),
+        S("Finder expert panel", 490000, "end-2030", "2026-04", FINDER, "Panel average"),
+        S("Bernstein (Gautam Chhugani)", 300000, "2029", "2026-08", "https://www.theblock.co/news/markets/2026-08-26-bernstein-sees-bitcoin-reaching-150000-by-mid-2027-amid-debasement-trade-but-cuts-strategy-target-to-350-412778", "Base path")],
+      "short": [
+        S("Bernstein (Gautam Chhugani)", 150000, "mid-2027", "2026-08", "https://www.theblock.co/news/markets/2026-08-26-bernstein-sees-bitcoin-reaching-150000-by-mid-2027-amid-debasement-trade-but-cuts-strategy-target-to-350-412778"),
+        S("Citi", 82000, "12 months", "2026-07", "https://www.coindesk.com/markets/2026/07/01/citi-slashes-12-month-bitcoin-ether-targets-as-etf-flows-dry-up", "Base case"),
+        S("Galaxy Digital (Alex Thorn)", 250000, "end-2027", "2025-12", "https://www.coindesk.com/markets/2025/12/21/galaxy-digital-s-head-of-research-explains-why-bitcoin-s-outlook-is-so-uncertain-in-2026"),
+        S("Tom Lee (Fundstrat)", 150000, "end-2026", "2026-08", "https://www.foreignpolicyjournal.com/2026/08/30/bitmine-nasdaq-bmnr-chairman-tom-lee-sets-6000-ethereum-price-target-as-bitcoin-eyes-150000/"),
+        S("Finder expert panel", 127000, "end-2026", "2026-04", FINDER, "Panel average")]},
+    "ETH-USD": {"kind": "direct", "unit": "$", "long": [
+        S("Standard Chartered (Geoff Kendrick)", 40000, "end-2030", "2026-02", "https://www.coindesk.com/markets/2026/01/12/standard-chartered-predicts-ether-will-outperform-bitcoin-hit-usd40-000-by-2030"),
+        S("Bitwise (Matt Hougan)", 10000, "2030", "2025-11", "https://www.dlnews.com/articles/markets/eth-price-beyond-10000-by-2030-says-bitwise/", "\"$10,000+\""),
+        S("Finder expert panel", 8488, "end-2030", "2026-04", FINDER, "Panel average")],
+      "short": [
+        S("Standard Chartered (Geoff Kendrick)", 4000, "end-2026", "2026-02", "https://finance.yahoo.com/markets/crypto/articles/standard-chartered-cuts-ethereum-target-122316608.html"),
+        S("Citi", 2240, "12 months", "2026-07", "https://www.coindesk.com/markets/2026/07/01/citi-slashes-12-month-bitcoin-ether-targets-as-etf-flows-dry-up", "Base case"),
+        S("Tom Lee (Fundstrat)", 6000, "end-2026", "2026-08", "https://www.foreignpolicyjournal.com/2026/08/30/bitmine-nasdaq-bmnr-chairman-tom-lee-sets-6000-ethereum-price-target-as-bitcoin-eyes-150000/"),
+        S("Finder expert panel", 3263, "end-2026", "2026-04", FINDER, "Panel average")]},
+    "SOL-USD": {"kind": "direct", "unit": "$", "long": [
+        S("InvestAnswers", 2153, "2030", "2026", "", IA_NOTE),
+        S("Standard Chartered (Geoff Kendrick)", 2000, "end-2030", "2026-02", "https://www.theblock.co/news/markets/2026-02-03-standard-chartered-cuts-solana-2026-target-shift-memecoins-micropayments-388248", "Reaffirmed Aug 2026"),
+        S("Finder expert panel", 586, "end-2030", "2026-04", FINDER, "Panel average")],
+      "short": [
+        S("Standard Chartered (Geoff Kendrick)", 135, "end-2026", "2026-07", "https://en.bitcoinsistemi.com/standard-chartered-shares-year-end-2026-price-targets-for-bitcoin-ethereum-and-solana/"),
+        S("Standard Chartered (Geoff Kendrick)", 400, "end-2027", "2026-02", "https://cryptonews.com/news/standard-chartered-revises-solana-targets/", "From the Feb 2026 path"),
+        S("Finder expert panel", 182, "end-2026", "2026-04", FINDER, "Panel average")]},
+    "SPY": {"kind": "direct", "unit": "$", "long": [
+        spx("Yardeni Research", 10000, "end-2029", "2025"),
+        spx("Trivariate Research", 10000, "2030", "2025"),
+        spx("Sanctuary Wealth", 11500, "2030", "2025", "", "midpoint of 10,000-13,000")],
+      "short": [
+        spx("Jefferies", 9000, "end-2027", "2026-09", "https://finance.yahoo.com/markets/stocks/articles/jefferies-sets-jaw-dropping-p-144911441.html"),
+        spx("Wells Fargo Investment Institute", 8700, "2027", "2026-06", "https://finance.yahoo.com/markets/stocks/articles/wells-fargo-p-500-target-164700713.html", "midpoint of 8,600-8,800"),
+        spx("Yardeni Research", 8400, "mid-2027", "2026-09", "https://stocktwits.com/news-articles/markets/equity/ed-yardeni-says-phenomenal-earnings-keep-bull-case-intact-but-pushes-his-s-and-p-500-target-of-8-400-to-mid-2027/cZMStMIRBQK"),
+        spx("UBS Global Wealth Management", 8400, "mid-2027", "2026-08", "https://www.bitget.com/news/detail/12560605712730"),
+        spx("Morgan Stanley (Mike Wilson)", 8300, "12 months", "2026-05", "https://www.investing.com/news/stock-market-news/morgan-stanley-ups-sp-500-price-target-to-8300-on-robust-earnings-4683562")]},
+    "GC=F": {"kind": "direct", "unit": "$/oz", "long": [
+        S("Bernstein (Bob Brackett)", 5600, "2030", "2026-09", "https://www.investing.com/news/commodities-news/bernstein-unveils-new-gold-price-forecast-for-2030-4908919"),
+        S("Yardeni Research", 10000, "end-2029", "2026-03", "https://uk.finance.yahoo.com/news/yardeni-sticks-long-term-gold-114209690.html"),
+        S("Rockefeller Global (Doug Moglia)", 8000, "2030", "2026-05", "https://www.kitco.com/news/article/2026-05-27/gold-will-top-5500-2027-could-reach-10000-2030-silvers-upside-will-narrow"),
+        S("In Gold We Trust (Incrementum)", 8900, "end-2030", "2026-05", "https://www.bullionstar.com/blogs/bullionstar/in-gold-we-trust-2026-key-takeaways-for-gold-investors/", "Their adopted working scenario"),
+        S("JPMorgan", 4500, "long-term", "2026-02", "https://www.investing.com/news/economy-news/factboxjp-morgan-raises-longterm-gold-price-forecast-15-to-4500-an-ounce-4523574")],
+      "short": [
+        S("Goldman Sachs", 5400, "end-2027", "2026-09", "https://www.investing.com/news/commodities-news/what-fed-rate-hikes-mean-for-gold-prices-in-2027-according-to-goldman-4907014"),
+        S("UBS", 5400, "Sep-2027", "2026-09", "https://www.investing.com/news/commodities-news/ubs-expects-gold-volatility-near-term-remains-constructive-on-12month-outlook-4905873"),
+        S("OCBC", 4820, "Sep-2027", "2026-07", "https://finance.yahoo.com/markets/commodities/articles/ocbc-cuts-gold-silver-forecasts-135236505.html"),
+        S("World Bank", 4300, "2027 avg", "2026-04", WB),
+        S("Australia Resources & Energy Quarterly", 4862, "FY2026-27", "2026-07", REQ)]},
+    "SLV": {"kind": "proxy", "of": "SI=F", "unit": "silver $/oz", "long": [
+        S("InvestingHaven", 82, "2030", "2026", "https://investinghaven.com/forecasts/silver-price-prediction/", "Independent forecaster"),
+        S("GoldRepublic (from JPMorgan)", 80, "2030", "2026-09", "https://www.goldrepublic.com/en-us/silver-price/forecast", "JPMorgan's 2027 forecast carried forward"),
+        S("BlackRock / JPMorgan (as reported)", 100, "2030", "2025", "https://finance.yahoo.com/personal-finance/investing/article/silver-price-predictions-what-can-investors-expect-over-the-next-10-years-130000730.html", "Loosely attributed; weakest source")],
+      "short": [
+        S("UBS (Dominic Schnider)", 80, "Sep-2027", "2026-09", "https://finance.yahoo.com/markets/commodities/articles/ubs-forecasts-silver-80-september-142821460.html"),
+        S("HSBC", 68, "2027 avg", "2026-05", "https://finance.yahoo.com/markets/commodities/articles/hsbc-raises-silver-forecasts-2026-113000675.html"),
+        S("BofA (Michael Widmer)", 75, "Q2-2027", "2026-05", "https://www.kitco.com/news/article/2026-05-27/silver-can-reach-100-ounce-year-momentum-wont-last-bank-america"),
+        S("OCBC", 74, "Sep-2027", "2026-07", "https://finance.yahoo.com/markets/commodities/articles/ocbc-cuts-gold-silver-forecasts-135236505.html"),
+        S("JPMorgan", 63.90, "2027 avg", "2026-08", "https://www.jpmorgan.com/insights/global-research/commodities/silver-prices")]},
+    "HG=F": {"kind": "direct", "unit": "$/lb", "long": [
+        S("BMI (Fitch Solutions)", LB(15800), "2030", "2026-07", "https://www.mining.com/copper-price-bmi-hikes-forecasts-structural-deficits-to-bring-17000-next-decade/", "$15,800/t"),
+        S("Goldman Sachs", LB(12250), "2029-30", "2025", "https://www.itiger.com/news/1199775788", "$12,250/t"),
+        S("JPMorgan", LB(12000), "long-term", "2026-02", "https://goldinvest.de/en/copper-price-in-focus-j-p-morgan-raises-long-term-forecast-to-12000-per-tonne", "$12,000/t"),
+        S("Macquarie", LB(10200), "2030+", "2026", "https://www.mining.com/macquarie-says-copper-price-rally-still-running-ahead-of-reality/", "$10,200/t, 2025 dollars"),
+        S("Australia Resources & Energy Quarterly", LB(12233), "FY2030-31", "2026-07", REQ, "$12,233/t")],
+      "short": [
+        S("Goldman Sachs", LB(13800), "2027 avg", "2026", "https://www.scottsdalemint.com/articles/2026/copper-goldman-raises-price-targets-on-us-stockpiling/", "$13,800/t"),
+        S("UBS", LB(15500), "Jun-2027", "2026-05", "https://thebull.com.au/news/copper-price-target-for-2027-raised-as-supply-crisis-deepens/", "$15,500/t"),
+        S("BofA", LB(13501), "2027 avg", "2026-05", "https://thebull.com.au/news/copper-price-target-for-2027-raised-as-supply-crisis-deepens/", "$13,501/t"),
+        S("Macquarie", LB(11000), "Q3-2027", "2026", "https://www.mining.com/macquarie-says-copper-price-rally-still-running-ahead-of-reality/", "$11,000/t"),
+        S("Citi", LB(15000), "12 months", "2026-06", "https://www.cnbc.com/2026/06/01/citi-bullish-copper-forecast-metals-prices.html", "$15,000/t")]},
+    # Uranium $/lb: sector outlook used for Energy Fuels (UUUU). Spot $89.30 (Trading Economics, 2026-09-28)
+    "URANIUM": {"kind": "sector", "unit": "uranium $/lb", "spot": 89.30, "long": [
+        S("Morgans", 102.5, "2030", "2026-05", "https://fnarena.com/index.php/2026/05/26/uranium-week-structural-bull-cycle-intact/", "~$100 FY29, $105-110 FY31"),
+        S("Jefferies (Mitch Ryan)", 95, "long-term", "2026-09", "https://ca.finance.yahoo.com/news/jefferies-raises-long-term-uranium-123608225.html"),
+        S("Macquarie", 95, "long-term", "2026-05", "https://fnarena.com/index.php/2026/05/26/uranium-week-structural-bull-cycle-intact/"),
+        S("Australia Resources & Energy Quarterly", 116, "FY2030-31", "2026-07", REQ),
+        S("Shaw and Partners", 120, "long-term (2032+)", "2026-02", "https://newshub.medianet.com.au/2026/02/uranium-super-cycle-emerging-as-shaw-and-partners-lifts-price-forecast-to-us200-lb/141734/")]},
+    "TSLA": {"kind": "direct", "unit": "$", "long": [
+        S("InvestAnswers", 4794, "2030", "2026", "", IA_NOTE),
+        S("ARK Invest", 2600, "2029", "2025", "https://www.ark-invest.com/articles/valuation-models/arks-tesla-price-target-2029", "Expected value"),
+        S("Baron Capital (Ron Baron)", 2250, "2030", "2026", "", "\"$2,000 or $2,500\" (midpoint)"),
+        S("24/7 Wall St (Vandita Jadeja)", 510.02, "2030", "2026-05", "https://247wallst.com/investing/2026/05/20/this-will-be-teslas-stock-price-in-2030/", "Base case")],
+      "cons": {"by": "MarketBeat", "avg": 410.98, "low": 25.28, "high": 840, "n": 47, "date": "2026-09-28", "url": MB + "NASDAQ/TSLA/forecast/"}},
+    "SPCX": {"kind": "direct", "unit": "$", "long": [
+        S("ARK Invest", 190, "2030", "2025-06", "https://www.ark-invest.com/articles/valuation-models/ark-expected-value-spacex-2030", "~$2.5T enterprise value, per share via watcher.guru"),
+        S("Goldman Sachs (pre-IPO model, as reported)", 135, "2030", "2026-06", "https://watcher.guru/news/spacex-stock-price-prediction-for-2030-revenue-growth-vs-valuation-reality", "Secondary report"),
+        S("Motley Fool (Keithen Drury)", 109, "2030", "2026-09", "https://www.fool.com/investing/2026/09/27/a-10000-investment-in-spacex-will-be-worth-this-mu/", "~$1.5T market cap")],
+      "cons": {"by": "MarketBeat", "avg": 219.24, "low": 75, "high": 800, "n": 44, "date": "2026-09-28", "url": MB + "NASDAQ/SPCX/forecast/"}},
+    "NVDA": {"kind": "direct", "unit": "$", "long": [
+        S("I/O Fund (Beth Kindig)", 820, "2030", "2026-04", "https://io-fund.com/ai-stocks/nvidia-stock-20-trillion-market-cap-timing", "$20T market cap"),
+        S("24/7 Wall St (Vandita Jadeja)", 600, "2030", "2026-09", "https://247wallst.com/investing/2026/09/08/price-prediction-nvidia-stock-could-be-worth-this-much-by-2030/"),
+        S("Motley Fool (Steven Porrello)", 410, "2030", "2026-07", "https://www.fool.com/investing/2026/07/31/prediction-nvidia-will-be-a-10-trillion-company-by/", "$10T market cap")],
+      "cons": {"by": "MarketBeat", "avg": 324.14, "low": 218, "high": 515, "n": 55, "date": "2026-09-28", "url": MB + "NASDAQ/NVDA/forecast/"}},
+    "AVGO": {"kind": "direct", "unit": "$", "long": [
+        S("24/7 Wall St (Vandita Jadeja)", 613.02, "2030", "2026-05", "https://247wallst.com/investing/2026/05/22/this-will-be-broadcoms-stock-price-in-2030/", "Base case"),
+        S("24/7 Wall St (Joel South)", 709.08, "2030", "2026-02", "https://247wallst.com/forecasts/2026/02/14/broadcom-avgo-price-prediction-and-forecast-2025-2030/"),
+        S("Motley Fool (Harsh Chauhan)", 384, "2030", "2026-03", "https://www.fool.com/investing/2026/03/20/prediction-broadcom-stock-will-trade-at-this-price/", "Base case")],
+      "cons": {"by": "MarketBeat", "avg": 527.20, "low": 350, "high": 715, "n": 41, "date": "2026-09-28", "url": MB + "NASDAQ/AVGO/forecast/"}},
+    "MU": {"kind": "direct", "unit": "$", "long": [
+        S("New Street Research (Pierre Ferragu)", 2210, "2030", "2026-08", "https://stocktwits.com/news-articles/markets/equity/micron-2-3-trillion-giant-2030-ai-memory-demand-new-street-mu-stock-target/cZotm2aRJ0L", "$2-3T market cap (midpoint)"),
+        S("24/7 Wall St (Vandita Jadeja)", 1025, "2030", "2026-05", "https://247wallst.com/investing/2026/05/13/will-micron-be-a-trillion-dollar-stock-by-2030-the-answer-is-yes/", "Base case"),
+        S("watcher.guru (Loredana Harsana)", 1000, "2030", "2026-08", "https://watcher.guru/news/what-will-mu-stock-be-worth-in-2030-micron-is-entering-a-different-era", "Midpoint of $800-1,200")],
+      "cons": {"by": "MarketBeat", "avg": 1348.03, "low": 300, "high": 2000, "n": 45, "date": "2026-09-28", "url": MB + "NASDAQ/MU/forecast/"}},
+    # No named 2030 targets exist for these three; they use a sector's 2030 outlook, converted at today's price
+    "MP": {"kind": "sector", "sector": "COMMOD", "unit": "$",
+      "cons": {"by": "MarketBeat", "avg": 76.29, "low": 57, "high": 112, "n": 17, "date": "2026-09-28", "url": MB + "NYSE/MP/forecast/"}},
+    "UUUU": {"kind": "sector", "sector": "URANIUM", "unit": "$",
+      "cons": {"by": "MarketBeat", "avg": 21.85, "low": 16, "high": 29.25, "n": 7, "date": "2026-09-28", "url": MB + "NYSEAMERICAN/UUUU/forecast/"}},
+    "SILJ": {"kind": "sector", "sector": "SLV", "unit": "$",
+      "cons": {"by": "TipRanks (built from analyst targets on its 62 holdings)", "avg": 40.24, "low": 34.57, "high": 46.50, "n": 62, "date": "2026-09-28", "url": "https://www.tipranks.com/etf/silj/forecast"}},
+    # Treasury companies: 2030 = coin's 2030 targets x coins per share x an assumed NAV multiple
+    "MSTR": {"kind": "nav", "coin": "BTC-USD", "cons": {"by": "MarketBeat", "avg": 239.88, "low": 54, "high": 473, "n": 19, "date": "2026-09-28", "url": MB + "NASDAQ/MSTR/forecast/"}, "short": [
+        S("B. Riley", 195, "12 months", "2026-09"), S("Barclays", 160, "12 months", "2026-09"), S("Canaccord Genuity", 179, "12 months", "2026-09"),
+        S("Alliance Global Partners", 217, "12 months", "2026-09"),
+        S("Bernstein", 350, "12 months", "2026-08", "https://www.theblock.co/news/markets/2026-08-26-bernstein-sees-bitcoin-reaching-150000-by-mid-2027-amid-debasement-trade-but-cuts-strategy-target-to-350-412778"),
+        S("Mizuho", 165, "12 months", "2026-08"), S("HC Wainwright", 325, "12 months", "2026-08"), S("Cantor Fitzgerald", 186, "12 months", "2026-08"),
+        S("BTIG", 250, "12 months", "2026-07"), S("Benchmark", 435, "12 months", "2026-07"), S("Citigroup", 136, "12 months", "2026-06"),
+        S("TD Cowen", 260, "12 months", "2026-06"), S("Truist", 268, "12 months", "2026-01")]},
+    "MTPLF": {"kind": "nav", "coin": "BTC-USD", "cons": {"by": "MarketScreener (JPY 596 at 157.3 JPY/USD)", "avg": 3.79, "low": 2.57, "high": 5.00, "n": 2, "date": "2026-09", "url": "https://www.marketscreener.com/quote/stock/METAPLANET-INC-11551336/consensus/"}, "short": [
+        S("Cantor Fitzgerald (Nathan Frankovitz)", 3.66, "12 months", "2026", "https://www.tipranks.com/stocks/jp:3350/forecast", "JPY 576"),
+        S("Chardan (James McIlree)", 5.73, "12 months", "2026", "https://www.tipranks.com/stocks/jp:3350/forecast", "JPY 901")]},
+    "FWDI": {"kind": "nav", "coin": "SOL-USD", "cons": {"by": "MarketBeat", "avg": 12.50, "low": 9, "high": 16, "n": 2, "date": "2026-09", "url": MB + "NASDAQ/FWDI/forecast/"}, "short": [
+        S("Cantor Fitzgerald", 16, "12 months", "2026-09"), S("B. Riley", 9, "12 months", "2026-09")]},
+    "DFDV": {"kind": "nav", "coin": "SOL-USD", "cons": {"by": "MarketBeat", "avg": 10.40, "low": 10.40, "high": 10.40, "n": 1, "date": "2026-09", "url": MB + "NASDAQ/DFDV/forecast/"}, "short": [
+        S("Cantor Fitzgerald (Gareth Gacetta)", 10.40, "12 months", "2026-09")]},
+    "UPXI": {"kind": "nav", "coin": "SOL-USD", "cons": {"by": "MarketBeat", "avg": 5.00, "low": 2, "high": 8, "n": 2, "date": "2026-09", "url": MB + "NASDAQ/UPXI/forecast/"}, "short": [
+        S("Cantor Fitzgerald", 2, "12 months", "2026-09"), S("iA Financial", 8, "12 months", "2026-01")]},
+    "HSDT": {"kind": "nav", "coin": "SOL-USD", "cons": {"by": "MarketBeat", "avg": 3.25, "low": 2.5, "high": 4, "n": 2, "date": "2026-09", "url": MB + "NASDAQ/HSDT/forecast/"}, "short": [
+        S("B. Riley (Fedor Shabalin)", 2.50, "12 months", "2026-08"), S("Maxim Group", 4, "12 months", "2026-04")]},
 }
-assert all(v.get("n", 3) >= 3 for v in TARGETS.values())
+for k, v in USER_INPUT.items():
+    if v is not None: TARGETS[k].setdefault("long", []).append(S("User input", v, "2030", "", "", "Tyler's own target"))
+# Summaries the page uses. 2030 median: plain median of all sources, except InvestAnswers gets 50% weight
+# (BTC, SOL, TSLA) and the other sources' average the other 50%.
+for k, t in TARGETS.items():
+    L = t.get("long")
+    if L:
+        vals = [s["v"] for s in L]; ia = [s["v"] for s in L if s["by"] == "InvestAnswers"]
+        others = [s["v"] for s in L if s["by"] != "InvestAnswers"]
+        t.update(low=min(vals), high=max(vals), n=len(vals),
+                 base=round(0.5 * ia[0] + 0.5 * statistics.mean(others), 4) if ia and others else statistics.median(vals))
+    if t.get("short"): t["avg12"] = round(statistics.mean([s["v"] for s in t["short"]]), 4); t["n12"] = len(t["short"])
+    if t.get("cons"): t["avg12"] = t["cons"]["avg"]; t["n12"] = t["cons"]["n"]
+assert all(t.get("n", 3) >= 3 for t in TARGETS.values())
 
 def get(url, headers, tries=3):
     for i in range(tries):

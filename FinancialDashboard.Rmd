@@ -53,7 +53,18 @@ CSVs) and refreshed every day by the GitHub Action in
 .fd .best-chart{position:relative}
 .fd .best table{width:100%;border-collapse:collapse;font-size:.74rem;font-variant-numeric:tabular-nums;margin-top:.6rem;line-height:1.25}
 .fd .best th{background:var(--ink);color:#fff;font-weight:600;padding:.3rem .3rem;text-align:right;vertical-align:bottom}
-.fd .best th:nth-child(2),.fd .best td:nth-child(2),.fd .best th:nth-child(12),.fd .best td:nth-child(12),.fd .best td:nth-child(10),.fd .best th:nth-child(10){text-align:left}
+.fd .best th:first-child,.fd .best td:first-child{text-align:left}
+.fd .best h3{font:600 .98rem system-ui,sans-serif;margin:.1rem 0 .25rem;color:var(--ink)}
+.fd .best h3 span{font-weight:400;font-size:.8rem;color:var(--muted);margin-left:.4rem}
+.fd .best-wrap{overflow-x:auto}
+.fd .srcs{margin-top:.8rem;border:1px solid #f1e3bd;border-radius:8px;background:#fefaf0}
+.fd .srcs summary{cursor:pointer;padding:.55rem .8rem;font-weight:700;font-size:.9rem;color:#b0833a}
+.fd .srcs .body{padding:.1rem .9rem .7rem;font-size:.76rem;line-height:1.45;columns:2 420px;column-gap:1.6rem}
+.fd .srcs .a{break-inside:avoid;margin:.55rem 0}
+.fd .srcs .a b{font-size:.84rem}.fd .srcs .a i{color:var(--muted);font-style:normal}
+.fd .srcs ul{margin:.1rem 0 .2rem 1rem;padding:0}.fd .srcs li{margin:.05rem 0}
+.fd .srcs .lab{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:#8a7338;font-weight:700;margin-top:.2rem}
+.fd .srcs .note{font-size:.76rem;color:var(--muted);padding:0 .9rem;margin:0}
 .fd .best .pct{color:var(--muted);font-size:.72rem}.fd .best .up{color:#3f8a57}.fd .best .dn{color:#c75b5b}
 .fd .best td{padding:.22rem .3rem;text-align:right;border-bottom:1px solid var(--line);vertical-align:top}
 .fd .best td small{display:block;color:var(--muted);font-size:.66rem}
@@ -133,12 +144,21 @@ CSVs) and refreshed every day by the GitHub Action in
   <div class="grid" id="fd-prices"></div>
   <h2>Current Best Buy</h2>
   <div class="best">
-    <div class="best-sub">Every asset compared against every other one, pair by pair. Score = share of head-to-head pairs won. Updates with every price refresh.</div>
+    <h3>Comparative Value<span>which asset is most beaten down against the others</span></h3>
+    <div class="best-sub">Every asset compared against every other one, pair by pair. Score = share of head-to-head pairs won for deepest value and largest negative deviation to 20week ema &amp; 200day EMA. Updates with every price refresh.</div>
+    <div class="best-chart"><canvas id="cv-chart"></canvas></div>
+  </div>
+  <div class="best">
+    <h3>Projected Growth<span>today's price vs the forecasters' 2030 targets</span></h3>
+    <div class="best-sub">Ranked by average 2030 return (today's price to the median 2030 target). Bars show that return as a yearly pace so big and small numbers fit on one chart.</div>
     <div class="best-chart"><canvas id="best-chart"></canvas></div>
-    <div><table id="best-table"><thead><tr>
-      <th>#</th><th>Ticker</th><th>Price</th><th>Low target</th><th>Median target</th><th>High target</th><th>Avg 12-mo return</th><th>Avg 2030 return</th><th>Expected yr return</th><th>At NAV 1.0x</th><th>Pairs won</th><th>Cheapest vs</th>
+    <div class="best-wrap"><table id="best-table"><thead><tr>
+      <th>Ticker</th><th>Price</th><th>Low target</th><th>Median target</th><th>High target</th><th>Avg 12-mo return</th><th>At NAV 1.0x</th><th>Avg 2030 return</th>
     </tr></thead><tbody></tbody></table></div>
     <div class="best-method" id="best-method"></div>
+    <details class="srcs"><summary>Sources for every price target (click to open)</summary>
+      <p class="note">Every forecaster behind the low, median and high targets, with the date it was published and a link. To add your own 2030 target for any asset, set it in <code>USER_INPUT</code> at the top of the targets section in <code>scripts/update_market_data.py</code>; it then counts as one more source.</p>
+      <div class="body" id="best-sources"></div></details>
   </div>
   <h2>Economy</h2>
   <div class="debtclock"><div class="lab">U.S. National Debt</div>
@@ -339,126 +359,147 @@ CSVs) and refreshed every day by the GitHub Action in
   }
   setInterval(treLive, 60000);
 
-  // ---------- Current Best Buy: pairwise ranking against price targets ----------
-  var bestChart = null;
-  var RV_WEIGHT = 0.20;   // a pair ratio at its 3-year low adds +10 points of annual return (at its high, -10)
-  function yearsTo(h) { return h === "12m" ? 1 : Math.max(0.25, (Date.parse(h + "-12-31T00:00:00Z") - Date.now()) / 3.15576e10); }
-  function cagr(p, t, y) { return t > 0 ? Math.pow(t / p, 1 / y) - 1 : -1; }
-  function median(a) { a = a.slice().sort(function (x, y) { return x - y; }); var m = a.length >> 1; return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2; }
+  // ---------- Current Best Buy ----------
+  var bestChart = null, cvChart = null;
+  function yearsTo(h) { return Math.max(0.25, (Date.parse(h + "-12-31T00:00:00Z") - Date.now()) / 3.15576e10); }
   function lastPx(k) { var p = DATA.prices[k].points; return p[p.length - 1][1]; }
-  function ratioPct(a, b) {   // where today's a/b ratio sits in its own 3-year range (0 = lowest, 1 = highest)
-    var r = ratio(a, b); if (r.length < 250) return 0.5;
-    var cutoff = new Date(Date.parse(r[r.length - 1][0]) - 3 * 3.15576e10).toISOString().slice(0, 10);
-    r = r.filter(function (p) { return p[0] >= cutoff; }); var last = r[r.length - 1][1], below = 0;
-    r.forEach(function (p) { if (p[1] <= last) below++; }); return below / r.length;
+  function bestUniverse() { return SINGLES.concat(TREASURY_T).filter(function (k, i, a) { return a.indexOf(k) === i && DATA.prices[k]; }); }
+  function gyBar(t) {   // pastel yellow (t=0) to pastel green (t=1), same as before
+    t = Math.max(0, Math.min(1, t)); var a = [247, 224, 140], b = [134, 200, 156];
+    return "rgb(" + a.map(function (x, i) { return Math.round(x + (b[i] - x) * t); }).join(",") + ")";
   }
+  function barChart(cv, rows, vals, tip, xopts) {
+    cv.parentNode.style.height = (rows.length * 19 + 40) + "px";
+    return new Chart(cv, { type: "bar",
+      data: { labels: rows.map(function (r) { return sn(r.k); }),
+              datasets: [{ data: vals, backgroundColor: rows.map(function (r, i) { return gyBar(r.t); }), borderRadius: 3 }] },
+      options: { indexAxis: "y", responsive: true, maintainAspectRatio: false, animation: false,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return tip(rows[c.dataIndex]); } } } },
+        scales: { x: Object.assign({ ticks: { callback: function (v) { return v + "%"; }, color: "#6b7686", font: { size: 10 } }, grid: { color: "#eef1f5" } }, xopts),
+                  y: { ticks: { color: "#2d3a4a", font: { size: 11, weight: "600" } }, grid: { display: false } } } } });
+  }
+
+  // Chart 1, Comparative Value: for every pair, where the price ratio sits vs its own 20-week and 200-day EMAs
+  function ema(v, n) { var a = 2 / (n + 1), e = v[0]; for (var i = 1; i < v.length; i++) e = a * v[i] + (1 - a) * e; return e; }
+  function weeklyClose(pts) {
+    var out = [], key = null;
+    pts.forEach(function (p) { var d = new Date(p[0] + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
+      var k = d.toISOString().slice(0, 10); if (k === key) out[out.length - 1] = p[1]; else { out.push(p[1]); key = k; } });
+    return out;
+  }
+  function compValue() {
+    var univ = bestUniverse(), rows = univ.map(function (k) { return { k: k, wins: 0, pairs: 0, devSum: 0, worst: 0, worstVs: null, short: false }; });
+    for (var i = 0; i < rows.length; i++) for (var j = i + 1; j < rows.length; j++) {
+      var a = rows[i], b = rows[j], r = ratio(a.k, b.k).slice(-520);   // about 2 years of shared trading days
+      if (r.length < 30) continue;
+      var v = r.map(function (p) { return p[1]; }), last = v[v.length - 1];
+      var d200 = Math.log(last / ema(v, 200)), d20w = Math.log(last / ema(weeklyClose(r), 20));
+      var dev = (d200 + d20w) / 2;       // below 0: a is beaten down against b
+      if (dev < 0) a.wins++; else b.wins++;
+      a.pairs++; b.pairs++; a.devSum += dev; b.devSum -= dev;
+      if (dev < a.worst) { a.worst = dev; a.worstVs = b.k; }
+      if (-dev < b.worst) { b.worst = -dev; b.worstVs = a.k; }
+      if (r.length < 200) { a.short = true; b.short = true; }
+    }
+    rows = rows.filter(function (r) { return r.pairs; });
+    rows.forEach(function (r) { r.score = r.wins / r.pairs; r.dev = r.devSum / r.pairs; r.t = r.score; });
+    rows.sort(function (a, b) { return b.score - a.score || a.dev - b.dev; });
+    function pctDev(x) { var p = (Math.exp(x) - 1) * 100; return (p >= 0 ? "+" : "") + p.toFixed(1) + "%"; }
+    if (cvChart) cvChart.destroy();
+    cvChart = barChart(document.getElementById("cv-chart"), rows, rows.map(function (r) { return Math.round(r.score * 1000) / 10; }),
+      function (r) { return "Beaten down in " + r.wins + " of " + r.pairs + " pairs; avg gap to pair EMAs " + pctDev(r.dev) +
+        (r.worstVs ? "; deepest vs " + sn(r.worstVs) + " (" + pctDev(r.worst) + ")" : "") + (r.short ? "; short price history" : ""); },
+      { min: 0, max: 100, title: { display: true, text: "Pairs where it is below the pair's 20-week & 200-day EMAs", color: "#6b7686", font: { size: 11 } } });
+  }
+
+  // Chart 2 + table, Projected Growth: today's price vs median 2030 target
   function bestBuy() {
     var T = DATA.targets, trow = {}; if (!T) return;
     (DATA.treasury ? DATA.treasury.rows : []).forEach(function (r) { trow[r.t] = r; });
-    var univ = SINGLES.concat(TREASURY_T).filter(function (k, i, a) { return a.indexOf(k) === i && DATA.prices[k]; });
-    var rows = [], skipped = [], pending = [];
-    // Assets without their own 2030 targets borrow a sector's 2030 outlook (yearly rate)
-    var SECTOR = { "UUUU": "URANIUM", "MP": "COMMOD", "SILJ": "SLV", "NVDA": "SPY", "AVGO": "SPY", "MU": "SPY", "SPCX": "SPY" };
-    var SECTOR_NAME = { "URANIUM": "uranium", "HG=F": "copper", "SLV": "silver", "BTC-USD": "BTC", "SPY": "S&P 500", "COMMOD": "commodity avg" };
-    var y30 = yearsTo(2030);
-    univ.forEach(function (k) {
-      var t = T[k];
-      if (!t && SECTOR[k]) { pending.push(k); return; }   // no targets at all: sector outlook only (filled in below)
-      if (!t || (t.kind !== "nav" && (t.n || 0) < 3)) { skipped.push(k); return; }
-      var px = lastPx(k), lo, base, hi, h = t.horizon, kind = t.kind, extra = "";
-      if (kind === "nav") {   // treasury company: coin target x coins per share x assumed 2030 NAV multiple
-        var tr = trow[k], c = T[t.coin]; if (!tr || !tr.shares || !c || c.n < 3) { skipped.push(k); return; }
+    var y30 = yearsTo(2030), rows = [], skipped = [];
+    var SECTOR_NAME = { "URANIUM": "uranium", "SLV": "silver", "COMMOD": "uranium, silver, gold & copper avg" };
+    function spotOf(k) { return k === "URANIUM" ? T.URANIUM.spot : lastPx(k === "SLV" ? "SI=F" : k); }
+    function mult(k) { var t = T[k]; return { lo: t.low / spotOf(k), base: t.base / spotOf(k), hi: t.high / spotOf(k), n: t.n }; }
+    function sector(sk) {   // 2030 target as a multiple of today's price
+      if (sk !== "COMMOD") return mult(sk);
+      var ms = ["URANIUM", "SLV", "GC=F", "HG=F"].map(mult), avg = function (f) { return ms.reduce(function (s, m) { return s + f(m); }, 0) / ms.length; };
+      return { lo: avg(function (m) { return m.lo; }), base: avg(function (m) { return m.base; }), hi: avg(function (m) { return m.hi; }), n: ms.reduce(function (s, m) { return s + m.n; }, 0) };
+    }
+    bestUniverse().forEach(function (k) {
+      var t = T[k]; if (!t) { skipped.push(k); return; }
+      var px = lastPx(k), row = { k: k, px: px, kind: t.kind, n: t.n, r12: t.avg12 != null ? t.avg12 / px - 1 : null, n12: t.n12, nav1: null, note: "" };
+      if (t.kind === "direct") { row.lo = t.low; row.base = t.base; row.hi = t.high; }
+      else if (t.kind === "proxy") { var f = px / lastPx(t.of); row.lo = t.low * f; row.base = t.base * f; row.hi = t.high * f; row.r12 = t.avg12 / lastPx(t.of) - 1; }
+      else if (t.kind === "sector") { var s = sector(t.sector); row.lo = s.lo * px; row.base = s.base * px; row.hi = s.hi * px; row.n = s.n; row.note = "via " + SECTOR_NAME[t.sector] + " 2030 outlook"; }
+      else if (t.kind === "nav") {   // coin target x coins per share x NAV multiple halfway (log terms) from today's to 1.0x
+        var tr = trow[k], c = T[t.coin]; if (!tr || !tr.shares) { skipped.push(k); return; }
         var cps = tr.qty / tr.shares, mnav = px / (cps * lastPx(t.coin)), m30 = Math.sqrt(mnav);
-        lo = c.low * cps * m30; base = c.base * cps * m30; hi = c.high * cps * m30; h = c.horizon;
-        if (t.extra) { base = median([base].concat(t.extra)); lo = Math.min.apply(null, [lo].concat(t.extra)); hi = Math.max.apply(null, [hi].concat(t.extra)); }
-        extra = "NAV " + mnav.toFixed(2) + "x now, assumed " + m30.toFixed(2) + "x in " + h;
-      } else if (kind === "proxy") {
-        var k2 = px / lastPx(t.of); lo = t.low * k2; base = t.base * k2; hi = t.high * k2;
-      } else { lo = t.low; base = t.base; hi = t.high; }
-      var y = yearsTo(h);
-      var nav1 = null;
-      if (kind === "nav") { var cp = lastPx(t.coin); nav1 = { coin: sn(t.coin), now: px / cps, tgt: c.base * cps, cbase: c.base }; }
-      var r12 = t.c12 ? t.c12 / px - 1 : (kind === "consensus" ? base / px - 1 : null);
-      var r30 = kind === "consensus" ? null : Math.pow(base / px, Math.min(1, y30 / y)) - 1;
-      rows.push({ k: k, px: px, lo: lo, base: base, hi: hi, h: h, kind: kind, extra: extra, nav1: nav1, r12: r12, r30: r30, y: y,
-                  n: kind === "nav" ? T[t.coin].n : t.n, c12n: t.c12n || (kind === "consensus" ? t.n : null),
-                  own: kind === "consensus" ? null : cagr(px, base, y), pt: px / base });
+        row.lo = c.low * cps * m30; row.base = c.base * cps * m30; row.hi = c.high * cps * m30; row.n = c.n;
+        row.note = "from " + sn(t.coin) + " 2030 targets; NAV " + mnav.toFixed(2) + "x now, assumed " + m30.toFixed(2) + "x in 2030";
+        row.nav1 = { coin: sn(t.coin), now: px / cps, tgt: c.base * cps, cbase: c.base };
+      }
+      row.r30 = row.base / px - 1; row.yr = Math.pow(row.base / px, 1 / y30) - 1;
+      rows.push(row);
     });
-    // sector 2030 outlooks (yearly), from the sector asset's own targets
-    function sectorRate(sk) {
-      if (sk === "URANIUM") { var u = T.URANIUM; return cagr(u.spot, u.base, yearsTo(u.horizon)); }
-      if (sk === "COMMOD") { var v = ["URANIUM", "SLV", "GC=F", "HG=F"].map(sectorRate).filter(function (x) { return x != null; }); return v.reduce(function (a, b) { return a + b; }, 0) / v.length; }
-      var r = rows.filter(function (x) { return x.k === sk; })[0]; return r ? r.own : null;
-    }
-    pending.forEach(function (k) {
-      rows.push({ k: k, px: lastPx(k), lo: null, base: null, hi: null, h: 2030, kind: "sector", extra: "", nav1: null, r12: null, r30: null, n: null, c12n: null, own: null });
-    });
-    rows.forEach(function (r) {
-      r.sec = r.own == null && SECTOR[r.k] ? SECTOR[r.k] : null;
-      var g30 = r.own != null ? r.own : (r.sec ? sectorRate(r.sec) : null);
-      if (r.sec && g30 != null) r.r30 = Math.pow(1 + g30, y30) - 1;
-      r.g30 = g30;
-      // expected yearly return: favor 2030 (2/3) and include the 12-month consensus (1/3) when both exist
-      r.c = g30 != null && r.r12 != null ? (2 * g30 + r.r12) / 3 : (g30 != null ? g30 : r.r12);
-      r.blend = g30 != null && r.r12 != null;
-    });
-    rows = rows.filter(function (r) { if (r.c == null) { skipped.push(r.k); return false; } return true; });
-    // head-to-head pairs
-    rows.forEach(function (a) { a.wins = 0; a.edgeSum = 0; a.bestVs = null; a.minPct = 2; });
-    for (var i = 0; i < rows.length; i++) for (var j = i + 1; j < rows.length; j++) {
-      var a = rows[i], b = rows[j], pct = ratioPct(a.k, b.k);
-      var e = (a.c - b.c) + RV_WEIGHT * (0.5 - pct);   // edge of a over b; b over a is -e
-      if (e > 0) a.wins++; else b.wins++;
-      a.edgeSum += e; b.edgeSum -= e;
-      if (pct < a.minPct) { a.minPct = pct; a.bestVs = b.k; }
-      if (1 - pct < b.minPct) { b.minPct = 1 - pct; b.bestVs = a.k; }
-    }
-    var n = rows.length - 1;
-    rows.forEach(function (r) { r.win = r.wins / n; r.edge = r.edgeSum / n; });
-    rows.sort(function (a, b) { return b.win - a.win || b.edge - a.edge; });
-    // chart
-    var cv = document.getElementById("best-chart");
-    cv.parentNode.style.height = (rows.length * 19 + 40) + "px";
-    if (bestChart) bestChart.destroy();
-    bestChart = new Chart(cv, { type: "bar",
-      data: { labels: rows.map(function (r) { return sn(r.k); }),
-              datasets: [{ data: rows.map(function (r) { return Math.round(r.win * 1000) / 10; }),
-                           backgroundColor: rows.map(function (r) { var t = Math.max(0, Math.min(1, r.win)), a = [247, 224, 140], b = [134, 200, 156];
-                             return "rgb(" + a.map(function (x, i) { return Math.round(x + (b[i] - x) * t); }).join(",") + ")"; }),
-                           borderRadius: 3 }] },
-      options: { indexAxis: "y", responsive: true, maintainAspectRatio: false, animation: false,
-        plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { var r = rows[c.dataIndex];
-          return "Won " + r.wins + " of " + n + " pairs; CAGR " + (r.c * 100).toFixed(1) + "%; avg edge " + (r.edge * 100).toFixed(1) + " pts"; } } } },
-        scales: { x: { min: 0, max: 100, ticks: { callback: function (v) { return v + "%"; }, color: "#6b7686", font: { size: 10 } }, grid: { color: "#eef1f5" },
-                       title: { display: true, text: "Head-to-head pairs won", color: "#6b7686", font: { size: 11 } } },
-                  y: { ticks: { color: "#2d3a4a", font: { size: 11, weight: "600" } }, grid: { display: false } } } } });
-    // table
-    function pc(v) { return (v * 100).toFixed(1) + "%"; }
+    rows.sort(function (a, b) { return b.r30 - a.r30; });
+    rows.forEach(function (r, i) { r.t = rows.length > 1 ? 1 - i / (rows.length - 1) : 1; });
+    function rt(v) { return (v >= 0 ? "+" : "") + Math.round(v * 100).toLocaleString("en-US") + "%"; }
     function m(v) { return v >= 1000 ? money(v) : "$" + v.toPrecision(v < 1 ? 3 : 4); }
-    function gy(t) {   // pastel yellow (t=0) to pastel green (t=1)
-      t = Math.max(0, Math.min(1, t)); var a = [252, 236, 178], b = [183, 226, 196];
-      return "rgb(" + a.map(function (x, i) { return Math.round(x + (b[i] - x) * t); }).join(",") + ")";
-    }
+    if (bestChart) bestChart.destroy();
+    bestChart = barChart(document.getElementById("best-chart"), rows, rows.map(function (r) { return Math.round(r.yr * 1000) / 10; }),
+      function (r) { return "Median 2030 target " + m(r.base) + " = " + rt(r.r30) + " total (" + (r.yr * 100).toFixed(1) + "% a year)" +
+        (r.r12 != null ? "; 12-mo avg " + rt(r.r12) : ""); },
+      { title: { display: true, text: "Yearly pace to the median 2030 target", color: "#6b7686", font: { size: 11 } } });
+    // table
+    function gy(t) { t = Math.max(0, Math.min(1, t)); var a = [252, 236, 178], b = [183, 226, 196];
+      return "rgb(" + a.map(function (x, i) { return Math.round(x + (b[i] - x) * t); }).join(",") + ")"; }
     function shade(v, cap) { return v == null ? "" : ' style="background:' + gy(Math.log(1 + Math.max(0, v)) / Math.log(1 + cap)) + '"'; }
     function tp(v, px) { var g = v / px - 1; return m(v) + "<small>" + (g >= 0 ? "+" : "") + Math.round(g * 100).toLocaleString("en-US") + "%</small>"; }
-    function rt(v) { return (v >= 0 ? "+" : "") + Math.round(v * 100).toLocaleString("en-US") + "%"; }
     function k$(v) { return v >= 1e6 ? "$" + (v / 1e6).toFixed(2) + "M" : v >= 1e3 ? "$" + (v / 1e3).toFixed(1) + "k" : "$" + v.toFixed(v < 10 ? 2 : 0); }
-    document.querySelector("#best-table tbody").innerHTML = rows.map(function (r, i) {
-      var byLab = r.kind === "consensus" ? "12 mo" : (r.kind === "nav" ? "from " + r.nav1.coin + ", " : "") + r.h;
+    document.querySelector("#best-table tbody").innerHTML = rows.map(function (r) {
       var navTxt = r.nav1 ? "now = " + r.nav1.coin + " " + k$(r.nav1.now) + "<small>" + r.nav1.coin + " " + k$(r.nav1.cbase) + " = " + m(r.nav1.tgt) + "</small>" : "";
-      var r12 = r.r12 != null ? rt(r.r12) + "<small>" + r.c12n + " analysts</small>" : '<span class="pct">n/a</span>';
-      var r30 = r.r30 != null ? rt(r.r30) + (r.sec ? "<small>via " + SECTOR_NAME[r.sec] + " outlook</small>" : (r.h !== 2030 ? "<small>to " + r.h + "</small>" : "")) : '<span class="pct">n/a</span>';
-      return '<tr title="' + (DATA.prices[r.k].name || r.k) + (r.extra ? " - " + r.extra : "") + '"><td>' + (i + 1) + "</td><td>" + sn(r.k) + "</td><td>" + m(r.px) + "</td><td>" + (r.base == null ? '<span class="pct">none</span></td><td><span class="pct">sector outlook only</span></td><td><span class="pct">none</span>' : tp(r.lo, r.px) + "</td><td><b>" + m(r.base) + "</b><small>" + byLab + ", n=" + r.n + "</small></td><td>" + tp(r.hi, r.px)) +
-        "</td><td" + shade(r.r12, 1) + ">" + r12 + "</td><td" + shade(r.r30, 10) + ">" + r30 + "</td><td" + shade(r.c, 1) + ">" + pc(r.c) + (r.blend ? "<small>2030 + 12 mo</small>" : "<small>" + (r.g30 != null ? "2030" : "12 mo") + "</small>") + "</td><td>" + navTxt + "</td><td>" + r.wins + "/" + n + "<small>" + (r.edge >= 0 ? "+" : "") + (r.edge * 100).toFixed(1) + " pts</small></td><td>" + (r.bestVs ? sn(r.bestVs) + "<small>" + Math.round(r.minPct * 100) + "th pct</small>" : "") + "</td></tr>";
+      var t = T[r.k], who = t.cons ? "analysts" : "forecasters";
+      var r12 = r.r12 != null ? rt(r.r12) + "<small>" + r.n12 + " " + who + "</small>" : '<span class="pct">n/a</span>';
+      return '<tr title="' + (DATA.prices[r.k].name || r.k) + (r.note ? " - " + r.note : "") + '"><td>' + sn(r.k) + "</td><td>" + m(r.px) + "</td><td>" + tp(r.lo, r.px) +
+        "</td><td><b>" + m(r.base) + "</b><small>" + (r.note ? r.note.split(";")[0] + ", " : "2030, ") + "n=" + r.n + "</small></td><td>" + tp(r.hi, r.px) +
+        "</td><td" + shade(r.r12, 1) + ">" + r12 + "</td><td>" + navTxt + "</td><td" + shade(r.r30, 10) + "><b>" + rt(r.r30) + "</b><small>" + (r.yr * 100).toFixed(1) + "% a year</small></td></tr>";
     }).join("");
+    // sources
+    function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+    var UNIT = { "$/oz": "/oz", "silver $/oz": "/oz silver", "$/lb": "/lb", "uranium $/lb": "/lb uranium" };
+    function val(v, unit) { var s = v >= 1000 ? "$" + Math.round(v).toLocaleString("en-US") : "$" + (+v).toLocaleString("en-US", { maximumFractionDigits: 2 });
+      return s + (UNIT[unit] || ""); }
+    function li(s, unit) { return "<li>" + esc(s.by) + ": <b>" + val(s.v, unit) + "</b> <i>(" + esc(s.h) + (s.date ? ", published " + esc(s.date) : "") + ")</i>" +
+      (s.note ? " - " + esc(s.note) : "") + (s.url ? ' <a href="' + s.url + '" target="_blank" rel="noopener">link</a>' : "") + "</li>"; }
+    function block(k, label) {
+      var t = T[k], h = '<div class="a"><b>' + label + "</b>", u = t.unit;
+      if (t.long) h += '<div class="lab">2030 targets</div><ul>' + t.long.map(function (s) { return li(s, u); }).join("") + "</ul>";
+      else if (t.kind === "nav") h += '<div class="lab">2030 targets</div><ul><li>Worked out from the ' + sn(t.coin) + " 2030 targets listed under " + sn(t.coin) + ", the coins each share holds, and the NAV multiple (see How it works).</li></ul>";
+      else if (t.kind === "sector") h += '<div class="lab">2030 targets</div><ul><li>No named forecaster publishes a 2030 target, so this uses the ' + SECTOR_NAME[t.sector] + " 2030 outlook (sources listed under " +
+        (t.sector === "COMMOD" ? "Uranium, SLV, Gold and Copper" : t.sector === "URANIUM" ? "Uranium" : "SLV") + "), applied to today's price.</li></ul>";
+      if (t.cons) h += '<div class="lab">12-month targets</div><ul><li>' + esc(t.cons.by) + " consensus of " + t.cons.n + " " + (t.cons.by.indexOf("TipRanks") === 0 ? "holdings" : "analysts") +
+        ": <b>" + val(t.cons.avg) + "</b> average, range " + val(t.cons.low) + " to " + val(t.cons.high) + " <i>(" + t.cons.date + ")</i>" +
+        ' <a href="' + t.cons.url + '" target="_blank" rel="noopener">link</a></li>' + (t.short ? t.short.map(function (s) { return li(s); }).join("") : "") + "</ul>";
+      else if (t.short) h += '<div class="lab">12-month targets</div><ul>' + t.short.map(function (s) { return li(s, u); }).join("") + "</ul>";
+      return h + "</div>";
+    }
+    document.getElementById("best-sources").innerHTML = rows.map(function (r) { return block(r.k, sn(r.k) + " <i>" + esc(DATA.prices[r.k].name || "") + "</i>"); }).join("") +
+      (T.URANIUM ? block("URANIUM", "Uranium <i>sector outlook used for Energy Fuels and MP</i>") : "");
     document.getElementById("best-method").innerHTML =
-      "<h4>How it works</h4><ol>" +
-      "<li><b>Targets.</b> Low, median and high = the lowest, middle and highest <i>base-case</i> target among the forecasters (bear and bull scenarios are not used), with the % move from today's price. Every ranked asset has at least 3 independent forecasters (n = how many), all analysts or firms publishing within the last two years. For 12-month consensus assets, low and high are the lowest and highest individual analyst targets. Under the median: the target date (\"12 mo\" = analyst 12-month consensus).</li>" +
-      "<li><b>2030 first.</b> Avg 2030 return = total move from today to the asset's own median 2030 target. Assets without their own 2030 targets use a sector's 2030 outlook: Energy Fuels = uranium (5 forecasters), SILJ = silver, MP = the average of the uranium, silver, gold and copper outlooks, chips/SpaceX = S&P 500. Silver forecasts stop at 2027, so silver uses those. <b>Avg 12-mo return</b> = analyst consensus (3+ analysts). <b>Expected yr return</b> = 2/3 the 2030 yearly rate + 1/3 the 12-month return when both exist, otherwise whichever exists.</li>" +
-      "<li><b>BTC, SOL and TSLA</b> median targets weight the InvestAnswers 2030 targets at 50% and the average of the other forecasters at 50%.</li>" +
-      "<li><b>Treasury companies.</b> Target = coin target x coins per share x an assumed NAV multiple halfway (log terms) between today's and 1.0x. <b>At NAV 1.0x</b> shows what today's share price is worth in coin terms, and the share price if the coin hits its median target and the stock trades at exactly its holdings.</li>" +
-      "<li><b>Pairs.</b> Each asset vs every other: edge = difference in expected yearly return + up to +/-10 points when the pair ratio sits at the low/high of its 3-year range. Ranked by share of pairs won (average edge underneath). \"Cheapest vs\" = the asset it is most discounted against, by 3-year percentile.</li>" +
-      "<li>Forecasts, not facts; long-range targets are far less certain than 12-month ones. " + (skipped.length ? "Not ranked (fewer than 3 forecasters): " + skipped.map(sn).join(", ") + ". " : "") + "Not investment advice.</li></ol>";
+      "<h4>How it works: Comparative Value</h4><ul>" +
+      "<li>Every asset is paired with every other one, for example SOL vs BTC. For each pair we look at the price ratio: how much of one asset a single unit of the other buys.</li>" +
+      "<li>We compare today's ratio with its 20-week and 200-day moving averages (exponential, or EMA) and average the two gaps.</li>" +
+      "<li>If the ratio is below its averages, the first asset has fallen behind the second and \"wins\" that pair as the better value. The bet is that stretched ratios drift back toward their average.</li>" +
+      "<li>Score = the share of pairs an asset wins. Top of the chart = beaten down against the most other assets. Ties go to the one with the bigger average gap. Hover a bar to see which asset it is most beaten down against.</li>" +
+      "<li>This chart ignores price targets completely. It only says what is cheap relative to its own recent past, not that it will recover.</li></ul>" +
+      "<h4>How it works: Projected Growth</h4><ul>" +
+      "<li>For each asset we collected 2030 price targets from at least 3 named forecasters (every one is listed with its link in the Sources list below). Only their main (base-case) calls, not bull or bear scenarios.</li>" +
+      "<li><b>Low / median / high target</b> = the smallest, middle and largest of those 2030 targets. For BTC, SOL and TSLA the InvestAnswers target counts for half and the other forecasters share the other half.</li>" +
+      "<li><b>Avg 2030 return</b> = the move from today's price to the median 2030 target. The list is ranked by this. The bar shows the same return as a yearly pace.</li>" +
+      "<li><b>Avg 12-mo return</b> = the move to the average of the roughly one-year targets: the Wall Street analyst average for stocks, and bank and research-firm forecasts for crypto and commodities.</li>" +
+      "<li><b>Treasury companies</b> (MSTR, Metaplanet, FWDI, DFDV, UPXI, HSDT) are priced off their coin: coin's 2030 target x coins each share holds x a premium or discount to holdings (NAV) that is assumed to move halfway back to 1.0x by 2030. <b>At NAV 1.0x</b> shows what one share is worth in coin terms today, and what it would be worth if the coin hits its median target and the stock trades exactly at its holdings.</li>" +
+      "<li>MP, Energy Fuels and SILJ have no named 2030 targets, so they borrow a sector outlook: Energy Fuels = uranium, SILJ = silver, MP = the average of uranium, silver, gold and copper.</li>" +
+      "<li>Forecasts, not facts: 2030 targets are far less reliable than 12-month ones. " + (skipped.length ? "Not ranked (no targets): " + skipped.map(sn).join(", ") + ". " : "") + "Not investment advice.</li></ul>";
   }
   // Debt clock: latest Treasury "Debt to the Penny" figure, run forward at its average pace over the past year
   function debtClock(dc) {
@@ -473,6 +514,7 @@ CSVs) and refreshed every day by the GitHub Action in
   fetch("data/markets.json?v=" + Date.now()).then(function (r) { return r.json(); }).then(function (d) {
     DATA = d; document.getElementById("fd-updated").textContent = "Updated " + d.updated + " · market data refreshed every 15 minutes; bitcoin and S&P futures stream live";
     strip(); render(); cryptoLive(); debtClock(d.debt_clock);
+    try { compValue(); } catch (e) { console.log("comparative value", e); }
     try { bestBuy(); } catch (e) { console.log("best buy", e); }
     if (d.treasury) { TRE = d.treasury; var bp = d.prices["BTC-USD"].points, sp = d.prices["SOL-USD"].points; treBtc = bp[bp.length - 1][1]; treSolP = sp[sp.length - 1][1]; treRender(); treLive(); }
   }).catch(function () { document.getElementById("fd-updated").textContent = "Data could not be loaded."; });
