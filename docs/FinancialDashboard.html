@@ -456,10 +456,12 @@ _________________________</p>
     <h3>Fair Value<span>where each asset sits vs its own long-term log regression trend</span></h3>
     <div class="best-sub">Each asset's whole price history is fit to a logarithmic regression trendline (the "fair value" line). Bars show how far today's price is above or below that line; the most undervalued is on top. Click a bar to see its chart. Updates with every price refresh.</div>
     <div class="best-chart"><canvas id="fv-chart"></canvas></div>
+    <div class="fv-detail"><div class="fv-t">By asset class <span id="fv-class-now"></span></div><div class="fv-c"><canvas id="fv-class"></canvas></div></div>
     <div class="fv-detail"><div class="fv-t" id="fv-title"></div><div class="fv-c"><canvas id="fv-line"></canvas></div></div>
     <details class="srcs"><summary>Formulas (click to open)</summary><div class="fbody">
       <p><b>Trendline:</b> <code>ln(Price) = a + b × ln(days since the asset began)</code>, fit by least squares on weekly closes over all available history (a power-law, the same kind of log regression used for bitcoin). "Began" = launch or listing date (bitcoin: the Jan 3, 2009 genesis block; treasury companies: the day they started holding coins).</p>
       <p><b>Fair value</b> = the trendline today: <code>e^(a + b × ln(days))</code> · <b>Bar</b> = <code>Price ÷ Fair value − 1</code> · <b>σ</b> = how far that is in standard deviations of the asset's own history around the line (−2σ = rarely this cheap).</p>
+      <p><b>By asset class:</b> for AI, Crypto and Commodities, each member's distance from its own trendline is averaged every week (in log terms, members with 2+ years of prices), so 0% = the class as a whole sits on fair value.</p>
       <p>Needs at least 2 years of prices to fit a trend, so the newer treasury companies and SPCX aren't shown. A trendline describes the past; it isn't a forecast.</p>
     </div></details>
   </div>
@@ -953,6 +955,31 @@ _________________________</p>
                        title: { display: true, text: "Price vs log-regression fair value (below 0 = undervalued)", color: "#6b7686", font: { size: 11 } } },
                   y: { ticks: { color: "#2d3a4a", font: { size: 11, weight: "600" } }, grid: { display: false } } } } });
     if (rows.length) fairLine(rows[0].k);
+    try { fairClassChart(); } catch (e) { console.log("fair class", e); }
+  }
+  var fvClass = null;
+  function fairClassChart() {   // average of each class's members' distance from their own trendlines, week by week
+    var dates = resampleW(DATA.prices["SPY"].points).map(function (p) { return p[0]; }), COLS = { "AI": "#3d6fd6", "Crypto": "#e0b04a", "Commodities": "#4f9d69" };
+    function resid(f) { var out = {}; f.pts.forEach(function (p) { out[p[0]] = Math.log(p[1]) - (f.a + f.b * Math.log(f.day(p[0]))); }); return out; }
+    var now = [], ds = BUCKETS.map(function (b) {
+      var mem = b.k.filter(function (k) { return FV[k]; }), R = mem.map(function (k) { var r = resid(FV[k]), ks = Object.keys(r).sort(); return { r: r, ks: ks }; });
+      var data = dates.map(function (d) { var s = 0, n = 0;
+        R.forEach(function (x) { var i = idxAt(x.ks.map(function (q) { return [q]; }), d); if (i >= 0 && (Date.parse(d) - Date.parse(x.ks[i])) < 15 * 864e5) { s += x.r[x.ks[i]]; n++; } });
+        return n ? Math.exp(s / n) : null; });   // price ÷ fair value (1 = on the line)
+      var cur = mem.reduce(function (s, k) { return s + Math.log(1 + FV[k].dev); }, 0) / Math.max(1, mem.length);
+      now.push('<b style="color:' + COLS[b.n] + '">' + b.n + " " + ((Math.exp(cur) - 1) >= 0 ? "+" : "") + ((Math.exp(cur) - 1) * 100).toFixed(1) + "%</b> (" + mem.map(sn).join(", ") + ")");
+      return { label: b.n, data: data, borderColor: COLS[b.n], borderWidth: 2, pointRadius: 0, tension: 0.2, spanGaps: true };
+    });
+    ds.push({ label: "Fair value", data: dates.map(function () { return 1; }), borderColor: "#111", borderDash: [5, 4], borderWidth: 1.2, pointRadius: 0 });
+    document.getElementById("fv-class-now").innerHTML = "today: " + now.join(" · ");
+    if (fvClass) fvClass.destroy();
+    fvClass = new Chart(document.getElementById("fv-class"), { type: "line", data: { labels: dates, datasets: ds },
+      options: { animation: false, responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
+        plugins: { legend: { display: true, position: "top", align: "end", labels: { boxWidth: 12, boxHeight: 2, font: { size: 11 }, color: "#2d3a4a" } },
+                   tooltip: { filter: function (i) { return i.datasetIndex < 3; }, callbacks: { label: function (c) { var v = (c.parsed.y - 1) * 100; return c.dataset.label + ": " + (v >= 0 ? "+" : "") + v.toFixed(1) + "% vs fair value"; } } } },
+        scales: { x: { ticks: { maxTicksLimit: 8, maxRotation: 0, color: "#6b7686", font: { size: 10 }, callback: function (v) { return this.getLabelForValue(v).slice(0, 4); } }, grid: { display: false } },
+                  y: { type: "logarithmic", position: "right", afterBuildTicks: function (ax) { ax.ticks = [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 5].filter(function (v) { return v >= ax.min && v <= ax.max; }).map(function (v) { return { value: v }; }); },
+                       ticks: { color: "#6b7686", font: { size: 10 }, callback: function (v) { var q = Math.round((v - 1) * 100); return (q > 0 ? "+" : "") + q + "%"; } }, grid: { color: "#f0f2f6" } } } } });
   }
   function fairLine(k) {
     var f = FV[k]; if (!f) return;
