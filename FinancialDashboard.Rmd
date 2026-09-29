@@ -179,10 +179,9 @@ CSVs) and refreshed every day by the GitHub Action in
   <h2>Current Best Buy</h2>
   <div class="best">
     <h3>Fair Value<span>where each asset sits vs its own long-term log regression trend</span></h3>
-    <div class="best-sub">Each asset's whole price history is fit to a logarithmic regression trendline (the "fair value" line). Bars show how far today's price is above or below that line; the most undervalued is on top. Click a bar to see its chart. Updates with every price refresh.</div>
+    <div class="best-sub">Each asset's whole price history is fit to a logarithmic regression trendline (the "fair value" line). Bars show how far today's price is above or below that line; the most undervalued is on top. Below, the same averaged by asset class. Updates with every price refresh.</div>
     <div class="best-chart"><canvas id="fv-chart"></canvas></div>
     <div class="fv-detail"><div class="fv-t">By asset class <span id="fv-class-now"></span></div><div class="fv-c"><canvas id="fv-class"></canvas></div></div>
-    <div class="fv-detail"><div class="fv-t" id="fv-title"></div><div class="fv-c"><canvas id="fv-line"></canvas></div></div>
     <details class="srcs"><summary>Formulas (click to open)</summary><div class="fbody">
       <p><b>Trendline:</b> <code>ln(Price) = a + b × ln(days since the asset began)</code>, fit by least squares on weekly closes over all available history (a power-law, the same kind of log regression used for bitcoin). "Began" = launch or listing date (bitcoin: the Jan 3, 2009 genesis block; treasury companies: the day they started holding coins).</p>
       <p><b>Fair value</b> = the trendline today: <code>e^(a + b × ln(days))</code> · <b>Bar</b> = <code>Price ÷ Fair value − 1</code> · <b>σ</b> = how far that is in standard deviations of the asset's own history around the line (−2σ = rarely this cheap).</p>
@@ -194,17 +193,20 @@ CSVs) and refreshed every day by the GitHub Action in
     <h3>Comparative Value<span>which asset is most beaten down against its own history</span></h3>
     <div class="best-sub">Every asset scored for deepest value: largest negative deviation to its 20-week EMA &amp; 200-day EMA, measured in its own typical swings (z-score) so volatile assets aren't automatically the cheapest. Those further from ATH also rank higher. Updates with every price refresh.</div>
     <div class="best-chart"><canvas id="cv-chart"></canvas></div>
+    <div class="fv-detail"><div class="fv-t">By asset class <span id="cv-class-now"></span></div><div class="fv-c"><canvas id="cv-class"></canvas></div></div>
     <details class="srcs"><summary>Formulas (click to open)</summary><div class="fbody">
       <p><b>Gaps:</b> <code>g₂₀w = ln(Price ÷ EMA₂₀w)</code> and <code>g₂₀₀d = ln(Price ÷ EMA₂₀₀d)</code>, with <code>EMAₜ = α·xₜ + (1 − α)·EMAₜ₋₁</code>, α = 2/21 on weekly closes and 2/201 on daily closes.</p>
       <p><b>Volatility-adjusted (z-score):</b> <code>z = g ÷ standard deviation of g over the last ~2 years (520 trading days)</code>. A −10% gap is a big deal for SPY (≈ −2σ) but routine for a SOL treasury stock (≈ −0.5σ).</p>
       <p><b>ATH bonus:</b> <code>DD = 1 − Price ÷ ATH</code> (highest close since 2016; treasury companies only since they started holding coins).</p>
       <p><b>Value score (bar):</b> <code>−(z₂₀w + z₂₀₀d) ÷ 2 + 0.75 × DD</code>. Higher = cheaper. Assets need 30 days of history.</p>
+      <p><b>By asset class:</b> the average Value score of each bucket's members, every week, drawn as a 4-week average to cut the noise ("today" is the latest unsmoothed value). Members count once they have 30 days of prices.</p>
     </div></details>
   </div>
   <div class="best">
     <h3>Projected Growth<span>today's price vs the forecasters' 2030 targets</span></h3>
     <div class="best-sub">Ranked by average 2030 return (today's price to the median 2030 target). Bars show that return as a CAGR (yearly compound growth) so big and small numbers fit on one chart.</div>
     <div class="best-chart"><canvas id="best-chart"></canvas></div>
+    <div class="fv-detail"><div class="fv-t">By asset class <span id="pg-class-now"></span></div><div class="fv-c"><canvas id="pg-class"></canvas></div></div>
     <div class="best-wrap"><table id="best-table"><thead>
       <tr class="grp"><th colspan="2"></th><th colspan="4" class="g1">Value signals</th><th colspan="7" class="g1">Price targets</th></tr>
       <tr><th>Ticker</th><th>Price</th><th class="g1">Below ATH</th><th>vs 20-wk EMA</th><th>vs 200-day EMA</th><th>Value score</th><th class="g1">Low target</th><th>Median target</th><th>High target</th><th>Avg 12-mo return</th><th>At NAV 1.0x</th><th>CAGR to 2030</th><th>Avg 2030 return</th></tr>
@@ -215,6 +217,7 @@ CSVs) and refreshed every day by the GitHub Action in
       <p><b>Conversions:</b> GLD, SLV, CPER <code>= metal target × ETF price ÷ metal price today</code> · SPY <code>= S&amp;P 500 target ÷ 10.02</code> · copper <code>$/lb = $/t ÷ 2,204.62</code> · UUUU, SILJ, MP <code>= price on the target date × sector 2030 target ÷ sector price on that date</code> (uranium, silver, avg of uranium/silver/gold/copper), locked in dollars.</p>
       <p><b>Treasury companies:</b> <code>CPS = coins ÷ shares</code> · <code>mNAV = Price ÷ (CPS × coin price)</code> · <code>Target = coin 2030 target × CPS × √mNAV</code> (NAV assumed halfway back to 1.0x) · At NAV 1.0x <code>= Price ÷ CPS</code> and <code>CPS × coin median target</code>.</p>
       <p><b>12-month return:</b> each ~1-year target is restated to exactly 12 months from today: if it's further out, <code>Price × (Target ÷ Price)^(12 ÷ months)</code>; if it's sooner, it's carried forward along the path to the median 2030 target. Expired targets are dropped. Stocks use the analyst consensus (12 months from its date).</p>
+      <p><b>By asset class:</b> the average CAGR to the median 2030 target of each bucket's members, every week since March 2020, using that week's price and years left to 2030. It uses today's targets for past weeks, so read it as "how much upside the current targets implied at that week's price."</p>
       <p><b>Returns:</b> <code>Avg 2030 return = Median ÷ Price − 1</code> (ranking) · <code>CAGR = (Median ÷ Price)^(1/Y) − 1</code>, Y = years to Dec 31, 2030 (bar) · <b>Colors:</b> yellow → green by rank; faded red = negative.</p>
     </div></details>
     <details class="srcs"><summary>Sources for every price target (click to open)</summary>
@@ -673,13 +676,11 @@ CSVs) and refreshed every day by the GitHub Action in
               datasets: [{ data: rows.map(function (r) { return Math.round(r.dev * 1000) / 10; }), borderRadius: 3,
                            backgroundColor: rows.map(function (r) { return r.dev < 0 ? gyBar(Math.min(1, -r.z / 2) * 0.8 + 0.2) : "rgba(224,122,122,0.55)"; }) }] },
       options: { indexAxis: "y", responsive: true, maintainAspectRatio: false, animation: false,
-        onClick: function (e, el) { if (el.length) fairLine(rows[el[0].index].k); },
         plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { var r = rows[c.dataIndex];
           return "Price " + fmtMoney(r.px) + " vs fair value " + fmtMoney(r.fair) + " = " + pc(r.dev) + " (" + (r.z >= 0 ? "+" : "−") + Math.abs(r.z).toFixed(1) + "σ)"; } } } },
         scales: { x: { ticks: { callback: function (v) { return v + "%"; }, color: "#6b7686", font: { size: 10 } }, grid: { color: "#eef1f5" },
                        title: { display: true, text: "Price vs log-regression fair value (below 0 = undervalued)", color: "#6b7686", font: { size: 11 } } },
                   y: { ticks: { color: "#2d3a4a", font: { size: 11, weight: "600" } }, grid: { display: false } } } } });
-    if (rows.length) fairLine(rows[0].k);
     try { fairClassChart(); } catch (e) { console.log("fair class", e); }
   }
   var fvClass = null;
@@ -706,25 +707,42 @@ CSVs) and refreshed every day by the GitHub Action in
                   y: { type: "logarithmic", position: "right", afterBuildTicks: function (ax) { ax.ticks = [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 5].filter(function (v) { return v >= ax.min && v <= ax.max; }).map(function (v) { return { value: v }; }); },
                        ticks: { color: "#6b7686", font: { size: 10 }, callback: function (v) { var q = Math.round((v - 1) * 100); return (q > 0 ? "+" : "") + q + "%"; } }, grid: { color: "#f0f2f6" } } } } });
   }
-  function fairLine(k) {
-    var f = FV[k]; if (!f) return;
-    var labels = f.pts.map(function (p) { return p[0]; }), line = function (m) { return f.pts.map(function (p) { return Math.exp(f.a + f.b * Math.log(f.day(p[0])) + m * f.sd); }); };
-    document.getElementById("fv-title").innerHTML = sn(k) + " vs its fair value line <span>" + fmtMoney(f.px) + " today · fair value " + fmtMoney(f.fair) + " · " +
-      (f.dev >= 0 ? "+" : "") + (f.dev * 100).toFixed(1) + "% (" + (f.z >= 0 ? "+" : "−") + Math.abs(f.z).toFixed(1) + "σ) · shaded = ±1σ, dashed = ±2σ</span>";
-    if (fvLine) fvLine.destroy();
-    fvLine = new Chart(document.getElementById("fv-line"), { type: "line",
-      data: { labels: labels, datasets: [
-        { data: line(2), borderColor: "rgba(224,122,122,0.6)", borderDash: [4, 4], borderWidth: 1, pointRadius: 0, fill: false },
-        { data: line(1), borderColor: "rgba(0,0,0,0)", pointRadius: 0, fill: false },
-        { data: line(-1), borderColor: "rgba(0,0,0,0)", pointRadius: 0, fill: "-1", backgroundColor: "rgba(242,196,109,0.18)" },
-        { data: line(-2), borderColor: "rgba(79,157,105,0.7)", borderDash: [4, 4], borderWidth: 1, pointRadius: 0, fill: false },
-        { data: line(0), borderColor: "#b0833a", borderWidth: 1.8, pointRadius: 0, fill: false },
-        { data: f.pts.map(function (p) { return p[1]; }), borderColor: "#3d6fd6", borderWidth: 1.6, pointRadius: 0, tension: 0.1, fill: false }] },
+  // Asset-class lines: average a per-asset measure across each bucket's members, week by week
+  var CLASS_COL = { "AI": "#3d6fd6", "Crypto": "#e0b04a", "Commodities": "#4f9d69" }, CLASS_CH = {};
+  function classChart(id, start, measure, zero, fmt, note, smooth) {
+    var dates = resampleW(DATA.prices["SPY"].points).map(function (p) { return p[0]; }).filter(function (d) { return d >= start; });
+    var today = dates[dates.length - 1], now = [];
+    var ds = BUCKETS.map(function (b) {
+      var data = dates.map(function (d) { var s = 0, n = 0; b.k.forEach(function (k) { if (!DATA.prices[k]) return; var v = measure(k, d); if (v != null && isFinite(v)) { s += v; n++; } }); return n ? s / n : null; });
+      var cur = data[data.length - 1];
+      if (smooth) data = data.map(function (v, i) { var w = data.slice(Math.max(0, i - smooth + 1), i + 1).filter(function (x) { return x != null; }); return w.length ? w.reduce(function (a, x) { return a + x; }, 0) / w.length : null; });
+      var mem = b.k.filter(function (k) { return DATA.prices[k] && measure(k, today) != null; });
+      now.push('<b style="color:' + CLASS_COL[b.n] + '">' + b.n + " " + fmt(cur) + "</b> (" + mem.map(sn).join(", ") + ")");
+      return { label: b.n, data: data, borderColor: CLASS_COL[b.n], borderWidth: 2, pointRadius: 0, tension: 0.2, spanGaps: true };
+    });
+    ds.push({ label: note, data: dates.map(function () { return zero; }), borderColor: "#111", borderDash: [5, 4], borderWidth: 1.2, pointRadius: 0 });
+    document.getElementById(id + "-now").innerHTML = "today: " + now.join(" · ");
+    if (CLASS_CH[id]) CLASS_CH[id].destroy();
+    CLASS_CH[id] = new Chart(document.getElementById(id), { type: "line", data: { labels: dates, datasets: ds },
       options: { animation: false, responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
-        plugins: { legend: { display: false }, tooltip: { filter: function (i) { return i.datasetIndex >= 4; }, callbacks: { label: function (c) { return (c.datasetIndex === 5 ? "Price " : "Fair value ") + fmtMoney(c.parsed.y); } } } },
-        scales: { x: { ticks: { maxTicksLimit: 6, maxRotation: 0, color: "#6b7686", font: { size: 10 }, callback: function (v) { return this.getLabelForValue(v).slice(0, 4); } }, grid: { display: false } },
-                  y: { type: "logarithmic", position: "right", ticks: { maxTicksLimit: 6, color: "#6b7686", font: { size: 10 }, callback: function (v) { return fmtMoney(+v); } }, grid: { color: "#f0f2f6" } } } } });
+        plugins: { legend: { display: true, position: "top", align: "end", labels: { boxWidth: 12, boxHeight: 2, font: { size: 11 }, color: "#2d3a4a" } },
+                   tooltip: { filter: function (i) { return i.datasetIndex < 3; }, callbacks: { label: function (c) { return c.dataset.label + ": " + fmt(c.parsed.y); } } } },
+        scales: { x: { ticks: { maxTicksLimit: 8, maxRotation: 0, color: "#6b7686", font: { size: 10 }, callback: function (v) { return this.getLabelForValue(v).slice(0, 4); } }, grid: { display: false } },
+                  y: { position: "right", ticks: { maxTicksLimit: 6, color: "#6b7686", font: { size: 10 }, callback: function (v) { return fmt(v); } }, grid: { color: "#f0f2f6" } } } } });
   }
+  function valueClassChart() {
+    classChart("cv-class", "2016-06-01", function (k, d) { var v = valueAt(k, d); return v ? v.score : null; }, 0,
+      function (v) { return v == null ? "n/a" : (v >= 0 ? "+" : "") + v.toFixed(2); }, "Neutral (0)", 4);
+  }
+  function growthClassChart() {
+    var end = Date.parse("2030-12-31T00:00:00Z");
+    classChart("pg-class", "2020-03-01", function (k, d) {
+      if (!GROWTH_FN[k]) return null; var P = function (x) { return pxOn(x, d); }, px = P(k); if (!px || idxAt(DATA.prices[k].points, d) < 0) return null;
+      if (T_OF(k) && !P(T_OF(k))) return null;
+      var y = (end - Date.parse(d + "T00:00:00Z")) / 3.15576e10; return (Math.pow(GROWTH_FN[k](P) / px, 1 / y) - 1) * 100;
+    }, 0, function (v) { return v == null ? "n/a" : (v >= 0 ? "+" : "") + v.toFixed(1) + "%/yr"; }, "0%");
+  }
+  function T_OF(k) { var t = DATA.targets[k]; return t ? (t.of || (t.kind === "nav" ? t.coin : null)) : null; }
   var VALUE = {}, GROWTH = [], GROWTH_FN = {};
   function compValue() {
     var rows = [];
@@ -998,6 +1016,8 @@ CSVs) and refreshed every day by the GitHub Action in
     try { fairChart(); } catch (e) { console.log("fair value", e); }
     try { compValue(); } catch (e) { console.log("comparative value", e); }
     try { bestBuy(); } catch (e) { console.log("best buy", e); }
+    try { valueClassChart(); } catch (e) { console.log("value class", e); }
+    try { growthClassChart(); } catch (e) { console.log("growth class", e); }
     try { weekPicks(); } catch (e) { console.log("picks", e); }
     if (d.treasury) { TRE = d.treasury; var bp = d.prices["BTC-USD"].points, sp = d.prices["SOL-USD"].points; treBtc = bp[bp.length - 1][1]; treSolP = sp[sp.length - 1][1]; treRender(); treLive(); }
   }).catch(function () { document.getElementById("fd-updated").textContent = "Data could not be loaded."; });
