@@ -344,6 +344,7 @@ _________________________</p>
 .fd .srcs .fbody code{background:#fdf3d0;padding:0 .2rem;border-radius:3px;font-size:.76rem}
 .fd .srcs .fbody p{margin:.25rem 0}
 .fd .picks-f{margin-top:0}
+.fd .fv-detail{border-top:1px solid var(--line);margin-top:.5rem;padding-top:.4rem}.fd .fv-t{font-size:.84rem;font-weight:600}.fd .fv-t span{font-weight:400;color:var(--muted);font-size:.78rem;margin-left:.4rem}.fd .fv-c{position:relative;height:260px}
 .fd .spec{display:grid;grid-template-columns:max-content 1fr;gap:.18rem .9rem;font-size:.82rem;line-height:1.45;max-width:1000px;margin:.2rem 0 .7rem;padding:.55rem .8rem;border:1px solid var(--line);border-radius:8px;background:#fafbfd}
 .fd .spec .sl{color:var(--muted);font-weight:600;white-space:nowrap}.fd .spec .sv b{color:#b0833a}
 .fd .btstats{width:100%;border-collapse:collapse;font-size:.76rem;font-variant-numeric:tabular-nums;margin:.35rem 0 .2rem}.fd .btstats th{color:var(--muted);font-weight:600;text-align:right;padding:.2rem .4rem;border-bottom:1px solid var(--line)}.fd .btstats td{text-align:right;padding:.2rem .4rem;border-bottom:1px solid #f3f4f7}.fd .btstats td:first-child,.fd .btstats th:first-child{text-align:left;font-weight:600}
@@ -451,6 +452,17 @@ _________________________</p>
   <div class="grid" id="fd-prices"></div>
   <br><br><br><br><br><br><br><br><br><br>
   <h2>Current Best Buy</h2>
+  <div class="best">
+    <h3>Fair Value<span>where each asset sits vs its own long-term log regression trend</span></h3>
+    <div class="best-sub">Each asset's whole price history is fit to a logarithmic regression trendline (the "fair value" line). Bars show how far today's price is above or below that line; the most undervalued is on top. Click a bar to see its chart. Updates with every price refresh.</div>
+    <div class="best-chart"><canvas id="fv-chart"></canvas></div>
+    <div class="fv-detail"><div class="fv-t" id="fv-title"></div><div class="fv-c"><canvas id="fv-line"></canvas></div></div>
+    <details class="srcs"><summary>Formulas (click to open)</summary><div class="fbody">
+      <p><b>Trendline:</b> <code>ln(Price) = a + b × ln(days since the asset began)</code>, fit by least squares on weekly closes over all available history (a power-law, the same kind of log regression used for bitcoin). "Began" = launch or listing date (bitcoin: the Jan 3, 2009 genesis block; treasury companies: the day they started holding coins).</p>
+      <p><b>Fair value</b> = the trendline today: <code>e^(a + b × ln(days))</code> · <b>Bar</b> = <code>Price ÷ Fair value − 1</code> · <b>σ</b> = how far that is in standard deviations of the asset's own history around the line (−2σ = rarely this cheap).</p>
+      <p>Needs at least 2 years of prices to fit a trend, so the newer treasury companies and SPCX aren't shown. A trendline describes the past; it isn't a forecast.</p>
+    </div></details>
+  </div>
   <div class="best">
     <h3>Comparative Value<span>which asset is most beaten down against its own history</span></h3>
     <div class="best-sub">Every asset scored for deepest value: largest negative deviation to its 20-week EMA &amp; 200-day EMA, measured in its own typical swings (z-score) so volatile assets aren't automatically the cheapest. Those further from ATH also rank higher. Updates with every price refresh.</div>
@@ -908,6 +920,59 @@ _________________________</p>
     if (i < 29 || isNaN(s.score[i])) return null;
     return { i: i, score: s.score[i], z20: s.z20[i], z200: s.z200[i], dev20: Math.exp(s.g20[i]) - 1, dev200: Math.exp(s.g200[i]) - 1, dd: s.dd[i], ath: s.ath[i] };
   }
+  // ---------- Fair value: log regression trendline per asset ----------
+  var INCEPTION = { "BTC-USD": "2009-01-03", "ETH-USD": "2015-07-30", "SOL-USD": "2020-03-16", "SPY": "1993-01-22", "TSLA": "2010-06-29", "NVDA": "1999-01-22",
+                    "AVGO": "2009-08-06", "MU": "1984-06-01", "MP": "2020-06-01", "GLD": "2004-11-18", "SLV": "2006-04-28", "SILJ": "2012-11-29", "CPER": "2011-11-15", "UUUU": "2013-12-01" };
+  var fvChart = null, fvLine = null, FV = {};
+  function fairValue(k) {
+    var pts = resampleW(DATA.prices[k].points); if (pts.length < 104) return null;   // needs 2 years of weekly closes
+    var t0 = Date.parse((INCEPTION[k] || pts[0][0]) + "T00:00:00Z"), day = function (d) { return Math.max(1, (Date.parse(d + "T00:00:00Z") - t0) / 864e5 + 1); };
+    var n = pts.length, sx = 0, sy = 0, sxx = 0, sxy = 0, X = [], Y = [];
+    pts.forEach(function (p) { var x = Math.log(day(p[0])), y = Math.log(p[1]); X.push(x); Y.push(y); sx += x; sy += y; sxx += x * x; sxy += x * y; });
+    var b = (n * sxy - sx * sy) / (n * sxx - sx * sx), a = (sy - b * sx) / n;
+    var sd = Math.sqrt(Y.reduce(function (s, y, i) { var e = y - a - b * X[i]; return s + e * e; }, 0) / (n - 2));
+    var last = DATA.prices[k].points[DATA.prices[k].points.length - 1], xn = Math.log(day(last[0])), fair = Math.exp(a + b * xn);
+    return { k: k, a: a, b: b, sd: sd, pts: pts, day: day, fair: fair, px: last[1], dev: last[1] / fair - 1, z: (Math.log(last[1]) - (a + b * xn)) / sd };
+  }
+  function fairChart() {
+    var rows = [], skip = [];
+    bestUniverse().forEach(function (k) { var f = fairValue(k); if (f) { rows.push(f); FV[k] = f; } else skip.push(k); });
+    rows.sort(function (x, y) { return x.dev - y.dev; });
+    var cv = document.getElementById("fv-chart"); cv.parentNode.style.height = (rows.length * 19 + 40) + "px";
+    function pc(x) { return (x >= 0 ? "+" : "") + (x * 100).toFixed(1) + "%"; }
+    if (fvChart) fvChart.destroy();
+    fvChart = new Chart(cv, { type: "bar",
+      data: { labels: rows.map(function (r) { return sn(r.k); }),
+              datasets: [{ data: rows.map(function (r) { return Math.round(r.dev * 1000) / 10; }), borderRadius: 3,
+                           backgroundColor: rows.map(function (r) { return r.dev < 0 ? gyBar(Math.min(1, -r.z / 2) * 0.8 + 0.2) : "rgba(224,122,122,0.55)"; }) }] },
+      options: { indexAxis: "y", responsive: true, maintainAspectRatio: false, animation: false,
+        onClick: function (e, el) { if (el.length) fairLine(rows[el[0].index].k); },
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { var r = rows[c.dataIndex];
+          return "Price " + fmtMoney(r.px) + " vs fair value " + fmtMoney(r.fair) + " = " + pc(r.dev) + " (" + (r.z >= 0 ? "+" : "−") + Math.abs(r.z).toFixed(1) + "σ)"; } } } },
+        scales: { x: { ticks: { callback: function (v) { return v + "%"; }, color: "#6b7686", font: { size: 10 } }, grid: { color: "#eef1f5" },
+                       title: { display: true, text: "Price vs log-regression fair value (below 0 = undervalued)", color: "#6b7686", font: { size: 11 } } },
+                  y: { ticks: { color: "#2d3a4a", font: { size: 11, weight: "600" } }, grid: { display: false } } } } });
+    if (rows.length) fairLine(rows[0].k);
+  }
+  function fairLine(k) {
+    var f = FV[k]; if (!f) return;
+    var labels = f.pts.map(function (p) { return p[0]; }), line = function (m) { return f.pts.map(function (p) { return Math.exp(f.a + f.b * Math.log(f.day(p[0])) + m * f.sd); }); };
+    document.getElementById("fv-title").innerHTML = sn(k) + " vs its fair value line <span>" + fmtMoney(f.px) + " today · fair value " + fmtMoney(f.fair) + " · " +
+      (f.dev >= 0 ? "+" : "") + (f.dev * 100).toFixed(1) + "% (" + (f.z >= 0 ? "+" : "−") + Math.abs(f.z).toFixed(1) + "σ) · shaded = ±1σ, dashed = ±2σ</span>";
+    if (fvLine) fvLine.destroy();
+    fvLine = new Chart(document.getElementById("fv-line"), { type: "line",
+      data: { labels: labels, datasets: [
+        { data: line(2), borderColor: "rgba(224,122,122,0.6)", borderDash: [4, 4], borderWidth: 1, pointRadius: 0, fill: false },
+        { data: line(1), borderColor: "rgba(0,0,0,0)", pointRadius: 0, fill: false },
+        { data: line(-1), borderColor: "rgba(0,0,0,0)", pointRadius: 0, fill: "-1", backgroundColor: "rgba(242,196,109,0.18)" },
+        { data: line(-2), borderColor: "rgba(79,157,105,0.7)", borderDash: [4, 4], borderWidth: 1, pointRadius: 0, fill: false },
+        { data: line(0), borderColor: "#b0833a", borderWidth: 1.8, pointRadius: 0, fill: false },
+        { data: f.pts.map(function (p) { return p[1]; }), borderColor: "#3d6fd6", borderWidth: 1.6, pointRadius: 0, tension: 0.1, fill: false }] },
+      options: { animation: false, responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
+        plugins: { legend: { display: false }, tooltip: { filter: function (i) { return i.datasetIndex >= 4; }, callbacks: { label: function (c) { return (c.datasetIndex === 5 ? "Price " : "Fair value ") + fmtMoney(c.parsed.y); } } } },
+        scales: { x: { ticks: { maxTicksLimit: 6, maxRotation: 0, color: "#6b7686", font: { size: 10 }, callback: function (v) { return this.getLabelForValue(v).slice(0, 4); } }, grid: { display: false } },
+                  y: { type: "logarithmic", position: "right", ticks: { maxTicksLimit: 6, color: "#6b7686", font: { size: 10 }, callback: function (v) { return fmtMoney(+v); } }, grid: { color: "#f0f2f6" } } } } });
+  }
   var VALUE = {}, GROWTH = [], GROWTH_FN = {};
   function compValue() {
     var rows = [];
@@ -1178,6 +1243,7 @@ _________________________</p>
   fetch("data/markets.json?v=" + Date.now()).then(function (r) { return r.json(); }).then(function (d) {
     DATA = d; document.getElementById("fd-updated").textContent = "Updated " + d.updated + " · market data refreshed about every 2 hours; bitcoin and S&P futures stream live";
     strip(); render(); cryptoLive(); debtClock(d.debt_clock);
+    try { fairChart(); } catch (e) { console.log("fair value", e); }
     try { compValue(); } catch (e) { console.log("comparative value", e); }
     try { bestBuy(); } catch (e) { console.log("best buy", e); }
     try { weekPicks(); } catch (e) { console.log("picks", e); }
