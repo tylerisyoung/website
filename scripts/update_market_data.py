@@ -168,10 +168,12 @@ TARGETS = {
         S("Baron Capital (Ron Baron)", 2250, "2030", "2026", "", "\"$2,000 or $2,500\" (midpoint)"),
         S("24/7 Wall St (Vandita Jadeja)", 510.02, "2030", "2026-05", "https://247wallst.com/investing/2026/05/20/this-will-be-teslas-stock-price-in-2030/", "Base case")],
       "cons": {"by": "MarketBeat", "avg": 410.98, "low": 25.28, "high": 840, "n": 47, "date": "2026-09-28", "url": MB + "NASDAQ/TSLA/forecast/"}},
+    # SPCX: Tyler asked for the higher-end 2030 calls; the two lowest (Goldman pre-IPO $135, Motley Fool/Drury $109) were removed
     "SPCX": {"kind": "direct", "unit": "$", "long": [
-        S("ARK Invest", 190, "2030", "2025-06", "https://www.ark-invest.com/articles/valuation-models/ark-expected-value-spacex-2030", "~$2.5T enterprise value, per share via watcher.guru"),
-        S("Goldman Sachs (pre-IPO model, as reported)", 135, "2030", "2026-06", "https://watcher.guru/news/spacex-stock-price-prediction-for-2030-revenue-growth-vs-valuation-reality", "Secondary report"),
-        S("Motley Fool (Keithen Drury)", 109, "2030", "2026-09", "https://www.fool.com/investing/2026/09/27/a-10000-investment-in-spacex-will-be-worth-this-mu/", "~$1.5T market cap")],
+        S("Raymond James (Brian Gesuale)", 800, "2031", "2026-07", "https://www.fool.com/investing/2026/07/10/raymond-james-sets-wall-streets-highest-price-targ/", "Street-high target; ~$10.8T market cap"),
+        S("Morgan Stanley (Adam Jonas)", 600, "bull case", "2026-08", "https://www.thestreet.com/investing/stocks/morgan-stanley-sends-strong-signal-on-spacex-stock-price-target", "Bull case (~$8T); base is $300. Included by request"),
+        S("Motley Fool (Ryan Vanzo), from Goldman's 2030 AI revenue estimate", 465, "2030", "2026-07", "https://finance.yahoo.com/markets/stocks/articles/prediction-500-000-invested-spacex-015900847.html", "~$6.3T market cap"),
+        S("ARK Invest", 190, "2030", "2025-06", "https://www.ark-invest.com/articles/valuation-models/ark-expected-value-spacex-2030", "~$2.5T enterprise value (expected value)")],
       "cons": {"by": "MarketBeat", "avg": 219.24, "low": 75, "high": 800, "n": 44, "date": "2026-09-28", "url": MB + "NASDAQ/SPCX/forecast/"}},
     "NVDA": {"kind": "direct", "unit": "$", "long": [
         S("I/O Fund (Beth Kindig)", 820, "2030", "2026-04", "https://io-fund.com/ai-stocks/nvidia-stock-20-trillion-market-cap-timing", "$20T market cap"),

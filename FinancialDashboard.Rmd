@@ -145,15 +145,15 @@ CSVs) and refreshed every day by the GitHub Action in
   <h2>Current Best Buy</h2>
   <div class="best">
     <h3>Comparative Value<span>which asset is most beaten down against the others</span></h3>
-    <div class="best-sub">Every asset compared against every other one, pair by pair. Score = share of head-to-head pairs won for deepest value and largest negative deviation to 20week ema &amp; 200day EMA. Updates with every price refresh.</div>
+    <div class="best-sub">Every asset compared against every other one, pair by pair. Score = share of head-to-head pairs won for deepest value and largest negative deviation to 20week ema &amp; 200day EMA. Those further from ATH also rank higher. Updates with every price refresh.</div>
     <div class="best-chart"><canvas id="cv-chart"></canvas></div>
   </div>
   <div class="best">
     <h3>Projected Growth<span>today's price vs the forecasters' 2030 targets</span></h3>
-    <div class="best-sub">Ranked by average 2030 return (today's price to the median 2030 target). Bars show that return as a yearly pace so big and small numbers fit on one chart.</div>
+    <div class="best-sub">Ranked by average 2030 return (today's price to the median 2030 target). Bars show that return as a CAGR (yearly compound growth) so big and small numbers fit on one chart.</div>
     <div class="best-chart"><canvas id="best-chart"></canvas></div>
     <div class="best-wrap"><table id="best-table"><thead><tr>
-      <th>Ticker</th><th>Price</th><th>Low target</th><th>Median target</th><th>High target</th><th>Avg 12-mo return</th><th>At NAV 1.0x</th><th>Avg 2030 return</th>
+      <th>Ticker</th><th>Price</th><th>Below ATH</th><th>vs 20-wk EMA</th><th>vs 200-day EMA</th><th>Value pairs won</th><th>Low target</th><th>Median target</th><th>High target</th><th>Avg 12-mo return</th><th>At NAV 1.0x</th><th>CAGR to 2030</th><th>Avg 2030 return</th>
     </tr></thead><tbody></tbody></table></div>
     <div class="best-method" id="best-method"></div>
     <details class="srcs"><summary>Sources for every price target (click to open)</summary>
@@ -387,14 +387,21 @@ CSVs) and refreshed every day by the GitHub Action in
       var k = d.toISOString().slice(0, 10); if (k === key) out[out.length - 1] = p[1]; else { out.push(p[1]); key = k; } });
     return out;
   }
+  var VALUE = {};   // per-asset Comparative Value results, also shown in the table
   function compValue() {
-    var univ = bestUniverse(), rows = univ.map(function (k) { return { k: k, wins: 0, pairs: 0, devSum: 0, worst: 0, worstVs: null, short: false }; });
+    var univ = bestUniverse(), rows = univ.map(function (k) {
+      var pts = DATA.prices[k].points, v = pts.map(function (p) { return p[1]; }), last = v[v.length - 1], ath = Math.max.apply(null, v);
+      var recent = pts.slice(-520);
+      return { k: k, wins: 0, pairs: 0, devSum: 0, worst: 0, worstVs: null, short: false, ath: ath, dd: 1 - last / ath,
+               dev20: last / ema(weeklyClose(recent), 20) - 1, dev200: last / ema(recent.map(function (p) { return p[1]; }), 200) - 1 };
+    });
     for (var i = 0; i < rows.length; i++) for (var j = i + 1; j < rows.length; j++) {
       var a = rows[i], b = rows[j], r = ratio(a.k, b.k).slice(-520);   // about 2 years of shared trading days
       if (r.length < 30) continue;
       var v = r.map(function (p) { return p[1]; }), last = v[v.length - 1];
       var d200 = Math.log(last / ema(v, 200)), d20w = Math.log(last / ema(weeklyClose(r), 20));
-      var dev = (d200 + d20w) / 2;       // below 0: a is beaten down against b
+      var dATH = b.dd - a.dd;            // below 0: a is further below its all-time high than b
+      var dev = (d200 + d20w + dATH) / 3; // below 0: a is the better value against b
       if (dev < 0) a.wins++; else b.wins++;
       a.pairs++; b.pairs++; a.devSum += dev; b.devSum -= dev;
       if (dev < a.worst) { a.worst = dev; a.worstVs = b.k; }
@@ -404,12 +411,13 @@ CSVs) and refreshed every day by the GitHub Action in
     rows = rows.filter(function (r) { return r.pairs; });
     rows.forEach(function (r) { r.score = r.wins / r.pairs; r.dev = r.devSum / r.pairs; r.t = r.score; });
     rows.sort(function (a, b) { return b.score - a.score || a.dev - b.dev; });
-    function pctDev(x) { var p = (Math.exp(x) - 1) * 100; return (p >= 0 ? "+" : "") + p.toFixed(1) + "%"; }
+    VALUE = {}; rows.forEach(function (r) { VALUE[r.k] = r; });
+    function pc(x) { return (x >= 0 ? "+" : "") + (x * 100).toFixed(1) + "%"; }
     if (cvChart) cvChart.destroy();
     cvChart = barChart(document.getElementById("cv-chart"), rows, rows.map(function (r) { return Math.round(r.score * 1000) / 10; }),
-      function (r) { return "Beaten down in " + r.wins + " of " + r.pairs + " pairs; avg gap to pair EMAs " + pctDev(r.dev) +
-        (r.worstVs ? "; deepest vs " + sn(r.worstVs) + " (" + pctDev(r.worst) + ")" : "") + (r.short ? "; short price history" : ""); },
-      { min: 0, max: 100, title: { display: true, text: "Pairs where it is below the pair's 20-week & 200-day EMAs", color: "#6b7686", font: { size: 11 } } });
+      function (r) { return "Better value in " + r.wins + " of " + r.pairs + " pairs; " + Math.round(r.dd * 100) + "% below ATH; vs 20-wk EMA " + pc(r.dev20) +
+        ", vs 200-day EMA " + pc(r.dev200) + (r.worstVs ? "; cheapest vs " + sn(r.worstVs) : "") + (r.short ? "; short price history" : ""); },
+      { min: 0, max: 100 });
   }
 
   // Chart 2 + table, Projected Growth: today's price vs median 2030 target
@@ -449,20 +457,24 @@ CSVs) and refreshed every day by the GitHub Action in
     bestChart = barChart(document.getElementById("best-chart"), rows, rows.map(function (r) { return Math.round(r.yr * 1000) / 10; }),
       function (r) { return "Median 2030 target " + m(r.base) + " = " + rt(r.r30) + " total (" + (r.yr * 100).toFixed(1) + "% a year)" +
         (r.r12 != null ? "; 12-mo avg " + rt(r.r12) : ""); },
-      { title: { display: true, text: "Yearly pace to the median 2030 target", color: "#6b7686", font: { size: 11 } } });
+      { title: { display: true, text: "CAGR to the median 2030 target", color: "#6b7686", font: { size: 11 } } });
     // table
     function gy(t) { t = Math.max(0, Math.min(1, t)); var a = [252, 236, 178], b = [183, 226, 196];
       return "rgb(" + a.map(function (x, i) { return Math.round(x + (b[i] - x) * t); }).join(",") + ")"; }
     function shade(v, cap) { return v == null ? "" : ' style="background:' + gy(Math.log(1 + Math.max(0, v)) / Math.log(1 + cap)) + '"'; }
     function tp(v, px) { var g = v / px - 1; return m(v) + "<small>" + (g >= 0 ? "+" : "") + Math.round(g * 100).toLocaleString("en-US") + "%</small>"; }
+    function pc1(x) { return (x >= 0 ? "+" : "") + (x * 100).toFixed(1) + "%"; }
     function k$(v) { return v >= 1e6 ? "$" + (v / 1e6).toFixed(2) + "M" : v >= 1e3 ? "$" + (v / 1e3).toFixed(1) + "k" : "$" + v.toFixed(v < 10 ? 2 : 0); }
     document.querySelector("#best-table tbody").innerHTML = rows.map(function (r) {
       var navTxt = r.nav1 ? "now = " + r.nav1.coin + " " + k$(r.nav1.now) + "<small>" + r.nav1.coin + " " + k$(r.nav1.cbase) + " = " + m(r.nav1.tgt) + "</small>" : "";
       var t = T[r.k], who = t.cons ? "analysts" : "forecasters";
       var r12 = r.r12 != null ? rt(r.r12) + "<small>" + r.n12 + " " + who + "</small>" : '<span class="pct">n/a</span>';
-      return '<tr title="' + (DATA.prices[r.k].name || r.k) + (r.note ? " - " + r.note : "") + '"><td>' + sn(r.k) + "</td><td>" + m(r.px) + "</td><td>" + tp(r.lo, r.px) +
+      var V = VALUE[r.k], vcells = V ? '<td style="background:' + gy(V.dd) + '">' + Math.round(V.dd * 100) + "%<small>ATH " + m(V.ath) + "</small></td>" +
+        '<td style="background:' + gy(-V.dev20 / 0.3) + '">' + pc1(V.dev20) + "</td>" + '<td style="background:' + gy(-V.dev200 / 0.3) + '">' + pc1(V.dev200) + "</td>" +
+        '<td style="background:' + gy(V.score) + '">' + V.wins + "/" + V.pairs + "<small>" + Math.round(V.score * 100) + "%</small></td>" : "<td></td><td></td><td></td><td></td>";
+      return '<tr title="' + (DATA.prices[r.k].name || r.k) + (r.note ? " - " + r.note : "") + '"><td>' + sn(r.k) + "</td><td>" + m(r.px) + "</td>" + vcells + "<td>" + tp(r.lo, r.px) +
         "</td><td><b>" + m(r.base) + "</b><small>" + (r.note ? r.note.split(";")[0] + ", " : "2030, ") + "n=" + r.n + "</small></td><td>" + tp(r.hi, r.px) +
-        "</td><td" + shade(r.r12, 1) + ">" + r12 + "</td><td>" + navTxt + "</td><td" + shade(r.r30, 10) + "><b>" + rt(r.r30) + "</b><small>" + (r.yr * 100).toFixed(1) + "% a year</small></td></tr>";
+        "</td><td" + shade(r.r12, 1) + ">" + r12 + "</td><td>" + navTxt + "</td><td" + shade(r.yr, 1) + ">" + (r.yr * 100).toFixed(1) + "%</td><td" + shade(r.r30, 10) + "><b>" + rt(r.r30) + "</b></td></tr>";
     }).join("");
     // sources
     function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
@@ -488,14 +500,15 @@ CSVs) and refreshed every day by the GitHub Action in
     document.getElementById("best-method").innerHTML =
       "<h4>How it works: Comparative Value</h4><ul>" +
       "<li>Every asset is paired with every other one, for example SOL vs BTC. For each pair we look at the price ratio: how much of one asset a single unit of the other buys.</li>" +
-      "<li>We compare today's ratio with its 20-week and 200-day moving averages (exponential, or EMA) and average the two gaps.</li>" +
-      "<li>If the ratio is below its averages, the first asset has fallen behind the second and \"wins\" that pair as the better value. The bet is that stretched ratios drift back toward their average.</li>" +
-      "<li>Score = the share of pairs an asset wins. Top of the chart = beaten down against the most other assets. Ties go to the one with the bigger average gap. Hover a bar to see which asset it is most beaten down against.</li>" +
-      "<li>This chart ignores price targets completely. It only says what is cheap relative to its own recent past, not that it will recover.</li></ul>" +
+      "<li>Three things decide who wins each pair, weighted equally: (1) how far that ratio is below its 20-week moving average, (2) how far it is below its 200-day moving average (both exponential, or EMA), and (3) which asset is further below its own all-time high.</li>" +
+      "<li>Whichever asset comes out more beaten down wins the pair as the better value. The bet is that stretched ratios drift back toward their average, and that deep drawdowns leave more room to recover.</li>" +
+      "<li>Score = the share of pairs an asset wins. Top of the chart = the best value against the most other assets. Ties go to the one with the bigger average gap.</li>" +
+      "<li>In the table: <b>Below ATH</b> = how far today's price is under the highest close in the data (up to 10 years; for treasury companies that can include years before they held coins). <b>vs 20-wk / 200-day EMA</b> = the asset's own price against its own averages, a quick read on the same idea. <b>Value pairs won</b> = the chart score.</li>" +
+      "<li>This chart ignores price targets completely. It only says what is cheap relative to its own past and to the other assets, not that it will recover.</li></ul>" +
       "<h4>How it works: Projected Growth</h4><ul>" +
       "<li>For each asset we collected 2030 price targets from at least 3 named forecasters (every one is listed with its link in the Sources list below). Only their main (base-case) calls, not bull or bear scenarios.</li>" +
       "<li><b>Low / median / high target</b> = the smallest, middle and largest of those 2030 targets. For BTC, SOL and TSLA the InvestAnswers target counts for half and the other forecasters share the other half.</li>" +
-      "<li><b>Avg 2030 return</b> = the move from today's price to the median 2030 target. The list is ranked by this. The bar shows the same return as a yearly pace.</li>" +
+      "<li><b>Avg 2030 return</b> = the total move from today's price to the median 2030 target. The list is ranked by this. <b>CAGR to 2030</b> (and the bar) = the same move as a yearly compound rate.</li>" +
       "<li><b>Avg 12-mo return</b> = the move to the average of the roughly one-year targets: the Wall Street analyst average for stocks, and bank and research-firm forecasts for crypto and commodities.</li>" +
       "<li><b>Treasury companies</b> (MSTR, Metaplanet, FWDI, DFDV, UPXI, HSDT) are priced off their coin: coin's 2030 target x coins each share holds x a premium or discount to holdings (NAV) that is assumed to move halfway back to 1.0x by 2030. <b>At NAV 1.0x</b> shows what one share is worth in coin terms today, and what it would be worth if the coin hits its median target and the stock trades exactly at its holdings.</li>" +
       "<li>MP, Energy Fuels and SILJ have no named 2030 targets, so they borrow a sector outlook: Energy Fuels = uranium, SILJ = silver, MP = the average of uranium, silver, gold and copper.</li>" +
