@@ -468,13 +468,11 @@ _________________________</p>
     <h3>Comparative Value<span>which asset is most beaten down against its own history</span></h3>
     <div class="best-sub">Every asset scored for deepest value: largest negative deviation to its 20-week EMA &amp; 200-day EMA, measured in its own typical swings (z-score) so volatile assets aren't automatically the cheapest. Those further from ATH also rank higher. Updates with every price refresh.</div>
     <div class="best-chart"><canvas id="cv-chart"></canvas></div>
-    <div class="fv-detail"><div class="fv-t">By asset class <span id="cv-class-now"></span></div><div class="fv-c"><canvas id="cv-class"></canvas></div></div>
     <details class="srcs"><summary>Formulas (click to open)</summary><div class="fbody">
       <p><b>Gaps:</b> <code>g₂₀w = ln(Price ÷ EMA₂₀w)</code> and <code>g₂₀₀d = ln(Price ÷ EMA₂₀₀d)</code>, with <code>EMAₜ = α·xₜ + (1 − α)·EMAₜ₋₁</code>, α = 2/21 on weekly closes and 2/201 on daily closes.</p>
       <p><b>Volatility-adjusted (z-score):</b> <code>z = g ÷ standard deviation of g over the last ~2 years (520 trading days)</code>. A −10% gap is a big deal for SPY (≈ −2σ) but routine for a SOL treasury stock (≈ −0.5σ).</p>
       <p><b>ATH bonus:</b> <code>DD = 1 − Price ÷ ATH</code> (highest close since 2016; treasury companies only since they started holding coins).</p>
       <p><b>Value score (bar):</b> <code>−(z₂₀w + z₂₀₀d) ÷ 2 + 0.75 × DD</code>. Higher = cheaper. Assets need 30 days of history.</p>
-      <p><b>By asset class:</b> the average Value score of each bucket's members, every week, drawn as a 4-week average to cut the noise ("today" is the latest unsmoothed value). Members count once they have 30 days of prices.</p>
     </div></details>
   </div>
   <div class="best">
@@ -1291,7 +1289,6 @@ _________________________</p>
     try { fairChart(); } catch (e) { console.log("fair value", e); }
     try { compValue(); } catch (e) { console.log("comparative value", e); }
     try { bestBuy(); } catch (e) { console.log("best buy", e); }
-    try { valueClassChart(); } catch (e) { console.log("value class", e); }
     try { growthClassChart(); } catch (e) { console.log("growth class", e); }
     try { weekPicks(); } catch (e) { console.log("picks", e); }
     if (d.treasury) { TRE = d.treasury; var bp = d.prices["BTC-USD"].points, sp = d.prices["SOL-USD"].points; treBtc = bp[bp.length - 1][1]; treSolP = sp[sp.length - 1][1]; treRender(); treLive(); }
