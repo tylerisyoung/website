@@ -520,6 +520,19 @@ _________________________</p>
     <p>Non-rebalance weeks: <code>gap = max(0, target weight × (portfolio + $135) − current value)</code>; the $135 is split in proportion to the gaps (any leftover goes by target weight). First Monday of each month: every holding is reset to <code>target weight × portfolio</code>.</p>
     <p>Limits: uses today's 2030 price targets and coin holdings for every past week, which flatters the early years (the model "knows" where targets ended up); gold and copper use futures prices (an IRA would hold GLD or CPER); no trading costs. A backtest, not a promise.</p>
   </div></details>
+  <br><br><br><br><br>
+  <h2>Backtest 3: Rebalance Into New Names</h2>
+  <div class="bt-sub">DCA $7,000 a year into a Roth IRA, invested weekly since March 2020, rebalancing into assets not yet owned</div>
+  <div class="bt-exp">Same weekly buying as Backtest 2: <b>about $135 every Monday</b>, <b>AI 40%, Crypto 40%, Commodities 20%</b>, with new money going to that week's top-10 picks that are furthest <i>below</i> their target weight. The difference is the <b>monthly rebalance</b>. Instead of selling everything back into the current picks, each bucket is reset to its 40/40/20 weight by <b>trimming any holding that has grown above an equal share of its bucket</b> and putting that money into the bucket's assets <b>not already owned</b>. Nothing is sold outright, and over time the portfolio spreads across every name in each bucket. Once a bucket owns all its names, the trimmed money tops up the holdings that have fallen below an equal share. The S&amp;P line is the same $135 a week into SPY.</div>
+  <div class="bt-buckets" id="bt-buckets3"></div>
+  <div class="sim"><div class="sim-t">Backtest 3 since March 2020 <span id="sim3-res"></span></div>
+    <div class="sim-c"><canvas id="sim3-chart"></canvas></div>
+    <details class="srcs"><summary>Week-by-week targets (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Weekly-buy targets that week</th><th>Strategy</th><th>S&amp;P DCA</th></tr></thead><tbody id="sim3-log"></tbody></table></div></details></div>
+  <details class="srcs picks-f"><summary>Backtest rules (click to open)</summary><div class="fbody">
+    <p>Weekly buys are identical to Backtest 2: <code>target weight = bucket weight ÷ bucket's assets in the top 10</code>, and the $135 is split in proportion to <code>max(0, target × portfolio − current value)</code>.</p>
+    <p>First Monday of each month, per bucket: <code>share = bucket weight × portfolio ÷ (owned names + unowned names)</code>. Any owned holding above <code>share</code> is trimmed to it; <code>bucket target − what's kept</code> is split equally across the bucket's unowned names (only names with 30+ days of price history that day). If every name is already owned, it goes to the holdings below <code>share</code>.</p>
+    <p>Same limits as the other backtests: today's 2030 targets and coin holdings are used for every past week (hindsight); gold and copper use futures prices; no trading costs.</p>
+  </div></details>
   <br><br><br><br><br><br><br><br><br><br>
   <h2>Economy</h2>
   <div class="debtclock"><div class="lab">U.S. National Debt</div>
@@ -873,7 +886,7 @@ _________________________</p>
 
   // Backtest: every Monday for the past year, rerun both rankings with only the prices known that day (top 10),
   // then invest that week's $7,000 / 52 toward bucket target weights (AI 40%, Crypto 40%, Commodities 20%), rebalancing monthly.
-  var SIMCH = {}, BT_LOG = [];
+  var SIMCH = {}, BT_CACHE = null;
   var BUCKETS = [{ n: "AI", w: 0.4, k: ["TSLA", "SPCX", "NVDA", "AVGO", "MU"] },
                  { n: "Crypto", w: 0.4, k: ["BTC-USD", "ETH-USD", "SOL-USD", "MSTR", "MTPLF", "FWDI", "DFDV", "UPXI", "HSDT"] },
                  { n: "Commodities", w: 0.2, k: ["GC=F", "SLV", "SILJ", "HG=F", "UUUU", "MP"] }];
@@ -885,16 +898,28 @@ _________________________</p>
     function idxAt(pts, day) { var lo = 0, hi = pts.length - 1, r = -1; while (lo <= hi) { var m = (lo + hi) >> 1; if (pts[m][0] <= day) { r = m; lo = m + 1; } else hi = m - 1; } return r; }
     var PX = {}, RUNMAX = {}; univ.concat(["SPY", "SI=F", "BTC-USD", "SOL-USD"]).forEach(function (k) { if (!DATA.prices[k]) return; var p = DATA.prices[k].points, mx = -1; PX[k] = p; RUNMAX[k] = p.map(function (q) { mx = Math.max(mx, q[1]); return mx; }); });
     function pxAt(k, day) { var i = idxAt(PX[k], day); return i < 0 ? null : PX[k][i][1]; }
-    var PAIR = {}; for (var i = 0; i < univ.length; i++) for (var j = i + 1; j < univ.length; j++) PAIR[univ[i] + "|" + univ[j]] = ratio(univ[i], univ[j]);
-    function picksAt(day) {
+    // pair ratios with running EMAs, built once and shared by all backtests (keeps the page fast)
+    if (!BT_CACHE) { BT_CACHE = { pair: {}, picks: {} };
+      for (var i = 0; i < univ.length; i++) for (var j = i + 1; j < univ.length; j++) {
+        var r0 = ratio(univ[i], univ[j]), a2 = 2 / 201, a20 = 2 / 21, e2 = null, ew = null, wk = null, lastC = null, dl = new Array(r0.length);
+        r0.forEach(function (p, n) {
+          var dd = new Date(p[0] + "T00:00:00Z"); dd.setUTCDate(dd.getUTCDate() - ((dd.getUTCDay() + 6) % 7)); var kk = dd.toISOString().slice(0, 10);
+          if (kk !== wk) { if (lastC != null) ew = ew == null ? lastC : a20 * lastC + (1 - a20) * ew; wk = kk; }   // close out last week
+          lastC = p[1]; e2 = e2 == null ? p[1] : a2 * p[1] + (1 - a2) * e2;
+          var w20 = ew == null ? p[1] : a20 * p[1] + (1 - a20) * ew;   // this week's close so far
+          dl[n] = Math.log(p[1] / e2) + Math.log(p[1] / w20);
+        });
+        BT_CACHE.pair[univ[i] + "|" + univ[j]] = { r: r0, dl: dl };
+      } }
+    var PAIR = BT_CACHE.pair;
+    function picksAt(day) { if (BT_CACHE.picks[day]) return BT_CACHE.picks[day]; var out = picksAt0(day); BT_CACHE.picks[day] = out; return out; }
+    function picksAt0(day) {
       var live = univ.filter(function (k) { var ix = idxAt(PX[k], day); return ix >= 29; });   // needs at least 30 days of history that day
       var S = {}; live.forEach(function (k) { var ix = idxAt(PX[k], day); S[k] = { k: k, wins: 0, pairs: 0, dev: 0, dd: 1 - PX[k][ix][1] / RUNMAX[k][ix] }; });
       for (var a = 0; a < live.length; a++) for (var b = a + 1; b < live.length; b++) {
         var A = S[live[a]], B = S[live[b]], flip = univ.indexOf(A.k) > univ.indexOf(B.k), key = flip ? B.k + "|" + A.k : A.k + "|" + B.k;
-        var r = PAIR[key], ix = idxAt(r, day); if (ix < 29) continue;
-        r = r.slice(Math.max(0, ix - 519), ix + 1);
-        var v = r.map(function (p) { return p[1]; }), last = v[v.length - 1];
-        var dl = Math.log(last / ema(v, 200)) + Math.log(last / ema(weeklyClose(r), 20));   // ratio's gap to its 200-day + 20-week EMAs
+        var pc2 = PAIR[key], ix = idxAt(pc2.r, day); if (ix < 29) continue;
+        var dl = pc2.dl[ix];   // ratio's gap to its 200-day + 20-week EMAs on that day
         var dev = ((flip ? -dl : dl) + (B.dd - A.dd)) / 3;   // same edge as the chart: (d20w + d200 + dATH) / 3, below 0 = A is the better value
         if (dev < 0) A.wins++; else B.wins++; A.pairs++; B.pairs++; A.dev += dev; B.dev -= dev;
       }
@@ -919,7 +944,20 @@ _________________________</p>
       });
       var V = value(day), C = WEEKLY, total = V + C, month = day.slice(0, 7), note;
       contrib += C; spyUnits += C / pxAt("SPY", day);
-      if (month !== lastMonth) {   // first Monday of the month: rebalance everything to the target weights (no tax in a Roth IRA)
+      if (month !== lastMonth && cfg.mode === "div") {   // monthly rebalance into names NOT already owned in each bucket
+        var nh = {}, added = [];
+        BUCKETS.forEach(function (b) {
+          var Vb = total * b.w, own = b.k.filter(function (k) { return hold[k] > 0; }), fresh = rank.filter(function (k) { return b.k.indexOf(k) >= 0 && !(hold[k] > 0); });
+          if (!own.length && !fresh.length) return;
+          var share = Vb / (own.length + fresh.length), kept = 0, under = [];
+          own.forEach(function (k) { var v = hold[k] * pxAt(k, day); if (v > share) { nh[k] = share / pxAt(k, day); kept += share; } else { nh[k] = hold[k]; kept += v; under.push(k); } });
+          var avail = Vb - kept;   // what was trimmed from the winners (plus any bucket shortfall)
+          if (fresh.length) { fresh.forEach(function (k) { nh[k] = avail / fresh.length / pxAt(k, day); added.push(k); }); }
+          else if (under.length) { under.forEach(function (k) { nh[k] += avail / under.length / pxAt(k, day); }); }
+          else own.forEach(function (k) { nh[k] += avail / own.length / pxAt(k, day); });
+        });
+        hold = nh; note = "rebalanced" + (added.length ? " into " + added.map(sn).join(", ") : "");
+      } else if (month !== lastMonth) {   // first Monday of the month: rebalance everything to the target weights (no tax in a Roth IRA)
         hold = {}; Object.keys(tw).forEach(function (k) { hold[k] = total * tw[k] / pxAt(k, day); }); note = "rebalanced";
       } else {                     // other weeks: new money only, into whatever is furthest under its target
         var gap = {}, G = 0; Object.keys(tw).forEach(function (k) { var cur = (hold[k] || 0) * pxAt(k, day); gap[k] = Math.max(0, total * tw[k] - cur); G += gap[k]; });
@@ -937,7 +975,7 @@ _________________________</p>
     document.getElementById(cfg.id + "-res").textContent = $(contrib) + " put in → strategy " + $(pe) + " (" + pc((pe / contrib - 1) * 100) + ") vs S&P DCA " + $(se) + " (" + pc((se / contrib - 1) * 100) + ")";
     document.getElementById(cfg.id + "-log").innerHTML = BT_LOG.slice().reverse().map(function (x) {
       var tgt = BUCKETS.map(function (b) { var m = Object.keys(x.tw).filter(function (k) { return b.k.indexOf(k) >= 0; }); return "<b>" + b.n + "</b> " + m.map(sn).join(", "); }).join(" · ");
-      return "<tr><td>" + x.d + "</td><td>" + tgt + (x.note === "rebalanced" ? ' <i class="rb">rebalanced</i>' : "") + "</td><td>" + $(x.v) + "</td><td>" + $(x.s) + "</td></tr>"; }).join("");
+      return "<tr><td>" + x.d + "</td><td>" + tgt + (x.note.indexOf("rebalanced") === 0 ? ' <i class="rb">' + x.note + '</i>' : "") + "</td><td>" + $(x.v) + "</td><td>" + $(x.s) + "</td></tr>"; }).join("");
     if (SIMCH[cfg.id]) SIMCH[cfg.id].destroy();
     var lab = { id: "simLab", afterDatasetsDraw: function (ch) { var ctx = ch.ctx; ctx.save(); ctx.textBaseline = "middle"; ctx.font = "700 11px system-ui,sans-serif";
       var its = ch.data.datasets.map(function (dd, i) { var pt = ch.getDatasetMeta(i).data[dd.data.length - 1]; return { x: pt.x, y: pt.y, c: dd.borderColor, t: dd.label + " " + $(dd.data[dd.data.length - 1]) }; });
@@ -959,7 +997,7 @@ _________________________</p>
     var html = BUCKETS.map(function (b) {
       return '<div class="bk"><div class="bk-h">' + b.n + " <span>" + Math.round(b.w * 100) + "%</span></div><div class=\"bk-t\">" +
         b.k.map(function (k) { return '<span class="' + (top.indexOf(k) >= 0 ? "on" : "") + '">$' + sn(k) + "</span>"; }).join(" ") + "</div></div>"; }).join("");
-    ["bt-buckets", "bt-buckets2"].forEach(function (id) { var el = document.getElementById(id); if (el) el.innerHTML = html; });
+    ["bt-buckets", "bt-buckets2", "bt-buckets3"].forEach(function (id) { var el = document.getElementById(id); if (el) el.innerHTML = html; });
   }
   // This week's best buys: average of the Comparative Value rank and the Projected Growth rank (each as 0-100)
   function weekPicks() {
@@ -970,7 +1008,8 @@ _________________________</p>
     var top = rows.slice(0, 10);
     bucketCards(top.map(function (r) { return r.k; }));
     simPicks({ id: "sim" });
-    setTimeout(function () { try { simPicks({ id: "sim2", start: "2020-03-02" }); } catch (e) { console.log("backtest 2020", e); } }, 50);
+    setTimeout(function () { try { simPicks({ id: "sim2", start: "2020-03-02" }); } catch (e) { console.log("backtest 2020", e); }
+                             try { simPicks({ id: "sim3", start: "2020-03-02", mode: "div" }); } catch (e) { console.log("backtest 3", e); } }, 50);
     document.getElementById("picks-row").innerHTML = top.map(function (r, i) { return '<span class="pk"><span class="rk">#' + (i + 1) + '</span><span class="tk" title="Overall ' + r.o.toFixed(0) + ' (value ' + r.v.toFixed(0) + ', growth ' + r.g.toFixed(0) + ')">$' + sn(r.k) + "</span></span>"; }).join("");
   }
   // Chart 2 + table, Projected Growth: today's price vs median 2030 target
