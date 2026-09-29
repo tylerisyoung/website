@@ -48,6 +48,11 @@ def yahoo_shares(symbols):
     j = json.loads(op.open(urllib.request.Request(u, headers=UA_YAHOO), timeout=20).read())
     return {q["symbol"]: q.get("sharesOutstanding") for q in j["quoteResponse"]["result"]}
 
+# Treasury companies: price history is cut to start when each became a coin treasury, so older,
+# unrelated business history (and its reverse splits) doesn't distort the charts, ratios or all-time highs.
+TREASURY_START = {"MSTR": "2020-08-11", "MTPLF": "2024-04-08", "DFDV": "2025-04-07", "UPXI": "2025-04-21",
+                  "FWDI": "2025-09-08", "HSDT": "2025-09-15"}
+
 # Treasury companies not already in TICKERS (price history for the Markets chart)
 TREASURY_HIST = [("MTPLF", "Metaplanet (MTPLF)"), ("HSDT", "Solana Company (HSDT)")]
 AUX = [("SI=F", "Silver (futures, $/oz)")]   # used only to convert silver targets to SLV
@@ -271,7 +276,9 @@ def main():
 
     for sym, name, group in [(a, b, None) for a, b in TICKERS] + [(a, b, "treasury") for a, b in TREASURY_HIST] + [(a, b, "aux") for a, b in AUX]:
         try:
-            data["prices"][sym] = {"name": name, "points": yahoo(sym)}
+            pts = yahoo(sym)
+            if sym in TREASURY_START: pts = [q for q in pts if q[0] >= TREASURY_START[sym]]
+            data["prices"][sym] = {"name": name, "points": pts}
             if group: data["prices"][sym]["group"] = group
         except Exception as e:
             print("price failed", sym, e, file=sys.stderr)

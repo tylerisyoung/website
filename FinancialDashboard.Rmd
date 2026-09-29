@@ -87,6 +87,8 @@ CSVs) and refreshed every day by the GitHub Action in
 .fd .picks .row{display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem 2.6rem}
 .fd .picks .tk{font:700 2.4rem/1.15 "SFMono-Regular",Menlo,Consolas,monospace;color:var(--blue);letter-spacing:.02em}
 @media(max-width:700px){.fd .picks .tk{font-size:1.5rem}}
+.fd .picks .pk{display:flex;flex-direction:column;align-items:center}
+.fd .picks .rk{font-size:.8rem;font-weight:700;color:#6b8fd9;letter-spacing:.08em;margin-bottom:.1rem}
 .fd .picks .meta{font-size:.76rem;color:var(--muted);margin-top:.5rem}
 .fd .debtclock .meta{font-size:.76rem;color:var(--muted)}
 .fd .tile{border:1px solid #f1e3bd;border-left:4px solid #f2c46d;background:#fefaf0;border-radius:10px;padding:.5rem .9rem;height:96px;overflow:hidden}
@@ -160,7 +162,7 @@ CSVs) and refreshed every day by the GitHub Action in
     <div class="best-sub">Every asset compared against every other one, pair by pair. Score = share of head-to-head pairs won for deepest value and largest negative deviation to 20week ema &amp; 200day EMA. Those further from ATH also rank higher. Updates with every price refresh.</div>
     <div class="best-chart"><canvas id="cv-chart"></canvas></div>
     <details class="srcs"><summary>Formulas (click to open)</summary><div class="fbody">
-      <p><b>Each asset:</b> <code>DD = 1 − Price ÷ ATH</code> (ATH = highest daily close, up to 10 years) · <code>vs EMA = Price ÷ EMA − 1</code></p>
+      <p><b>Each asset:</b> <code>DD = 1 − Price ÷ ATH</code> (ATH = highest daily close, up to 10 years; treasury companies only since they started holding coins) · <code>vs EMA = Price ÷ EMA − 1</code></p>
       <p><b>EMA:</b> <code>EMAₜ = α·xₜ + (1 − α)·EMAₜ₋₁</code>, with α = 2/21 on weekly closes (20-week) and α = 2/201 on daily closes (200-day), over the last ~2 years.</p>
       <p><b>Each pair A vs B:</b> <code>R = A ÷ B</code> on shared trading days (last 520). <code>Edge = [ ln(R ÷ EMA₂₀w(R)) + ln(R ÷ EMA₂₀₀d(R)) + (DD_B − DD_A) ] ÷ 3</code>. Edge &lt; 0 → A wins. Pairs with under 30 shared days are skipped.</p>
       <p><b>Score (bar):</b> <code>pairs won ÷ pairs played</code>. Ties go to the more negative average edge.</p>
@@ -199,6 +201,7 @@ CSVs) and refreshed every day by the GitHub Action in
   <div class="picks"><div class="row" id="picks-row"><span class="tk">…</span></div>
     <div class="meta" id="picks-meta">Top 5 by combined rank in Comparative Value and Projected Growth</div></div>
   <details class="srcs picks-f"><summary>Formula (click to open)</summary><div class="fbody">
+    <p>Treasury companies (MSTR, Metaplanet, DFDV, UPXI, FWDI, HSDT) only count price history from when they started holding coins.</p>
     <p>Each asset gets two ranks, turned into a 0–100 score (100 = 1st place): <b>Value</b> = its place on the Comparative Value chart, <b>Growth</b> = its place on the Projected Growth chart (avg 2030 return).</p>
     <p><code>Overall = (Value score + Growth score) ÷ 2</code>. The five highest overall are shown; ties go to the higher Growth score. Assets must appear on both charts. Recalculated with every price refresh.</p>
   </div></details>
@@ -560,8 +563,7 @@ CSVs) and refreshed every day by the GitHub Action in
     var rows = GROWTH.filter(function (k) { return VALUE[k]; }).map(function (k) { var v = pctRank(vOrder, k), g = pctRank(GROWTH, k); return { k: k, v: v, g: g, o: (v + g) / 2 }; });
     rows.sort(function (a, b) { return b.o - a.o || b.g - a.g; });
     var top = rows.slice(0, 5);
-    document.getElementById("picks-row").innerHTML = top.map(function (r) { return '<span class="tk" title="Overall ' + r.o.toFixed(0) + ' (value ' + r.v.toFixed(0) + ', growth ' + r.g.toFixed(0) + ')">$' + sn(r.k) + "</span>"; }).join("");
-    document.getElementById("picks-meta").textContent = "Top 5 by combined rank in Comparative Value and Projected Growth · overall scores " + top.map(function (r) { return sn(r.k) + " " + r.o.toFixed(0); }).join(", ") + " · not investment advice";
+    document.getElementById("picks-row").innerHTML = top.map(function (r, i) { return '<span class="pk"><span class="rk">#' + (i + 1) + '</span><span class="tk" title="Overall ' + r.o.toFixed(0) + ' (value ' + r.v.toFixed(0) + ', growth ' + r.g.toFixed(0) + ')">$' + sn(r.k) + "</span></span>"; }).join("");
   }
   // Chart 2 + table, Projected Growth: today's price vs median 2030 target
   function bestBuy() {
