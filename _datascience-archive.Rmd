@@ -1,0 +1,89 @@
+---
+title: ""
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+    
+    css: styles.css
+
+
+---
+
+<!-- UNPUBLISHED ARCHIVE of the old Data Science page sections (everything that sat below
+     "Data Driven Journalism"), saved 2026-09-29. The leading underscore in the file name
+     keeps R Markdown from rendering it into docs/. To publish it again, rename it
+     without the underscore (e.g. datascience-archive.Rmd) and rebuild the site. -->
+
+<br>
+<br>
+
+<h1>**Data Science: Archive**</h1>
+
+____________________________
+
+<br>
+<br>
+
+<font size="5">
+<p style="text-align: center;">Data Driven Journalism</p>
+</font>
+<br>
+<center>
+Current Projects: [Here](./ig.html)
+</center>
+<br>
+
+Modern Monetary Theory - Slow at first, then all at once.                                                     |  Ongoing Technical Analysis of Financial Markets 
+:------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------:
+[Read Here:](./mmt.html)                                                                                      |  [Read Here:](./FinancialDashboard.html)
+![](./images/DOTPLOT_2.png)                                                                                   |  ![](./images/ONGOINGTA.jpg)
+                                         
+
+
+<br>
+
+<font size="5">
+<p style="text-align: center;">Projects in R</p>
+</font>
+<br>
+
+Predictive Community Change based on Tax Revenue                                                              |  Dashboard: Interactive Car Accident User Investigation 
+:------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------:
+[Masters Group Project](./projects/community-change/index.html)                                 |  [Accident Characteristics in AZ - ShinyAPP](https://tylerisyoung.shinyapps.io/final-project-dashboard-Young/)
+![](./images/Schoolproject01.jpg)                                                                             |  ![](./images/Schoolproject02.jpg)
+                                                                                                              
+
+<br> 
+<br>
+<br>
+<br>
+
+<font size="5">
+<p style="text-align: center;">Technical Statistics Masters Lab Work in R</p>
+</font>
+<br>
+
+Project 01: Timeseries Analysis - Public Transit                                                              |  Project 02:  Grep Analysis of IRS Data  
+:------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------:
+[Timeseries Analysis - Public Transit](./DSProj1_Transport.html)                                              |  [Grep Analysis of IRS Data](./DSProj2_Grep.html)
+![](./images/Lab01.jpg)                                                                                       |  ![](./images/Lab02.jpg)
+                                                                                                              
+Project 03: Chi-Squared Test - Gender in Nonprofits                                                           |  Project 04: Regression Models - Class Sizes on Performance / Exercise and Caffeine 
+:------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------:
+[Chi-Squared Test - Gender in Nonprofits](./DSProj3_Gender.html)                                              |  [Regression Models - Class Sizes on Performance / Exercise and Caffeine ](./DSProj4_Regression.html)
+![](./images/Lab03.jpg)                                                                                       |  ![](./images/Lab04.jpg)
+
+Project 05: Omitted Variable Bias - Happiness & Wellbeing                                                     |  Project 06: Google Viz - A Walkthrough 
+:------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------:
+[Omitted Variable Bias - Happiness & Wellbeing](./DSProj5_Omitted.html)                                       |  [Google Viz - A Walkthrough](./DSProj6_Google.html)   
+![](./images/Lab05.jpg)                                                                                       |  ![](./images/Lab06.jpg)
+<br>  
+<br>
+<br>  
+<br><br>  
+<br>
+<br>  
+<br>
