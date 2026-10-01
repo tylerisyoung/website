@@ -48,6 +48,18 @@ def yahoo_shares(symbols):
     j = json.loads(op.open(urllib.request.Request(u, headers=UA_YAHOO), timeout=20).read())
     return {q["symbol"]: q.get("sharesOutstanding") for q in j["quoteResponse"]["result"]}
 
+# Balance sheets for "mNAV incl. debt" = (market cap + debt + preferred - cash) / coin value. USD, latest filings.
+BALANCE = {   # ticker: (debt, preferred, cash, as of)
+    "MSTR": (6.75e9, 14.97e9, 5.02e9, "2026-08/09"),      # converts; preferred notional; USD reserve
+    "MTPLF": (489e6, 149e6, 0, "2026-06-30"),            # JPY 77.3B debt, JPY 23.6B MERCURY preferred at 158 JPY/USD; cash not disclosed
+    "FWDI": (117.5e6, 0, 10.97e6, "2026-06-30"),
+    "DFDV": (210.3e6, 0, 4.34e6, "2026-06-30"),          # converts (carrying value) + SOL borrowed
+    "UPXI": (223.4e6, 0, 5.78e6, "2026-06-30"),          # converts + treasury credit facility + notes
+    "HSDT": (0, 0, 3.65e6, "2026-06-30"),
+    "TSLA": (9.34e9, 0, 43.52e9, "2026-06-30"),          # cash incl. short-term investments
+    "SPCX": (39.71e9, 0, 100.01e9, "2026-06-30"),        # cash + short-term investments
+}
+
 # Treasury companies: price history is cut to start when each became a coin treasury, so older,
 # unrelated business history (and its reverse splits) doesn't distort the charts, ratios or all-time highs.
 TREASURY_START = {"MSTR": "2020-08-11", "MTPLF": "2024-04-08", "DFDV": "2025-04-07", "UPXI": "2025-04-21",
@@ -379,7 +391,9 @@ def main():
     tre = {"holdings_asof": oh.get("asof", TREASURY_ASOF), "sol_asof": oh.get("asof", SOL_TREASURY_ASOF), "rows": []}
     olds = {r["t"]: r for r in old.get("treasury", {}).get("rows", [])}
     for t, name, coin, shares, qty in [(t, n, "BTC", sh, q) for t, n, sh, q in TREASURY] + [(t, n, "SOL", None, q) for t, n, q in SOL_TREASURY]:
-        row = {"t": t, "name": name, "coin": coin, "shares": oh.get("shares", {}).get(t) or olds.get(t, {}).get("shares") or shares,
+        bal = BALANCE.get(t)
+        row = {"t": t, "name": name, "coin": coin, "debt": bal[0] if bal else None, "pref": bal[1] if bal else None, "cash": bal[2] if bal else None, "bal_asof": bal[3] if bal else None,
+               "shares": oh.get("shares", {}).get(t) or olds.get(t, {}).get("shares") or shares,
                "qty": oh.get("qty", {}).get(t) or qty, "price": None}
         try:
             j = json.loads(get(f"https://query1.finance.yahoo.com/v8/finance/chart/{t}?range=5d&interval=1d", UA_YAHOO))
