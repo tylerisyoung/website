@@ -53,12 +53,16 @@ BALANCE = {   # ticker: (debt, preferred, cash, as of)
     "MSTR": (6.75e9, 14.97e9, 5.02e9, "2026-08/09"),      # converts; preferred notional; USD reserve
     "MTPLF": (489e6, 149e6, 0, "2026-06-30"),            # JPY 77.3B debt, JPY 23.6B MERCURY preferred at 158 JPY/USD; cash not disclosed
     "FWDI": (117.5e6, 0, 10.97e6, "2026-06-30"),
-    "DFDV": (210.3e6, 0, 4.34e6, "2026-06-30"),          # converts (carrying value) + SOL borrowed
+    "DFDV": (120.6e6, 0, 4.34e6, "2026-06-30"),          # converts (carrying value); the $89.8M of borrowed SOL is in COIN_OWED
     "UPXI": (223.4e6, 0, 5.78e6, "2026-06-30"),          # converts + treasury credit facility + notes
     "HSDT": (0, 0, 3.65e6, "2026-06-30"),
     "TSLA": (9.34e9, 0, 43.52e9, "2026-06-30"),          # cash incl. short-term investments
     "SPCX": (39.71e9, 0, 100.01e9, "2026-06-30"),        # cash + short-term investments
 }
+
+# Liabilities owed in the coin itself (borrowed SOL): USD value on the balance-sheet date. The page converts them to coins
+# at that day's price and subtracts them from holdings, since they rise and fall with the coin.
+COIN_OWED = {"DFDV": (89.8e6, "2026-06-30")}
 
 # Treasury companies: price history is cut to start when each became a coin treasury, so older,
 # unrelated business history (and its reverse splits) doesn't distort the charts, ratios or all-time highs.
@@ -392,7 +396,7 @@ def main():
     olds = {r["t"]: r for r in old.get("treasury", {}).get("rows", [])}
     for t, name, coin, shares, qty in [(t, n, "BTC", sh, q) for t, n, sh, q in TREASURY] + [(t, n, "SOL", None, q) for t, n, q in SOL_TREASURY]:
         bal = BALANCE.get(t)
-        row = {"t": t, "name": name, "coin": coin, "debt": bal[0] if bal else None, "pref": bal[1] if bal else None, "cash": bal[2] if bal else None, "bal_asof": bal[3] if bal else None,
+        row = {"t": t, "name": name, "coin": coin, "debt": bal[0] if bal else None, "pref": bal[1] if bal else None, "cash": bal[2] if bal else None, "bal_asof": bal[3] if bal else None, "owed": COIN_OWED.get(t),
                "shares": oh.get("shares", {}).get(t) or olds.get(t, {}).get("shares") or shares,
                "qty": oh.get("qty", {}).get(t) or qty, "price": None}
         try:
@@ -404,6 +408,11 @@ def main():
         tre["rows"].append(row)
     data["treasury"] = tre
 
+    try:   # risk-free rate for Sharpe ratios: latest 3-month Treasury bill
+        tb = fred("DTB3"); data["rf"] = {"v": tb[-1][1], "date": tb[-1][0], "series": "DTB3"}
+    except Exception as e:
+        print("rf failed", e, file=sys.stderr)
+        if "rf" in old: data["rf"] = old["rf"]
     data["targets"] = TARGETS
     data["targets_asof"] = TARGETS_ASOF
 
