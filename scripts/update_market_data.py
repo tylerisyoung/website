@@ -101,11 +101,13 @@ FINDER = "https://www.finder.com/cryptocurrency/cryptocurrency-predictions"
 MB = "https://www.marketbeat.com/stocks/"
 REQ = "https://www.industry.gov.au/sites/default/files/2026-07/resources-and-energy-quarterly-june-2026.pdf"
 WB = "https://thedocs.worldbank.org/en/doc/f3138644a1e8e2bb631399ae11d6c408-0050012026/related/CMO-April-2026-Forecasts.pdf"
-IA_NOTE = "From Tyler's screenshot of the InvestAnswers 2030 model; weighted 50% (all other sources share the other 50%)"
+PP_NOTE = "Tyler's personal 2030 prediction; weighted 50% (all other sources share the other 50%)"
+# Personal predictions (Tyler): 2030 and 2032 price targets
+PERSONAL = {"BTC-USD": (622782, 987001), "MSTR": (2489, 4770), "TSLA": (4794, 7910), "SOL-USD": (2153, 2970)}
 
 TARGETS = {
     "BTC-USD": {"kind": "direct", "unit": "$", "long": [
-        S("InvestAnswers", 622782, "2030", "2026", "", IA_NOTE),
+        S("Personal predictions", 622782, "2030", "2026-10", "", PP_NOTE + "; 2032: $987,001"),
         S("ARK Invest", 710000, "end-2030", "2026-01", "https://www.ark-invest.com/articles/valuation-models/arks-bitcoin-price-target-2030", "Base case, reaffirmed in Big Ideas 2026"),
         S("Standard Chartered (Geoff Kendrick)", 500000, "end-2030", "2026-08", "https://www.investing.com/news/cryptocurrency-news/stanchart-cuts-bitcoin-price-forecast-for-2026-here-is-the-new-target-4397979", "Pushed back from end-2028 in Dec 2025"),
         S("Finder expert panel", 490000, "end-2030", "2026-04", FINDER, "Panel average"),
@@ -126,7 +128,7 @@ TARGETS = {
         S("Tom Lee (Fundstrat)", 6000, "end-2026", "2026-08", "https://www.foreignpolicyjournal.com/2026/08/30/bitmine-nasdaq-bmnr-chairman-tom-lee-sets-6000-ethereum-price-target-as-bitcoin-eyes-150000/"),
         S("Finder expert panel", 3263, "end-2026", "2026-04", FINDER, "Panel average")]},
     "SOL-USD": {"kind": "direct", "unit": "$", "long": [
-        S("InvestAnswers", 2153, "2030", "2026", "", IA_NOTE),
+        S("Personal predictions", 2153, "2030", "2026-10", "", PP_NOTE + "; 2032: $2,970"),
         S("Standard Chartered (Geoff Kendrick)", 2000, "end-2030", "2026-02", "https://www.theblock.co/news/markets/2026-02-03-standard-chartered-cuts-solana-2026-target-shift-memecoins-micropayments-388248", "Reaffirmed Aug 2026"),
         S("Finder expert panel", 586, "end-2030", "2026-04", FINDER, "Panel average")],
       "short": [
@@ -188,7 +190,7 @@ TARGETS = {
         S("Australia Resources & Energy Quarterly", 116, "FY2030-31", "2026-07", REQ),
         S("Shaw and Partners", 120, "long-term (2032+)", "2026-02", "https://newshub.medianet.com.au/2026/02/uranium-super-cycle-emerging-as-shaw-and-partners-lifts-price-forecast-to-us200-lb/141734/")]},
     "TSLA": {"kind": "direct", "unit": "$", "long": [
-        S("InvestAnswers", 4794, "2030", "2026", "", IA_NOTE),
+        S("Personal predictions", 4794, "2030", "2026-10", "", PP_NOTE + "; 2032: $7,910"),
         S("ARK Invest", 2600, "2029", "2025", "https://www.ark-invest.com/articles/valuation-models/arks-tesla-price-target-2029", "Expected value"),
         S("Baron Capital (Ron Baron)", 2250, "2030", "2026", "", "\"$2,000 or $2,500\" (midpoint)"),
         S("24/7 Wall St (Vandita Jadeja)", 510.02, "2030", "2026-05", "https://247wallst.com/investing/2026/05/20/this-will-be-teslas-stock-price-in-2030/", "Base case")],
@@ -228,7 +230,7 @@ TARGETS = {
     "SILJ": {"kind": "sector", "sector": "SLV", "unit": "$",
       "cons": {"by": "TipRanks (built from analyst targets on its 62 holdings)", "avg": 40.24, "low": 34.57, "high": 46.50, "n": 62, "date": "2026-09-28", "url": "https://www.tipranks.com/etf/silj/forecast"}},
     # Treasury companies: 2030 = coin's 2030 targets x coins per share x an assumed NAV multiple
-    "MSTR": {"kind": "nav", "coin": "BTC-USD", "cons": {"by": "MarketBeat", "avg": 239.88, "low": 54, "high": 473, "n": 19, "date": "2026-09-28", "url": MB + "NASDAQ/MSTR/forecast/"}, "short": [
+    "MSTR": {"kind": "nav", "coin": "BTC-USD", "personal": {"v": 2489, "v2032": 4770, "note": PP_NOTE}, "cons": {"by": "MarketBeat", "avg": 239.88, "low": 54, "high": 473, "n": 19, "date": "2026-09-28", "url": MB + "NASDAQ/MSTR/forecast/"}, "short": [
         S("B. Riley", 195, "12 months", "2026-09"), S("Barclays", 160, "12 months", "2026-09"), S("Canaccord Genuity", 179, "12 months", "2026-09"),
         S("Alliance Global Partners", 217, "12 months", "2026-09"),
         S("Bernstein", 350, "12 months", "2026-08", "https://www.theblock.co/news/markets/2026-08-26-bernstein-sees-bitcoin-reaching-150000-by-mid-2027-amid-debasement-trade-but-cuts-strategy-target-to-350-412778"),
@@ -249,13 +251,13 @@ TARGETS = {
 }
 for k, v in USER_INPUT.items():
     if v is not None: TARGETS[k].setdefault("long", []).append(S("User input", v, "2030", "", "", "Tyler's own target"))
-# Summaries the page uses. 2030 median: plain median of all sources, except InvestAnswers gets 50% weight
-# (BTC, SOL, TSLA) and the other sources' average the other 50%.
+# Summaries the page uses. 2030 median: plain median of all sources, except Personal predictions get 50% weight
+# (BTC, SOL, TSLA; MSTR on the page) and the other sources' average the other 50%.
 for k, t in TARGETS.items():
     L = t.get("long")
     if L:
-        vals = [s["v"] for s in L]; ia = [s["v"] for s in L if s["by"] == "InvestAnswers"]
-        others = [s["v"] for s in L if s["by"] != "InvestAnswers"]
+        vals = [s["v"] for s in L]; ia = [s["v"] for s in L if s["by"] == "Personal predictions"]
+        others = [s["v"] for s in L if s["by"] != "Personal predictions"]
         t.update(low=min(vals), high=max(vals), n=len(vals),
                  base=round(0.5 * ia[0] + 0.5 * statistics.mean(others), 4) if ia and others else statistics.median(vals))
     if t.get("short"): t["avg12"] = round(statistics.mean([s["v"] for s in t["short"]]), 4); t["n12"] = len(t["short"])

@@ -48,6 +48,19 @@ CSVs) and refreshed every day by the GitHub Action in
 .fd .tre td:first-child{text-align:left;font-weight:700}.fd .tre td:nth-child(6){border-left:3px solid #f2c46d;color:#b0833a;font-weight:600}
 .fd .tre tr:hover td{background:#fdf8ea}
 .fd .tre-foot{font-size:.72rem;color:var(--muted);margin-top:.5rem;line-height:1.45}
+.fd .pf{border:1px solid var(--line);border-top:3px solid #f5dfa6;border-radius:10px;background:#fff;padding:.7rem .8rem;margin-bottom:12px}
+.fd .pf-sub,.fd .pf-note{font-size:.78rem;color:var(--muted);margin-bottom:.5rem}
+.fd .pf-row{display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
+.fd .pf-pie{position:relative;width:340px;max-width:100%;height:300px}
+.fd .pf-sum{flex:1;min-width:220px;font-size:.86rem;line-height:1.6}
+.fd .pf-sum b{font-size:1.05rem}
+.fd .pf-h{font:600 .95rem system-ui,sans-serif;color:var(--blue);margin:1rem 0 .4rem;text-transform:uppercase;letter-spacing:.06em}
+.fd .pf-front{position:relative;height:380px}
+.fd .pf table{width:100%;border-collapse:collapse;font-size:.8rem;font-variant-numeric:tabular-nums;margin-top:.5rem}
+.fd .pf th{background:var(--ink);color:#fff;font-weight:600;padding:.3rem .45rem;text-align:right}
+.fd .pf th:first-child,.fd .pf td:first-child{text-align:left}
+.fd .pf td{padding:.26rem .45rem;text-align:right;border-bottom:1px solid var(--line)}
+.fd .pf tr.tot td{font-weight:700;background:#fdf8ea}
 .fd .best{border:1px solid var(--line);border-top:3px solid #f5dfa6;border-radius:10px;background:#fff;padding:.7rem .8rem;margin-bottom:12px}
 .fd .best-sub{font-size:.8rem;color:var(--muted);margin-bottom:.4rem}
 .fd .best-chart{position:relative}
@@ -211,7 +224,7 @@ CSVs) and refreshed every day by the GitHub Action in
     </thead><tbody></tbody></table></div>
     <div class="best-method" id="best-method"></div>
     <details class="srcs"><summary>Formulas (click to open)</summary><div class="fbody">
-      <p><b>Targets:</b> Low / High = lowest / highest 2030 target. Median = median of all 2030 targets, except BTC, SOL, TSLA: <code>0.5 × InvestAnswers + 0.5 × average of the others</code>.</p>
+      <p><b>Targets:</b> Low / High = lowest / highest 2030 target. Median = median of all 2030 targets, except BTC, SOL, TSLA, MSTR: <code>0.5 × Personal predictions + 0.5 × average of the others</code>.</p>
       <p><b>Conversions:</b> GLD, SLV, CPER <code>= metal target × ETF price ÷ metal price today</code> · SPY <code>= S&amp;P 500 target ÷ 10.02</code> · copper <code>$/lb = $/t ÷ 2,204.62</code> · UUUU, SILJ, MP <code>= price on the target date × sector 2030 target ÷ sector price on that date</code> (uranium, silver, avg of uranium/silver/gold/copper), locked in dollars.</p>
       <p><b>Treasury companies:</b> <code>CPS = coins ÷ shares</code> · <code>mNAV = Price ÷ (CPS × coin price)</code> · <code>Target = coin 2030 target × CPS × √mNAV</code> (NAV assumed halfway back to 1.0x) · At NAV 1.0x <code>= Price ÷ CPS</code> and <code>CPS × coin median target</code>.</p>
       <p><b>12-month return:</b> each ~1-year target is restated to exactly 12 months from today: if it's further out, <code>Price × (Target ÷ Price)^(12 ÷ months)</code>; if it's sooner, it's carried forward along the path to the median 2030 target. Expired targets are dropped. Stocks use the analyst consensus (12 months from its date).</p>
@@ -301,6 +314,19 @@ CSVs) and refreshed every day by the GitHub Action in
     <div class="num" id="fd-debt">$—</div>
     <div class="meta" id="fd-debt-meta">Treasury, Debt to the Penny</div></div>
   <div class="grid" id="fd-macro"></div>
+  <br><br>
+  <h2>My Portfolio</h2>
+  <div class="pf">
+    <div class="pf-sub">Roth IRA weights as of <span id="pf-asof"></span>. Expected returns = each holding's CAGR to its median 2030 target (Current Best Buy table); risk = annualized volatility and correlations of daily returns over the last 12 months; risk-free rate = latest fed funds rate. All recalculated with every price update.</div>
+    <div class="pf-row">
+      <div class="pf-pie"><canvas id="pf-pie"></canvas></div>
+      <div class="pf-sum" id="pf-sum"></div>
+    </div>
+    <h3 class="pf-h">Sharpe ratio analysis</h3>
+    <div class="pf-front"><canvas id="pf-front"></canvas></div>
+    <div class="pf-note">Each faint dot is one of 4,000 random mixes of these six holdings (pastel yellow = low Sharpe, green = high). Labeled dots are the individual holdings; the red diamond is the current portfolio and the green star is the highest-Sharpe mix found.</div>
+    <table id="pf-table"><thead><tr><th>Holding</th><th>Weight</th><th>Exp. return / yr</th><th>Volatility</th><th>Sharpe</th><th>Max-Sharpe weight</th></tr></thead><tbody></tbody></table>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -741,7 +767,7 @@ CSVs) and refreshed every day by the GitHub Action in
     }, 0, function (v) { return v == null ? "n/a" : (v >= 0 ? "+" : "") + v.toFixed(1) + "%/yr"; }, "0%");
   }
   function T_OF(k) { var t = DATA.targets[k]; return t ? (t.of || (t.kind === "nav" ? t.coin : null)) : null; }
-  var VALUE = {}, GROWTH = [], GROWTH_FN = {};
+  var VALUE = {}, GROWTH = [], GROWTH_FN = {}, BEST_ROWS = [];
   function compValue() {
     var rows = [];
     bestUniverse().forEach(function (k) { var v = valueAt(k); if (v) { v.k = k; rows.push(v); } });
@@ -894,6 +920,75 @@ CSVs) and refreshed every day by the GitHub Action in
     }, 30);
   }
   // Chart 2 + table, Projected Growth: today's price vs median 2030 target
+  // ---------- My Portfolio: weights, pie, Sharpe analysis ----------
+  var PORTFOLIO = { asof: "Oct 1, 2026", w: { FWDI: 32.43, TSLA: 26.18, DFDV: 17.75, MRVL: 11.46, SPCX: 11.24, UPXI: 0.94 } };
+  var PF_COLORS = ["#a8c5f7", "#f5d58f", "#e9a3a3", "#a7d8b7", "#c9b8ec", "#f3c3a0", "#9fd3dc"];
+  var pfPie = null, pfFront = null;
+  function portfolio() {
+    var names = Object.keys(PORTFOLIO.w).filter(function (k) { return DATA.prices[k]; });
+    var tot = names.reduce(function (s, k) { return s + PORTFOLIO.w[k]; }, 0), W = names.map(function (k) { return PORTFOLIO.w[k] / tot; });
+    document.getElementById("pf-asof").textContent = PORTFOLIO.asof;
+    if (pfPie) pfPie.destroy();
+    pfPie = new Chart(document.getElementById("pf-pie"), { type: "doughnut",
+      data: { labels: names.map(sn), datasets: [{ data: W.map(function (w) { return Math.round(w * 1000) / 10; }), backgroundColor: PF_COLORS, borderColor: "#fff", borderWidth: 2 }] },
+      options: { responsive: true, maintainAspectRatio: false, cutout: "45%",
+        plugins: { legend: { position: "right", labels: { font: { size: 12 }, boxWidth: 14 } }, tooltip: { callbacks: { label: function (c) { return c.label + ": " + c.parsed + "%"; } } } } } });
+    // expected returns (CAGR to the median 2030 target) from the Current Best Buy table
+    var mu = {}; BEST_ROWS.forEach(function (r) { mu[r.k] = r.yr; });
+    var rf = 0.04, ff = DATA.macro && DATA.macro.fedfunds && DATA.macro.fedfunds.points; if (ff && ff.length) rf = ff[ff.length - 1][1] / 100;
+    // daily log returns over the last 12 months
+    var cutoff = new Date(Date.now() - 365 * 864e5).toISOString().slice(0, 10), R = {};
+    names.forEach(function (k) { var p = DATA.prices[k].points, m = {};
+      for (var i = 1; i < p.length; i++) if (p[i][0] >= cutoff && p[i - 1][1] > 0) m[p[i][0]] = Math.log(p[i][1] / p[i - 1][1]);
+      R[k] = m; });
+    var n = names.length, C = [];
+    for (var i = 0; i < n; i++) { C.push([]); for (var j = 0; j < n; j++) {
+      var a = R[names[i]], b = R[names[j]], ds = Object.keys(a).filter(function (d) { return d in b; }), ma = 0, mb = 0, c = 0;
+      ds.forEach(function (d) { ma += a[d]; mb += b[d]; }); ma /= ds.length; mb /= ds.length;
+      ds.forEach(function (d) { c += (a[d] - ma) * (b[d] - mb); });
+      C[i].push(ds.length > 2 ? c / (ds.length - 1) * 252 : 0); } }
+    var MU = names.map(function (k) { return mu[k] != null ? mu[k] : 0; });
+    function st(w) { var m = 0, v = 0; for (var i = 0; i < n; i++) { m += w[i] * MU[i]; for (var j = 0; j < n; j++) v += w[i] * w[j] * C[i][j]; }
+      var s = Math.sqrt(Math.max(v, 1e-8)); return { m: m, s: s, sh: (m - rf) / s }; }
+    // random portfolios (for the dot plot) + a local search for the highest-Sharpe mix
+    var cloud = [], best = null;
+    for (var t = 0; t < 4000; t++) { var x = names.map(function () { return -Math.log(Math.random()); }), sx = x.reduce(function (a, b) { return a + b; }, 0);
+      x = x.map(function (v) { return v / sx; }); var q = st(x); cloud.push({ x: q.s * 100, y: q.m * 100, sh: q.sh });
+      if (!best || q.sh > best.sh) best = { w: x, sh: q.sh }; }
+    var bw = best.w.slice(), step = 0.05;
+    while (step > 0.0005) { var improved = false;
+      for (var i = 0; i < n; i++) for (var j = 0; j < n; j++) { if (i === j || bw[i] < step) continue;
+        var tw = bw.slice(); tw[i] -= step; tw[j] += step; if (st(tw).sh > st(bw).sh) { bw = tw; improved = true; } }
+      if (!improved) step /= 2; }
+    var cur = st(W), opt = st(bw);
+    var shs = cloud.map(function (c) { return c.sh; }), lo = Math.min.apply(null, shs), hi = Math.max.apply(null, shs);
+    function gy(t) { t = Math.max(0, Math.min(1, t)); var a = [247, 224, 140], b = [118, 191, 148];
+      return "rgba(" + a.map(function (x, i) { return Math.round(x + (b[i] - x) * t); }).join(",") + ",0.55)"; }
+    var assets = names.map(function (k, i) { return { x: Math.sqrt(C[i][i]) * 100, y: MU[i] * 100, k: sn(k) }; });
+    var labelPlugin = { id: "pfLabels", afterDatasetsDraw: function (ch) { var ctx = ch.ctx, meta = ch.getDatasetMeta(1);
+      ctx.save(); ctx.font = "600 11px system-ui"; ctx.fillStyle = "#2d3a4a";
+      meta.data.forEach(function (pt, i) { ctx.fillText(assets[i].k, pt.x + 7, pt.y - 6); }); ctx.restore(); } };
+    if (pfFront) pfFront.destroy();
+    pfFront = new Chart(document.getElementById("pf-front"), { type: "scatter", plugins: [labelPlugin],
+      data: { datasets: [
+        { label: "Random mixes", data: cloud, pointRadius: 2, backgroundColor: cloud.map(function (c) { return gy((c.sh - lo) / Math.max(hi - lo, 1e-9)); }), order: 3 },
+        { label: "Holdings", data: assets, pointRadius: 5, backgroundColor: "#5b8def", order: 2 },
+        { label: "Current portfolio", data: [{ x: cur.s * 100, y: cur.m * 100 }], pointRadius: 9, pointStyle: "rectRot", backgroundColor: "#e07a7a", order: 1 },
+        { label: "Max-Sharpe mix", data: [{ x: opt.s * 100, y: opt.m * 100 }], pointRadius: 11, pointStyle: "star", borderColor: "#3f8a57", borderWidth: 2, backgroundColor: "#76bf94", order: 0 }] },
+      options: { responsive: true, maintainAspectRatio: false, animation: false,
+        plugins: { legend: { labels: { filter: function (l) { return l.datasetIndex > 0; }, font: { size: 11 } } },
+          tooltip: { callbacks: { label: function (c) { var d = c.raw; return (d.k ? d.k + ": " : c.dataset.label + ": ") + "return " + d.y.toFixed(1) + "%/yr, volatility " + d.x.toFixed(1) + "%" + (d.sh != null ? ", Sharpe " + d.sh.toFixed(2) : ""); } } } },
+        scales: { x: { suggestedMax: Math.max.apply(null, assets.map(function (a) { return a.x; })) + 10, title: { display: true, text: "Volatility (annualized, %)", color: "#6b7686" }, ticks: { color: "#6b7686" }, grid: { color: "#eef1f5" } },
+                  y: { title: { display: true, text: "Expected return (CAGR to 2030, %/yr)", color: "#6b7686" }, ticks: { color: "#6b7686" }, grid: { color: "#eef1f5" } } } } });
+    function p1(v) { return (v * 100).toFixed(1) + "%"; }
+    document.getElementById("pf-sum").innerHTML = "<b>Current portfolio</b><br>Expected return " + p1(cur.m) + " a year · volatility " + p1(cur.s) + " · Sharpe <b>" + cur.sh.toFixed(2) + "</b>" +
+      "<br><br><b>Max-Sharpe mix of the same holdings</b><br>Expected return " + p1(opt.m) + " a year · volatility " + p1(opt.s) + " · Sharpe <b>" + opt.sh.toFixed(2) + "</b>" +
+      "<br><br><span style=\"color:#6b7686;font-size:.78rem\">Risk-free rate " + p1(rf) + " (fed funds). Sharpe = (expected return − risk-free) ÷ volatility.</span>";
+    document.querySelector("#pf-table tbody").innerHTML = names.map(function (k, i) {
+      var v = Math.sqrt(C[i][i]); return "<tr><td>" + sn(k) + "</td><td>" + p1(W[i]) + "</td><td>" + p1(MU[i]) + "</td><td>" + p1(v) + "</td><td>" + ((MU[i] - rf) / v).toFixed(2) + "</td><td>" + p1(bw[i]) + "</td></tr>";
+    }).join("") + '<tr class="tot"><td>Portfolio</td><td>100%</td><td>' + p1(cur.m) + "</td><td>" + p1(cur.s) + "</td><td>" + cur.sh.toFixed(2) + '</td><td>Sharpe ' + opt.sh.toFixed(2) + "</td></tr>";
+  }
+
   function bestBuy() {
     var T = DATA.targets, trow = {}; if (!T) return;
     var ASOF = DATA.targets_asof || "2026-09-28";   // sector targets are locked to prices on the date the targets were checked
@@ -925,6 +1020,10 @@ CSVs) and refreshed every day by the GitHub Action in
         row.lo = c.low * cps * m30; row.base = c.base * cps * m30; row.hi = c.high * cps * m30; row.n = c.n;
         row.note = "from " + sn(t.coin) + " 2030 targets; NAV " + mnav.toFixed(2) + "x now, assumed " + m30.toFixed(2) + "x in 2030";
         row.nav1 = { coin: sn(t.coin), now: px / cps, tgt: c.base * cps, cbase: c.base };
+        if (t.personal) {   // Personal prediction counts for 50%, the NAV-derived target the other 50%
+          row.base = 0.5 * t.personal.v + 0.5 * row.base; row.lo = Math.min(row.lo, t.personal.v); row.hi = Math.max(row.hi, t.personal.v); row.n += 1;
+          row.note += "; median = 50% personal prediction ($" + t.personal.v.toLocaleString("en-US") + ") + 50% NAV-derived";
+        }
       }
       // 12-month return: every ~1-year target restated to exactly 12 months out, then averaged
       var srcs = t.cons ? [{ v: t.cons.avg, hd: t.cons.hd }] : (t.short || []).map(function (s) { return { v: s.v * f, hd: s.hd }; });
@@ -934,12 +1033,12 @@ CSVs) and refreshed every day by the GitHub Action in
       if (t.kind === "direct") GROWTH_FN[k] = function (P) { return t.base; };
       else if (t.kind === "proxy") GROWTH_FN[k] = function (P) { return t.base * P(k) / P(t.of); };
       else if (t.kind === "sector") { var sb = row.base; GROWTH_FN[k] = function (P) { return sb; }; }
-      else if (t.kind === "nav") { var cps2 = trow[k].qty / trow[k].shares, cb = T[t.coin].base; GROWTH_FN[k] = function (P) { return cb * cps2 * Math.sqrt(P(k) / (cps2 * P(t.coin))); }; }
+      else if (t.kind === "nav") { var cps2 = trow[k].qty / trow[k].shares, cb = T[t.coin].base, pv = t.personal ? t.personal.v : null; GROWTH_FN[k] = function (P) { var g = cb * cps2 * Math.sqrt(P(k) / (cps2 * P(t.coin))); return pv ? 0.5 * pv + 0.5 * g : g; }; }
       row.r30 = row.base / px - 1; row.yr = Math.pow(row.base / px, 1 / y30) - 1;
       rows.push(row);
     });
     rows.sort(function (a, b) { return b.r30 - a.r30; });
-    GROWTH = rows.map(function (r) { return r.k; });
+    GROWTH = rows.map(function (r) { return r.k; }); BEST_ROWS = rows;
     rows.forEach(function (r, i) { r.t = rows.length > 1 ? 1 - i / (rows.length - 1) : 1; });
     function rt(v) { return (v >= 0 ? "+" : "") + Math.round(v * 100).toLocaleString("en-US") + "%"; }
     function m(v) { return v >= 1000 ? money(v) : "$" + v.toPrecision(v < 1 ? 3 : 4); }
@@ -994,7 +1093,7 @@ CSVs) and refreshed every day by the GitHub Action in
       "<li>Table: <b>Below ATH</b>, <b>vs 20-wk / 200-day EMA</b> (with the z-score under each) and <b>Value score</b> (with its rank). Ignores price targets: cheap can stay cheap.</li></ul>" +
       '<div class="fx">Value score = −(z₂₀w + z₂₀₀d) ÷ 2 + ' + ATH_BONUS + ' × (1 − Price ÷ ATH) &nbsp;·&nbsp; z = ln(Price ÷ EMA) ÷ its standard deviation over the last ~2 years</div>' +
       "<h4>How it works: Projected Growth</h4><ul>" +
-      "<li>Low / median / high = smallest, middle and largest 2030 target from 3+ named forecasters (all in Sources; InvestAnswers counts for half on BTC, SOL, TSLA). Ranked by <b>Avg 2030 return</b>; the bar and <b>CAGR to 2030</b> show it per year. <b>Avg 12-mo</b> = every ~1-year target restated to exactly 12 months from today, then averaged.</li>" +
+      "<li>Low / median / high = smallest, middle and largest 2030 target from 3+ named forecasters (all in Sources; Personal predictions count for half on BTC, SOL, TSLA and MSTR). Ranked by <b>Avg 2030 return</b>; the bar and <b>CAGR to 2030</b> show it per year. <b>Avg 12-mo</b> = every ~1-year target restated to exactly 12 months from today, then averaged.</li>" +
       "<li>Treasury companies are priced off their coin, with the NAV premium assumed halfway back to 1.0x; <b>At NAV 1.0x</b> = the share in coin terms today and at the coin's median target. MP, UUUU and SILJ borrow a sector outlook, locked in dollars on " + ASOF + ". GLD, SLV and CPER use gold, silver and copper forecasts converted at today's ratio. Forecasts, not facts. " + (skipped.length ? "Not ranked: " + skipped.map(sn).join(", ") + ". " : "") + "</li></ul>" +
       '<div class="fx">Avg 2030 return = Median ÷ Price − 1 &nbsp;·&nbsp; CAGR = (Median ÷ Price)^(1/Y) − 1 &nbsp;·&nbsp; Treasury target = coin target × coins per share × √mNAV &nbsp;·&nbsp; 12-mo = target restated to 12 months, averaged</div>';
   }
@@ -1014,6 +1113,7 @@ CSVs) and refreshed every day by the GitHub Action in
     try { fairChart(); } catch (e) { console.log("fair value", e); }
     try { compValue(); } catch (e) { console.log("comparative value", e); }
     try { bestBuy(); } catch (e) { console.log("best buy", e); }
+    try { portfolio(); } catch (e) { console.log("portfolio", e); }
     try { growthClassChart(); } catch (e) { console.log("growth class", e); }
     try { weekPicks(); } catch (e) { console.log("picks", e); }
     if (d.treasury) { TRE = d.treasury; var bp = d.prices["BTC-USD"].points, sp = d.prices["SOL-USD"].points; treBtc = bp[bp.length - 1][1]; treSolP = sp[sp.length - 1][1]; treRender(); treLive(); }
