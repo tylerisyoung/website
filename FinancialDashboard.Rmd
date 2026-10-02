@@ -304,10 +304,18 @@ CSVs) and refreshed every day by the GitHub Action in
     <div id="simL-stats"></div>
     <details class="srcs"><summary>Week-by-week buys and trims (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Buying that week</th><th>Strategy</th><th>S&amp;P</th></tr></thead><tbody id="simL-log"></tbody></table></div></details></div>
   <br><br><br><br><br>
+  <h2>Backtest 4: My Portfolio with Layer In / Layer Out</h2>
+  <div class="bt-sub">Weekly DCA into my current holdings at my current weights, with Backtest 3's trim-and-rotate rule kept inside those same holdings</div>
+  <div class="spec"><div class="sl">Period</div><div class="sv">Mar 2, 2020 – today</div><div class="sl">Contribution</div><div class="sv">$7,000 a year into a Roth IRA = ~$135 every Monday</div><div class="sl">Buys each week</div><div class="sv"><b>FWDI 32.4%, TSLA 26.2%, DFDV 17.8%, MRVL 11.5%, SPCX 11.2%, UPXI 0.9%</b>, split among whichever have 30+ days of prices (layer in)</div><div class="sl">Selling</div><div class="sv">layer out: price more than 80% above its trendline → sell 20% (at most once every 4 weeks per name); <b>proceeds buy the #1 holding by Value score that week</b></div></div>
+  <div class="sim"><div class="sim-t">Backtest 4 <span id="simP-res"></span></div>
+    <div class="sim-c"><canvas id="simP-chart"></canvas></div>
+    <div id="simP-stats"></div>
+    <details class="srcs"><summary>Week-by-week buys and trims (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Buying that week</th><th>Strategy</th><th>S&amp;P</th></tr></thead><tbody id="simP-log"></tbody></table></div></details>
+    <div class="pf-note">Caveat: only Tesla and Marvell existed before 2025, so for most of the period this is a Tesla/Marvell portfolio. The Solana treasury names join when they became treasuries (DFDV and UPXI April 2025, FWDI September 2025) and SpaceX in July 2026. The trendline needs 2 years of history, so only Tesla and Marvell can be trimmed.</div></div>
   <br><br><br><br><br>
   <h2>Backtests Compared</h2>
   <div class="pf">
-    <div class="pf-sub">All three backtests and the S&amp;P 500 on one chart: growth of $1 with the weekly deposits stripped out (time-weighted), log scale. Sortino = return over the risk-free rate ÷ downside volatility only; Calmar = time-weighted return ÷ max drawdown.</div>
+    <div class="pf-sub">All four backtests and the S&amp;P 500 on one chart: growth of $1 with the weekly deposits stripped out (time-weighted), log scale. Sortino = return over the risk-free rate ÷ downside volatility only; Calmar = time-weighted return ÷ max drawdown.</div>
     <div class="pf-front"><canvas id="btc-chart"></canvas></div>
     <table id="btc-table" class="btcmp"></table>
   </div>
@@ -868,15 +876,16 @@ CSVs) and refreshed every day by the GitHub Action in
         tw = {}; Object.keys(cfg.w).forEach(function (k) { if (DATA.prices[k] && P0(k)) { tw[k] = cfg.w[k]; hold[k] = (hold[k] || 0) + C * cfg.w[k] / P0(k); } });
         note = "";
       } else if (cfg.mode === "all" || cfg.mode === "layer") {   // equal split across every name with 30+ days of prices; never sold or trimmed
-        var allK = [].concat.apply([], BUCKETS.map(function (b) { return b.k; })).filter(function (k) { return DATA.prices[k] && idxAt(DATA.prices[k].points, day) >= 29; });
-        tw = {}; allK.forEach(function (k) { tw[k] = 1 / allK.length; hold[k] = (hold[k] || 0) + C / allK.length / P0(k); });
-        note = "equal split across " + allK.length + " names";
+        var allK = (cfg.univ || [].concat.apply([], BUCKETS.map(function (b) { return b.k; }))).filter(function (k) { return DATA.prices[k] && idxAt(DATA.prices[k].points, day) >= 29; });
+        var wsum = allK.reduce(function (a2, k) { return a2 + (cfg.w ? cfg.w[k] : 1); }, 0);
+        tw = {}; allK.forEach(function (k) { var wk = (cfg.w ? cfg.w[k] : 1) / wsum; tw[k] = wk; hold[k] = (hold[k] || 0) + C * wk / P0(k); });
+        note = (cfg.w ? "my weights across " : "equal split across ") + allK.length + " names";
         if (cfg.mode === "layer") {   // layer out: trim 20% of anything more than 80% above its (expanding-window) regression line
           var trims = [], proceeds = 0;
           Object.keys(hold).forEach(function (k) { if (!(hold[k] > 0)) return; var fv = trendAt(k, day); if (!fv) return;
             if (P0(k) / fv - 1 > 0.8 && !(LASTTRIM[k] && Date.parse(day) - Date.parse(LASTTRIM[k]) < 27 * 864e5)) {
               var q = hold[k] * 0.2; hold[k] -= q; proceeds += q * P0(k); LASTTRIM[k] = day; trims.push(sn(k) + " +" + Math.round((P0(k) / fv - 1) * 100) + "%"); } });
-          if (proceeds > 0) { var vr = rankAt(day, "value").filter(function (k) { return P0(k); }), pick = vr[0];
+          if (proceeds > 0) { var vr = rankAt(day, "value").filter(function (k) { return P0(k) && (!cfg.univ || cfg.univ.indexOf(k) >= 0); }), pick = vr[0] || allK[0];
             hold[pick] = (hold[pick] || 0) + proceeds / P0(pick); tw[pick] = (tw[pick] || 0);
             note += "; trimmed 20% of " + trims.join(", ") + " → $" + Math.round(proceeds).toLocaleString("en-US") + " into " + sn(pick); }
         }
@@ -945,8 +954,8 @@ CSVs) and refreshed every day by the GitHub Action in
   }
   var BT_ALL = {}, btCmpChart = null;
   function btCompare() {   // all backtests side by side: stats table + growth-of-$1 (time-weighted) overlay on a log scale
-    var NAMES = { simA: "1. 40% BTC / 40% S&P / 20% Gold", sim5: "2. Equal weight, all names", simL: "3. Equal weight + layer out" };
-    var COL = { simA: "#e3b453", sim5: "#5b8def", simL: "#76bf94" };
+    var NAMES = { simA: "1. 40% BTC / 40% S&P / 20% Gold", sim5: "2. Equal weight, all names", simL: "3. Equal weight + layer out", simP: "4. My portfolio + layer out" };
+    var COL = { simA: "#e3b453", sim5: "#5b8def", simL: "#76bf94", simP: "#e07a7a" };
     var ids = Object.keys(NAMES).filter(function (k) { return BT_ALL[k]; }); if (!ids.length) return;
     function pc(v) { return (v >= 0 ? "+" : "") + (v * 100).toFixed(1) + "%"; }
     function row(n, s, extra) { return "<tr><td>" + n + "</td><td>" + pc(s.twr) + "</td><td>" + pc(s.irr) + "</td><td>" + (s.vol * 100).toFixed(1) + "%</td><td>" + (s.mdd * 100).toFixed(1) + "%</td><td>" + s.sharpe.toFixed(2) + "</td><td>" + s.sortino.toFixed(2) + "</td><td>" + s.calmar.toFixed(2) + "</td><td>" + (extra || "") + "</td></tr>"; }
@@ -989,7 +998,8 @@ CSVs) and refreshed every day by the GitHub Action in
     bucketCards(top.slice(0, TOPN).map(function (r) { return r.k; }));
     if (noSims) return;   // backtests use prices only, so the toggle doesn't change them
     setTimeout(function () {
-      [{ id: "simA", start: "2020-03-02", mode: "fixed", w: { "BTC-USD": 0.4, "SPY": 0.4, "GLD": 0.2 } }, { id: "sim5", start: "2020-03-02", mode: "all" }, { id: "simL", start: "2020-03-02", mode: "layer" }]
+      [{ id: "simA", start: "2020-03-02", mode: "fixed", w: { "BTC-USD": 0.4, "SPY": 0.4, "GLD": 0.2 } }, { id: "sim5", start: "2020-03-02", mode: "all" }, { id: "simL", start: "2020-03-02", mode: "layer" },
+       { id: "simP", start: "2020-03-02", mode: "layer", univ: Object.keys(PORTFOLIO.w), w: PORTFOLIO.w }]
         .forEach(function (c) { try { simPicks(c); } catch (e) { console.log("backtest " + c.id, e); } });
       try { btCompare(); } catch (e) { console.log("backtest compare", e); }
     }, 30);
