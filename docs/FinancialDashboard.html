@@ -584,7 +584,7 @@ _________________________</p>
   <br><br>
   <h2>Price Target Levels</h2>
   <div class="pf">
-    <div class="pf-sub">Layer in / layer out levels for each holding: last 12 months of price, then the log-regression trendline and the three sell levels projected to 2030, with the 2030 target. Green = layer-in zone (at or below trend). Sell levels at +80%, +150% and +200% above trend. Pick a holding; log scale, dollar prices.</div>
+    <div class="pf-sub">Layer in / layer out levels for each holding: last 12 months of price, the log-regression trendline projected to 2030, three sell levels and the 2030 target. Green = layer-in zone (at or below the trendline). Sell levels are set 50%, 80% and 100% of the way from today&#39;s price to the 2030 target. Pick a holding; log scale, dollar prices.</div>
     <div class="mp-tabs" id="mp-tabs"></div>
     <div class="pf-front" style="height:440px"><canvas id="mp-chart"></canvas></div>
     <div class="pf-note" id="mp-note"></div>
@@ -904,18 +904,15 @@ _________________________</p>
     var hist = labels.map(function (d) { return d > last[0] ? null : pxOn(k, d); });
     var li = labels.length - 1 - labels.slice().reverse().findIndex(function (d) { return d <= last[0]; }); hist[li] = px;
     function line(mult) { return f ? labels.map(function (d) { var fv = Math.exp(f.a + f.b * Math.log(f.day(d))) * mult; return share ? share(fv) : fv; }) : null; }
-    var LV = [{ m: 1, lab: "Trend (layer in at or below)", col: "#3f9b6b", fill: "start", bg: "rgba(63,155,107,.10)" },
-              { m: 1.8, lab: "Sell level 1: +80%", col: "#d9a52b", fill: false },
-              { m: 2.5, lab: "Sell level 2: +150%", col: "#e07b39", fill: "-1", bg: "rgba(224,123,57,.07)" },
-              { m: 3.0, lab: "Sell level 3: +200%", col: "#c8463e", fill: "-1", bg: "rgba(200,70,62,.08)" }];
-    var ds = [], lv = {};
-    if (f) LV.forEach(function (L) { var d = line(L.m); lv[L.m] = d;
-      ds.push({ label: L.lab, data: d, borderColor: L.col, backgroundColor: L.bg || L.col, borderWidth: L.m === 1 ? 1.6 : 1.4, borderDash: L.m === 1 ? [] : [6, 4], pointRadius: 0, fill: L.fill, order: 2 }); });
-    ds.push({ label: sn(k) + " price", data: hist, borderColor: "#1f2a3c", backgroundColor: "#1f2a3c", borderWidth: 2.2, pointRadius: 0, spanGaps: true, tension: 0.1, fill: false, order: 1 });
     var tgt = null, tgtLab = "", t32 = null;
     if (PERS[k]) { tgt = PERS[k][0]; t32 = PERS[k][1]; tgtLab = "my 2030 target"; }
     else if (isSol && share) { tgt = share(PERS["SOL-USD"][0], 1); t32 = share(PERS["SOL-USD"][1], 1); tgtLab = "2030 target (my SOL $2,153 at NAV 1.0x)"; }
     else if (med[k]) { tgt = med[k]; tgtLab = "2030 target (dashboard median)"; }
+    var ds = [], lv = {}, trend = line(1), SL = tgt ? [0.5, 0.8, 1].map(function (w) { return px + w * (tgt - px); }) : [];
+    if (trend) ds.push({ label: "Trend (layer in at or below)", data: trend, borderColor: "#3f9b6b", backgroundColor: "rgba(63,155,107,.10)", borderWidth: 1.6, pointRadius: 0, fill: "start", order: 2 });
+    var SC = ["#d9a52b", "#e07b39", "#c8463e"], SN = ["Sell 1: 50% of the way to target", "Sell 2: 80% of the way", "Sell 3: at target"];
+    SL.forEach(function (v, j) { ds.push({ label: SN[j] + " (" + fmtMoney(v) + ")", data: labels.map(function (d, i) { return i >= li ? v : null; }), borderColor: SC[j], borderWidth: 1.4, borderDash: [6, 4], pointRadius: 0, fill: false, order: 2 }); });
+    ds.push({ label: sn(k) + " price", data: hist, borderColor: "#1f2a3c", backgroundColor: "#1f2a3c", borderWidth: 2.2, pointRadius: 0, spanGaps: true, tension: 0.1, fill: false, order: 1 });
     if (tgt) ds.push({ label: tgtLab, data: labels.map(function (d, i) { return i === labels.length - 1 ? tgt : null; }), borderColor: "#2a5bd7", backgroundColor: "#2a5bd7", pointStyle: "rectRot", pointRadius: 9, pointHoverRadius: 11, showLine: false, fill: false, order: 0 });
     if (mpChart) mpChart.destroy();
     mpChart = new Chart(document.getElementById("mp-chart"), { type: "line", data: { labels: labels, datasets: ds },
@@ -924,15 +921,11 @@ _________________________</p>
           tooltip: { callbacks: { label: function (c) { return c.parsed.y == null ? null : c.dataset.label + ": " + fmtMoney(c.parsed.y); } } } },
         scales: { x: { ticks: { autoSkip: false, maxRotation: 0, color: "#6b7686", font: { size: 10 }, callback: function (v, i) { var l = this.getLabelForValue(v), p = i > 0 ? this.getLabelForValue(v - 1) : ""; return i > 0 && l.slice(0, 4) !== p.slice(0, 4) ? l.slice(0, 4) : null; } }, grid: { display: false } },
                   y: { type: "logarithmic", ticks: { color: "#6b7686", font: { size: 10 }, callback: function (v) { var e = Math.log10(v), r = e - Math.floor(e); return (Math.abs(r) < 1e-6 || Math.abs(r - Math.log10(2)) < 1e-6 || Math.abs(r - Math.log10(5)) < 1e-6) ? fmtMoney(v) : ""; } }, grid: { color: "#f0f2f6" } } } } });
-    var note;
-    if (f) { var i0 = Math.max(0, labels.findIndex(function (d) { return d >= last[0]; })), tn = lv[1][i0], dev = px / tn - 1, end = labels.length - 1;
-      var nxt = [1.8, 2.5, 3.0].filter(function (m) { return lv[m][i0] > px; })[0];
-      note = "<b>" + sn(k) + " today: " + fmtMoney(px) + "</b>, " + (dev >= 0 ? "+" : "") + Math.round(dev * 100) + "% vs trend (" + fmtMoney(tn) + "). " +
-        (px <= tn ? "In the layer-in zone. " : "") + (nxt ? "Next sell level: +" + Math.round((nxt - 1) * 100) + "% at " + fmtMoney(lv[nxt][i0]) + ". " : "Above all three sell levels. ") +
-        "End-2030 levels: trend " + fmtMoney(lv[1][end]) + ", +80% " + fmtMoney(lv[1.8][end]) + ", +150% " + fmtMoney(lv[2.5][end]) + ", +200% " + fmtMoney(lv[3][end]) + "." +
-        (tgt ? " 2030 target " + fmtMoney(tgt) + (t32 ? " (2032: " + fmtMoney(t32) + ")" : "") + ", " + (tgt > lv[3][end] ? "above the +200% level" : tgt > lv[2.5][end] ? "between +150% and +200%" : tgt > lv[1.8][end] ? "between +80% and +150%" : tgt > lv[1][end] ? "between trend and +80%" : "below trend") + "." : "");
-    } else note = "<b>" + sn(k) + " today: " + fmtMoney(px) + ".</b> No trendline yet (listed July 2026), so no layer levels." + (tgt ? " 2030 target " + fmtMoney(tgt) + "." : "");
-    document.getElementById("mp-note").innerHTML = note + "<br><span style=\"color:#6b7686\">Trend = <code>ln(Price) = a + b × ln(days)</code> fit on all weekly history. FWDI, DFDV and UPXI have too little history, so their levels are Solana's converted to a share price at today's EV-mNAV (coins per share, net of debt).</span>";
+    var i0 = Math.max(0, labels.findIndex(function (d) { return d >= last[0]; })), note = "<b>" + sn(k) + " today: " + fmtMoney(px) + "</b>";
+    if (trend) { var dev = px / trend[i0] - 1; note += ", " + (dev >= 0 ? "+" : "") + Math.round(dev * 100) + "% vs trend (" + fmtMoney(trend[i0]) + ")" + (px <= trend[i0] ? ", in the layer-in zone" : ""); }
+    else note += ", no trendline yet (listed July 2026), so no layer-in zone";
+    note += ". " + (tgt ? tgtLab.charAt(0).toUpperCase() + tgtLab.slice(1) + ": " + fmtMoney(tgt) + (t32 ? " (2032: " + fmtMoney(t32) + ")" : "") + ". Sell levels: " + SL.map(fmtMoney).join(", ") + " (" + SL.map(function (v) { return "+" + Math.round((v / px - 1) * 100) + "%"; }).join(", ") + " from today)." : "No target.");
+    document.getElementById("mp-note").innerHTML = note + "<br><span style=\"color:#6b7686\">Sell levels sit 50%, 80% and 100% of the way from today\'s price to the 2030 target. Trend = <code>ln(Price) = a + b × ln(days)</code> fit on all weekly history. FWDI, DFDV and UPXI have too little history, so their trend is Solana's converted to a share price at today's EV-mNAV (coins per share, net of debt).</span>";
   }
   function netQty(r) {   // coins held minus coins owed (borrowed SOL), converted at the balance-sheet date's price
     var q = r.qty || r.btc; if (r.owed) { var c = r.coin === "SOL" ? "SOL-USD" : "BTC-USD", p0 = pxOn(c, r.owed[1]); if (p0) q -= r.owed[0] / p0; } return q;
