@@ -578,6 +578,14 @@ _________________________</p>
     <div class="sim-c"><canvas id="simL-chart"></canvas></div>
     <div id="simL-stats"></div>
     <details class="srcs"><summary>Week-by-week buys and trims (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Buying that week</th><th>Strategy</th><th>S&amp;P</th></tr></thead><tbody id="simL-log"></tbody></table></div></details></div>
+  <br><br>
+  <h2>My Portfolio: Regression Bands vs Price Targets</h2>
+  <div class="pf">
+    <div class="pf-sub">Each holding's last 12 months and path to 2030, all on one chart as a multiple of today's price (log scale), so they can share an axis. Solid = price; dashed = the +80% line above its log-regression trendline (Backtest 3's sell trigger), projected to 2030; circles = 2030 targets. Hover for dollar prices.</div>
+    <div class="pf-front" style="height:440px"><canvas id="mp-chart"></canvas></div>
+    <table id="mp-table" class="btcmp"></table>
+    <div class="pf-note" id="mp-note"></div>
+  </div>
   <br><br><br><br><br>
   <br><br><br><br><br>
   <h2>Backtests Compared</h2>
@@ -872,6 +880,49 @@ _________________________</p>
   function heat(t, good) {   // t in 0..1 (rank); faded green for good, faded red for bad
     var g = [79, 157, 105], r = [224, 122, 122], w = [255, 255, 255], c = good ? g : r, a = 0.15 + 0.55 * t;
     return "rgba(" + c.join(",") + "," + a.toFixed(2) + ")";
+  }
+  var mpChart = null;
+  function myPaths() {   // my holdings: last year, +80% regression line to 2030, and 2030 targets, as multiples of today's price
+    var T = DATA.targets, trow = {}; (DATA.treasury ? DATA.treasury.rows : []).forEach(function (r) { trow[r.t] = r; });
+    var PERS = { "SOL-USD": [2153, 2970], "TSLA": [4794, 7910] };   // my 2030 / 2032 predictions
+    var med = {}; BEST_ROWS.forEach(function (r) { med[r.k] = r.base; });
+    var now = Date.now(), endT = Date.parse("2030-12-31T00:00:00Z"), start = now - 365 * 864e5, labels = [];
+    for (var t = start; t <= endT + 6048e5; t += 6048e5) labels.push(new Date(Math.min(t, endT)).toISOString().slice(0, 10));
+    var names = Object.keys(PORTFOLIO.w).filter(function (k) { return DATA.prices[k]; }), ds = [], rows = [];
+    names.forEach(function (k, ci) {
+      var col = PF_COLORS[ci % PF_COLORS.length], pts = DATA.prices[k].points, px = pts[pts.length - 1][1], tr = trow[k];
+      var isSol = tr && tr.coin === "SOL", f = isSol ? fairValue("SOL-USD") : fairValue(k);
+      // share price as a function of the SOL price for the Solana treasuries (today's EV-mNAV, net debt)
+      var share = null;
+      if (isSol && tr.shares) { var q = netQty(tr), ND = (tr.debt || 0) + (tr.pref || 0) - (tr.cash || 0), sp = lastPx("SOL-USD"), mev = (px * tr.shares + ND) / (q * sp);
+        share = function (P, m) { return Math.max(0, (P * q * (m == null ? mev : m) - ND) / tr.shares); }; }
+      var hist = labels.map(function (d) { if (d > pts[pts.length - 1][0]) return null; var v = pxOn(k, d); return v ? v / px : null; });
+      hist[labels.length - 1 - labels.slice().reverse().findIndex(function (d) { return d <= pts[pts.length - 1][0]; })] = 1;
+      var band = null;
+      if (f) band = labels.map(function (d) { var x = Math.log(f.day(d)), fv = Math.exp(f.a + f.b * x) * 1.8; return (share ? share(fv) : fv) / px; });
+      ds.push({ label: sn(k), data: hist, borderColor: col, backgroundColor: col, borderWidth: 2, pointRadius: 0, spanGaps: true, tension: 0.1, px: px });
+      if (band) ds.push({ label: sn(k) + " +80% line", data: band, borderColor: col, borderWidth: 1.3, borderDash: [5, 4], pointRadius: 0, px: px, band: true });
+      var tgt = null, tgtLab = "", t32 = null;
+      if (PERS[k]) { tgt = PERS[k][0]; t32 = PERS[k][1]; tgtLab = "my target"; }
+      else if (isSol && share) { tgt = share(PERS["SOL-USD"][0], 1); t32 = share(PERS["SOL-USD"][1], 1); tgtLab = "my SOL $2,153 at NAV 1.0x"; }
+      else if (med[k]) { tgt = med[k]; tgtLab = "dashboard median"; }
+      if (tgt) ds.push({ label: sn(k) + " 2030 " + tgtLab, data: labels.map(function (d, i) { return i === labels.length - 1 ? tgt / px : null; }), borderColor: col, backgroundColor: col, pointRadius: 7, pointHoverRadius: 9, showLine: false, px: px });
+      var b30 = band ? band[band.length - 1] * px : null, b0i = labels.findIndex(function (d) { return d >= pts[pts.length - 1][0]; }), b0 = band ? band[Math.max(0, b0i)] * px : null;
+      rows.push({ k: k, px: px, b0: b0, b30: b30, tgt: tgt, t32: t32, lab: tgtLab, isSol: isSol });
+    });
+    if (mpChart) mpChart.destroy();
+    mpChart = new Chart(document.getElementById("mp-chart"), { type: "line", data: { labels: labels, datasets: ds },
+      options: { animation: false, responsive: true, maintainAspectRatio: false, interaction: { mode: "nearest", intersect: false },
+        plugins: { legend: { labels: { usePointStyle: true, boxWidth: 8, font: { size: 10 }, filter: function (l, d) { var x = d.datasets[l.datasetIndex]; return !x.band && x.showLine !== false; } } },
+          tooltip: { callbacks: { label: function (c) { var v = c.parsed.y; return c.dataset.label + ": " + v.toFixed(2) + "x = " + fmtMoney(v * c.dataset.px); } } } },
+        scales: { x: { ticks: { autoSkip: false, maxRotation: 0, color: "#6b7686", font: { size: 10 }, callback: function (v, i) { var l = this.getLabelForValue(v), p = i > 0 ? this.getLabelForValue(v - 1) : ""; return l.slice(0, 4) !== p.slice(0, 4) ? l.slice(0, 4) : null; } }, grid: { display: false } },
+                  y: { type: "logarithmic", ticks: { color: "#6b7686", font: { size: 10 }, callback: function (v) { return [0.25, 0.5, 1, 2, 5, 10, 20, 50, 100].indexOf(+v) >= 0 ? v + "x" : ""; } }, grid: { color: "#f0f2f6" },
+                       title: { display: true, text: "Multiple of today's price (log scale)", color: "#6b7686", font: { size: 11 } } } } } });
+    function m(v) { return v == null ? "–" : fmtMoney(v); }
+    document.getElementById("mp-table").innerHTML = "<thead><tr><th>Holding</th><th>Price</th><th>+80% line today</th><th>+80% line end-2030</th><th>2030 target</th><th>Target vs +80% line in 2030</th><th>2032 target</th><th>Target is</th></tr></thead><tbody>" +
+      rows.map(function (r) { var rel = r.tgt && r.b30 ? r.tgt / r.b30 - 1 : null;
+        return "<tr><td>" + sn(r.k) + "</td><td>" + m(r.px) + "</td><td>" + m(r.b0) + "</td><td>" + m(r.b30) + "</td><td>" + m(r.tgt) + "</td><td>" + (rel == null ? "no trendline yet" : (rel >= 0 ? "+" : "") + Math.round(rel * 100) + "% " + (rel >= 0 ? "above" : "below")) + "</td><td>" + m(r.t32) + "</td><td>" + r.lab + "</td></tr>"; }).join("") + "</tbody>";
+    document.getElementById("mp-note").innerHTML = "The +80% line is the trendline <code>ln(Price) = a + b × ln(days)</code> fit on all weekly history, times 1.8. FWDI, DFDV and UPXI have too little history of their own, so their line is Solana's +80% line converted to a share price at today's EV-mNAV (coins per share, net of debt); their targets use my SOL prediction ($2,153 in 2030, $2,970 in 2032) at NAV 1.0x. SpaceX has no trendline yet (listed July 2026). MRVL and SPCX have no personal targets, so they show the dashboard's 2030 median. A target above the +80% line means the trim rule would start selling before the price reaches the target.";
   }
   function netQty(r) {   // coins held minus coins owed (borrowed SOL), converted at the balance-sheet date's price
     var q = r.qty || r.btc; if (r.owed) { var c = r.coin === "SOL" ? "SOL-USD" : "BTC-USD", p0 = pxOn(c, r.owed[1]); if (p0) q -= r.owed[0] / p0; } return q;
@@ -1571,6 +1622,7 @@ _________________________</p>
     try { portfolio(); } catch (e) { console.log("portfolio", e); }
     try { growthClassChart(); } catch (e) { console.log("growth class", e); }
     try { weekPicks(); } catch (e) { console.log("picks", e); }
+    try { myPaths(); } catch (e) { console.log("my paths", e); }
     document.getElementById("pp-on").onchange = function () { PERSONAL_ON = this.checked;
       try { bestBuy(); } catch (e) { console.log("best buy", e); } try { portfolio(); } catch (e) { console.log("portfolio", e); }
       try { growthClassChart(); } catch (e) {} try { weekPicks(true); } catch (e) { console.log("picks", e); } };
