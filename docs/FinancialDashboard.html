@@ -336,6 +336,7 @@ _________________________</p>
 .fd .pf-tab table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
 .fd .pf-tab td{padding:.12rem .25rem;border-bottom:1px solid var(--line)}
 .fd .pf-tab td:last-child{text-align:right}
+.fd .tdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
 .fd .pf-tab .sw{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:middle}
 .fd .pf-tab .st{margin-top:.35rem;color:var(--ink);line-height:1.45}
 .fd .pf-h{font:600 .95rem system-ui,sans-serif;color:var(--blue);margin:1.1rem 0 .3rem;text-transform:uppercase;letter-spacing:.06em}
@@ -608,10 +609,10 @@ _________________________</p>
     </div>
     <h3 class="pf-h">Sharpe ratio: my holdings</h3>
     <div class="pf-front"><canvas id="pf-front1"></canvas></div>
-    <div class="pf-note">Yellow dots: 4,000 random mixes of my six holdings, plus each holding (labeled). Red circle = my portfolio (1); blue circle = the highest-Sharpe mix (max 60% per name, 80% per category) (2).</div>
+    <div class="pf-note">Pale dots: 4,000 random mixes of my six holdings, plus each holding (labeled). Colored dots use each ticker's page-wide color. Dark diamond = my portfolio (1); dark star = the highest-Sharpe mix (max 60% per name, 80% per category) (2).</div>
     <h3 class="pf-h">Sharpe ratio: all Markets tickers</h3>
     <div class="pf-front"><canvas id="pf-front2"></canvas></div>
-    <div class="pf-note" id="pf-note2">Yellow dots: 4,000 random mixes of every ticker in the Markets chart, plus each ticker (labeled). Red circle = my portfolio (1); blue circle = the highest-Sharpe mix (max 60% per name, 80% per category) (3).</div>
+    <div class="pf-note" id="pf-note2">Pale dots: 4,000 random mixes of every ticker in the Markets chart, plus each ticker (labeled). Colored dots use each ticker's page-wide color. Dark diamond = my portfolio (1); dark star = the highest-Sharpe mix (max 60% per name, 80% per category) (3).</div>
     <h3 class="pf-h">Monte Carlo: my portfolio to 2030</h3>
     <div class="pf-front"><canvas id="pf-mc"></canvas></div>
     <div class="pf-note" id="pf-mc-note"></div>
@@ -638,6 +639,14 @@ _________________________</p>
   var SHORT = {"BTC-USD": "BTC", "SOL-USD": "SOL", "BZ=F": "Brent", "GC=F": "Gold", "HG=F": "Copper", "ETH-USD": "ETH"};
   var sel = "BTC-USD";
   function sn(sym) { return SHORT[sym] || sym; }
+  // One color per ticker, used by every chart, pie, dot and swatch on the page
+  var TCOL = { "FWDI": "#3d7be0", "TSLA": "#d9443f", "DFDV": "#c2185b", "MRVL": "#1f8a70", "SPCX": "#5d6d7e", "UPXI": "#26b5c6",
+    "BTC-USD": "#f39c12", "SOL-USD": "#8e5bd6", "ETH-USD": "#6c7ae0", "MSTR": "#a85a1f", "MTPLF": "#e8875a", "HSDT": "#e57aa9",
+    "NVDA": "#76b900", "AVGO": "#7d3c98", "MU": "#1b4f8a", "MP": "#8d3b12", "GLD": "#d4a417", "GC=F": "#c49b0e",
+    "SLV": "#7f8a95", "SI=F": "#5f6b77", "SILJ": "#a3aab2", "UUUU": "#9cb021", "HG=F": "#b87333", "CPER": "#d9925e", "SPY": "#222222" };
+  function tc(k) { if (TCOL[k]) return TCOL[k]; var h = 0; for (var i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) % 360; return "hsl(" + h + ",55%,48%)"; }
+  function tca(k, a) { var c = tc(k); if (c[0] !== "#") return c.replace("hsl", "hsla").replace(")", "," + a + ")"); var n = parseInt(c.slice(1), 16); return "rgba(" + (n >> 16) + "," + (n >> 8 & 255) + "," + (n & 255) + "," + a + ")"; }
+  function dot(k) { return '<span class="tdot" style="background:' + tc(k) + '"></span>'; }
   function ratio(a, b) {           // a / b on the dates both traded
     var m = {}; DATA.prices[b].points.forEach(function (p) { m[p[0]] = p[1]; });
     return DATA.prices[a].points.filter(function (p) { return m[p[0]]; }).map(function (p) { return [p[0], +(p[1] / m[p[0]]).toPrecision(5)]; });
@@ -715,7 +724,7 @@ _________________________</p>
     FEATURED.forEach(function (sym, i) {
       var s = DATA.prices[sym], pts = s.points, last = pts[pts.length - 1];
       var cv = card(P, "p" + i, s.name, fmtMoney(last[1]), "1D " + chg(pctChange(pts, 1)) + " &nbsp; 1Y " + chg(pctChange(pts, 365)) + " &nbsp; as of " + last[0]);
-      charts.push(draw(cv, pts, { log: logScale, fmt: fmtMoney, axis: function (v) { return v >= 1000 ? "$" + (v / 1000).toFixed(v >= 10000 ? 0 : 1) + "k" : "$" + v; } }));
+      charts.push(draw(cv, pts, { log: logScale, fmt: fmtMoney, color: tc(sym), fill: tca(sym, 0.08), axis: function (v) { return v >= 1000 ? "$" + (v / 1000).toFixed(v >= 10000 ? 0 : 1) + "k" : "$" + v; } }));
     });
     // Explorer: one chart, click between tickers and pairs
     var ex = document.createElement("div"); ex.className = "card explorer";
@@ -737,7 +746,7 @@ _________________________</p>
       '<canvas id="ex"></canvas>';
     P.appendChild(ex);
     ex.querySelectorAll("button[data-k]").forEach(function (b) { b.onclick = function () { sel = b.dataset.k; render(); }; });
-    charts.push(draw(document.getElementById("ex"), pts, { log: logScale, fmt: f, color: isPair ? "#d9736f" : "#3d6fd6", fill: isPair ? "rgba(224,122,122,0.08)" : "rgba(61,111,214,0.08)", axis: isPair ? function (v) { return (+v).toPrecision(3); } : function (v) { return v >= 1000 ? "$" + (v / 1000).toFixed(v >= 10000 ? 0 : 1) + "k" : "$" + v; } }));
+    charts.push(draw(document.getElementById("ex"), pts, { log: logScale, fmt: f, color: isPair ? "#d9736f" : tc(sel), fill: isPair ? "rgba(224,122,122,0.08)" : tca(sel, 0.08), axis: isPair ? function (v) { return (+v).toPrecision(3); } : function (v) { return v >= 1000 ? "$" + (v / 1000).toFixed(v >= 10000 ? 0 : 1) + "k" : "$" + v; } }));
     perfChart(P);
 
     var ORDER = ["debt_gdp", "cpi_cum", "cpi_yoy", "shadow", "fedfunds", "walcl", "unrate", "icsa", "payrolls", "real_gdp", "m2", "debt", "dgs10", "dgs30", "dgs2", "t10y2y"];
@@ -807,7 +816,7 @@ _________________________</p>
     bestUniverse().filter(function (k) { return k !== "SPY"; }).forEach(function (k) {
       var v = onDates(DATA.prices[k].points), f = null;
       var out = v.map(function (x, i) { if (x == null) return null; if (f == null) f = spyRaw[i] / x; return x * f; });   // late starters join at the S&P's level
-      ds.push({ label: sn(k), data: smoothLog(out, H), order: 3, borderWidth: 1.3, pointRadius: 0, tension: 0.4, spanGaps: true });
+      ds.push({ label: sn(k), k: k, borderColor: tc(k), backgroundColor: tc(k), data: smoothLog(out, H), order: 3, borderWidth: 1.3, pointRadius: 0, tension: 0.4, spanGaps: true });
     });
     var rf = null, ty = DATA.macro.dgs10 ? onDates(DATA.macro.dgs10.points) : null;
     if (ty) { var g = 1; rf = ty.map(function (y, i) { if (i > 0) { var dd = (Date.parse(dates[i]) - Date.parse(dates[i - 1])) / 864e5; g *= Math.pow(1 + (ty[i - 1] || 0) / 100, dd / 365); } return g; }); }
@@ -816,9 +825,6 @@ _________________________</p>
     var green = ds.filter(function (d) { return lastOf(d) >= spyEnd; }), yellow = ds.filter(function (d) { var x = lastOf(d); return x < spyEnd && x >= rfEnd; }),
         red = ds.filter(function (d) { return lastOf(d) < rfEnd; });
     [green, yellow, red].forEach(function (g) { g.sort(function (a, b) { return lastOf(b) - lastOf(a); }); });
-    green.forEach(function (d, i) { d.borderColor = mix([31, 110, 58], [168, 222, 180], green.length > 1 ? i / (green.length - 1) : 0); });
-    yellow.forEach(function (d, i) { d.borderColor = mix([214, 170, 40], [242, 206, 110], yellow.length > 1 ? i / (yellow.length - 1) : 0); });
-    red.forEach(function (d, i) { d.borderColor = mix([232, 150, 150], [165, 40, 40], red.length > 1 ? i / (red.length - 1) : 0); });
     ds = green.concat(yellow, red);
     ds.push({ label: "S&P 500", data: spyV, borderColor: "#111", borderWidth: 2.4, order: 2, pointRadius: 0, tension: 0.4, pin: true });
     if (rf) ds.push({ label: "10Y Treasury", data: rf, borderColor: "#b23a3a", borderWidth: 2.4, order: 1, borderDash: [7, 4], pointRadius: 0, tension: 0, pin: true });
@@ -837,7 +843,7 @@ _________________________</p>
       var q = 100 + p, dec = q >= 1 ? 0 : Math.min(6, Math.ceil(-Math.log10(q)) + 1); return "−" + (100 - q).toFixed(dec).replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "") + "%"; }
     var c = document.createElement("div"); c.className = "card explorer perf";
     c.innerHTML = '<div class="t"><span class="n">Every ticker vs the S&amp;P 500 and the 10-year Treasury</span><span class="v" style="font-size:1rem">since April 2020</span></div>' +
-      '<div class="c">Total % return since April 2020, log scale (compressed below −50% so the biggest losers fit), weekly closes smoothed over 13 weeks. Thick black = S&amp;P 500 (SPY); dashed red = earning the 10-year Treasury yield (the risk-free rate). Green = beat the S&amp;P, yellow = between the S&amp;P and the 10-year, red = trailed the 10-year. Names on the right are in end-value order; thin lines join each to its line. Later starters join at the S&amp;P\'s level on their first day.</div><canvas id="perf"></canvas>';
+      '<div class="c">Total % return since April 2020, log scale (compressed below −50% so the biggest losers fit), weekly closes smoothed over 13 weeks. Thick black = S&amp;P 500 (SPY); dashed red = earning the 10-year Treasury yield (the risk-free rate). Each ticker keeps the same color it has everywhere on this page; lines ending above the black line beat the S&amp;P, lines ending below the dashed red line trailed the 10-year. Names on the right are in end-value order; thin lines join each to its line. Later starters join at the S&amp;P\'s level on their first day.</div><canvas id="perf"></canvas>';
     P.appendChild(c);
     charts.push(new Chart(document.getElementById("perf"), { type: "line", data: { labels: dates, datasets: ds }, plugins: [endLabels, gapLine],
       options: { animation: false, responsive: true, maintainAspectRatio: false, layout: { padding: { right: 110 } },
@@ -893,7 +899,7 @@ _________________________</p>
     var names = Object.keys(PORTFOLIO.w).filter(function (k) { return DATA.prices[k]; });
     if (!mpSel || names.indexOf(mpSel) < 0) mpSel = names[0];
     var tabs = document.getElementById("mp-tabs");
-    tabs.innerHTML = names.map(function (k) { return '<button data-k="' + k + '"' + (k === mpSel ? ' class="on"' : '') + '>' + sn(k) + '</button>'; }).join("");
+    tabs.innerHTML = names.map(function (k) { return '<button data-k="' + k + '"' + (k === mpSel ? ' class="on" style="background:' + tc(k) + ';border-color:' + tc(k) + '"' : '') + '>' + dot(k) + sn(k) + '</button>'; }).join("");
     tabs.onclick = function (e) { var k = e.target.getAttribute("data-k"); if (k) { mpSel = k; myPaths(); } };
     var k = mpSel, now = Date.now(), endT = Date.parse("2030-12-31T00:00:00Z"), start = now - 365 * 864e5, labels = [];
     for (var t = start; t <= endT + 6048e5; t += 6048e5) labels.push(new Date(Math.min(t, endT)).toISOString().slice(0, 10));
@@ -912,8 +918,8 @@ _________________________</p>
     if (trend) ds.push({ label: "Trend (layer in at or below)", data: trend, borderColor: "#3f9b6b", backgroundColor: "rgba(63,155,107,.10)", borderWidth: 1.6, pointRadius: 0, fill: "start", order: 2 });
     var SC = ["#d9a52b", "#e07b39", "#c8463e"], SN = ["Sell 1: 50% of the way to target", "Sell 2: 80% of the way", "Sell 3: at target"];
     SL.forEach(function (v, j) { ds.push({ label: SN[j] + " (" + fmtMoney(v) + ")", data: labels.map(function (d, i) { return i >= li ? v : null; }), borderColor: SC[j], borderWidth: 1.4, borderDash: [6, 4], pointRadius: 0, fill: false, order: 2 }); });
-    ds.push({ label: sn(k) + " price", data: hist, borderColor: "#1f2a3c", backgroundColor: "#1f2a3c", borderWidth: 2.2, pointRadius: 0, spanGaps: true, tension: 0.1, fill: false, order: 1 });
-    if (tgt) ds.push({ label: tgtLab, data: labels.map(function (d, i) { return i === labels.length - 1 ? tgt : null; }), borderColor: "#2a5bd7", backgroundColor: "#2a5bd7", pointStyle: "rectRot", pointRadius: 9, pointHoverRadius: 11, showLine: false, fill: false, order: 0 });
+    ds.push({ label: sn(k) + " price", data: hist, borderColor: tc(k), backgroundColor: tc(k), borderWidth: 2.2, pointRadius: 0, spanGaps: true, tension: 0.1, fill: false, order: 1 });
+    if (tgt) ds.push({ label: tgtLab, data: labels.map(function (d, i) { return i === labels.length - 1 ? tgt : null; }), borderColor: "#1f2a3c", backgroundColor: tc(k), pointStyle: "rectRot", borderWidth: 2, pointRadius: 9, pointHoverRadius: 11, showLine: false, fill: false, order: 0 });
     if (mpChart) mpChart.destroy();
     mpChart = new Chart(document.getElementById("mp-chart"), { type: "line", data: { labels: labels, datasets: ds },
       options: { animation: false, responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
@@ -1315,7 +1321,7 @@ _________________________</p>
     var rows = GROWTH.filter(function (k) { return VALUE[k]; }).map(function (k) { var v = pctRank(vOrder, k), g = pctRank(GROWTH, k); return { k: k, v: v, g: g, o: (v + g) / 2 }; });
     rows.sort(function (a, b) { return b.o - a.o || b.g - a.g; });
     var top = rows.slice(0, 10);
-    document.getElementById("picks-row").innerHTML = top.map(function (r, i) { return '<span class="pk"><span class="rk">#' + (i + 1) + '</span><span class="tk" title="Overall ' + r.o.toFixed(0) + ' (value ' + r.v.toFixed(0) + ', growth ' + r.g.toFixed(0) + ')">$' + sn(r.k) + "</span></span>"; }).join("");
+    document.getElementById("picks-row").innerHTML = top.map(function (r, i) { return '<span class="pk"><span class="rk">#' + (i + 1) + '</span><span class="tk" title="Overall ' + r.o.toFixed(0) + ' (value ' + r.v.toFixed(0) + ', growth ' + r.g.toFixed(0) + ')">' + dot(r.k) + '$' + sn(r.k) + "</span></span>"; }).join("");
     bucketCards(top.slice(0, TOPN).map(function (r) { return r.k; }));
     if (noSims) return;   // backtests use prices only, so the toggle doesn't change them
     setTimeout(function () {
@@ -1383,27 +1389,27 @@ _________________________</p>
   function pieBlock(i, names, w, st, rf) {
     var items = names.map(function (k, j) { return { k: k, w: w[j] }; }).filter(function (x) { return x.w >= 0.005; }).sort(function (a, b) { return b.w - a.w; });
     var ch = new Chart(document.getElementById("pf-pie" + i), { type: "doughnut",
-      data: { labels: items.map(function (x) { return sn(x.k); }), datasets: [{ data: items.map(function (x) { return Math.round(x.w * 1000) / 10; }), backgroundColor: items.map(function (_, j) { return PF_COLORS[j % PF_COLORS.length]; }), borderWidth: 1, borderColor: "#fff" }] },
+      data: { labels: items.map(function (x) { return sn(x.k); }), datasets: [{ data: items.map(function (x) { return Math.round(x.w * 1000) / 10; }), backgroundColor: items.map(function (x) { return tc(x.k); }), borderWidth: 1, borderColor: "#fff" }] },
       options: { responsive: true, maintainAspectRatio: false, cutout: "50%", plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return c.label + ": " + c.parsed + "%"; } } } } } });
     pfCharts.push(ch);
     function p1(v) { return (v * 100).toFixed(1) + "%"; }
     document.getElementById("pf-tab" + i).innerHTML = "<table>" + items.map(function (x, j) {
-      return '<tr><td><span class="sw" style="background:' + PF_COLORS[j % PF_COLORS.length] + '"></span>' + sn(x.k) + "</td><td>" + p1(x.w) + "</td></tr>"; }).join("") + "</table>" +
+      return '<tr><td><span class="sw" style="background:' + tc(x.k) + '"></span>' + sn(x.k) + "</td><td>" + p1(x.w) + "</td></tr>"; }).join("") + "</table>" +
       '<div class="st">Return ' + p1(st.m) + "/yr<br>Volatility " + p1(st.s) + "<br><b>Sharpe " + st.sh.toFixed(2) + "</b></div>";
   }
   function frontier(id, rm, opt, cur, curPt, optPt) {
-    var assets = rm.names.map(function (k, i) { return { x: Math.sqrt(rm.C[i][i]) * 100, y: rm.G[i] * 100, k: sn(k) }; });
+    var assets = rm.names.map(function (k, i) { return { x: Math.sqrt(rm.C[i][i]) * 100, y: rm.G[i] * 100, k: sn(k), c: tc(k) }; });
     var labelPlugin = { id: "pfLabels", afterDatasetsDraw: function (ch) { var ctx = ch.ctx, meta = ch.getDatasetMeta(1);
-      ctx.save(); ctx.font = "600 11px system-ui"; ctx.fillStyle = "#8a7338";
-      meta.data.forEach(function (pt, i) { ctx.fillText(assets[i].k, pt.x + 7, pt.y - 5); }); ctx.restore(); } };
+      ctx.save(); ctx.font = "600 11px system-ui";
+      meta.data.forEach(function (pt, i) { ctx.fillStyle = assets[i].c; ctx.fillText(assets[i].k, pt.x + 7, pt.y - 5); }); ctx.restore(); } };
     var ch = new Chart(document.getElementById(id), { type: "scatter", plugins: [labelPlugin],
       data: { datasets: [
         { label: "Random mixes", data: opt.cloud, pointRadius: 2, borderWidth: 0, backgroundColor: "rgba(242,196,109,0.35)", order: 3 },
-        { label: "Holdings", data: assets, pointRadius: 5, borderWidth: 0, backgroundColor: "#e3b453", order: 2 },
-        { label: "My portfolio", data: [curPt], pointRadius: 8, borderWidth: 0, backgroundColor: "#e07a7a", order: 1 },
-        { label: "Highest-Sharpe mix", data: [optPt], pointRadius: 8, borderWidth: 0, backgroundColor: "#5b8def", order: 0 }] },
+        { label: "Holdings", data: assets, pointRadius: 5, borderWidth: 0, backgroundColor: assets.map(function (a) { return a.c; }), order: 2 },
+        { label: "My portfolio", data: [curPt], pointStyle: "rectRot", pointRadius: 9, borderWidth: 2, borderColor: "#fff", backgroundColor: "#1f2a3c", order: 1 },
+        { label: "Highest-Sharpe mix", data: [optPt], pointStyle: "star", pointRadius: 11, borderWidth: 2.5, borderColor: "#1f2a3c", backgroundColor: "#1f2a3c", order: 0 }] },
       options: { responsive: true, maintainAspectRatio: false, animation: false,
-        plugins: { legend: { labels: { usePointStyle: true, pointStyle: "circle", boxWidth: 8, font: { size: 11 }, filter: function (l) { return l.datasetIndex > 1; } } },
+        plugins: { legend: { labels: { usePointStyle: true, boxWidth: 8, font: { size: 11 }, filter: function (l) { return l.datasetIndex > 1; } } },
           tooltip: { callbacks: { label: function (c) { var d = c.raw; return (d.k ? d.k : c.dataset.label) + ": return " + d.y.toFixed(1) + "%/yr, volatility " + d.x.toFixed(1) + "%"; } } } },
         scales: { x: { suggestedMax: Math.max.apply(null, assets.map(function (a) { return a.x; })) + 10, title: { display: true, text: "Volatility (annualized, %)", color: "#6b7686" }, ticks: { color: "#6b7686" }, grid: { color: "#eef1f5" } },
                   y: { title: { display: true, text: "Expected return (CAGR to 2030, %/yr)", color: "#6b7686" }, ticks: { color: "#6b7686" }, grid: { color: "#eef1f5" } } } } });
@@ -1571,7 +1577,7 @@ _________________________</p>
       var V = VALUE[r.k], vcells = V ? '<td class="g1" style="background:' + gy(V.dd) + '">' + Math.round(V.dd * 100) + "%<small>ATH " + m(V.ath) + "</small></td>" +
         '<td style="background:' + gy(-V.z20 / 2) + '">' + pc1(V.dev20) + "<small>" + zs(V.z20) + "</small></td>" + '<td style="background:' + gy(-V.z200 / 2) + '">' + pc1(V.dev200) + "<small>" + zs(V.z200) + "</small></td>" +
         '<td style="background:' + gy(V.t) + '"><b>' + V.score.toFixed(2) + "</b><small>#" + V.rank + "</small></td>" : '<td class="g1"></td><td></td><td></td><td></td>';
-      return '<tr title="' + (DATA.prices[r.k].name || r.k) + (r.note ? " - " + r.note : "") + '"><td>' + sn(r.k) + "</td><td>" + m(r.px) + "</td>" + vcells + '<td class="g1">' + tp(r.lo, r.px) +
+      return '<tr title="' + (DATA.prices[r.k].name || r.k) + (r.note ? " - " + r.note : "") + '"><td>' + dot(r.k) + sn(r.k) + "</td><td>" + m(r.px) + "</td>" + vcells + '<td class="g1">' + tp(r.lo, r.px) +
         "</td><td><b>" + m(r.base) + "</b><small>" + (r.note ? r.note.split(";")[0] + ", " : "2030, ") + "n=" + r.n + "</small></td><td>" + tp(r.hi, r.px) +
         "</td><td" + shade(r.r12, 1) + ">" + r12 + "</td><td>" + navTxt + "</td><td" + shade(r.yr, 1) + ">" + (r.yr * 100).toFixed(1) + "%</td><td" + shade(r.r30, 10) + "><b>" + rt(r.r30) + "</b></td></tr>";
     }).join("");
