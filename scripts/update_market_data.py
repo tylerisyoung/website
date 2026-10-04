@@ -235,7 +235,11 @@ TARGETS = {
     "MRVL": {"kind": "direct", "unit": "$", "long": [
         S("Motley Fool (Harsh Chauhan)", 703, "2030", "2026-09", "https://www.fool.com/investing/2026/09/21/prediction-heres-what-a-5000-investment-in-marvell/", "CY2030 EPS $23.42 x 30"),
         S("24/7 Wall St (Vandita Jadeja)", 339, "2030", "2026-09", "https://247wallst.com/investing/2026/09/25/marvells-203-ytd-surge-sets-high-bar-but-we-see-more-runway-ahead/", "Base case"),
-        S("24/7 Wall St price-prediction model", 333.29, "2030", "2026-09", "https://247wallst.com/companies/MRVL/price-prediction/", "Model base case")],
+        S("24/7 Wall St price-prediction model", 333.29, "2030", "2026-09", "https://247wallst.com/companies/MRVL/price-prediction/", "Model base case"),
+        S("Cantor Fitzgerald (C.J. Muse)", 600, "2030", "2026-09", "https://finance.yahoo.com/technology/ai/articles/marvell-ai-opportunity-could-expand-145429633.html", "Cantor's CY2030 EPS of at least $20 x 30 (same multiple as Motley Fool); revenue $40B+, 40-45% CAGR"),
+        S("AltIndex", 624.92, "2030", "2026-10", "https://altindex.com/ticker/mrvl/price-prediction", "Base-case extrapolation"),
+        S("CoinPriceForecast", 1067, "2030", "2026-10", "https://coinpriceforecast.com/mrvl-stock", "End-2030 forecast"),
+        S("Traders Union", 1189.82, "2030", "2026-09", "https://tradersunion.com/currencies/forecast/mrvl-usd/", "2030 average")],
       "cons": {"by": "MarketBeat", "avg": 272.00, "low": 105, "high": 400, "n": 39, "date": "2026-09-29", "url": MB + "NASDAQ/MRVL/forecast/"}},
     # No named 2030 targets exist for these three; they use a sector's 2030 outlook, converted at today's price
     "MP": {"kind": "sector", "sector": "COMMOD", "unit": "$",
