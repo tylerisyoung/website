@@ -16,7 +16,7 @@ CSVs) and refreshed every day by the GitHub Action in
 <br>
 <br>
 
-<h2>**Ongoing Technical Analysis of Financial Markets**</h2> 
+<h2>**Market Analysis & My Growth Portfolio**</h2> 
 <h6>
 <br>
 ***For sure financial advice - More on Substack & Twitter***
@@ -186,7 +186,7 @@ CSVs) and refreshed every day by the GitHub Action in
 </style>
 
 <div class="fd">
-  <h1>Market Analysis &amp; My Growth Portfolio</h1>
+  <h1>Financial Dashboard</h1>
   <div class="accent"></div>
   <div class="sub" id="fd-updated">Loading data…</div>
   <div class="live">
