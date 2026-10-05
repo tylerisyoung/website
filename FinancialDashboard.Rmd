@@ -1,6 +1,6 @@
 ---
 title: ""
-pagetitle: "Financial Dashboard"
+pagetitle: "Market Analysis & My Growth Portfolio"
 output:
   html_document:
     theme: yeti
@@ -186,7 +186,7 @@ CSVs) and refreshed every day by the GitHub Action in
 </style>
 
 <div class="fd">
-  <h1>Financial Dashboard</h1>
+  <h1>Market Analysis &amp; My Growth Portfolio</h1>
   <div class="accent"></div>
   <div class="sub" id="fd-updated">Loading data…</div>
   <div class="live">
