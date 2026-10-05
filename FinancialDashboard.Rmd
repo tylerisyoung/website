@@ -41,10 +41,10 @@ CSVs) and refreshed every day by the GitHub Action in
 .fd .tre-top .k{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:#b0833a;font-weight:700}
 .fd .tre-top .tre-note{margin-left:auto;font-size:.75rem;color:var(--muted)}
 .fd .tre-wrap{overflow-x:auto}
-.fd .tre table{width:100%;border-collapse:collapse;font-size:.82rem;font-variant-numeric:tabular-nums;white-space:nowrap}
-.fd .tre th{background:var(--ink);color:#fff;font-weight:600;padding:.4rem .5rem;text-align:right;cursor:pointer;user-select:none;border-left:1px solid #46546a}
+.fd .tre table{width:100%;border-collapse:collapse;font-size:.78rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.fd .tre th{background:var(--ink);color:#fff;font-weight:600;padding:.4rem .5rem;text-align:right;cursor:pointer;user-select:none;white-space:normal;vertical-align:bottom;line-height:1.2;border-left:1px solid #46546a}
 .fd .tre th:first-child{text-align:left}.fd .tre th.b{color:#f2c46d}.fd .tre th:nth-child(6){border-left:3px solid #f2c46d}.fd .tre td:nth-child(2){text-align:center;font-weight:600;color:#6b7686}
-.fd .tre td{padding:.28rem .5rem;text-align:right;border-bottom:1px solid var(--line)}
+.fd .tre td{padding:.28rem .4rem;text-align:right;border-bottom:1px solid var(--line)}
 .fd .tre td:first-child{text-align:left;font-weight:700}.fd .tre td:nth-child(6){border-left:3px solid #f2c46d;color:#b0833a;font-weight:600}
 .fd .tre tr:hover td{background:#fdf8ea}
 .fd .tre-foot{font-size:.72rem;color:var(--muted);margin-top:.5rem;line-height:1.45}
@@ -61,6 +61,8 @@ CSVs) and refreshed every day by the GitHub Action in
 .fd .pf-tab table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
 .fd .pf-tab td{padding:.12rem .25rem;border-bottom:1px solid var(--line)}
 .fd .pf-tab td:last-child{text-align:right}
+.fd #tre-table th.t1{background:#2f4a7a;color:#fff}
+.fd #tre-table td small{display:block;color:#6b7686;font-size:.68rem}
 .fd .tdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
 .fd .pf-tab .sw{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:middle}
 .fd .pf-tab .st{margin-top:.35rem;color:var(--ink);line-height:1.45}
@@ -258,12 +260,15 @@ CSVs) and refreshed every day by the GitHub Action in
   </div>
   <h2>BTC and Solana Treasury Companies</h2>
   <div class="tre">
-    <div class="tre-top"><div><span class="k">BTC</span> <b id="tre-btc">…</b></div><div><span class="k">SOL</span> <b id="tre-sol">…</b></div><div><span class="k">BTC market cap</span> <b id="tre-mcap">…</b></div><div class="tre-note">Sorted by mNAV, smallest first. Green = below 1 (stock is cheaper than its coins), red = above 1. Click a column to re-sort.</div></div>
+    <div class="tre-top"><div><span class="k">BTC</span> <b id="tre-btc">…</b></div><div><span class="k">SOL</span> <b id="tre-sol">…</b></div><div><span class="k">BTC market cap</span> <b id="tre-mcap">…</b></div><div class="tre-note">Ranked best buy first by the last column. Green = below 1 (stock is cheaper than its coins), red = above 1. Click a column to re-sort.</div></div>
     <div class="tre-wrap"><table id="tre-table"><thead><tr>
       <th data-s="t">Ticker</th><th data-s="coin">Coin</th><th data-s="price">Share Price</th><th data-s="mcap">Market Cap</th>
-      <th data-s="qty" class="b">HOLD QTY</th><th data-s="hold" class="b">HOLD $</th><th data-s="per" class="b">Crypto Per $ Invested</th><th data-s="nav" class="b">mNAV (equity only)</th><th data-s="navd" class="b">mNAV incl. Debt</th>
+      <th data-s="qty" class="b">HOLD QTY</th><th data-s="hold" class="b">HOLD $</th><th data-s="per" class="b">Crypto Per $ Invested</th><th data-s="nav" class="b">mNAV (equity only)</th><th data-s="navd" class="b">mNAV incl. Debt</th><th data-s="navt" class="b">mNAV at 1st Target incl. Debt</th><th data-s="cvn" class="b">Notes Converting at 1st Target</th><th data-s="fin" class="b t1">Final: mNAV at 1st Target, Debt + Conversions</th>
     </tr></thead><tbody></tbody></table></div>
-    <div class="tre-foot">Crypto per $ invested = BTC or SOL held ÷ market cap. mNAV (equity only) = market cap ÷ crypto held. n/m = not meaningful for Tesla and SpaceX, operating companies whose coins are a tiny part of their value. Coin holdings from CoinGecko's public treasury data and share counts from Yahoo Finance, both refreshed monthly (last <span id="tre-asof"></span><span id="tre-solasof" style="display:none"></span>). Share prices from Yahoo Finance (about every 2 hours); BTC and SOL live from Coinbase. Market caps count only shares. <b>mNAV incl. debt</b> = (market cap + debt + preferred &minus; cash) &divide; crypto held: enterprise value per dollar of coins, i.e. what you really pay for the coins once lenders and preferred holders are paid. HOLD QTY is net of coins owed back (DeFi Development's borrowed SOL). Debt, preferred and cash from each company's latest filing (mostly June 30, 2026; Strategy Aug/Sep 2026); hover a cell for the breakdown.</div>
+    <div class="tre-foot">Crypto per $ invested = BTC or SOL held ÷ market cap. mNAV (equity only) = market cap ÷ crypto held. n/m = not meaningful for Tesla and SpaceX, operating companies whose coins are a tiny part of their value. Coin holdings from CoinGecko's public treasury data and share counts from Yahoo Finance, both refreshed monthly (last <span id="tre-asof"></span><span id="tre-solasof" style="display:none"></span>). Share prices from Yahoo Finance (about every 2 hours); BTC and SOL live from Coinbase. Market caps count only shares. <b>mNAV incl. debt</b> = (market cap + debt + preferred &minus; cash) &divide; crypto held: enterprise value per dollar of coins, i.e. what you really pay for the coins once lenders and preferred holders are paid. HOLD QTY is net of coins owed back (DeFi Development's borrowed SOL, and Upexi&#39;s 1.08M SOL set aside to hand back to noteholders). Debt, preferred and cash from each company's latest filing (mostly June 30, 2026; Strategy Aug/Sep 2026); hover a cell for the breakdown.<br><br><b>The three forward columns</b> use each coin&#39;s first price target, the average of its near-term (12-month to end-2027) forecasts in the Current Best Buy sources: <span id="tre-t1"></span>.<br>
+      <b>mNAV at 1st target incl. debt</b> = market cap &divide; (net coins &times; first target &minus; debt &minus; preferred + cash). All convertible notes are treated as debt (Upexi&#39;s as SOL handed back).<br>
+      <b>Notes converting at 1st target</b>: a note converts when the shares it turns into are worth more than what its holder gets otherwise (the dollar principal, or for Upexi the SOL returned). Converted notes leave the debt and add shares. Strategy&#39;s STRK and Metaplanet&#39;s MERCURY preferred are treated the same way.<br>
+      <b>Final</b> = share price &divide; (value left for shareholders at the first target &divide; shares after conversions). Below 1 = the stock is cheap even after every lender is paid and every in-the-money note converts. Holdings, shares (including pre-funded and penny warrants), debt and converts from each company&#39;s latest filing or press release (Sept 2026; Upexi and DeFi Development June 30); hover for the math.</div>
   </div>
   <h2>This Week's Best Buys</h2>
   <br><br><br><br><br>
@@ -609,7 +614,7 @@ CSVs) and refreshed every day by the GitHub Action in
   }
   setInterval(cryptoLive, 60000);
   // Bitcoin treasury companies table
-  var TRE = null, treBtc = null, treSolP = null, treSort = "nav", treDir = 1;
+  var TRE = null, treBtc = null, treSolP = null, treSort = "fin", treDir = 1;
   function money(v, d) { return "$" + v.toLocaleString("en-US", { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }); }
   function heat(t, good) {   // t in 0..1 (rank); faded green for good, faded red for bad
     var g = [79, 157, 105], r = [224, 122, 122], w = [255, 255, 255], c = good ? g : r, a = 0.15 + 0.55 * t;
@@ -658,8 +663,37 @@ CSVs) and refreshed every day by the GitHub Action in
     note += ". " + (tgt ? tgtLab.charAt(0).toUpperCase() + tgtLab.slice(1) + ": " + fmtMoney(tgt) + (t32 ? " (2032: " + fmtMoney(t32) + ")" : "") + ". Sell levels: " + SL.map(fmtMoney).join(", ") + " (" + SL.map(function (v) { return "+" + Math.round((v / px - 1) * 100) + "%"; }).join(", ") + " from today)." : "No target.");
     document.getElementById("mp-note").innerHTML = note + "<br><span style=\"color:#6b7686\">Sell levels sit 50%, 80% and 100% of the way from today\'s price to the 2030 target. Trend = <code>ln(Price) = a + b × ln(days)</code> fit on all weekly history. FWDI, DFDV and UPXI have too little history, so their trend is Solana's converted to a share price at today's EV-mNAV (coins per share, net of debt).</span>";
   }
-  function netQty(r) {   // coins held minus coins owed (borrowed SOL), converted at the balance-sheet date's price
-    var q = r.qty || r.btc; if (r.owed) { var c = r.coin === "SOL" ? "SOL-USD" : "BTC-USD", p0 = pxOn(c, r.owed[1]); if (p0) q -= r.owed[0] / p0; } return q;
+  function netQty(r) {   // coins held minus coins owed (borrowed SOL, converted at the balance-sheet date's price) and SOL set aside for notes that settle in SOL
+    var q = r.qty || r.btc; if (r.owed) { var c = r.coin === "SOL" ? "SOL-USD" : "BTC-USD", p0 = pxOn(c, r.owed[1]); if (p0) q -= r.owed[0] / p0; }
+    (r.conv || []).forEach(function (n) { q -= n[2] || 0; }); return q;
+  }
+  function coinT1(coin) { var t = DATA.targets && DATA.targets[coin === "SOL" ? "SOL-USD" : "BTC-USD"]; return t && t.avg12 ? t.avg12 : null; }
+  function fwd(r, qty, P) {   // value left for shareholders at coin price P, with and without the notes that would convert
+    if (!P || r.debt == null) return null;
+    var notes = r.conv || [];
+    function at(cv) { var e = (qty + notes.reduce(function (s, x, i) { return s + (cv[i] ? x[2] : 0); }, 0)) * P - r.debt - (r.pref || 0) + (r.cash || 0), n = r.shares;
+      notes.forEach(function (x, i) { if (cv[i]) { n += x[0] / x[1]; if (x[3] !== "sol") e += x[0]; } }); return { e: e, n: n }; }
+    var cv = notes.map(function () { return false; }), a0 = at(cv), a = a0;
+    for (var k = 0; k < 10; k++) {   // convert while the shares are worth more than the alternative; repeat until nothing changes
+      var ps = a.e / a.n, ch = false;
+      notes.forEach(function (x, i) { if (!cv[i] && (x[0] / x[1]) * ps > (x[3] === "sol" ? x[2] * P : x[0])) { cv[i] = true; ch = true; } });
+      if (!ch) break; a = at(cv);
+    }
+    return { P: P, e0: a0.e, e: a.e, n: a.n, add: a.n - r.shares, nc: cv.filter(Boolean).length, nt: notes.length };
+  }
+  function f2(v) { return v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function mcell(v, tip, cls) {
+    if (v === Infinity) return '<td class="nm">n/a</td>';
+    if (v >= 1e9) return '<td class="' + (cls || "") + '" title="' + tip + '" style="background:' + heat(1, false) + '">underwater</td>';
+    return '<td class="' + (cls || "") + '" title="' + tip + '" style="background:' + heat(0.4 + 0.6 * Math.min(1, Math.abs(Math.log10(Math.max(v, 0.01)))), v < 1) + '">' + (cls ? "<b>" + f2(v) + "</b>" : f2(v)) + "</td>";
+  }
+  function fwdCells(r) {
+    var F = r.F; if (!F) return '<td class="nm">n/a</td><td class="nm">n/a</td><td class="nm">n/a</td>';
+    var c = r.coin + " at " + money(F.P) + ": " + Math.round(r.qty).toLocaleString("en-US") + " net coins = " + money(r.qty * F.P) + ", minus debt " + money(r.debt) + ", preferred " + money(r.pref || 0) + ", plus cash " + money(r.cash || 0);
+    var t1 = c + " = " + money(F.e0) + " for shareholders (all notes repaid" + (r.t === "UPXI" ? " or their SOL handed back" : "") + ")";
+    var conv = F.nt ? (F.nc ? "+" + (F.add / 1e6).toFixed(1) + "M shares<small>" + F.nc + " of " + F.nt + " convert</small>" : "none<small>0 of " + F.nt + " convert</small>") : '<span class="pct">no notes</span>';
+    var t3 = money(F.e) + " for shareholders ÷ " + (F.n / 1e6).toFixed(1) + "M shares = " + money(F.e / F.n, 2) + "/share vs price " + money(r.price, 2) + (r.fin < 1e9 ? " (+" + Math.round((1 / r.fin - 1) * 100) + "% to NAV 1.0x)" : "");
+    return mcell(r.navt, t1) + '<td title="Notes in the money at the first target convert into shares">' + conv + "</td>" + mcell(r.fin, t3, "t1");
   }
   function treRender() {
     if (!TRE || !treBtc || !treSolP) return;
@@ -670,26 +704,28 @@ CSVs) and refreshed every day by the GitHub Action in
     document.getElementById("tre-asof").textContent = TRE.holdings_asof;
     document.getElementById("tre-sol").textContent = money(treSolP, 2);
     document.getElementById("tre-solasof").textContent = TRE.sol_asof || "";
+    var e1 = document.getElementById("tre-t1"); if (e1) e1.textContent = "SOL " + money(coinT1("SOL")) + ", BTC " + money(coinT1("BTC"));
     var rows = TRE.rows.filter(function (r) { return r.price && r.shares; }).map(function (r) {
       var coin = r.coin || "BTC", qty = netQty(r), mcap = r.price * r.shares, hold = qty * (coin === "SOL" ? treSolP : treBtc);
-      var ev = r.debt != null ? mcap + r.debt + (r.pref || 0) - (r.cash || 0) : null;
-      return { t: r.t, name: r.name, coin: coin, price: r.price, mcap: mcap, hold: hold, qty: qty, per: hold / mcap, nav: mcap / hold, navd: ev != null ? ev / hold : null, ev: ev, debt: r.debt, pref: r.pref, cash: r.cash };
+      var ev = r.debt != null ? mcap + r.debt + (r.pref || 0) - (r.cash || 0) : null, F = fwd(r, qty, coinT1(coin)), opco = hold / mcap < 0.02;
+      return { t: r.t, name: r.name, coin: coin, price: r.price, mcap: mcap, hold: hold, qty: qty, per: hold / mcap, nav: mcap / hold, navd: ev != null ? ev / hold : null, ev: ev, debt: r.debt, pref: r.pref, cash: r.cash, F: F, opco: opco,
+               navt: opco || !F ? Infinity : F.e0 > 0 ? mcap / F.e0 : 1e9, cvn: opco || !F ? -1 : F.add, fin: opco || !F ? Infinity : F.e > 0 ? r.price / (F.e / F.n) : 1e9 };
     });
-    rows.sort(function (a, b) { var x = a[treSort], y = b[treSort]; return (typeof x === "string" ? x.localeCompare(y) : x - y) * treDir; });
+    rows.sort(function (a, b) { var x = a[treSort], y = b[treSort]; if ((treSort === "navt" || treSort === "fin") && (x === Infinity || y === Infinity)) return (x === Infinity) - (y === Infinity); return (typeof x === "string" ? x.localeCompare(y) : x - y) * treDir; });
     document.querySelector("#tre-table tbody").innerHTML = rows.map(function (r) {
       // green below 1x NAV, red above; stronger the further from 1 (log scale, full strength at 10x)
       var bg = heat(0.4 + 0.6 * Math.min(1, Math.abs(Math.log10(r.nav))), r.nav < 1), perBg = bg, navBg = bg;
       if (r.per < 0.02) return '<tr title="' + r.name + ' (operating company; its coins are a tiny share of its value)"><td>' + r.t + "</td><td>" + r.coin + "</td><td>" + money(r.price, 2) + "</td><td>" + money(r.mcap) +
-        "</td><td>" + Math.round(r.qty).toLocaleString("en-US") + "</td><td>" + money(r.hold) + '</td><td class="nm">n/m</td><td class="nm">n/m</td><td class="nm">n/m</td></tr>';
+        "</td><td>" + Math.round(r.qty).toLocaleString("en-US") + "</td><td>" + money(r.hold) + '</td><td class="nm">n/m</td><td class="nm">n/m</td><td class="nm">n/m</td><td class="nm">n/m</td><td class="nm">n/m</td><td class="nm">n/m</td></tr>';
       return '<tr title="' + r.name + '"><td>' + r.t + "</td><td>" + r.coin + "</td><td>" + money(r.price, 2) + "</td><td>" + money(r.mcap) +
         "</td><td>" + Math.round(r.qty).toLocaleString("en-US") + "</td><td>" + money(r.hold) + '</td><td style="background:' + perBg + '">' + money(r.per, 2) +
         '</td><td style="background:' + navBg + '">' + r.nav.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "</td>" +
         (r.navd == null ? "<td></td>" : '<td title="Debt ' + money(r.debt) + " + preferred " + money(r.pref || 0) + " - cash " + money(r.cash || 0) + '" style="background:' + heat(0.4 + 0.6 * Math.min(1, Math.abs(Math.log10(Math.max(r.navd, 0.01)))), r.navd < 1) + '">' +
-          r.navd.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "</td>") + "</tr>";
+          r.navd.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "</td>") + fwdCells(r) + "</tr>";
     }).join("");
   }
   document.querySelectorAll("#tre-table th").forEach(function (th) {
-    th.onclick = function () { var k = th.dataset.s; treDir = treSort === k ? -treDir : (k === "t" || k === "coin" || k === "nav" || k === "navd" ? 1 : -1); treSort = k; treRender(); };
+    th.onclick = function () { var k = th.dataset.s; treDir = treSort === k ? -treDir : (k === "t" || k === "coin" || k === "nav" || k === "navd" || k === "navt" || k === "fin" ? 1 : -1); treSort = k; treRender(); };
   });
   function treLive() {
     fetch("https://api.exchange.coinbase.com/products/BTC-USD/stats").then(function (r) { return r.json(); })

@@ -49,20 +49,39 @@ def yahoo_shares(symbols):
     return {q["symbol"]: q.get("sharesOutstanding") for q in j["quoteResponse"]["result"]}
 
 # Balance sheets for "mNAV incl. debt" = (market cap + debt + preferred - cash) / coin value. USD, latest filings.
-BALANCE = {   # ticker: (debt, preferred, cash, as of)
-    "MSTR": (6.75e9, 14.97e9, 5.02e9, "2026-08/09"),      # converts; preferred notional; USD reserve
-    "MTPLF": (489e6, 149e6, 0, "2026-06-30"),            # JPY 77.3B debt, JPY 23.6B MERCURY preferred at 158 JPY/USD; cash not disclosed
-    "FWDI": (117.5e6, 0, 10.97e6, "2026-06-30"),
-    "DFDV": (120.6e6, 0, 4.34e6, "2026-06-30"),          # converts (carrying value); the $89.8M of borrowed SOL is in COIN_OWED
-    "UPXI": (223.4e6, 0, 5.78e6, "2026-06-30"),          # converts + treasury credit facility + notes
-    "HSDT": (0, 0, 3.65e6, "2026-06-30"),
+BALANCE = {   # ticker: (debt incl. USD-settled convertible principal, preferred notional, cash, as of). USD, latest filings (Oct 2026 check).
+    "MSTR": (6.7535e9, 14.14e9, 6.02e9, "2026-09-27"),    # $6,713.7M converts + $39.8M secured debt; STRF/STRC/STRK/STRD/STRE notional; USD Reserve $5.02B + USD Cash $1.00B
+    "MTPLF": (466e6, 149.6e6, 8.5e6, "2026-06-30"),      # $414M BTC-backed facility + JPY 8.0B bond + BitBonds; MERCURY preferred JPY 23.61B; cash JPY 1.09B + USDC
+    "FWDI": (167.5e6, 0, 7.29e6, "2026-09-30"),          # Galaxy USD loans ("institutional debt"); no converts
+    "DFDV": (154.07e6, 15.8e6, 4.335e6, "2026-06-30"),   # $126.05M converts + $28.0M USD/stablecoin borrowings; CHAD preferred (Sep 2026); SOL-denominated loans in COIN_OWED
+    "UPXI": (60.99e6, 0, 5.78e6, "2026-06-30"),          # BitGo facility $57.3M + SBA $3.7M; the $166.4M converts settle in shares or SOL (see CONVERTS)
+    "HSDT": (0, 0, 16.6e6, "2026-09-30"),                # no debt; $2.3M cash (9/24) + ~$14.3M Sept offering
     "TSLA": (9.34e9, 0, 43.52e9, "2026-06-30"),          # cash incl. short-term investments
     "SPCX": (39.71e9, 0, 100.01e9, "2026-06-30"),        # cash + short-term investments
 }
 
-# Liabilities owed in the coin itself (borrowed SOL): USD value on the balance-sheet date. The page converts them to coins
-# at that day's price and subtracts them from holdings, since they rise and fall with the coin.
-COIN_OWED = {"DFDV": (89.8e6, "2026-06-30")}
+# Convertibles: [principal (USD), conversion price per share (USD), SOL returned if not converted (0 = repaid in dollars), counted in "debt" or "pref"].
+# The page treats a note as converted when the shares it converts into are worth more than what the holder gets otherwise.
+CONVERTS = {
+    "MSTR": [[1010e6, 183.19, 0, "debt"], [1500e6, 672.40, 0, "debt"], [800e6, 149.77, 0, "debt"], [2000e6, 433.43, 0, "debt"],
+             [603.7e6, 232.72, 0, "debt"], [800e6, 204.33, 0, "debt"], [1402.1e6, 1000.0, 0, "pref"]],   # 2028/2029/2030A/2030B/2031/2032 notes; STRK preferred
+    "MTPLF": [[149.6e6, round(1000 / 157.8, 2), 0, "pref"]],                                               # MERCURY preferred, converts at JPY 1,000
+    "DFDV": [[114.58e6, 23.11, 0, "debt"], [11.47e6, 9.74, 0, "debt"]],
+    "UPXI": [[149.996e6, 4.25, 962955, "sol"], [16.42e6, 2.39, 121221, "sol"]],                         # not repayable in cash: shares, or SOL back at maturity
+}
+
+# Holdings and share counts from the latest filings/press releases; these win over the monthly CoinGecko/Yahoo refresh.
+# Share counts include pre-funded and penny warrants (effectively shares).
+FILED = {
+    "MSTR": {"qty": 847666, "shares": 421970000, "asof": "2026-09-27"},
+    "MTPLF": {"qty": 43000, "shares": 1364255696, "asof": "2026-09-30"},
+    "FWDI": {"qty": 8501298, "shares": 105535801, "asof": "2026-09-30"},    # fully diluted (incl. pre-funded/penny warrants)
+    "DFDV": {"qty": 2538010, "asof": "2026-09-28"},
+    "UPXI": {"qty": 2340150, "shares": 89094774, "asof": "2026-06-30"},     # incl. 1,084,176 SOL set aside for the notes; 82.1M shares + 6.99M pre-funded warrants
+    "HSDT": {"qty": 2320000, "shares": 88916449, "asof": "2026-09-30"},     # "2.3M SOL"; 65.1M shares + 23.8M pre-funded/advisor warrants
+}
+
+COIN_OWED = {"DFDV": (61.75e6, "2026-06-30")}   # SOL-denominated term loans ($5.5M) and DeFi borrowings ($56.25M)
 
 # Treasury companies: price history is cut to start when each became a coin treasury, so older,
 # unrelated business history (and its reverse splits) doesn't distort the charts, ratios or all-time highs.
@@ -399,9 +418,11 @@ def main():
     olds = {r["t"]: r for r in old.get("treasury", {}).get("rows", [])}
     for t, name, coin, shares, qty in [(t, n, "BTC", sh, q) for t, n, sh, q in TREASURY] + [(t, n, "SOL", None, q) for t, n, q in SOL_TREASURY]:
         bal = BALANCE.get(t)
+        fl = FILED.get(t, {})
         row = {"t": t, "name": name, "coin": coin, "debt": bal[0] if bal else None, "pref": bal[1] if bal else None, "cash": bal[2] if bal else None, "bal_asof": bal[3] if bal else None, "owed": COIN_OWED.get(t),
-               "shares": oh.get("shares", {}).get(t) or olds.get(t, {}).get("shares") or shares,
-               "qty": oh.get("qty", {}).get(t) or qty, "price": None}
+               "conv": CONVERTS.get(t, []), "filed": fl.get("asof"),
+               "shares": fl.get("shares") or oh.get("shares", {}).get(t) or olds.get(t, {}).get("shares") or shares,
+               "qty": fl.get("qty") or oh.get("qty", {}).get(t) or qty, "price": None}
         try:
             j = json.loads(get(f"https://query1.finance.yahoo.com/v8/finance/chart/{t}?range=5d&interval=1d", UA_YAHOO))
             row["price"] = round(j["chart"]["result"][0]["meta"]["regularMarketPrice"], 4)
