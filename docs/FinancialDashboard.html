@@ -460,6 +460,8 @@ _________________________</p>
 .fd .mp-tabs button:hover{background:#fdf3d8}
 .fd .mp-tabs .tdot{width:16px;height:16px;margin-right:8px}
 .fd .pf-grid{margin-bottom:9rem}
+.fd .pf-tot{margin-top:7em;font-size:.78rem;color:var(--muted);text-align:center}
+.fd .pf-tot b{color:var(--ink)}
 .fd .card.perf{margin-top:6rem}
 .fd .mp-tabs button.on{background:var(--blue);border-color:var(--blue);color:#fff}
 .fd .explorer .tabs{display:flex;flex-wrap:wrap;gap:.3rem;margin:.3rem 0 .5rem}
@@ -515,11 +517,13 @@ _________________________</p>
       <div class="pg" data-t="Sharpe: my holdings">
     <h3 class="pf-h">Sharpe ratio: my holdings</h3>
     <div class="pf-front"><canvas id="pf-front1"></canvas></div>
+    <div class="pf-tot" id="pf-tot1"></div>
     <div class="pf-note">Pale dots: 4,000 random mixes of my five holdings, plus each holding (labeled). Colored dots use each ticker's page-wide color. Dark diamond = my portfolio (1); dark star = the highest-Sharpe mix (max 60% per name, 80% per category) (2).</div>
       </div>
       <div class="pg" data-t="Sharpe: all Markets tickers">
     <h3 class="pf-h">Sharpe ratio: all Markets tickers</h3>
     <div class="pf-front"><canvas id="pf-front2"></canvas></div>
+    <div class="pf-tot" id="pf-tot2"></div>
     <div class="pf-note" id="pf-note2">Pale dots: 4,000 random mixes of every ticker in the Markets chart, plus each ticker (labeled). Colored dots use each ticker's page-wide color. Dark diamond = my portfolio (1); dark star = the highest-Sharpe mix (max 60% per name, 80% per category) (3).</div>
       </div>
       <div class="pg" data-t="Monte Carlo: my portfolio">
@@ -607,9 +611,9 @@ _________________________</p>
   <br><br><br><br><br>
   <h2>Backtests</h2>
   <div class="bt-sub">$7,000 a year into a Roth IRA, invested every Monday since March 2020</div>
-  <div class="bt-exp">Three plans, each against the S&amp;P 500 bought the same way: a 40/40/20 bitcoin / S&amp;P / gold mix and an equal split across every ticker (both bought and held), and the equal split with a basic layer-out rule on each asset&#39;s regression line. All three use prices only, no price targets, so there is no hindsight in the picks.</div>
+  <div class="bt-exp">Four plans, each against the S&amp;P 500 bought the same way: a 40/40/20 bitcoin / S&amp;P / gold mix and an equal split across every ticker (both bought and held), the equal split with a basic layer-out rule on each asset&#39;s regression line, and a ⅓ uranium / ⅓ silver / ⅓ bitcoin mix (bought and held). All four use prices only, no price targets, so there is no hindsight in the picks.</div>
   <details class="srcs picks-f"><summary>Backtest formulas, stats &amp; limits (click to open)</summary><div class="fbody">
-    <p><b>Weekly buying:</b> each Monday's $135 is split by the plan's fixed weights. Backtests 1–2 never sell; weights drift with prices.</p><p><b>Layer out (Backtest 3):</b> each Monday, every holding's trendline <code>ln(Price) = a + b × ln(days since inception)</code> is refit on weekly closes up to that day only (needs 2 years of history). If <code>Price ÷ trendline − 1 &gt; 80%</code>, 20% of the holding is sold (no more than once every 4 weeks per name) and the proceeds buy the #1 name by Value score that week (deepest below its moving averages; price-only, no hindsight).</p>
+    <p><b>Weekly buying:</b> each Monday's $135 is split by the plan's fixed weights. Backtests 1, 2 and 4 never sell; weights drift with prices.</p><p><b>Layer out (Backtest 3):</b> each Monday, every holding's trendline <code>ln(Price) = a + b × ln(days since inception)</code> is refit on weekly closes up to that day only (needs 2 years of history). If <code>Price ÷ trendline − 1 &gt; 80%</code>, 20% of the holding is sold (no more than once every 4 weeks per name) and the proceeds buy the #1 name by Value score that week (deepest below its moving averages; price-only, no hindsight).</p>
     <p><b>Stats:</b> <i>Money-weighted return</i> = the yearly rate that makes every $135 deposit grow into the ending value (IRR, the right measure for DCA). <i>Time-weighted return</i> = yearly growth with deposits stripped out. <i>Volatility</i> = standard deviation of weekly returns × √52. <i>Max drawdown</i> = worst peak-to-trough fall of the time-weighted line. <i>Sharpe</i> = average weekly return over the risk-free rate ÷ its standard deviation × √52. <i>Sortino</i> = the same over downside volatility only.</p>
     <p><b>Prices:</b> dividend-adjusted closes where they exist (SPY, AVGO, NVDA, MU, MRVL, SILJ); gold via GLD. In Backtest 3, assets join once they have 30 days of prices (SPCX from July 2026; treasury companies from when they started holding coins).</p>
     <p><b>Limits:</b> starting in March 2020, three weeks before the COVID low, flatters every plan. Backtests 2–3 carry <i>survivorship bias</i>: its names were chosen in 2026, knowing which ones did well.</p>
@@ -655,6 +659,15 @@ _________________________</p>
     <details class="srcs"><summary>Week-by-week buys and trims (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Buying that week</th><th>Strategy</th><th>S&amp;P</th></tr></thead><tbody id="simL-log"></tbody></table></div></details></div>
   
     </div>
+    <div class="pg" data-t="4: Uranium / silver / BTC">
+<h3 class="pg-h">Backtest 4: ⅓ Uranium / ⅓ Silver / ⅓ Bitcoin</h3>
+  <div class="bt-sub">Weekly DCA into a fixed mix: one third uranium (UUUU, URNM, Yellow Cake equally), one third silver (SILJ and SLV equally), one third BTC, never sold</div>
+  <div class="spec"><div class="sl">Period</div><div class="sv">Mar 2, 2020 – today</div><div class="sl">Contribution</div><div class="sv">$7,000 a year into a Roth IRA = ~$135 every Monday</div><div class="sl">Buys each week</div><div class="sv">11.1% UUUU, 11.1% URNM, 11.1% Yellow Cake, 16.7% SILJ, 16.7% SLV, 33.3% BTC</div><div class="sl">Selling</div><div class="sv">never: buy and hold, no rebalancing</div></div>
+  <div class="sim"><div class="sim-t">Backtest 4 <span id="simU-res"></span></div>
+    <div class="sim-c"><canvas id="simU-chart"></canvas></div>
+    <div id="simU-stats"></div>
+    <details class="srcs"><summary>Week-by-week buys (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Buying that week</th><th>Strategy</th><th>S&amp;P</th></tr></thead><tbody id="simU-log"></tbody></table></div></details></div>
+    </div>
   </div>
   <br><br><br><br><br>
   <h2>Price Target Levels</h2>
@@ -672,7 +685,7 @@ _________________________</p>
 (function () {
   var years = 3, tf = "D", logScale = true, DATA = null, charts = [];
   var FEATURED = [];
-  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "NVDA", "MU", "MRVL", "FWDI", "DFDV", "UPXI", "MP", "GLD", "SLV", "SILJ", "UUUU", "CPER", "ETH-USD"];
+  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "NVDA", "MU", "MRVL", "FWDI", "DFDV", "UPXI", "MP", "GLD", "SLV", "SILJ", "UUUU", "URNM", "YCA", "CPER", "ETH-USD"];
   var TREASURY_T = ["MSTR", "MTPLF", "SPCX", "TSLA", "FWDI", "DFDV", "UPXI", "HSDT"];
   var PAIRS = [["ETH-USD", "BTC-USD"], ["BTC-USD", "GC=F"], ["FWDI", "SOL-USD"], ["MSTR", "BTC-USD"], ["SOL-USD", "BTC-USD"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["AVGO", "NVDA"], ["NVDA", "MU"], ["MRVL", "AVGO"], ["MRVL", "NVDA"], ["TSLA", "SPCX"], ["SLV", "GLD"], ["HG=F", "SLV"], ["SPY", "GLD"], ["SOL-USD", "ETH-USD"]];
   var SHORT = {"BTC-USD": "BTC", "SOL-USD": "SOL", "BZ=F": "Brent", "GC=F": "Gold", "HG=F": "Copper", "ETH-USD": "ETH"};
@@ -708,7 +721,7 @@ _________________________</p>
   var TCOL = { "FWDI": "#3d7be0", "TSLA": "#d9443f", "DFDV": "#c2185b", "MRVL": "#1f8a70", "SPCX": "#5d6d7e", "UPXI": "#26b5c6",
     "BTC-USD": "#f39c12", "SOL-USD": "#8e5bd6", "ETH-USD": "#6c7ae0", "MSTR": "#a85a1f", "MTPLF": "#e8875a", "HSDT": "#e57aa9",
     "NVDA": "#76b900", "AVGO": "#7d3c98", "MU": "#1b4f8a", "MP": "#8d3b12", "GLD": "#d4a417", "GC=F": "#c49b0e",
-    "SLV": "#7f8a95", "SI=F": "#5f6b77", "SILJ": "#a3aab2", "UUUU": "#9cb021", "HG=F": "#b87333", "CPER": "#d9925e", "SPY": "#222222" };
+    "SLV": "#7f8a95", "SI=F": "#5f6b77", "SILJ": "#a3aab2", "UUUU": "#9cb021", "URNM": "#5a7d1e", "YCA": "#a39e00", "HG=F": "#b87333", "CPER": "#d9925e", "SPY": "#222222" };
   function tc(k) { if (TCOL[k]) return TCOL[k]; var h = 0; for (var i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) % 360; return "hsl(" + h + ",55%,48%)"; }
   function tca(k, a) { var c = tc(k); if (c[0] !== "#") return c.replace("hsl", "hsla").replace(")", "," + a + ")"); var n = parseInt(c.slice(1), 16); return "rgba(" + (n >> 16) + "," + (n >> 8 & 255) + "," + (n & 255) + "," + a + ")"; }
   function dot(k) { return '<span class="tdot" style="background:' + tc(k) + '"></span>'; }
@@ -1131,7 +1144,7 @@ _________________________</p>
   }
   // ---------- Fair value: log regression trendline per asset ----------
   var INCEPTION = { "BTC-USD": "2009-01-03", "ETH-USD": "2015-07-30", "SOL-USD": "2020-03-16", "SPY": "1993-01-22", "TSLA": "2010-06-29", "NVDA": "1999-01-22",
-                    "AVGO": "2009-08-06", "MU": "1984-06-01", "MRVL": "2000-06-27", "MP": "2020-06-01", "GLD": "2004-11-18", "SLV": "2006-04-28", "SILJ": "2012-11-29", "CPER": "2011-11-15", "UUUU": "2013-12-01" };
+                    "AVGO": "2009-08-06", "MU": "1984-06-01", "MRVL": "2000-06-27", "MP": "2020-06-01", "GLD": "2004-11-18", "SLV": "2006-04-28", "SILJ": "2012-11-29", "CPER": "2011-11-15", "UUUU": "2013-12-01", "URNM": "2019-12-03", "YCA": "2018-07-05" };
   var fvChart = null, fvLine = null, FV = {};
   function fairValue(k) {
     var pts = resampleW(DATA.prices[k].points); if (pts.length < 104) return null;   // needs 2 years of weekly closes
@@ -1241,7 +1254,7 @@ _________________________</p>
   var SIMCH = {}, PICK_CACHE = {}, TOPN = 5;
   var BUCKETS = [{ n: "AI", w: 0.4, k: ["TSLA", "SPCX", "NVDA", "AVGO", "MU", "MRVL"] },
                  { n: "Crypto", w: 0.4, k: ["BTC-USD", "ETH-USD", "SOL-USD", "MSTR", "MTPLF", "FWDI", "DFDV", "UPXI", "HSDT"] },
-                 { n: "Commodities", w: 0.2, k: ["GLD", "SLV", "SILJ", "CPER", "UUUU", "MP"] }];
+                 { n: "Commodities", w: 0.2, k: ["GLD", "SLV", "SILJ", "CPER", "UUUU", "URNM", "YCA", "MP"] }];
   function tradePts(k) { return DATA.prices[k].adj || DATA.prices[k].points; }   // dividend-adjusted where Yahoo has it
   function tpx(k, day) { var p = tradePts(k), i = idxAt(p, day); return i < 0 ? null : p[i][1]; }
   function rankAt(day, mode) {   // full ranking on a given day, using only prices known that day
@@ -1381,8 +1394,8 @@ _________________________</p>
   }
   var BT_ALL = {}, btCmpChart = null;
   function btCompare() {   // all backtests side by side: stats table + growth-of-$1 (time-weighted) overlay on a log scale
-    var NAMES = { simA: "1. 40% BTC / 40% S&P / 20% Gold", sim5: "2. Equal weight, all names", simL: "3. Equal weight + layer out" };
-    var COL = { simA: "#e3b453", sim5: "#5b8def", simL: "#76bf94" };
+    var NAMES = { simA: "1. 40% BTC / 40% S&P / 20% Gold", sim5: "2. Equal weight, all names", simL: "3. Equal weight + layer out", simU: "4. ⅓ uranium / ⅓ silver / ⅓ BTC" };
+    var COL = { simA: "#e3b453", sim5: "#5b8def", simL: "#76bf94", simU: "#a35fc9" };
     var ids = Object.keys(NAMES).filter(function (k) { return BT_ALL[k]; }); if (!ids.length) return;
     function pc(v) { return (v >= 0 ? "+" : "") + (v * 100).toFixed(1) + "%"; }
     function row(n, s, extra) { return "<tr><td>" + n + "</td><td>" + pc(s.twr) + "</td><td>" + pc(s.irr) + "</td><td>" + (s.vol * 100).toFixed(1) + "%</td><td>" + (s.mdd * 100).toFixed(1) + "%</td><td>" + s.sharpe.toFixed(2) + "</td><td>" + s.sortino.toFixed(2) + "</td><td>" + s.calmar.toFixed(2) + "</td><td>" + (extra || "") + "</td></tr>"; }
@@ -1425,7 +1438,8 @@ _________________________</p>
     bucketCards(top.slice(0, TOPN).map(function (r) { return r.k; }));
     if (noSims) return;   // backtests use prices only, so the toggle doesn't change them
     setTimeout(function () {
-      [{ id: "simA", start: "2020-03-02", mode: "fixed", w: { "BTC-USD": 0.4, "SPY": 0.4, "GLD": 0.2 } }, { id: "sim5", start: "2020-03-02", mode: "all" }, { id: "simL", start: "2020-03-02", mode: "layer" }]
+      [{ id: "simA", start: "2020-03-02", mode: "fixed", w: { "BTC-USD": 0.4, "SPY": 0.4, "GLD": 0.2 } }, { id: "sim5", start: "2020-03-02", mode: "all" }, { id: "simL", start: "2020-03-02", mode: "layer" },
+       { id: "simU", start: "2020-03-02", mode: "fixed", w: { "UUUU": 1 / 9, "URNM": 1 / 9, "YCA": 1 / 9, "SILJ": 1 / 6, "SLV": 1 / 6, "BTC-USD": 1 / 3 } }]
         .forEach(function (c) { try { simPicks(c); } catch (e) { console.log("backtest " + c.id, e); } });
       try { btCompare(); } catch (e) { console.log("backtest compare", e); }
     }, 30);
@@ -1578,6 +1592,13 @@ _________________________</p>
     try { monteCarlo(rmH, W); } catch (e) { console.log("monte carlo", e); }
     try { corrHeat(rmA); } catch (e) { console.log("corr", e); }
     frontier("pf-front2", rmA, optA, curA, { x: curA.s * 100, y: curA.m * 100 }, { x: sA.s * 100, y: sA.m * 100 });
+    // totals under each Sharpe chart: Sharpe ratio and the return to 2030 if every holding hits its median target
+    var Y = yearsTo(2030);
+    function ret(rm, w) { return rm.G.reduce(function (s, g, i) { return s + w[i] * (Math.pow(1 + g, Y) - 1); }, 0); }
+    function pct(v) { return (v >= 0 ? "+" : "") + Math.round(v * 100).toLocaleString("en-US") + "%"; }
+    function line(st, r) { return "Total Sharpe ratio: <b>" + st.sh.toFixed(2) + "</b> &nbsp;·&nbsp; Median expected return to 2030: <b>" + pct(r) + "</b>"; }
+    document.getElementById("pf-tot1").innerHTML = "My portfolio — " + line(curH, ret(rmH, W)) + "<br>Highest-Sharpe mix of my holdings — " + line(sH, ret(rmH, optH.w));
+    document.getElementById("pf-tot2").innerHTML = "My portfolio — " + line(curA, ret(rmA, Wfull)) + "<br>Highest-Sharpe mix of all Markets tickers — " + line(sA, ret(rmA, optA.w));
   }
 
   var PERSONAL_ON = true;
@@ -1700,7 +1721,7 @@ _________________________</p>
       return h + "</div>";
     }
     document.getElementById("best-sources").innerHTML = rows.map(function (r) { return block(r.k, sn(r.k) + " <i>" + esc(DATA.prices[r.k].name || "") + "</i>"); }).join("") +
-      (T.URANIUM ? block("URANIUM", "Uranium <i>sector outlook used for Energy Fuels and MP</i>") : "");
+      (T.URANIUM ? block("URANIUM", "Uranium <i>sector outlook used for Energy Fuels, URNM, Yellow Cake and MP</i>") : "");
     document.getElementById("best-method").innerHTML =
       "<h4>How it works: Comparative Value</h4><ul>" +
       "<li>Each asset is scored on how far it sits below its own 20-week and 200-day EMAs, measured in its own typical swings (a z-score, so a volatile coin needs a bigger dip than SPY to count as cheap), plus a small bonus for distance below its all-time high. Highest score = deepest value.</li>" +

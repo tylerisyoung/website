@@ -15,7 +15,7 @@ TICKERS = [("BTC-USD", "Bitcoin"), ("SPY", "S&P 500 (SPY)"),
            ("AVGO", "Broadcom"), ("NVDA", "Nvidia"), ("MU", "Micron (MU)"), ("MRVL", "Marvell Technology (MRVL)"),
            ("FWDI", "Forward Industries (FWDI)"), ("DFDV", "DeFi Development (DFDV)"), ("UPXI", "Upexi (UPXI)"),
            ("MP", "MP Materials"), ("GC=F", "Gold (futures)"), ("SLV", "Silver (SLV)"), ("SILJ", "Junior silver miners (SILJ)"),
-           ("UUUU", "Energy Fuels (UUUU)"), ("GLD", "Gold ETF (GLD)"), ("HG=F", "Copper (futures)"), ("CPER", "Copper ETF (CPER)"), ("ETH-USD", "Ethereum")]
+           ("UUUU", "Energy Fuels (UUUU)"), ("URNM", "Uranium miners ETF (URNM)"), ("YCA", "Yellow Cake (YCA, London, in USD)"), ("GLD", "Gold ETF (GLD)"), ("HG=F", "Copper (futures)"), ("CPER", "Copper ETF (CPER)"), ("ETH-USD", "Ethereum")]
 
 TREASURY_ASOF = "2026-09-14"
 # (ticker, name, shares outstanding, BTC held)
@@ -265,6 +265,9 @@ TARGETS = {
       "cons": {"by": "MarketBeat", "avg": 76.29, "low": 57, "high": 112, "n": 17, "date": "2026-09-28", "url": MB + "NYSE/MP/forecast/"}},
     "UUUU": {"kind": "sector", "sector": "URANIUM", "unit": "$",
       "cons": {"by": "MarketBeat", "avg": 21.85, "low": 16, "high": 29.25, "n": 7, "date": "2026-09-28", "url": MB + "NYSEAMERICAN/UUUU/forecast/"}},
+    # Sprott uranium miners ETF and Yellow Cake plc (physical U3O8): no named 2030 targets either; both use the uranium outlook
+    "URNM": {"kind": "sector", "sector": "URANIUM", "unit": "$"},
+    "YCA": {"kind": "sector", "sector": "URANIUM", "unit": "$"},
     "SILJ": {"kind": "sector", "sector": "SLV", "unit": "$",
       "cons": {"by": "TipRanks (built from analyst targets on its 62 holdings)", "avg": 40.24, "low": 34.57, "high": 46.50, "n": 62, "date": "2026-09-28", "url": "https://www.tipranks.com/etf/silj/forecast"}},
     # Treasury companies: 2030 = coin's 2030 targets x coins per share x an assumed NAV multiple
@@ -346,7 +349,14 @@ def main():
 
     for sym, name, group in [(a, b, None) for a, b in TICKERS] + [(a, b, "treasury") for a, b in TREASURY_HIST] + [(a, b, "aux") for a, b in AUX]:
         try:
-            pts, adj = yahoo(sym)
+            if sym == "YCA":   # Yellow Cake trades in London in pence: convert every close to USD with that day's GBP/USD
+                pts, _ = yahoo("YCA.L"); fx = dict(yahoo("GBPUSD=X")[0]); fxd = sorted(fx); adj = None; out = []; j = 0; last = None
+                for d, v in pts:
+                    while j < len(fxd) and fxd[j] <= d: last = fx[fxd[j]]; j += 1
+                    if last: out.append([d, round(v / 100 * last, 4)])
+                pts = out
+            else:
+                pts, adj = yahoo(sym)
             if sym in TREASURY_START:
                 pts = [q for q in pts if q[0] >= TREASURY_START[sym]]
                 if adj: adj = [q for q in adj if q[0] >= TREASURY_START[sym]]
