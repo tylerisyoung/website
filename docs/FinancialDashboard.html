@@ -436,7 +436,8 @@ _________________________</p>
 .fd .ctrl button.on{background:var(--blue);border-color:var(--blue);color:#fff}
 .fd .ctrl button:hover,.fd .explorer .tabs button:hover{background:#fdf3d8}
 .fd .ctrl .sep{width:1px;height:20px;background:var(--line);margin:0 .3rem}
-.fd h2{font:600 1.05rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);margin:1rem 0 .6rem;border:0;padding-bottom:.25rem;border-bottom:2px solid #f5dfa6;display:inline-block}
+.fd h2{font:600 4.2rem/1.1 system-ui,sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--blue);margin:1rem 0 .6rem;border:0;padding-bottom:.35rem;border-bottom:4px solid #f5dfa6;display:inline-block}
+@media (max-width:700px){.fd h2{font-size:2.2rem}}
 .fd .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
 .fd .card{border:1px solid var(--line);border-radius:10px;padding:.7rem .8rem .5rem;background:#fff}
 .fd .card .t{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem}
@@ -453,10 +454,12 @@ _________________________</p>
 .fd .pg-grid>.pg.on{display:block}
 .fd .pg-grid{display:block}
 .fd .pg-grid .card canvas{height:340px!important}
-.fd .pg-tabs{margin:.2rem 0 .7rem}
 .fd .pg-h{font:600 .98rem system-ui,sans-serif;margin:.1rem 0 .35rem;color:var(--ink)}
-.fd .mp-tabs{display:flex;flex-wrap:wrap;gap:.3rem;margin:.3rem 0 .6rem}
-.fd .mp-tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:.2rem .7rem;font-size:.8rem;color:var(--ink);cursor:pointer}
+.fd .mp-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;margin:1.6rem 0 1.6rem}
+.fd .mp-tabs button{border:1px solid #c9d0db;background:#fff;border-radius:6px;padding:.45rem 1.4rem;font-size:1.6rem;color:var(--ink);cursor:pointer}
+.fd .mp-tabs button:hover{background:#fdf3d8}
+.fd .mp-tabs .tdot{width:16px;height:16px;margin-right:8px}
+.fd .pf-grid{margin-bottom:2.5rem}
 .fd .mp-tabs button.on{background:var(--blue);border-color:var(--blue);color:#fff}
 .fd .explorer .tabs{display:flex;flex-wrap:wrap;gap:.3rem;margin:.3rem 0 .5rem}
 .fd .explorer .tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:.2rem .65rem;font-size:.78rem;color:var(--ink);cursor:pointer}
