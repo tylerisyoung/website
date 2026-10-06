@@ -447,6 +447,14 @@ _________________________</p>
 .fd .explorer{grid-column:1/-1;border-top:3px solid #f5dfa6}
 .fd .explorer .t .v{font-size:2rem;line-height:1.1;letter-spacing:.01em}
 .fd .explorer .t .n{font-size:1.05rem}
+.fd .fdpager{margin-bottom:12px}
+.fd .fdpager>.pg,.fd .pg-grid>.pg{display:none}
+.fd .fdpager>.pg.on{display:block}
+.fd .pg-grid>.pg.on{display:block}
+.fd .pg-grid{display:block}
+.fd .pg-grid .card canvas{height:340px!important}
+.fd .pg-tabs{margin:.2rem 0 .7rem}
+.fd .pg-h{font:600 .98rem system-ui,sans-serif;margin:.1rem 0 .35rem;color:var(--ink)}
 .fd .mp-tabs{display:flex;flex-wrap:wrap;gap:.3rem;margin:.3rem 0 .6rem}
 .fd .mp-tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:.2rem .7rem;font-size:.8rem;color:var(--ink);cursor:pointer}
 .fd .mp-tabs button.on{background:var(--blue);border-color:var(--blue);color:#fff}
@@ -488,7 +496,19 @@ _________________________</p>
   <h2>Current Best Buy</h2>
   <label class="pp-tog"><input type="checkbox" id="pp-on" checked> Include personal predictions <span>(50% weight on BTC, SOL, TSLA and MSTR 2030 targets; untick to see every ranking, pick and optimal mix on outside forecasts only)</span></label>
   <div class="pp-stat" id="pp-stat"></div>
-  <div class="best">
+  <div class="fdpager">
+  <div class="best pg" data-t="Comparative Value">
+    <h3>Comparative Value<span>which asset is most beaten down against its own history</span></h3>
+    <div class="best-sub">Every asset scored for deepest value: largest negative deviation to its 20-week EMA &amp; 200-day EMA, measured in its own typical swings (z-score) so volatile assets aren't automatically the cheapest. Those further from ATH also rank higher. Updates with every price refresh.</div>
+    <div class="best-chart"><canvas id="cv-chart"></canvas></div>
+    <details class="srcs"><summary>Formulas (click to open)</summary><div class="fbody">
+      <p><b>Gaps:</b> <code>g₂₀w = ln(Price ÷ EMA₂₀w)</code> and <code>g₂₀₀d = ln(Price ÷ EMA₂₀₀d)</code>, with <code>EMAₜ = α·xₜ + (1 − α)·EMAₜ₋₁</code>, α = 2/21 on weekly closes and 2/201 on daily closes.</p>
+      <p><b>Volatility-adjusted (z-score):</b> <code>z = g ÷ standard deviation of g over the last ~2 years (520 trading days)</code>. A −10% gap is a big deal for SPY (≈ −2σ) but routine for a SOL treasury stock (≈ −0.5σ).</p>
+      <p><b>ATH bonus:</b> <code>DD = 1 − Price ÷ ATH</code> (highest close since 2016; treasury companies only since they started holding coins).</p>
+      <p><b>Value score (bar):</b> <code>−(z₂₀w + z₂₀₀d) ÷ 2 + 0.75 × DD</code>. Higher = cheaper. Assets need 30 days of history.</p>
+    </div></details>
+  </div>
+  <div class="best pg" data-t="Fair Value">
     <h3>Fair Value<span>where each asset sits vs its own long-term log regression trend</span></h3>
     <div class="best-sub">Each asset's whole price history is fit to a logarithmic regression trendline (the "fair value" line). Bars show how far today's price is above or below that line; the most undervalued is on top. Below, the same averaged by asset class. Updates with every price refresh.</div>
     <div class="best-chart"><canvas id="fv-chart"></canvas></div>
@@ -500,18 +520,7 @@ _________________________</p>
       <p>Needs at least 2 years of prices to fit a trend, so the newer treasury companies and SPCX aren't shown. A trendline describes the past; it isn't a forecast.</p>
     </div></details>
   </div>
-  <div class="best">
-    <h3>Comparative Value<span>which asset is most beaten down against its own history</span></h3>
-    <div class="best-sub">Every asset scored for deepest value: largest negative deviation to its 20-week EMA &amp; 200-day EMA, measured in its own typical swings (z-score) so volatile assets aren't automatically the cheapest. Those further from ATH also rank higher. Updates with every price refresh.</div>
-    <div class="best-chart"><canvas id="cv-chart"></canvas></div>
-    <details class="srcs"><summary>Formulas (click to open)</summary><div class="fbody">
-      <p><b>Gaps:</b> <code>g₂₀w = ln(Price ÷ EMA₂₀w)</code> and <code>g₂₀₀d = ln(Price ÷ EMA₂₀₀d)</code>, with <code>EMAₜ = α·xₜ + (1 − α)·EMAₜ₋₁</code>, α = 2/21 on weekly closes and 2/201 on daily closes.</p>
-      <p><b>Volatility-adjusted (z-score):</b> <code>z = g ÷ standard deviation of g over the last ~2 years (520 trading days)</code>. A −10% gap is a big deal for SPY (≈ −2σ) but routine for a SOL treasury stock (≈ −0.5σ).</p>
-      <p><b>ATH bonus:</b> <code>DD = 1 − Price ÷ ATH</code> (highest close since 2016; treasury companies only since they started holding coins).</p>
-      <p><b>Value score (bar):</b> <code>−(z₂₀w + z₂₀₀d) ÷ 2 + 0.75 × DD</code>. Higher = cheaper. Assets need 30 days of history.</p>
-    </div></details>
-  </div>
-  <div class="best">
+  <div class="best pg" data-t="Projected Growth">
     <h3>Projected Growth<span>today's price vs the forecasters' 2030 targets</span></h3>
     <div class="best-sub">Ranked by average 2030 return (today's price to the median 2030 target). Bars show that return as a CAGR (yearly compound growth) so big and small numbers fit on one chart.</div>
     <div class="best-chart"><canvas id="best-chart"></canvas></div>
@@ -532,6 +541,7 @@ _________________________</p>
     <details class="srcs"><summary>Sources for every price target (click to open)</summary>
       <p class="note">Every forecaster behind the low, median and high targets, with the date it was published and a link. Targets checked <span id="tgt-asof"></span>. To add your own 2030 target for any asset, set it in <code>USER_INPUT</code> at the top of the targets section in <code>scripts/update_market_data.py</code>; it then counts as one more source.</p>
       <div class="body" id="best-sources"></div></details>
+  </div>
   </div>
   <h2>BTC and Solana Treasury Companies</h2>
   <div class="tre">
@@ -564,30 +574,48 @@ _________________________</p>
     <p><b>Limits:</b> starting in March 2020, three weeks before the COVID low, flatters every plan. Backtests 2–3 carry <i>survivorship bias</i>: its names were chosen in 2026, knowing which ones did well.</p>
   </div></details>
   <br><br><br><br><br>
-  <h2>Backtest 1: 40% Bitcoin / 40% S&amp;P 500 / 20% Gold</h2>
+  <div class="fdpager">
+    <div class="pg" data-t="Backtests Compared">
+<h3 class="pg-h">Backtests Compared</h3>
+  <div class="pf">
+    <div class="pf-sub">All three backtests and the S&amp;P 500 on one chart: growth of $1 with the weekly deposits stripped out (time-weighted), log scale. Sortino = return over the risk-free rate ÷ downside volatility only; Calmar = time-weighted return ÷ max drawdown.</div>
+    <div class="pf-front"><canvas id="btc-chart"></canvas></div>
+    <table id="btc-table" class="btcmp"></table>
+  </div>
+  
+    </div>
+    <div class="pg" data-t="1: 40/40/20 BTC / S&amp;P / Gold">
+<h3 class="pg-h">Backtest 1: 40% Bitcoin / 40% S&amp;P 500 / 20% Gold</h3>
   <div class="bt-sub">Weekly DCA into a fixed 40/40/20 mix of BTC, SPY and GLD, never sold</div>
   <div class="spec"><div class="sl">Period</div><div class="sv">Mar 2, 2020 – today</div><div class="sl">Contribution</div><div class="sv">$7,000 a year into a Roth IRA = ~$135 every Monday</div><div class="sl">Buys each week</div><div class="sv">40% BTC, 40% SPY, 20% GLD</div><div class="sl">Selling</div><div class="sv">never: buy and hold, no rebalancing</div></div>
   <div class="sim"><div class="sim-t">Backtest 1 <span id="simA-res"></span></div>
     <div class="sim-c"><canvas id="simA-chart"></canvas></div>
     <div id="simA-stats"></div>
     <details class="srcs"><summary>Week-by-week buys (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Buying that week</th><th>Strategy</th><th>S&amp;P</th></tr></thead><tbody id="simA-log"></tbody></table></div></details></div>
-  <br><br><br><br><br>
-  <h2>Backtest 2: Equal Weight, All <span class="nall">21</span> Names</h2>
+  
+    </div>
+    <div class="pg" data-t="2: Equal weight">
+<h3 class="pg-h">Backtest 2: Equal Weight, All <span class="nall">21</span> Names</h3>
   <div class="bt-sub">Weekly DCA split equally across every name on the list, never sold</div>
   <div class="spec"><div class="sl">Period</div><div class="sv">Mar 2, 2020 – today</div><div class="sl">Contribution</div><div class="sv">$7,000 a year into a Roth IRA = ~$135 every Monday</div><div class="sl">Buys each week</div><div class="sv">equal split across every name with 30+ days of prices</div><div class="sl">Selling</div><div class="sv">never: buy and hold, no rebalancing</div></div>
   <div class="sim"><div class="sim-t">Backtest 2 <span id="sim5-res"></span></div>
     <div class="sim-c"><canvas id="sim5-chart"></canvas></div>
     <div id="sim5-stats"></div>
     <details class="srcs"><summary>Week-by-week buys (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Buying that week</th><th>Strategy</th><th>S&amp;P</th></tr></thead><tbody id="sim5-log"></tbody></table></div></details></div>
-  <br><br><br><br><br>
-  <h2>Backtest 3: Layer In / Layer Out on the Regression Line</h2>
+  
+    </div>
+    <div class="pg" data-t="3: Layer in / layer out">
+<h3 class="pg-h">Backtest 3: Layer In / Layer Out on the Regression Line</h3>
   <div class="bt-sub">Backtest 2's equal-weight DCA, plus a simple trim rule: when a holding runs 80% above its log-regression trendline, sell 20% of it and put the money into the current best buy</div>
   <div class="spec"><div class="sl">Period</div><div class="sv">Mar 2, 2020 – today</div><div class="sl">Contribution</div><div class="sv">$7,000 a year into a Roth IRA = ~$135 every Monday</div><div class="sl">Buys each week</div><div class="sv">equal split across every name with 30+ days of prices (layer in)</div><div class="sl">Selling</div><div class="sv"><b>layer out: price more than 80% above its trendline → sell 20% of that holding (at most once every 4 weeks per name); proceeds buy the #1 name by Value score that week</b></div></div>
   <div class="sim"><div class="sim-t">Backtest 3 <span id="simL-res"></span></div>
     <div class="sim-c"><canvas id="simL-chart"></canvas></div>
     <div id="simL-stats"></div>
     <details class="srcs"><summary>Week-by-week buys and trims (click to open)</summary><div class="fbody"><table class="simlog"><thead><tr><th>Week of</th><th>Buying that week</th><th>Strategy</th><th>S&amp;P</th></tr></thead><tbody id="simL-log"></tbody></table></div></details></div>
-  <br><br>
+  
+    </div>
+  </div>
+  <br><br><br><br><br>
   <h2>Price Target Levels</h2>
   <div class="pf">
     <div class="pf-sub">Layer in / layer out levels for each holding: last 12 months of price, the log-regression trendline projected to 2030, three sell levels and the 2030 target. Green = layer-in zone (at or below the trendline). Sell levels are set 50%, 80% and 100% of the way from today&#39;s price to the 2030 target. Pick a holding; log scale, dollar prices.</div>
@@ -597,13 +625,6 @@ _________________________</p>
   </div>
   <br><br><br><br><br>
   <br><br><br><br><br>
-  <h2>Backtests Compared</h2>
-  <div class="pf">
-    <div class="pf-sub">All three backtests and the S&amp;P 500 on one chart: growth of $1 with the weekly deposits stripped out (time-weighted), log scale. Sortino = return over the risk-free rate ÷ downside volatility only; Calmar = time-weighted return ÷ max drawdown.</div>
-    <div class="pf-front"><canvas id="btc-chart"></canvas></div>
-    <table id="btc-table" class="btcmp"></table>
-  </div>
-  <br><br>
   <h2>Portfolio &amp; Sharpe Ratio</h2>
   <div class="pf">
     <div class="pf-sub">Expected return = each asset's CAGR to its median 2030 target (Projected Growth). Risk = annualized volatility and correlations of weekly returns over the last 2 years (shorter for newer listings). Sharpe = (expected arithmetic return − risk-free) ÷ volatility, the standard mean-variance form, where arithmetic return = CAGR + volatility² ÷ 2; the returns shown are the weight-averaged CAGRs. Risk-free = 3-month Treasury bill. Optimal mixes are long-only with at most 60% in any one name and 80% in any one category (AI, Crypto, Commodities). These are Sharpe ratios <i>implied by the price targets</i>, not measured ones. Recalculated with every price update.</div>
@@ -612,18 +633,28 @@ _________________________</p>
       <div class="pf-card"><div class="pf-t">2. Optimal mix of my holdings <span>(max 60% per name, 80% per category)</span></div><div class="pf-in"><div class="pf-pie"><canvas id="pf-pie2"></canvas></div><div class="pf-tab" id="pf-tab2"></div></div></div>
       <div class="pf-card"><div class="pf-t">3. Optimal mix of all Markets tickers <span>(max 60% per name, 80% per category)</span></div><div class="pf-in"><div class="pf-pie"><canvas id="pf-pie3"></canvas></div><div class="pf-tab" id="pf-tab3"></div></div></div>
     </div>
+    <div class="fdpager">
+      <div class="pg" data-t="Sharpe: my holdings">
     <h3 class="pf-h">Sharpe ratio: my holdings</h3>
     <div class="pf-front"><canvas id="pf-front1"></canvas></div>
     <div class="pf-note">Pale dots: 4,000 random mixes of my five holdings, plus each holding (labeled). Colored dots use each ticker's page-wide color. Dark diamond = my portfolio (1); dark star = the highest-Sharpe mix (max 60% per name, 80% per category) (2).</div>
+      </div>
+      <div class="pg" data-t="Sharpe: all Markets tickers">
     <h3 class="pf-h">Sharpe ratio: all Markets tickers</h3>
     <div class="pf-front"><canvas id="pf-front2"></canvas></div>
     <div class="pf-note" id="pf-note2">Pale dots: 4,000 random mixes of every ticker in the Markets chart, plus each ticker (labeled). Colored dots use each ticker's page-wide color. Dark diamond = my portfolio (1); dark star = the highest-Sharpe mix (max 60% per name, 80% per category) (3).</div>
+      </div>
+      <div class="pg" data-t="Monte Carlo: my portfolio">
     <h3 class="pf-h">Monte Carlo: my portfolio to 2030</h3>
     <div class="pf-front"><canvas id="pf-mc"></canvas></div>
     <div class="pf-note" id="pf-mc-note"></div>
+      </div>
+      <div class="pg" data-t="Correlation heatmap">
     <h3 class="pf-h">Correlation heatmap</h3>
     <div class="pf-note">Correlation of weekly returns over the last 2 years (shorter for newer listings). Red = move together, blue = move opposite, pale = unrelated.</div>
     <div id="pf-corr" class="pf-corr"></div>
+      </div>
+    </div>
   </div>
   <br><br>
   <h2>Economy</h2>
@@ -644,6 +675,32 @@ _________________________</p>
   var SHORT = {"BTC-USD": "BTC", "SOL-USD": "SOL", "BZ=F": "Brent", "GC=F": "Gold", "HG=F": "Copper", "ETH-USD": "ETH"};
   var sel = "BTC-USD";
   function sn(sym) { return SHORT[sym] || sym; }
+  // ---------- paginated chart areas: one page at a time, tabs on top ----------
+  function pgShow(tabs, pages, i) {
+    pages.forEach(function (p, j) { p.classList.toggle("on", j === i); });
+    tabs.querySelectorAll("button").forEach(function (b, j) { b.classList.toggle("on", j === i); });
+    pages[i].querySelectorAll("canvas").forEach(function (c) { var ch = Chart.getChart(c); if (ch) ch.resize(); });
+  }
+  function initPagers() {
+    document.querySelectorAll(".fd .fdpager").forEach(function (pg) {
+      if (pg.dataset.ready) return; pg.dataset.ready = 1;
+      var pages = Array.prototype.slice.call(pg.children).filter(function (c) { return c.classList.contains("pg"); });
+      var tabs = document.createElement("div"); tabs.className = "mp-tabs pg-tabs";
+      tabs.innerHTML = pages.map(function (p) { return "<button>" + p.dataset.t + "</button>"; }).join("");
+      pg.insertBefore(tabs, pg.firstChild);
+      tabs.querySelectorAll("button").forEach(function (b, i) { b.onclick = function () { pgShow(tabs, pages, i); }; });
+      pgShow(tabs, pages, 0);
+    });
+  }
+  var macroPage = 0;
+  function pagerGrid(el) {   // the Economy cards: one card per page, remembering the open page across re-renders
+    var cards = Array.prototype.slice.call(el.children), tabs = document.getElementById(el.id + "-tabs");
+    if (!tabs) { tabs = document.createElement("div"); tabs.id = el.id + "-tabs"; tabs.className = "mp-tabs pg-tabs"; el.parentNode.insertBefore(tabs, el); }
+    tabs.innerHTML = cards.map(function (c) { return "<button>" + c.querySelector(".n").textContent + "</button>"; }).join("");
+    el.classList.add("pg-grid"); cards.forEach(function (c) { c.classList.add("pg"); });
+    tabs.querySelectorAll("button").forEach(function (b, i) { b.onclick = function () { macroPage = i; pgShow(tabs, cards, i); }; });
+    pgShow(tabs, cards, Math.min(macroPage, cards.length - 1));
+  }
   // One color per ticker, used by every chart, pie, dot and swatch on the page
   var TCOL = { "FWDI": "#3d7be0", "TSLA": "#d9443f", "DFDV": "#c2185b", "MRVL": "#1f8a70", "SPCX": "#5d6d7e", "UPXI": "#26b5c6",
     "BTC-USD": "#f39c12", "SOL-USD": "#8e5bd6", "ETH-USD": "#6c7ae0", "MSTR": "#a85a1f", "MTPLF": "#e8875a", "HSDT": "#e57aa9",
@@ -754,7 +811,7 @@ _________________________</p>
     charts.push(draw(document.getElementById("ex"), pts, { log: logScale, fmt: f, color: isPair ? "#d9736f" : tc(sel), fill: isPair ? "rgba(224,122,122,0.08)" : tca(sel, 0.08), axis: isPair ? function (v) { return (+v).toPrecision(3); } : function (v) { return v >= 1000 ? "$" + (v / 1000).toFixed(v >= 10000 ? 0 : 1) + "k" : "$" + v; } }));
     perfChart(P);
 
-    var ORDER = ["debt_gdp", "cpi_cum", "cpi_yoy", "shadow", "fedfunds", "walcl", "unrate", "icsa", "payrolls", "real_gdp", "m2", "debt", "dgs10", "dgs30", "dgs2", "t10y2y"];
+    var ORDER = ["t10y2y", "debt_gdp", "cpi_cum", "cpi_yoy", "shadow", "fedfunds", "walcl", "unrate", "icsa", "payrolls", "real_gdp", "m2", "debt", "dgs10", "dgs30", "dgs2"];
     ORDER.filter(function (k) { return DATA.macro[k]; }).forEach(function (k, i) {
       var s = DATA.macro[k], pts = s.points, last = pts[pts.length - 1], f = MACRO_FMT[k] || function (v) { return v; };
       var cv = card(M, "m" + i, s.name, f(last[1]), s.unit + " &nbsp;·&nbsp; latest " + last[0]);
@@ -770,6 +827,7 @@ _________________________</p>
       }
       charts.push(draw(cv, pts, { macro: true, bar: k === "payrolls", fmt: f, axis: null, color: warm ? "#d9736f" : "#3d6fd6", fill: warm ? "rgba(224,122,122,0.07)" : "rgba(61,111,214,0.08)" }));
     });
+    pagerGrid(M);
   }
   // Performance: every ticker vs the S&P 500 and the 10-year Treasury, growth of $1 over the last 5 years (log scale)
   // colors by where each line ends: above the S&P = dark to light green, between the S&P and the 10-year = yellow, below the 10-year = light to dark red
@@ -821,7 +879,7 @@ _________________________</p>
     bestUniverse().filter(function (k) { return k !== "SPY"; }).forEach(function (k) {
       var v = onDates(DATA.prices[k].points), f = null;
       var out = v.map(function (x, i) { if (x == null) return null; if (f == null) f = spyRaw[i] / x; return x * f; });   // late starters join at the S&P's level
-      ds.push({ label: sn(k), k: k, borderColor: tc(k), backgroundColor: tc(k), data: smoothLog(out, H), order: 3, borderWidth: 1.3, pointRadius: 0, tension: 0.4, spanGaps: true });
+      ds.push({ label: sn(k), data: smoothLog(out, H), order: 3, borderWidth: 1.3, pointRadius: 0, tension: 0.4, spanGaps: true });
     });
     var rf = null, ty = DATA.macro.dgs10 ? onDates(DATA.macro.dgs10.points) : null;
     if (ty) { var g = 1; rf = ty.map(function (y, i) { if (i > 0) { var dd = (Date.parse(dates[i]) - Date.parse(dates[i - 1])) / 864e5; g *= Math.pow(1 + (ty[i - 1] || 0) / 100, dd / 365); } return g; }); }
@@ -830,6 +888,9 @@ _________________________</p>
     var green = ds.filter(function (d) { return lastOf(d) >= spyEnd; }), yellow = ds.filter(function (d) { var x = lastOf(d); return x < spyEnd && x >= rfEnd; }),
         red = ds.filter(function (d) { return lastOf(d) < rfEnd; });
     [green, yellow, red].forEach(function (g) { g.sort(function (a, b) { return lastOf(b) - lastOf(a); }); });
+    green.forEach(function (d, i) { d.borderColor = mix([31, 110, 58], [168, 222, 180], green.length > 1 ? i / (green.length - 1) : 0); });
+    yellow.forEach(function (d, i) { d.borderColor = mix([214, 170, 40], [242, 206, 110], yellow.length > 1 ? i / (yellow.length - 1) : 0); });
+    red.forEach(function (d, i) { d.borderColor = mix([232, 150, 150], [165, 40, 40], red.length > 1 ? i / (red.length - 1) : 0); });
     ds = green.concat(yellow, red);
     ds.push({ label: "S&P 500", data: spyV, borderColor: "#111", borderWidth: 2.4, order: 2, pointRadius: 0, tension: 0.4, pin: true });
     if (rf) ds.push({ label: "10Y Treasury", data: rf, borderColor: "#b23a3a", borderWidth: 2.4, order: 1, borderDash: [7, 4], pointRadius: 0, tension: 0, pin: true });
@@ -848,7 +909,7 @@ _________________________</p>
       var q = 100 + p, dec = q >= 1 ? 0 : Math.min(6, Math.ceil(-Math.log10(q)) + 1); return "−" + (100 - q).toFixed(dec).replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "") + "%"; }
     var c = document.createElement("div"); c.className = "card explorer perf";
     c.innerHTML = '<div class="t"><span class="n">Every ticker vs the S&amp;P 500 and the 10-year Treasury</span><span class="v" style="font-size:1rem">since April 2020</span></div>' +
-      '<div class="c">Total % return since April 2020, log scale (compressed below −50% so the biggest losers fit), weekly closes smoothed over 13 weeks. Thick black = S&amp;P 500 (SPY); dashed red = earning the 10-year Treasury yield (the risk-free rate). Each ticker keeps the same color it has everywhere on this page; lines ending above the black line beat the S&amp;P, lines ending below the dashed red line trailed the 10-year. Names on the right are in end-value order; thin lines join each to its line. Later starters join at the S&amp;P\'s level on their first day.</div><canvas id="perf"></canvas>';
+      '<div class="c">Total % return since April 2020, log scale (compressed below −50% so the biggest losers fit), weekly closes smoothed over 13 weeks. Thick black = S&amp;P 500 (SPY); dashed red = earning the 10-year Treasury yield (the risk-free rate). Green = beat the S&amp;P, yellow = between the S&amp;P and the 10-year, red = trailed the 10-year. Names on the right are in end-value order; thin lines join each to its line. Later starters join at the S&amp;P\'s level on their first day.</div><canvas id="perf"></canvas>';
     P.appendChild(c);
     charts.push(new Chart(document.getElementById("perf"), { type: "line", data: { labels: dates, datasets: ds }, plugins: [endLabels, gapLine],
       options: { animation: false, responsive: true, maintainAspectRatio: false, layout: { padding: { right: 110 } },
@@ -1657,6 +1718,7 @@ _________________________</p>
       (v0 / 1e12).toFixed(3) + "T on " + dc.latest[0] + " (U.S. Treasury, Debt to the Penny)";
     (function tick() { el.textContent = "$" + Math.round(v0 + perMs * (Date.now() - t0)).toLocaleString("en-US"); setTimeout(tick, 60); })();
   }
+  initPagers();
   fetch("data/markets.json?v=" + Date.now()).then(function (r) { return r.json(); }).then(function (d) {
     DATA = d; document.getElementById("fd-updated").textContent = "Updated " + d.updated + " · market data refreshed about every 2 hours; bitcoin and S&P futures stream live";
     strip(); render(); cryptoLive(); debtClock(d.debt_clock);
