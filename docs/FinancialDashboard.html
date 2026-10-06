@@ -459,7 +459,8 @@ _________________________</p>
 .fd .mp-tabs button{border:1px solid #c9d0db;background:#fff;border-radius:6px;padding:.45rem 1.4rem;font-size:1.6rem;color:var(--ink);cursor:pointer}
 .fd .mp-tabs button:hover{background:#fdf3d8}
 .fd .mp-tabs .tdot{width:16px;height:16px;margin-right:8px}
-.fd .pf-grid{margin-bottom:2.5rem}
+.fd .pf-grid{margin-bottom:9rem}
+.fd .card.perf{margin-top:6rem}
 .fd .mp-tabs button.on{background:var(--blue);border-color:var(--blue);color:#fff}
 .fd .explorer .tabs{display:flex;flex-wrap:wrap;gap:.3rem;margin:.3rem 0 .5rem}
 .fd .explorer .tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:.2rem .65rem;font-size:.78rem;color:var(--ink);cursor:pointer}
@@ -493,8 +494,46 @@ _________________________</p>
     <span class="sep"></span>
     <button id="fd-log" class="on">Log scale (prices)</button>
   </div>
+  <h2>Economy</h2>
+  <div class="debtclock"><div class="lab">U.S. National Debt</div>
+    <div class="num" id="fd-debt">$—</div>
+    <div class="meta" id="fd-debt-meta">Treasury, Debt to the Penny</div></div>
+  <div class="grid" id="fd-macro"></div>
+  <br><br><br><br><br>
   <h2>Markets</h2>
   <div class="grid" id="fd-prices"></div>
+  <br><br><br><br><br>
+  <h2>Portfolio &amp; Sharpe Ratio</h2>
+  <div class="pf">
+    <div class="pf-sub">Expected return = each asset's CAGR to its median 2030 target (Projected Growth). Risk = annualized volatility and correlations of weekly returns over the last 2 years (shorter for newer listings). Sharpe = (expected arithmetic return − risk-free) ÷ volatility, the standard mean-variance form, where arithmetic return = CAGR + volatility² ÷ 2; the returns shown are the weight-averaged CAGRs. Risk-free = 3-month Treasury bill. Optimal mixes are long-only with at most 60% in any one name and 80% in any one category (AI, Crypto, Commodities). These are Sharpe ratios <i>implied by the price targets</i>, not measured ones. Recalculated with every price update.</div>
+    <div class="pf-grid">
+      <div class="pf-card"><div class="pf-t">1. My portfolio</div><div class="pf-in"><div class="pf-pie"><canvas id="pf-pie1"></canvas></div><div class="pf-tab" id="pf-tab1"></div></div></div>
+      <div class="pf-card"><div class="pf-t">2. Optimal mix of my holdings <span>(max 60% per name, 80% per category)</span></div><div class="pf-in"><div class="pf-pie"><canvas id="pf-pie2"></canvas></div><div class="pf-tab" id="pf-tab2"></div></div></div>
+      <div class="pf-card"><div class="pf-t">3. Optimal mix of all Markets tickers <span>(max 60% per name, 80% per category)</span></div><div class="pf-in"><div class="pf-pie"><canvas id="pf-pie3"></canvas></div><div class="pf-tab" id="pf-tab3"></div></div></div>
+    </div>
+    <div class="fdpager">
+      <div class="pg" data-t="Sharpe: my holdings">
+    <h3 class="pf-h">Sharpe ratio: my holdings</h3>
+    <div class="pf-front"><canvas id="pf-front1"></canvas></div>
+    <div class="pf-note">Pale dots: 4,000 random mixes of my five holdings, plus each holding (labeled). Colored dots use each ticker's page-wide color. Dark diamond = my portfolio (1); dark star = the highest-Sharpe mix (max 60% per name, 80% per category) (2).</div>
+      </div>
+      <div class="pg" data-t="Sharpe: all Markets tickers">
+    <h3 class="pf-h">Sharpe ratio: all Markets tickers</h3>
+    <div class="pf-front"><canvas id="pf-front2"></canvas></div>
+    <div class="pf-note" id="pf-note2">Pale dots: 4,000 random mixes of every ticker in the Markets chart, plus each ticker (labeled). Colored dots use each ticker's page-wide color. Dark diamond = my portfolio (1); dark star = the highest-Sharpe mix (max 60% per name, 80% per category) (3).</div>
+      </div>
+      <div class="pg" data-t="Monte Carlo: my portfolio">
+    <h3 class="pf-h">Monte Carlo: my portfolio to 2030</h3>
+    <div class="pf-front"><canvas id="pf-mc"></canvas></div>
+    <div class="pf-note" id="pf-mc-note"></div>
+      </div>
+      <div class="pg" data-t="Correlation heatmap">
+    <h3 class="pf-h">Correlation heatmap</h3>
+    <div class="pf-note">Correlation of weekly returns over the last 2 years (shorter for newer listings). Red = move together, blue = move opposite, pale = unrelated.</div>
+    <div id="pf-corr" class="pf-corr"></div>
+      </div>
+    </div>
+  </div>
   <br><br><br><br><br><br><br><br><br><br>
   <h2>Current Best Buy</h2>
   <label class="pp-tog"><input type="checkbox" id="pp-on" checked> Include personal predictions <span>(50% weight on BTC, SOL, TSLA and MSTR 2030 targets; untick to see every ranking, pick and optimal mix on outside forecasts only)</span></label>
@@ -559,7 +598,6 @@ _________________________</p>
       <b>Final</b> = share price &divide; (value left for shareholders at the first target &divide; shares after conversions). Below 1 = the stock is cheap even after every lender is paid and every in-the-money note converts. Holdings, shares (including pre-funded and penny warrants), debt and converts from each company&#39;s latest filing or press release (Sept 2026; Upexi and DeFi Development June 30); hover for the math.</div>
   </div>
   <h2>This Week's Best Buys</h2>
-  <br><br><br><br><br>
   <div class="picks"><div class="row" id="picks-row"><span class="tk">…</span></div>
     <div class="meta" id="picks-meta">Top 10 by combined rank in Comparative Value and Projected Growth · recalculated with every price refresh</div></div>
   <details class="srcs picks-f"><summary>Formula (click to open)</summary><div class="fbody">
@@ -627,44 +665,6 @@ _________________________</p>
     <div class="pf-note" id="mp-note"></div>
   </div>
   <br><br><br><br><br>
-  <br><br><br><br><br>
-  <h2>Portfolio &amp; Sharpe Ratio</h2>
-  <div class="pf">
-    <div class="pf-sub">Expected return = each asset's CAGR to its median 2030 target (Projected Growth). Risk = annualized volatility and correlations of weekly returns over the last 2 years (shorter for newer listings). Sharpe = (expected arithmetic return − risk-free) ÷ volatility, the standard mean-variance form, where arithmetic return = CAGR + volatility² ÷ 2; the returns shown are the weight-averaged CAGRs. Risk-free = 3-month Treasury bill. Optimal mixes are long-only with at most 60% in any one name and 80% in any one category (AI, Crypto, Commodities). These are Sharpe ratios <i>implied by the price targets</i>, not measured ones. Recalculated with every price update.</div>
-    <div class="pf-grid">
-      <div class="pf-card"><div class="pf-t">1. My portfolio</div><div class="pf-in"><div class="pf-pie"><canvas id="pf-pie1"></canvas></div><div class="pf-tab" id="pf-tab1"></div></div></div>
-      <div class="pf-card"><div class="pf-t">2. Optimal mix of my holdings <span>(max 60% per name, 80% per category)</span></div><div class="pf-in"><div class="pf-pie"><canvas id="pf-pie2"></canvas></div><div class="pf-tab" id="pf-tab2"></div></div></div>
-      <div class="pf-card"><div class="pf-t">3. Optimal mix of all Markets tickers <span>(max 60% per name, 80% per category)</span></div><div class="pf-in"><div class="pf-pie"><canvas id="pf-pie3"></canvas></div><div class="pf-tab" id="pf-tab3"></div></div></div>
-    </div>
-    <div class="fdpager">
-      <div class="pg" data-t="Sharpe: my holdings">
-    <h3 class="pf-h">Sharpe ratio: my holdings</h3>
-    <div class="pf-front"><canvas id="pf-front1"></canvas></div>
-    <div class="pf-note">Pale dots: 4,000 random mixes of my five holdings, plus each holding (labeled). Colored dots use each ticker's page-wide color. Dark diamond = my portfolio (1); dark star = the highest-Sharpe mix (max 60% per name, 80% per category) (2).</div>
-      </div>
-      <div class="pg" data-t="Sharpe: all Markets tickers">
-    <h3 class="pf-h">Sharpe ratio: all Markets tickers</h3>
-    <div class="pf-front"><canvas id="pf-front2"></canvas></div>
-    <div class="pf-note" id="pf-note2">Pale dots: 4,000 random mixes of every ticker in the Markets chart, plus each ticker (labeled). Colored dots use each ticker's page-wide color. Dark diamond = my portfolio (1); dark star = the highest-Sharpe mix (max 60% per name, 80% per category) (3).</div>
-      </div>
-      <div class="pg" data-t="Monte Carlo: my portfolio">
-    <h3 class="pf-h">Monte Carlo: my portfolio to 2030</h3>
-    <div class="pf-front"><canvas id="pf-mc"></canvas></div>
-    <div class="pf-note" id="pf-mc-note"></div>
-      </div>
-      <div class="pg" data-t="Correlation heatmap">
-    <h3 class="pf-h">Correlation heatmap</h3>
-    <div class="pf-note">Correlation of weekly returns over the last 2 years (shorter for newer listings). Red = move together, blue = move opposite, pale = unrelated.</div>
-    <div id="pf-corr" class="pf-corr"></div>
-      </div>
-    </div>
-  </div>
-  <br><br>
-  <h2>Economy</h2>
-  <div class="debtclock"><div class="lab">U.S. National Debt</div>
-    <div class="num" id="fd-debt">$—</div>
-    <div class="meta" id="fd-debt-meta">Treasury, Debt to the Penny</div></div>
-  <div class="grid" id="fd-macro"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
