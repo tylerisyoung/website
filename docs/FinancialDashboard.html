@@ -545,7 +545,7 @@ _________________________</p>
     <h3 class="pf-h">Sharpe ratio: Growth Portfolio</h3>
     <div class="pf-front"><canvas id="pf-front1"></canvas></div>
     <div class="pf-tot" id="pf-tot1"></div>
-    <div class="pf-note">Pale dots: 4,000 random mixes of my five holdings, plus each holding (labeled). Colored dots use each ticker's page-wide color. Dark diamond = Growth Portfolio (1); dark star = the highest-Sharpe mix (max 60% per name, 80% per category) (3).</div>
+    <div class="pf-note">Pale dots: 4,000 random mixes of the four Growth Portfolio holdings, plus each holding (labeled). Colored dots use each ticker's page-wide color. Dark diamond = Growth Portfolio (1); dark star = the highest-Sharpe mix (max 60% per name, 80% per category) (3).</div>
       </div>
       <div class="pg" data-t="Sharpe: core portfolio">
     <h3 class="pf-h">Sharpe ratio: core portfolio</h3>
@@ -1496,7 +1496,7 @@ _________________________</p>
   // Chart 2 + table, Projected Growth: today's price vs median 2030 target
   // ---------- Portfolio & Sharpe ratio ----------
   var CORE = { w: { "TSLA": 15, "FWDI": 10, "SOL-USD": 10, "UPXI": 5, "MRVL": 5, "MSTR": 20, "BTC-USD": 5, "UUUU": 20, "SILJ": 10 } };
-  var PORTFOLIO = { w: { FWDI: 49.28, TSLA: 26.53, SPCX: 12.14, MRVL: 11.09, UPXI: 0.90 } };
+  var PORTFOLIO = { w: { FWDI: 48.36, TSLA: 39.87, MRVL: 10.88, UPXI: 0.88 } };
   var PF_COLORS = ["#5b8def", "#f2c46d", "#e07a7a", "#76bf94", "#a8c5f7", "#f5dfa6", "#eca7a7", "#b7e2c4", "#3d6fd6", "#e3b453", "#c75b5b", "#4f9d69"];
   var pfCharts = [];
   function psd(C) {   // nearest positive semi-definite matrix (Jacobi eigen-decomposition, eigenvalues floored)
