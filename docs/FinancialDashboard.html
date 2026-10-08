@@ -1075,10 +1075,19 @@ _________________________</p>
     var bc = best(CK), bg = best(GK), holds = [];
     CK.concat(GK).forEach(function (k) { if (k !== bc && k !== bg && !sold[k] && holds.indexOf(sn(k)) < 0) holds.push(sn(k)); });
     function sp(c, t) { return '<span class="' + c + '">' + t + "</span>"; }
+    function pairs() {   // mean reversion: ratio below its average (last year, or since listing) = the first name is cheap, so 100% in it; above = 100% in the second
+      return [["TSLA", "SPCX"], ["MSTR", "BTC-USD"], ["SLV", "GC=F"]].map(function (pr) {
+        var A = {}; DATA.prices[pr[0]].points.forEach(function (p) { A[p[0]] = p[1]; });
+        var r = DATA.prices[pr[1]].points.filter(function (p) { return A[p[0]]; }).slice(-252).map(function (p) { return Math.log(A[p[0]] / p[1]); });
+        var now = Math.log(lastPx(pr[0]) / lastPx(pr[1])), m = r.reduce(function (s2, x) { return s2 + x; }, 0) / r.length, g = (Math.exp(now - m) - 1) * 100;
+        var buyA = now <= m, a = sp(buyA ? "buy" : "hold", sn(pr[0])), b = sp(buyA ? "hold" : "buy", sn(pr[1]));
+        return a + "/" + b + ": 100% " + (buyA ? sn(pr[0]) : sn(pr[1])) + ' <span class="hold">(ratio ' + Math.abs(g).toFixed(1) + "% " + (g <= 0 ? "below" : "above") + " its average)</span>";
+      }).join(" &nbsp;·&nbsp; ");
+    }
     document.getElementById("strat-act").innerHTML =
       '<div><span class="l">Buy:</span> Core: ' + sp("buy", bc ? sn(bc) : "n/a") + " &nbsp;·&nbsp; Growth: " + sp("buy", bg ? sn(bg) : "n/a") + "</div>" +
       '<div><span class="l">Sell:</span> Core: ' + sp("sell", sells.c.length ? sells.c.join(", ") : "n/a") + " &nbsp;·&nbsp; Growth: " + sp("sell", sells.g.length ? sells.g.join(", ") : "n/a") + "</div>" +
-      '<div><span class="l">Hold:</span> ' + sp("hold", holds.join(", ")) + "</div>" +
+      '<div><span class="l">Pairs:</span> ' + pairs() + "</div>" +
       "";
   }
   var mpChart = null;
