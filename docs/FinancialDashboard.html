@@ -1080,8 +1080,8 @@ _________________________</p>
         var A = {}; DATA.prices[pr[0]].points.forEach(function (p) { A[p[0]] = p[1]; });
         var r = DATA.prices[pr[1]].points.filter(function (p) { return A[p[0]]; }).slice(-252).map(function (p) { return Math.log(A[p[0]] / p[1]); });
         var now = Math.log(lastPx(pr[0]) / lastPx(pr[1])), m = r.reduce(function (s2, x) { return s2 + x; }, 0) / r.length, g = (Math.exp(now - m) - 1) * 100;
-        var buyA = now <= m, a = sp(buyA ? "buy" : "hold", sn(pr[0])), b = sp(buyA ? "hold" : "buy", sn(pr[1]));
-        return a + "/" + b + ": 100% " + (buyA ? sn(pr[0]) : sn(pr[1])) + ' <span class="hold">(ratio ' + Math.abs(g).toFixed(1) + "% " + (g <= 0 ? "below" : "above") + " its average)</span>";
+        var buyA = now <= m, a = sp(buyA ? "buy" : "sell", sn(pr[0])), b = sp(buyA ? "sell" : "buy", sn(pr[1]));
+        return a + "/" + b;
       }).join(" &nbsp;·&nbsp; ");
     }
     document.getElementById("strat-act").innerHTML =
