@@ -304,6 +304,14 @@ for k, t in TARGETS.items():
     if t.get("short"): t["avg12"] = round(statistics.mean([s["v"] for s in t["short"]]), 4); t["n12"] = len(t["short"])
     if t.get("cons"): t["avg12"] = t["cons"]["avg"]; t["n12"] = t["cons"]["n"]; t["cons"]["hd"] = hdate("12 months", t["cons"]["date"])
 assert all(t.get("n", 3) >= 3 for t in TARGETS.values())
+# Tyler's adjustment: double every gold, silver, copper and uranium target (2030 and 12-month), and the 12-month
+# consensus of the stocks that follow them (UUUU, SILJ). Published source values stay as published; only the summaries change.
+TARGET_X2 = ["GLD", "SLV", "CPER", "URANIUM", "UUUU", "URNM", "YCA", "SILJ"]
+for k in TARGET_X2:
+    t = TARGETS[k]
+    for f2 in ("low", "high", "base", "avg12"):
+        if t.get(f2) is not None: t[f2] = round(t[f2] * 2, 4)
+    t["x2"] = True
 
 def get(url, headers, tries=3):
     for i in range(tries):

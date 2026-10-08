@@ -1425,7 +1425,7 @@ CSVs) and refreshed every day by the GitHub Action in
     function mult(k) { var t = T[k], s = spotAsof(k); return { lo: t.low / s, base: t.base / s, hi: t.high / s, n: t.n }; }
     function sector(sk) {   // 2030 target as a multiple of the price on the target date
       if (sk !== "COMMOD") return mult(sk);   // (n below = number of sector outlooks averaged, for COMMOD)
-      var ms = ["URANIUM", "SLV", "GLD", "CPER"].map(mult), avg = function (f) { return ms.reduce(function (s, m) { return s + f(m); }, 0) / ms.length; };
+      var ms = ["URANIUM", "SLV", "GLD", "CPER"].map(function (k) { var m = mult(k), d = T[k].x2 ? 2 : 1; return { lo: m.lo / d, base: m.base / d, hi: m.hi / d, n: m.n }; }), avg = function (f) { return ms.reduce(function (s, m) { return s + f(m); }, 0) / ms.length; };
       return { lo: avg(function (m) { return m.lo; }), base: avg(function (m) { return m.base; }), hi: avg(function (m) { return m.hi; }), n: ms.length + " outlooks" };
     }
     var M30 = (Date.parse("2030-12-31T00:00:00Z") - Date.now()) / 2.6298e9;   // months to end-2030
@@ -1458,7 +1458,7 @@ CSVs) and refreshed every day by the GitHub Action in
         }
       }
       // 12-month return: every ~1-year target restated to exactly 12 months out, then averaged
-      var srcs = t.cons ? [{ v: t.cons.avg, hd: t.cons.hd }] : (t.short || []).map(function (s) { return { v: s.v * f, hd: s.hd }; });
+      var x2 = t.x2 ? 2 : 1, srcs = t.cons ? [{ v: t.cons.avg * x2, hd: t.cons.hd }] : (t.short || []).map(function (s) { return { v: s.v * f * x2, hd: s.hd }; });
       var v12 = srcs.map(function (s) { return s.hd ? to12(s.v, s.hd, px, row.base) : null; }).filter(function (x) { return x != null && isFinite(x); });
       row.r12 = v12.length ? v12.reduce(function (s2, x) { return s2 + x; }, 0) / v12.length / px - 1 : null; row.n12 = t.cons ? t.cons.n : v12.length;
       // median target as a function of prices on any day (used by the weekly backtests)
@@ -1511,7 +1511,7 @@ CSVs) and refreshed every day by the GitHub Action in
     function li(s, unit) { return "<li>" + esc(s.by) + ": <b>" + val(s.v, unit) + "</b> <i>(" + esc(s.h) + (s.date ? ", published " + esc(s.date) : "") + ")</i>" +
       (s.note ? " - " + esc(s.note) : "") + (s.url ? ' <a href="' + s.url + '" target="_blank" rel="noopener">link</a>' : "") + "</li>"; }
     function block(k, label) {
-      var t = T[k], h = '<div class="a"><b>' + label + "</b>", u = t.unit;
+      var t = T[k], h = '<div class="a"><b>' + label + "</b>" + (t.x2 ? ' <span style="color:#c24b4b;font-size:.8em">(all targets doubled, my adjustment; figures below are as published)</span>' : ""), u = t.unit;
       if (t.long) h += '<div class="lab">2030 targets</div><ul>' + t.long.map(function (s) { return li(s, u); }).join("") + "</ul>";
       else if (t.kind === "nav") h += '<div class="lab">2030 targets</div><ul><li>Worked out from the ' + sn(t.coin) + " 2030 targets listed under " + sn(t.coin) + ", the coins each share holds, and the NAV multiple (see How it works).</li></ul>";
       else if (t.kind === "sector") h += '<div class="lab">2030 targets</div><ul><li>No named forecaster publishes a 2030 target, so this uses the ' + SECTOR_NAME[t.sector] + " 2030 outlook (sources listed under " +
