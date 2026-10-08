@@ -758,7 +758,11 @@ CSVs) and refreshed every day by the GitHub Action in
     var trow = {}; (DATA.treasury ? DATA.treasury.rows : []).forEach(function (r) { trow[r.t] = r; });
     var PERS = { "SOL-USD": [2153, 2970], "TSLA": [4794, 7910] };   // my 2030 / 2032 predictions
     var med = {}; BEST_ROWS.forEach(function (r) { med[r.k] = r.base; });
-    var names = Object.keys(PORTFOLIO.w).filter(function (k) { return DATA.prices[k]; });
+    var BTCT = [180000, 250000, 300000];   // my BTC targets: sell levels for BTC and the bitcoin treasury companies
+    function coinCo(k) { var r = trow[k]; return r && r.shares && (r.coin === "SOL" || (r.coin === "BTC" && k !== "TSLA" && k !== "SPCX")) ? r : null; }
+    var names = [];
+    Object.keys(PORTFOLIO.w).concat(["BTC-USD", "MSTR", "SOL-USD", "SPCX"], SINGLES, TREASURY_T).forEach(function (k) {
+      if (names.indexOf(k) < 0 && DATA.prices[k] && (PERS[k] || med[k] || k === "BTC-USD" || coinCo(k))) names.push(k); });
     if (!mpSel || names.indexOf(mpSel) < 0) mpSel = names[0];
     var tabs = document.getElementById("mp-tabs");
     tabs.innerHTML = names.map(function (k) { return '<button data-k="' + k + '"' + (k === mpSel ? ' class="on" style="background:' + tc(k) + ';border-color:' + tc(k) + '"' : '') + '>' + dot(k) + sn(k) + '</button>'; }).join("");
@@ -766,34 +770,35 @@ CSVs) and refreshed every day by the GitHub Action in
     var k = mpSel, now = Date.now(), endT = Date.parse("2030-12-31T00:00:00Z"), start = now - 365 * 864e5, labels = [];
     for (var t = start; t <= endT + 6048e5; t += 6048e5) labels.push(new Date(Math.min(t, endT)).toISOString().slice(0, 10));
     var pts = DATA.prices[k].points, last = pts[pts.length - 1], px = last[1], tr = trow[k];
-    var isSol = tr && tr.coin === "SOL", f = isSol ? fairValue("SOL-USD") : fairValue(k), share = null;
-    if (isSol && tr.shares) { var q = netQty(tr), ND = (tr.debt || 0) + (tr.pref || 0) - (tr.cash || 0), mev = (px * tr.shares + ND) / (q * lastPx("SOL-USD"));
-      share = function (P, m) { return Math.max(0, (P * q * (m == null ? mev : m) - ND) / tr.shares); }; }
+    var cc = coinCo(k), isSol = cc && cc.coin === "SOL", isBtc = k === "BTC-USD" || (cc && cc.coin === "BTC"), f = isSol ? fairValue("SOL-USD") : fairValue(k), share = null, conv = null;
+    if (cc) { var q = netQty(cc), ND = (cc.debt || 0) + (cc.pref || 0) - (cc.cash || 0), mev = (px * cc.shares + ND) / (q * lastPx(isSol ? "SOL-USD" : "BTC-USD"));
+      conv = function (P, m) { return Math.max(0, (P * q * (m == null ? mev : m) - ND) / cc.shares); }; if (isSol) share = conv; }
     var hist = labels.map(function (d) { return d > last[0] ? null : pxOn(k, d); });
     var li = labels.length - 1 - labels.slice().reverse().findIndex(function (d) { return d <= last[0]; }); hist[li] = px;
     function line(mult) { return f ? labels.map(function (d) { var fv = Math.exp(f.a + f.b * Math.log(f.day(d))) * mult; return share ? share(fv) : fv; }) : null; }
     var tgt = null, tgtLab = "", t32 = null;
     if (PERS[k]) { tgt = PERS[k][0]; t32 = PERS[k][1]; tgtLab = "my 2030 target"; }
-    else if (isSol && share) { tgt = share(PERS["SOL-USD"][0], 1); t32 = share(PERS["SOL-USD"][1], 1); tgtLab = "2030 target (my SOL $2,153 at NAV 1.0x)"; }
+    else if (isSol) { tgt = conv(PERS["SOL-USD"][0], 1); t32 = conv(PERS["SOL-USD"][1], 1); tgtLab = "2030 target (my SOL $2,153 at NAV 1.0x)"; }
+    else if (isBtc) { tgt = cc ? conv(BTCT[2], 1) : BTCT[2]; tgtLab = cc ? "Top target (BTC $300K at NAV 1.0x)" : "Top target (BTC $300K)"; }
     else if (med[k]) { tgt = med[k]; tgtLab = "2030 target (dashboard median)"; }
-    var ds = [], lv = {}, trend = line(1), SL = tgt ? [0.5, 0.8, 1].map(function (w) { return px + w * (tgt - px); }) : [];
+    var ds = [], lv = {}, trend = line(1), SL = isBtc ? BTCT.map(function (P) { return cc ? conv(P, 1) : P; }) : tgt ? [0.5, 0.8, 1].map(function (w) { return px + w * (tgt - px); }) : [];
     if (trend) ds.push({ label: "Trend (layer in at or below)", data: trend, borderColor: "#3f9b6b", backgroundColor: "rgba(63,155,107,.10)", borderWidth: 1.6, pointRadius: 0, fill: "start", order: 2 });
-    var SC = ["#d9a52b", "#e07b39", "#c8463e"], SN = ["Sell 1: 50% of the way to target", "Sell 2: 80% of the way", "Sell 3: at target"];
-    SL.forEach(function (v, j) { ds.push({ label: SN[j] + " (" + fmtMoney(v) + ")", data: labels.map(function (d, i) { return i >= li ? v : null; }), borderColor: SC[j], borderWidth: 1.4, borderDash: [6, 4], pointRadius: 0, fill: false, order: 2 }); });
+    var SC = ["#d9a52b", "#e07b39", "#c8463e"], SN = isBtc ? ["Sell 1: BTC $180K", "Sell 2: BTC $250K", "Sell 3: BTC $300K"] : ["Sell 1: 50% of the way to target", "Sell 2: 80% of the way", "Sell 3: at target"];
+    SL.forEach(function (v, j) { ds.push({ label: SN[j] + " (" + fmtMoney(v) + ")", data: labels.map(function (d, i) { return i >= li ? v : null; }), borderColor: SC[j], backgroundColor: SC[j], borderWidth: 1.4, borderDash: [6, 4], pointRadius: 0, fill: false, order: 2 }); });
     ds.push({ label: sn(k) + " price", data: hist, borderColor: tc(k), backgroundColor: tc(k), borderWidth: 2.2, pointRadius: 0, spanGaps: true, tension: 0.1, fill: false, order: 1 });
-    if (tgt) ds.push({ label: tgtLab, data: labels.map(function (d, i) { return i === labels.length - 1 ? tgt : null; }), borderColor: "#1f2a3c", backgroundColor: tc(k), pointStyle: "rectRot", borderWidth: 2, pointRadius: 9, pointHoverRadius: 11, showLine: false, fill: false, order: 0 });
     if (mpChart) mpChart.destroy();
     mpChart = new Chart(document.getElementById("mp-chart"), { type: "line", data: { labels: labels, datasets: ds },
       options: { animation: false, responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
-        plugins: { legend: { labels: { usePointStyle: true, boxWidth: 8, font: { size: 10 } } },
+        plugins: { legend: { labels: { usePointStyle: true, pointStyle: "circle", boxWidth: 8, font: { size: 10 },
+            generateLabels: function (ch) { return Chart.defaults.plugins.legend.labels.generateLabels(ch).map(function (l) { var c = ch.data.datasets[l.datasetIndex].borderColor; l.fillStyle = c; l.strokeStyle = c; l.lineWidth = 0; l.lineDash = []; return l; }); } } },
           tooltip: { callbacks: { label: function (c) { return c.parsed.y == null ? null : c.dataset.label + ": " + fmtMoney(c.parsed.y); } } } },
         scales: { x: { ticks: { autoSkip: false, maxRotation: 0, color: "#6b7686", font: { size: 10 }, callback: function (v, i) { var l = this.getLabelForValue(v), p = i > 0 ? this.getLabelForValue(v - 1) : ""; return i > 0 && l.slice(0, 4) !== p.slice(0, 4) ? l.slice(0, 4) : null; } }, grid: { display: false } },
                   y: { type: "logarithmic", ticks: { color: "#6b7686", font: { size: 10 }, callback: function (v) { var e = Math.log10(v), r = e - Math.floor(e); return (Math.abs(r) < 1e-6 || Math.abs(r - Math.log10(2)) < 1e-6 || Math.abs(r - Math.log10(5)) < 1e-6) ? fmtMoney(v) : ""; } }, grid: { color: "#f0f2f6" } } } } });
     var i0 = Math.max(0, labels.findIndex(function (d) { return d >= last[0]; })), note = "<b>" + sn(k) + " today: " + fmtMoney(px) + "</b>";
     if (trend) { var dev = px / trend[i0] - 1; note += ", " + (dev >= 0 ? "+" : "") + Math.round(dev * 100) + "% vs trend (" + fmtMoney(trend[i0]) + ")" + (px <= trend[i0] ? ", in the layer-in zone" : ""); }
-    else note += ", no trendline yet (listed July 2026), so no layer-in zone";
-    note += ". " + (tgt ? tgtLab.charAt(0).toUpperCase() + tgtLab.slice(1) + ": " + fmtMoney(tgt) + (t32 ? " (2032: " + fmtMoney(t32) + ")" : "") + ". Sell levels: " + SL.map(fmtMoney).join(", ") + " (" + SL.map(function (v) { return "+" + Math.round((v / px - 1) * 100) + "%"; }).join(", ") + " from today)." : "No target.");
-    document.getElementById("mp-note").innerHTML = note + "<br><span style=\"color:#6b7686\">Sell levels sit 50%, 80% and 100% of the way from today\'s price to the 2030 target. Trend = <code>ln(Price) = a + b × ln(days)</code> fit on all weekly history. FWDI and UPXI have too little history, so their trend is Solana's converted to a share price at today's EV-mNAV (coins per share, net of debt).</span>";
+    else note += ", no trendline yet (too little price history), so no layer-in zone";
+    note += ". " + (tgt ? tgtLab.charAt(0).toUpperCase() + tgtLab.slice(1) + ": " + fmtMoney(tgt) + (t32 ? " (2032: " + fmtMoney(t32) + ")" : "") + ". Sell levels: " + SL.map(fmtMoney).join(", ") + " (" + SL.map(function (v) { var c = Math.round((v / px - 1) * 100); return (c >= 0 ? "+" : "") + c + "%"; }).join(", ") + " from today)." : "No target.");
+    document.getElementById("mp-note").innerHTML = note + "<br><span style=\"color:#6b7686\">Sell levels sit 50%, 80% and 100% of the way from today\'s price to the 2030 target; for BTC, MSTR and the other bitcoin treasury companies they are BTC at $180K, $250K and $300K (companies at NAV 1.0x, net of debt). SOL, FWDI, UPXI and the other Solana treasury companies use my SOL target. Trend = <code>ln(Price) = a + b × ln(days)</code> fit on all weekly history. FWDI and UPXI have too little history, so their trend is Solana's converted to a share price at today's EV-mNAV (coins per share, net of debt).</span>";
   }
   function netQty(r) {   // coins held minus coins owed (borrowed SOL, converted at the balance-sheet date's price) and SOL set aside for notes that settle in SOL
     var q = r.qty || r.btc; if (r.owed) { var c = r.coin === "SOL" ? "SOL-USD" : "BTC-USD", p0 = pxOn(c, r.owed[1]); if (p0) q -= r.owed[0] / p0; }
