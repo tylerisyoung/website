@@ -318,14 +318,14 @@ _________________________</p>
 .fd .pfh .pfr{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.4rem .8rem}
 .fd .pfh .pfs small{display:block;font-size:1.1rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
 .fd .pfh .pfs b{font-size:2.1rem;font-weight:500;white-space:nowrap}.fd .pfh .pfs b.u{color:#089981}.fd .pfh .pfs b.d{color:#f23645}
-.fd .fperf{text-align:center;padding:.6rem 2rem .8rem;border:1px solid #f0c9c9;border-left:4px solid #e07a7a;background:#fdf2f2;border-radius:10px;margin:.2rem 0 .6rem}
+.fd .fperf{text-align:center;padding:.6rem 2rem .8rem;border:1px solid #cfdcf5;border-left:4px solid var(--blue);background:#f2f6fd;border-radius:10px;margin:.2rem 0 .6rem}
 .fd .fperf .pn{font-size:1.8rem;font-weight:500}.fd .fperf small{display:block;font-size:1.1rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
-.fd .fperf b{font-size:2.6rem;font-weight:500;color:#f23645}
+.fd .fperf b{font-size:2.6rem;font-weight:500;color:var(--blue)}
 .fd .trades{border:1px solid #cfdcf5;border-left:4px solid var(--blue);background:#f2f6fd;border-radius:10px;padding:.8rem 1.4rem;margin:.6rem 0}
 .fd .rec{border:1px solid #cfe6d6;border-left:4px solid #4f9d69;background:#eff8f2;border-radius:10px;padding:.8rem 1.4rem;margin:.6rem 0;text-align:center;font-size:1.5rem;color:var(--ink)}
 .fd .rec b{color:#2f7a4a}.fd .rec .up{color:#089981;font-weight:700}.fd .rec .dn{color:#f23645;font-weight:700}.fd .rec .eq{color:var(--muted)}
 .fd .bxt{font:700 1.6rem system-ui,sans-serif;text-align:center;margin:.2rem 0 .5rem;letter-spacing:.01em}
-.fd .trades h3.bxt{color:#5b8def}.fd .live .bxt{color:#e0a93b;margin-top:.4rem}.fd .fperf .bxt{color:#e07a7a}
+.fd .trades h3.bxt{color:#5b8def}.fd .live .bxt{color:#e0a93b;margin-top:.4rem}.fd .fperf .bxt{color:#5b8def}
 .fd .trades ul{margin:0;padding-left:1.4rem;font-size:1.4rem;line-height:1.7}.fd .trades li b{font-weight:600}.fd .trades .arr{color:var(--blue);font-weight:700;margin:0 .4rem}
 @media(max-width:760px){.fd .pfh{grid-template-columns:1fr}.fd .pfh .pfr{grid-template-columns:repeat(2,minmax(0,1fr))}.fd .pfh>div+div{border-left:0;border-top:1px solid #eadfc2;padding-top:.6rem;margin-top:.6rem}}
 .fd .tre{border:1px solid var(--line);border-top:3px solid #f5dfa6;border-radius:10px;background:#fff;padding:.6rem .8rem;margin-bottom:12px}
@@ -505,7 +505,7 @@ _________________________</p>
     </script></div>
     <div class="pfh" id="fd-pfh"></div>
   </div>
-  <div class="fperf"><div class="bxt">Fund performance</div><div class="fv"><small>Annualized performance</small><b style="color:#089981">&#8963; 11%</b></div></div>
+  <div class="fperf"><div class="bxt">Fund Performance</div><div class="fv"><small>Annualized performance</small><b>&#8963; 11%</b></div></div>
   <div class="strip" id="fd-strip"></div>
   <div class="trades">
     <h3 class="bxt">Weekly trades &amp; allocations</h3>
