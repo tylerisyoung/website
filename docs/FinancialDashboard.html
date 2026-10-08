@@ -324,6 +324,11 @@ _________________________</p>
 .fd .trades{border:1px solid #cfdcf5;border-left:4px solid var(--blue);background:#f2f6fd;border-radius:10px;padding:.8rem 1.4rem;margin:.6rem 0}
 .fd .rec{border:1px solid #cfe6d6;border-left:4px solid #4f9d69;background:#eff8f2;border-radius:10px;padding:.8rem 1.4rem;margin:.6rem 0;text-align:center;font-size:1.5rem;color:var(--ink)}
 .fd .rec b{color:#2f7a4a}.fd .rec .up{color:#089981;font-weight:700}.fd .rec .dn{color:#f23645;font-weight:700}.fd .rec .eq{color:var(--muted)}
+.fd .strat{border:2px solid #1f2a3c;background:#f1f2f4;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,.28);padding:1.2rem 1.8rem;margin:.6rem 0;font-size:1.45rem;line-height:1.6}
+.fd .strat .sg{display:grid;grid-template-columns:1fr 1fr;gap:1rem 2.4rem}@media(max-width:760px){.fd .strat .sg{grid-template-columns:1fr}}
+.fd .strat h4{font:700 1.7rem system-ui,sans-serif;color:var(--ink);margin:.4rem 0 .3rem}.fd .strat h4 span{font-weight:400;color:var(--muted);font-size:.85em}
+.fd .strat ul{margin:0 0 .6rem;padding-left:1.4rem}.fd .strat .act div{margin:.2rem 0}.fd .strat .act .l{font-weight:700;display:inline-block;min-width:4.2rem}
+.fd .strat .buy{color:#2f8a4a;font-weight:600}.fd .strat .sell{color:#d23b3b;font-weight:600}.fd .strat .hold{color:#7a828e;font-weight:600}
 .fd .bxt{font:700 1.6rem system-ui,sans-serif;text-align:center;margin:.2rem 0 .5rem;letter-spacing:.01em}
 .fd .trades h3.bxt{color:#5b8def}.fd .live .bxt{color:#e0a93b;margin-top:.4rem}.fd .fperf .bxt,.fd .rec .bxt{color:#4f9d69}
 .fd .trades ul{margin:0;padding-left:1.4rem;font-size:1.4rem;line-height:1.7}.fd .trades li b{font-weight:600}.fd .trades .arr{color:var(--blue);font-weight:700;margin:0 .4rem}
@@ -716,6 +721,26 @@ _________________________</p>
     <div class="pf-note" id="mp-note"></div>
   </div>
   <br><br><br><br><br>
+  <h2>Strategy</h2>
+  <div class="strat">
+    <div class="sg">
+      <div><h4>Core Portfolio</h4><ul>
+        <li>Buy &amp; hold indefinitely</li>
+        <li>Sell 10% at each price target</li>
+        <li>New cash goes towards the best buy in the Core Portfolio</li></ul></div>
+      <div><h4>Growth Portfolio <span>(tax free)</span></h4><ul>
+        <li>Actively trade between pairs (TSLA/SPCX) (MSTR/BTC) (SLV/Gold)</li>
+        <li>Sell 10% at the first price target</li>
+        <li>Sell 20% at the second price target</li>
+        <li>Sell 30% at the third price target</li>
+        <li>Try to time the top with 20%</li>
+        <li>Hold the rest or layer back in to best buys</li>
+        <li>New cash goes towards the best buy in the Growth Portfolio if below targets</li></ul></div>
+    </div>
+    <h4>Current Actions</h4>
+    <div class="act" id="strat-act">Loading…</div>
+  </div>
+  <br><br><br><br><br>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -1028,6 +1053,33 @@ _________________________</p>
   function heat(t, good) {   // t in 0..1 (rank); faded green for good, faded red for bad
     var g = [79, 157, 105], r = [224, 122, 122], w = [255, 255, 255], c = good ? g : r, a = 0.15 + 0.55 * t;
     return "rgba(" + c.join(",") + "," + a.toFixed(2) + ")";
+  }
+  var WEEK_RANK = [];
+  function strategy() {   // Current Actions: best buys, any holding at or past a sell level, and holds
+    var trow = {}; (DATA.treasury ? DATA.treasury.rows : []).forEach(function (r) { trow[r.t] = r; });
+    var med = {}; BEST_ROWS.forEach(function (r) { med[r.k] = r.base; });
+    var PERS = { "SOL-USD": 2153, "TSLA": 4794 }, BTCT = [180000, 250000, 300000];
+    function lv(k) {   // fixed sell levels where they exist (BTC and bitcoin treasury companies), otherwise the 2030 target
+      var r = trow[k], px = lastPx(k), cc = r && r.shares && k !== "TSLA" && k !== "SPCX" ? r : null;
+      function conv(P) { var q = netQty(cc), ND = (cc.debt || 0) + (cc.pref || 0) - (cc.cash || 0); return Math.max(0, (P * q - ND) / cc.shares); }
+      if (k === "BTC-USD") return { px: px, L: BTCT };
+      if (cc && cc.coin === "BTC") return { px: px, L: BTCT.map(conv) };
+      var t = PERS[k] || (cc && cc.coin === "SOL" ? conv(PERS["SOL-USD"]) : med[k]);
+      return t ? { px: px, L: [t] } : null;
+    }
+    function hit(k) { var v = lv(k); if (!v) return 0; return v.L.length === 1 ? (v.px >= v.L[0] ? 3 : 0) : v.L.filter(function (x) { return v.px >= x; }).length; }
+    var CK = Object.keys(CORE.w), GK = Object.keys(PORTFOLIO.w), sells = { c: [], g: [] }, sold = {};
+    CK.forEach(function (k) { var h = hit(k); if (h) { sells.c.push(sn(k) + " (sell 10% at level " + h + ")"); sold[k] = 1; } });
+    GK.forEach(function (k) { var h = hit(k); if (h) { sells.g.push(sn(k) + " (sell " + [10, 20, 30][h - 1] + "% at level " + h + ")"); sold[k] = 1; } });
+    function best(keys) { for (var i = 0; i < WEEK_RANK.length; i++) if (keys.indexOf(WEEK_RANK[i]) >= 0 && !sold[WEEK_RANK[i]]) return WEEK_RANK[i]; return null; }
+    var bc = best(CK), bg = best(GK), holds = [];
+    CK.concat(GK).forEach(function (k) { if (k !== bc && k !== bg && !sold[k] && holds.indexOf(sn(k)) < 0) holds.push(sn(k)); });
+    function sp(c, t) { return '<span class="' + c + '">' + t + "</span>"; }
+    document.getElementById("strat-act").innerHTML =
+      '<div><span class="l">Buy:</span> Core: ' + sp("buy", bc ? sn(bc) : "n/a") + " &nbsp;·&nbsp; Growth: " + sp("buy", bg ? sn(bg) : "n/a") + "</div>" +
+      '<div><span class="l">Sell:</span> Core: ' + sp("sell", sells.c.length ? sells.c.join(", ") : "n/a") + " &nbsp;·&nbsp; Growth: " + sp("sell", sells.g.length ? sells.g.join(", ") : "n/a") + "</div>" +
+      '<div><span class="l">Hold:</span> ' + sp("hold", holds.join(", ")) + "</div>" +
+      '<div style="color:#6b7686;font-size:.85em;margin-top:.4rem">Best buy = highest combined rank in This Week\'s Best Buys (value + projected growth) among each portfolio\'s names. Sell = price at or above a sell level in Price Target Levels.</div>';
   }
   var mpChart = null;
   var mpSel = null;
@@ -1495,6 +1547,7 @@ _________________________</p>
     function pctRank(list, k) { var i = list.indexOf(k); return i < 0 ? null : (list.length > 1 ? 100 * (1 - i / (list.length - 1)) : 100); }
     var rows = GROWTH.filter(function (k) { return VALUE[k]; }).map(function (k) { var v = pctRank(vOrder, k), g = pctRank(GROWTH, k); return { k: k, v: v, g: g, o: (v + g) / 2 }; });
     rows.sort(function (a, b) { return b.o - a.o || b.g - a.g; });
+    WEEK_RANK = rows.map(function (r) { return r.k; }); try { strategy(); } catch (e) { console.log("strategy", e); }
     var top = rows.slice(0, 10);
     document.getElementById("picks-row").innerHTML = top.map(function (r, i) { return '<span class="pk"><span class="rk">#' + (i + 1) + '</span><span class="tk" title="Overall ' + r.o.toFixed(0) + ' (value ' + r.v.toFixed(0) + ', growth ' + r.g.toFixed(0) + ')">' + dot(r.k) + '$' + sn(r.k) + "</span></span>"; }).join("");
     bucketCards(top.slice(0, TOPN).map(function (r) { return r.k; }));
