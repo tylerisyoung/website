@@ -43,6 +43,12 @@ CSVs) and refreshed every day by the GitHub Action in
 .fd .pfh .pfr{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.4rem .8rem}
 .fd .pfh .pfs small{display:block;font-size:1.1rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
 .fd .pfh .pfs b{font-size:2.1rem;font-weight:500;white-space:nowrap}.fd .pfh .pfs b.u{color:#089981}.fd .pfh .pfs b.d{color:#f23645}
+.fd .fperf{display:flex;align-items:center;gap:1.4rem;padding:.7rem 2rem;min-height:0}
+.fd .fperf .pn{font-size:1.8rem;font-weight:500}.fd .fperf small{display:block;font-size:1.1rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.fd .fperf b{font-size:2.6rem;font-weight:500;color:#f23645}
+.fd .trades{border:1px solid #cfdcf5;border-left:4px solid var(--blue);background:#f2f6fd;border-radius:10px;padding:.8rem 1.4rem;margin:.6rem 0}
+.fd .trades h3{font:600 1.7rem Georgia,serif;margin:.1rem 0 .5rem;color:var(--ink)}
+.fd .trades ul{margin:0;padding-left:1.4rem;font-size:1.4rem;line-height:1.7}.fd .trades li b{font-weight:600}.fd .trades .arr{color:var(--blue);font-weight:700;margin:0 .4rem}
 @media(max-width:760px){.fd .pfh{grid-template-columns:1fr}.fd .pfh .pfr{grid-template-columns:repeat(2,minmax(0,1fr))}.fd .pfh>div+div{border-left:0;border-top:1px solid #eadfc2;padding-top:.6rem;margin-top:.6rem}}
 .fd .tre{border:1px solid var(--line);border-top:3px solid #f5dfa6;border-radius:10px;background:#fff;padding:.6rem .8rem;margin-bottom:12px}
 .fd .tre-top{display:flex;flex-wrap:wrap;gap:.4rem 1.6rem;align-items:baseline;margin-bottom:.5rem;font-size:.95rem}
@@ -220,7 +226,17 @@ CSVs) and refreshed every day by the GitHub Action in
     </script></div>
   </div>
   <div class="live pfh" id="fd-pfh"></div>
+  <div class="live fperf"><div class="pn">Fund performance</div><div><small>Annualized performance</small><b>&#8964; 47.98%</b></div></div>
   <div class="strip" id="fd-strip"></div>
+  <div class="trades">
+    <h3>Weekly trades &amp; allocations</h3>
+    <ul>
+      <li><b>Pair Trading TSLA/SPCX:</b> sold the full SPCX position and rotated the proceeds into TSLA</li>
+      <li><b>Buy TSLA:</b> added to TSLA with new cash</li>
+      <li><b>Old Growth Portfolio allocation:</b> FWDI 49.28%, TSLA 26.53%, SPCX 12.14%, MRVL 11.09%, UPXI 0.90%</li>
+      <li><b>New Growth Portfolio allocation:</b> FWDI 48.36%, TSLA 39.87%, MRVL 10.88%, UPXI 0.88%</li>
+    </ul>
+  </div>
   <br><br><br><br><br><br><br><br><br><br>
   <div class="ctrl">
     <span class="lab">Timeframe</span>
@@ -699,7 +715,7 @@ CSVs) and refreshed every day by the GitHub Action in
         [["D", "Day"], ["W", "Week"], ["M", "Month"], ["Y", "Year"]].map(function (x) { var v = ret(w, x[0]);
           return '<div class="pfs"><small>' + x[1] + '</small><b class="' + (v == null ? "" : v >= 0 ? "u" : "d") + '">' + (v == null ? "n/a" : (v >= 0 ? "&#8963; " : "&#8964; ") + Math.abs(v).toFixed(2) + "%") + "</b></div>"; }).join("") + "</div></div>";
     }
-    document.getElementById("fd-pfh").innerHTML = half("Growth Portfolio", "G", "#3d6fd6", PORTFOLIO.w) + half("Core Portfolio", "C", "#4f9d69", CORE.w);
+    document.getElementById("fd-pfh").innerHTML = half("Growth Portfolio Names", "G", "#3d6fd6", PORTFOLIO.w) + half("Core Portfolio Names", "C", "#4f9d69", CORE.w);
   }
   function strip() {
     document.getElementById("fd-strip").innerHTML = Object.keys(DATA.prices).filter(function (sym) { return !DATA.prices[sym].group; }).map(function (sym) {
