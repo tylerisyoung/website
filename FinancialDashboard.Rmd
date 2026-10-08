@@ -36,6 +36,14 @@ CSVs) and refreshed every day by the GitHub Action in
 .fd .accent{height:4px;border-radius:4px;background:linear-gradient(90deg,#e8a0a0,#f2c46d 45%,#a8c5f7);margin:.3rem 0 .6rem;opacity:.8}
 .fd .live .tradingview-widget-container{width:80%!important;transform:scale(1.25);transform-origin:0 0;margin-bottom:18px}
 .fd .live{border:1px solid #f1e3bd;border-left:4px solid #f2c46d;background:#fefaf0;border-radius:10px;padding:.3rem .6rem;margin:.2rem 0 .6rem;min-height:72px}
+.fd .pfh{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);padding:.7rem 1rem;min-height:0}
+.fd .pfh>div{padding:0 1rem}.fd .pfh>div+div{border-left:1px solid #eadfc2}
+.fd .pfh .pn{font-size:1.8rem;font-weight:500;margin-bottom:.35rem;display:flex;align-items:center;gap:.5rem}
+.fd .pfh .pn i{display:inline-grid;place-items:center;width:2.6rem;height:2.6rem;border-radius:50%;color:#fff;font:700 1.2rem system-ui;font-style:normal}
+.fd .pfh .pfr{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.4rem .8rem}
+.fd .pfh .pfs small{display:block;font-size:1.1rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.fd .pfh .pfs b{font-size:2.1rem;font-weight:500;white-space:nowrap}.fd .pfh .pfs b.u{color:#089981}.fd .pfh .pfs b.d{color:#f23645}
+@media(max-width:760px){.fd .pfh{grid-template-columns:1fr}.fd .pfh .pfr{grid-template-columns:repeat(2,minmax(0,1fr))}.fd .pfh>div+div{border-left:0;border-top:1px solid #eadfc2;padding-top:.6rem;margin-top:.6rem}}
 .fd .tre{border:1px solid var(--line);border-top:3px solid #f5dfa6;border-radius:10px;background:#fff;padding:.6rem .8rem;margin-bottom:12px}
 .fd .tre-top{display:flex;flex-wrap:wrap;gap:.4rem 1.6rem;align-items:baseline;margin-bottom:.5rem;font-size:.95rem}
 .fd .tre-top .k{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:#b0833a;font-weight:700}
@@ -211,6 +219,7 @@ CSVs) and refreshed every day by the GitHub Action in
      "isTransparent": true, "showSymbolLogo": true, "colorTheme": "light", "locale": "en"}
     </script></div>
   </div>
+  <div class="live pfh" id="fd-pfh"></div>
   <div class="strip" id="fd-strip"></div>
   <br><br><br><br><br><br><br><br><br><br>
   <div class="ctrl">
@@ -237,12 +246,12 @@ CSVs) and refreshed every day by the GitHub Action in
     <div class="pf-grid">
       <div class="pf-card"><div class="pf-t">1. Growth Portfolio</div><div class="pf-in"><div class="pf-pie"><canvas id="pf-pie1"></canvas></div><div class="pf-tab" id="pf-tab1"></div></div></div>
       <div class="pf-card"><div class="pf-t">2. Core Portfolio</div><div class="pf-in"><div class="pf-pie"><canvas id="pf-pie4"></canvas></div><div class="pf-tab" id="pf-tab4"></div></div></div>
-      <div class="pf-card"><div class="pf-t">3. Optimal mix of my holdings <span>(max 60% per name, 80% per category)</span></div><div class="pf-in"><div class="pf-pie"><canvas id="pf-pie2"></canvas></div><div class="pf-tab" id="pf-tab2"></div></div></div>
+      <div class="pf-card"><div class="pf-t">3. Optimal mix of Growth Portfolio holdings <span>(max 60% per name, 80% per category)</span></div><div class="pf-in"><div class="pf-pie"><canvas id="pf-pie2"></canvas></div><div class="pf-tab" id="pf-tab2"></div></div></div>
       <div class="pf-card"><div class="pf-t">4. Optimal mix of all Markets tickers <span>(max 60% per name, 80% per category)</span></div><div class="pf-in"><div class="pf-pie"><canvas id="pf-pie3"></canvas></div><div class="pf-tab" id="pf-tab3"></div></div></div>
     </div>
     <div class="fdpager">
-      <div class="pg" data-t="Sharpe: my holdings">
-    <h3 class="pf-h">Sharpe ratio: my holdings</h3>
+      <div class="pg" data-t="Sharpe: Growth Portfolio">
+    <h3 class="pf-h">Sharpe ratio: Growth Portfolio</h3>
     <div class="pf-front"><canvas id="pf-front1"></canvas></div>
     <div class="pf-tot" id="pf-tot1"></div>
     <div class="pf-note">Pale dots: 4,000 random mixes of my five holdings, plus each holding (labeled). Colored dots use each ticker's page-wide color. Dark diamond = Growth Portfolio (1); dark star = the highest-Sharpe mix (max 60% per name, 80% per category) (3).</div>
@@ -259,8 +268,8 @@ CSVs) and refreshed every day by the GitHub Action in
     <div class="pf-tot" id="pf-tot2"></div>
     <div class="pf-note" id="pf-note2">Pale dots: 4,000 random mixes of every ticker in the Markets chart, plus each ticker (labeled). Colored dots use each ticker's page-wide color. Dark diamond = Growth Portfolio (1); dark star = the highest-Sharpe mix (max 60% per name, 80% per category) (4).</div>
       </div>
-      <div class="pg" data-t="Monte Carlo: my portfolio">
-    <h3 class="pf-h">Monte Carlo: my portfolio to 2030</h3>
+      <div class="pg" data-t="Monte Carlo: Growth Portfolio">
+    <h3 class="pf-h">Monte Carlo: Growth Portfolio to 2030</h3>
     <div class="pf-front"><canvas id="pf-mc"></canvas></div>
     <div class="pf-note" id="pf-mc-note"></div>
       </div>
@@ -675,6 +684,22 @@ CSVs) and refreshed every day by the GitHub Action in
     points.forEach(function (p) { var d = new Date(p[0] + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); var k = d.toISOString().slice(0, 10);
       if (k === key) out[out.length - 1] = p; else { out.push(p); key = k; } });
     return out;
+  }
+  function pfHeadline() {   // weighted Growth and Core Portfolio returns over 1 day, 1 week, 1 month, 1 year
+    function prev(points) { return points.length > 1 ? (points[points.length - 1][1] / points[points.length - 2][1] - 1) * 100 : null; }
+    function ret(w, k) {
+      var tot = 0, sw = 0;
+      Object.keys(w).forEach(function (t) { var p = DATA.prices[t]; if (!p) return;
+        var v = k === "D" ? prev(p.points) : pctChange(p.points, { W: 7, M: 30, Y: 365 }[k]);
+        if (v != null && isFinite(v)) { tot += w[t] * v; sw += w[t]; } });
+      return sw ? tot / sw : null;
+    }
+    function half(name, ic, col, w) {
+      return '<div><div class="pn"><i style="background:' + col + '">' + ic + '</i>' + name + '</div><div class="pfr">' +
+        [["D", "Day"], ["W", "Week"], ["M", "Month"], ["Y", "Year"]].map(function (x) { var v = ret(w, x[0]);
+          return '<div class="pfs"><small>' + x[1] + '</small><b class="' + (v == null ? "" : v >= 0 ? "u" : "d") + '">' + (v == null ? "n/a" : (v >= 0 ? "&#8963; " : "&#8964; ") + Math.abs(v).toFixed(2) + "%") + "</b></div>"; }).join("") + "</div></div>";
+    }
+    document.getElementById("fd-pfh").innerHTML = half("Growth Portfolio", "G", "#3d6fd6", PORTFOLIO.w) + half("Core Portfolio", "C", "#4f9d69", CORE.w);
   }
   function strip() {
     document.getElementById("fd-strip").innerHTML = Object.keys(DATA.prices).filter(function (sym) { return !DATA.prices[sym].group; }).map(function (sym) {
@@ -1264,7 +1289,7 @@ CSVs) and refreshed every day by the GitHub Action in
     pfCharts.push(ch);
   }
   var pfMC = null;
-  function monteCarlo(rm, W) {   // 2,000 paths of my portfolio (bought and held) to Dec 31, 2030, using the targets' growth rates and the 2-year risk model
+  function monteCarlo(rm, W) {   // 2,000 paths of the Growth Portfolio (bought and held) to Dec 31, 2030, using the targets' growth rates and the 2-year risk model
     var n = rm.names.length, L = [];   // Cholesky of the weekly covariance
     for (var i = 0; i < n; i++) { L.push(new Array(n).fill(0)); for (var j = 0; j <= i; j++) { var sum = rm.C[i][j] / 52; for (var k = 0; k < j; k++) sum -= L[i][k] * L[j][k];
       L[i][j] = i === j ? Math.sqrt(Math.max(sum, 1e-12)) : sum / L[j][j]; } }
@@ -1312,7 +1337,7 @@ CSVs) and refreshed every day by the GitHub Action in
     pfCharts.forEach(function (c) { c.destroy(); }); pfCharts = [];
     var mu = {}; BEST_ROWS.forEach(function (r) { mu[r.k] = r.yr; });
     var rf = DATA.rf ? DATA.rf.v / 100 : 0.04;   // 3-month Treasury bill
-    // 1 and 2: my holdings
+    // 1 and 2: Growth Portfolio holdings
     var hn = Object.keys(PORTFOLIO.w).filter(function (k) { return DATA.prices[k] && mu[k] != null; });
     var tot = hn.reduce(function (s, k) { return s + PORTFOLIO.w[k]; }, 0), W = hn.map(function (k) { return PORTFOLIO.w[k] / tot; });
     var rmH = riskModel(hn, mu), curH = stats(rmH, W, rf), optH = optimize(rmH, rf), sH = stats(rmH, optH.w, rf);
@@ -1337,7 +1362,7 @@ CSVs) and refreshed every day by the GitHub Action in
     function pct(v) { return (v >= 0 ? "+" : "") + Math.round(v * 100).toLocaleString("en-US") + "%"; }
     function line(st, r) { return "Total Sharpe ratio: <b>" + st.sh.toFixed(2) + "</b> &nbsp;·&nbsp; Median expected return to 2030: <b>" + pct(r) + "</b>"; }
     document.getElementById("pf-tot3").innerHTML = "Core Portfolio — " + line(core, ret(rmA, Wcore)) + "<br>Highest-Sharpe mix of all Markets tickers — " + line(sA, ret(rmA, optA.w));
-    document.getElementById("pf-tot1").innerHTML = "Growth Portfolio — " + line(curH, ret(rmH, W)) + "<br>Highest-Sharpe mix of my holdings — " + line(sH, ret(rmH, optH.w));
+    document.getElementById("pf-tot1").innerHTML = "Growth Portfolio — " + line(curH, ret(rmH, W)) + "<br>Highest-Sharpe mix of Growth Portfolio holdings — " + line(sH, ret(rmH, optH.w));
     document.getElementById("pf-tot2").innerHTML = "Growth Portfolio — " + line(curA, ret(rmA, Wfull)) + "<br>Highest-Sharpe mix of all Markets tickers — " + line(sA, ret(rmA, optA.w));
   }
 
@@ -1485,7 +1510,7 @@ CSVs) and refreshed every day by the GitHub Action in
   initPagers();
   fetch("data/markets.json?v=" + Date.now()).then(function (r) { return r.json(); }).then(function (d) {
     DATA = d; document.getElementById("fd-updated").textContent = "Updated " + d.updated + " · market data refreshed about every 2 hours; bitcoin and S&P futures stream live";
-    strip(); render(); cryptoLive(); debtClock(d.debt_clock);
+    strip(); try { pfHeadline(); } catch (e) { console.log("pf headline", e); } render(); cryptoLive(); debtClock(d.debt_clock);
     try { fairChart(); } catch (e) { console.log("fair value", e); }
     try { compValue(); } catch (e) { console.log("comparative value", e); }
     try { bestBuy(); } catch (e) { console.log("best buy", e); }
