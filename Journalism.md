@@ -52,7 +52,13 @@ Story: [Cycling from Oregon to Mexico](https://www.lightheartedhumans.com/storyt
 
 Story: [A Year in Ecuador](./AYearInEcuador.html)
 
-Story: [Rafting the Deschutes](https://www.lightheartedhumans.com/storytelling/2019/6/19/entry-005-rafting-the-deschutes-tyler-young)  
+Story: [Rafting the Deschutes](https://www.lightheartedhumans.com/storytelling/2019/6/19/entry-005-rafting-the-deschutes-tyler-young)
+
+<br>
+
+***Blog***
+
+Blog: [One Hour in a Scanner: AI Can Now Redraw What You See](./brainreading.html)  
 
 
 

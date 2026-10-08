@@ -11,7 +11,7 @@
 
 
 
-<title>Journalism</title>
+<title>brainreading.knit</title>
 
 <script src="site_libs/header-attrs-2.32/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -287,86 +287,88 @@ $(document).ready(function () {
 
 <p><br> <br></p>
 <h1>
-<strong>Journalism</strong>
+<strong>One Hour in a Scanner: AI Can Now Redraw What You See</strong>
 </h1>
 <h6>
-<strong><em>Peer Reviewed Opinions.</em></strong><br />
-<strong><em>Views are my own.</em></strong>
+<strong><em>A draft by Tyler Young.</em></strong>
 </h6>
 <p><em><a
-href="https://tylerisyoung.substack.com/?target=_blank">Tylerisyoung.Substack.com</a><br />
-<a
-href="https://twitter.com/Tylerisyoung/?tagets=_blank">Twitter.com/TylerisYoung</a></em><br />
-_________________________</p>
-<p><br> Read my <a href="./FinancialDashboard.html">Blog</a> <br>
-<br></p>
-<h4>
-<p><strong><em>All Articles</em></strong></p>
-<p>Article: <a href="./GenderedandRacializedBuzzwords.html">Gendered and
-Racialized Buzzwords</a></p>
-<p>Article: <a href="./mmt.html">Modern Monetary Theory - Slow at first,
-then all at once.</a></p>
-<p>Article: <a href="./politicsandcriticaltheory.html">Politics,
-Critical Theory, and our loss of Sensemaking in 2020</a></p>
-<p>Article: <a href="./fromcanadatocoosbay.html">From Canada to Coos
-Bay, The Politics of a Pipeline</a></p>
-<p>Article: <a
-href="./distributedideasuppressioncomplex.html">Distributed Idea
-Suppression Complex</a></p>
-<p>Article: <a
-href="./mainstreammonitoringandmanipulation.html">Mainstream Monitoring
-and Manipulation</a></p>
-<p><br></p>
-<p>Story: <a href="./TheReiCampaign.html">The REI Campaign</a></p>
-<p>Story: <a
-href="https://www.lightheartedhumans.com/storytelling/2019/6/9/entry-003-cycling-from-oregon-to-mexico">Cycling
-from Oregon to Mexico</a></p>
-<p>Story: <a href="./AYearInEcuador.html">A Year in Ecuador</a></p>
-<p>Story: <a
-href="https://www.lightheartedhumans.com/storytelling/2019/6/19/entry-005-rafting-the-deschutes-tyler-young">Rafting
-the Deschutes</a></p>
-<p><br></p>
-<p><strong><em>Blog</em></strong></p>
-<p>Blog: <a href="./brainreading.html">One Hour in a Scanner: AI Can Now
-Redraw What You See</a></p>
-<!---
-
-[*Silver*](./bitcoi.html) (Coming Soon) 
-
-[*Uranium*](./bitcoi.html) (Coming Soon) 
-
-[*NYSE Picks*](./bitcoi.html) (Coming Soon) 
-
-[*Emerging Markets*](./bitcoi.html) (Coming Soon) 
-
-[*Sharpe Ratio*](./bitcoi.html) (Coming Soon) 
-
-[*Portfolio Construction*](./bitcoi.html) (Coming Soon) 
-
---->
-<br>
+href="https://www.tylerisyoung.substack.com">Tylerisyoung.Substack.com</a></em>
+<em><a
+href="https://www.twitter.com/Tylerisyoung">Twitter.com/TylerisYoung</a></em>
+_________________________ <br> 10/07/2026 <br></p>
 <h3>
-<strong><em>Topics:</em></strong><br />
-
+<p>Researchers at the Weizmann Institute of Science in Israel have built
+a system that looks at a brain scan and paints back the picture the
+person was looking at. It is called Brain-IT, and it is the most
+accurate tool of its kind yet published.</p>
+<p>The team, led by computer scientist Michal Irani, trained it on the
+Natural Scenes Dataset: high-resolution fMRI scans of eight volunteers
+who each viewed about 9,000 photos over roughly 40 hours in the scanner.
+The results were presented at ICLR 2026, and MIT Technology Review
+covered them on October 1.</p>
+<p><strong>How it works</strong></p>
+<p>Brain-IT splits the job in two. One branch reads the brain for
+<em>structure</em>: where things sit in the frame, rough shapes and
+colors. The other reads it for <em>meaning</em>: a dog, a bathtub, a
+plate of food. Both feed an image-generating diffusion model, the same
+family of AI behind tools like Midjourney, which draws the final
+picture.</p>
+<p>The trick that makes it cheap is sharing. Brains differ, but the team
+found clusters of voxels (tiny 3D pixels of brain tissue) that do the
+same job across people, such as one region that lights up for food and
+another for sports. Because the model learns those shared clusters once,
+a new person doesn’t have to start from zero.</p>
+<p><strong>The data</strong></p>
+<p>On the standard benchmarks the field uses, Brain-IT beats every
+earlier method, including MindEye2, the previous leader. The bigger
+story is the second chart: with <strong>one hour</strong> of a new
+person’s scans, it lands within about a point of what the previous
+leader achieves with all 40 hours.</p>
 </h3>
-<h4>
-<p><a
-href="./economics.html"><strong><em>Economics</em></strong></a></p>
-<p><a
-href="./Environment.html"><strong><em>Environment</em></strong></a></p>
-<p><a
-href="./Adventure.html"><strong><em>Adventure</em></strong></a></p>
-<p><a href="./Health.html"><strong><em>Health</em></strong></a></p>
-<p><a href="./Politics.html"><strong><em>Politics</em></strong></a></p>
+<p><img src="brainreading_files/figure-html/unnamed-chunk-1-1.png" alt="" width="1350" /></p>
+<h6>
+Source: Beliy, Zalcher, Kogman, Wasserman &amp; Irani, “Brain-IT,”
+arXiv:2510.25976, Table 1 (average of four NSD subjects). Each score is
+the share of times the reconstruction is closer to the true image than
+to a random other image, judged by a standard vision model. Chance is
+50%.
+</h6>
+<h3>
+<p>Pixel-level accuracy rose too: correlation with the original image
+went from 0.32 for MindEye2 to 0.39 for Brain-IT. An hour in an fMRI
+machine runs roughly $600 to $1,000, so cutting calibration from 40
+hours to one turns a $24,000-to-$40,000 calibration into an
+afternoon.</p>
+<p><strong>What it still gets wrong</strong></p>
+<p>It is not a camera. A cake came back as three sandwiches. A dog in a
+bathtub came back as a goat in a bathtub. The gist survives, the details
+drift. And it only works on a cooperating person lying still in a
+multimillion-dollar magnet.</p>
+<p><strong>Why it matters</strong></p>
+<p>The team wants to move to video, sound, imagined pictures and dreams,
+and eventually to EEG, the cheap cap of electrodes that fits in a
+backpack. That is where this stops being a lab curiosity. Irani’s group
+sees a path to letting locked-in patients communicate. Neuroethicist
+Marcello Ienca told MIT Technology Review an EEG version would be a
+“game changer” and warned courts might one day treat reconstructions as
+evidence.</p>
+<p>The last private place a person has is the inside of their head. For
+now, getting in still takes an hour, a magnet and your consent. The
+trend line says each of those requirements is getting smaller.</p>
+</h3>
 <p><br></p>
-<p><br></p>
-<br> Essay: <a href="./Theartistsrebellion.html">The Artists
-Rebellion</a><br />
-
-<center>
-<p><br> <img src="images/THE%20ARTISTS%20REBELLION.png" /></p>
-<p><br>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/3Yp1ob_T7_k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<h6>
+<p><strong>Sources</strong></p>
+<p>Beliy, R., Zalcher, A., Kogman, J., Wasserman, N., &amp; Irani, M.
+“Brain-IT: Image Reconstruction from fMRI via Brain-Interaction
+Transformer.” ICLR 2026. <a
+href="https://arxiv.org/abs/2510.25976">arXiv:2510.25976</a></p>
+Hamzelou, J. “An AI ‘mind-reading’ tool can reconstruct what you’re
+looking at based on a brain scan.” MIT Technology Review, October 1,
+2026. <a
+href="https://www.technologyreview.com/2026/10/01/1145588/ai-mind-reading-reconstructs-what-youre-looking-at/">Link</a>
+</h6>
 
 
 
