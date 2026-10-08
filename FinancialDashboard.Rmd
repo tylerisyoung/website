@@ -482,10 +482,13 @@ CSVs) and refreshed every day by the GitHub Action in
     pgShow(tabs, cards, Math.min(macroPage, cards.length - 1));
   }
   // One color per ticker, used by every chart, pie, dot and swatch on the page
-  var TCOL = { "FWDI": "#3d7be0", "TSLA": "#d9443f", "DFDV": "#c2185b", "MRVL": "#1f8a70", "SPCX": "#5d6d7e", "UPXI": "#26b5c6",
-    "BTC-USD": "#f39c12", "SOL-USD": "#8e5bd6", "ETH-USD": "#6c7ae0", "MSTR": "#a85a1f", "MTPLF": "#e8875a", "HSDT": "#e57aa9",
-    "NVDA": "#76b900", "AVGO": "#7d3c98", "MU": "#1b4f8a", "MP": "#8d3b12", "GLD": "#d4a417", "GC=F": "#c49b0e",
-    "SLV": "#7f8a95", "SI=F": "#5f6b77", "SILJ": "#a3aab2", "UUUU": "#9cb021", "URNM": "#5a7d1e", "YCA": "#a39e00", "HG=F": "#b87333", "CPER": "#d9925e", "SPY": "#222222" };
+  var TCOL = {   // Wes Anderson / Yellow Submarine palette, families share shades of one hue
+    "BTC-USD": "#e8a33d", "MSTR": "#c9762b", "MTPLF": "#e3b062",                                   // bitcoin: mustard and burnt orange
+    "SOL-USD": "#7b5ea7", "FWDI": "#5e4592", "UPXI": "#9a7cc4", "DFDV": "#b57fb0", "HSDT": "#e39aa8", "ETH-USD": "#8f9fd1",   // solana: plum, lavender, mauve, Grand Budapest pink
+    "TSLA": "#c8402f", "SPCX": "#4c6a8c",                                                         // Tesla red, SpaceX slate blue
+    "NVDA": "#5e9e6e", "AVGO": "#2f7f7a", "MU": "#3b5b7a", "MRVL": "#4fa3a5",                       // chips: Darjeeling teal, sage, navy
+    "GLD": "#d9b44a", "GC=F": "#c49a2c", "SLV": "#9aa3a8", "SI=F": "#7d868c", "SILJ": "#b8c0c4", "HG=F": "#b76e45", "CPER": "#d08a5e", "MP": "#8b5a3c",
+    "UUUU": "#a9b83a", "URNM": "#7e8f2a", "YCA": "#c9c25a", "SPY": "#2b2d42" };
   function tc(k) { if (TCOL[k]) return TCOL[k]; var h = 0; for (var i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) % 360; return "hsl(" + h + ",55%,48%)"; }
   function tca(k, a) { var c = tc(k); if (c[0] !== "#") return c.replace("hsl", "hsla").replace(")", "," + a + ")"); var n = parseInt(c.slice(1), 16); return "rgba(" + (n >> 16) + "," + (n >> 8 & 255) + "," + (n & 255) + "," + a + ")"; }
   function dot(k) { return '<span class="tdot" style="background:' + tc(k) + '"></span>'; }
