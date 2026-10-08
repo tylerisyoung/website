@@ -15,7 +15,7 @@ TICKERS = [("BTC-USD", "Bitcoin"), ("SPY", "S&P 500 (SPY)"),
            ("AVGO", "Broadcom"), ("NVDA", "Nvidia"), ("MU", "Micron (MU)"), ("MRVL", "Marvell Technology (MRVL)"),
            ("FWDI", "Forward Industries (FWDI)"), ("DFDV", "DeFi Development (DFDV)"), ("UPXI", "Upexi (UPXI)"),
            ("MP", "MP Materials"), ("GC=F", "Gold (futures)"), ("SLV", "Silver (SLV)"), ("SILJ", "Junior silver miners (SILJ)"),
-           ("UUUU", "Energy Fuels (UUUU)"), ("URNM", "Uranium miners ETF (URNM)"), ("YCA", "Yellow Cake (YCA, London, in USD)"), ("GLD", "Gold ETF (GLD)"), ("HG=F", "Copper (futures)"), ("CPER", "Copper ETF (CPER)"), ("ETH-USD", "Ethereum")]
+           ("UUUU", "Energy Fuels (UUUU)"), ("URNM", "Uranium miners ETF (URNM)"), ("YCA", "Yellow Cake (YCA, London, in USD)"), ("HG=F", "Copper (futures)"), ("CPER", "Copper ETF (CPER)"), ("ETH-USD", "Ethereum")]
 
 TREASURY_ASOF = "2026-09-14"
 # (ticker, name, shares outstanding, BTC held)
@@ -180,7 +180,7 @@ TARGETS = {
         spx("Yardeni Research", 8400, "mid-2027", "2026-09", "https://stocktwits.com/news-articles/markets/equity/ed-yardeni-says-phenomenal-earnings-keep-bull-case-intact-but-pushes-his-s-and-p-500-target-of-8-400-to-mid-2027/cZMStMIRBQK"),
         spx("UBS Global Wealth Management", 8400, "mid-2027", "2026-08", "https://www.bitget.com/news/detail/12560605712730"),
         spx("Morgan Stanley (Mike Wilson)", 8300, "12 months", "2026-05", "https://www.investing.com/news/stock-market-news/morgan-stanley-ups-sp-500-price-target-to-8300-on-robust-earnings-4683562")]},
-    "GLD": {"kind": "proxy", "of": "GC=F", "unit": "gold $/oz", "long": [
+    "GC=F": {"kind": "direct", "unit": "gold $/oz", "long": [
         S("Bernstein (Bob Brackett)", 5600, "2030", "2026-09", "https://www.investing.com/news/commodities-news/bernstein-unveils-new-gold-price-forecast-for-2030-4908919"),
         S("Yardeni Research", 10000, "end-2029", "2026-03", "https://uk.finance.yahoo.com/news/yardeni-sticks-long-term-gold-114209690.html"),
         S("Rockefeller Global (Doug Moglia)", 8000, "2030", "2026-05", "https://www.kitco.com/news/article/2026-05-27/gold-will-top-5500-2027-could-reach-10000-2030-silvers-upside-will-narrow"),
@@ -306,7 +306,7 @@ for k, t in TARGETS.items():
 assert all(t.get("n", 3) >= 3 for t in TARGETS.values())
 # Tyler's adjustment: double every gold, silver, copper and uranium target (2030 and 12-month), and the 12-month
 # consensus of the stocks that follow them (UUUU, SILJ). Published source values stay as published; only the summaries change.
-TARGET_X2 = ["GLD", "SLV", "CPER", "URANIUM", "UUUU", "URNM", "YCA", "SILJ"]
+TARGET_X2 = ["GC=F", "SLV", "CPER", "URANIUM", "UUUU", "URNM", "YCA", "SILJ"]
 for k in TARGET_X2:
     t = TARGETS[k]
     for f2 in ("low", "high", "base", "avg12"):

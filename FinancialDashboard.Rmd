@@ -342,7 +342,7 @@ CSVs) and refreshed every day by the GitHub Action in
     <div class="best-method" id="best-method"></div>
     <details class="srcs"><summary>Formulas (click to open)</summary><div class="fbody">
       <p><b>Targets:</b> Low / High = lowest / highest 2030 target. Median = median of all 2030 targets, except BTC, SOL, TSLA, MSTR: <code>0.5 × Personal predictions + 0.5 × average of the others</code>.</p>
-      <p><b>Conversions:</b> GLD, SLV, CPER <code>= metal target × ETF price ÷ metal price today</code> · SPY <code>= S&amp;P 500 target ÷ 10.02</code> · copper <code>$/lb = $/t ÷ 2,204.62</code> · UUUU, SILJ, MP <code>= price on the target date × sector 2030 target ÷ sector price on that date</code> (uranium, silver, avg of uranium/silver/gold/copper), locked in dollars.</p>
+      <p><b>Conversions:</b> SLV, CPER <code>= metal target × ETF price ÷ metal price today</code> · SPY <code>= S&amp;P 500 target ÷ 10.02</code> · copper <code>$/lb = $/t ÷ 2,204.62</code> · UUUU, SILJ, MP <code>= price on the target date × sector 2030 target ÷ sector price on that date</code> (uranium, silver, avg of uranium/silver/gold/copper), locked in dollars.</p>
       <p><b>Treasury companies:</b> <code>CPS = coins ÷ shares</code> · <code>mNAV = Price ÷ (CPS × coin price)</code> · <code>Target = coin 2030 target × CPS × √mNAV</code> (NAV assumed halfway back to 1.0x) · At NAV 1.0x <code>= Price ÷ CPS</code> and <code>CPS × coin median target</code>.</p>
       <p><b>12-month return:</b> each ~1-year target is restated to exactly 12 months from today: if it's further out, <code>Price × (Target ÷ Price)^(12 ÷ months)</code>; if it's sooner, it's carried forward along the path to the median 2030 target. Expired targets are dropped. Stocks use the analyst consensus (12 months from its date).</p>
       <p><b>By asset class:</b> the average CAGR to the median 2030 target of each bucket's members, every week since March 2020, using that week's price and years left to 2030. It uses today's targets for past weeks, so read it as "how much upside the current targets implied at that week's price."</p>
@@ -379,7 +379,7 @@ CSVs) and refreshed every day by the GitHub Action in
   <details class="srcs picks-f"><summary>Backtest formulas, stats &amp; limits (click to open)</summary><div class="fbody">
     <p><b>Weekly buying:</b> each Monday's $135 is split by the plan's fixed weights. Backtests 1, 2 and 4 never sell; weights drift with prices.</p><p><b>Layer out (Backtest 3):</b> each Monday, every holding's trendline <code>ln(Price) = a + b × ln(days since inception)</code> is refit on weekly closes up to that day only (needs 2 years of history). If <code>Price ÷ trendline − 1 &gt; 80%</code>, 20% of the holding is sold (no more than once every 4 weeks per name) and the proceeds buy the #1 name by Value score that week (deepest below its moving averages; price-only, no hindsight).</p>
     <p><b>Stats:</b> <i>Money-weighted return</i> = the yearly rate that makes every $135 deposit grow into the ending value (IRR, the right measure for DCA). <i>Time-weighted return</i> = yearly growth with deposits stripped out. <i>Volatility</i> = standard deviation of weekly returns × √52. <i>Max drawdown</i> = worst peak-to-trough fall of the time-weighted line. <i>Sharpe</i> = average weekly return over the risk-free rate ÷ its standard deviation × √52. <i>Sortino</i> = the same over downside volatility only.</p>
-    <p><b>Prices:</b> dividend-adjusted closes where they exist (SPY, AVGO, NVDA, MU, MRVL, SILJ); gold via GLD. In Backtest 3, assets join once they have 30 days of prices (SPCX from July 2026; treasury companies from when they started holding coins).</p>
+    <p><b>Prices:</b> dividend-adjusted closes where they exist (SPY, AVGO, NVDA, MU, MRVL, SILJ); gold via gold futures (GC=F). In Backtest 3, assets join once they have 30 days of prices (SPCX from July 2026; treasury companies from when they started holding coins).</p>
     <p><b>Limits:</b> starting in March 2020, three weeks before the COVID low, flatters every plan. Backtests 2–3 carry <i>survivorship bias</i>: its names were chosen in 2026, knowing which ones did well.</p>
   </div></details>
   <br><br><br><br><br>
@@ -395,8 +395,8 @@ CSVs) and refreshed every day by the GitHub Action in
     </div>
     <div class="pg" data-t="1: 40/40/20 BTC / S&amp;P / Gold">
 <h3 class="pg-h">Backtest 1: 40% Bitcoin / 40% S&amp;P 500 / 20% Gold</h3>
-  <div class="bt-sub">Weekly DCA into a fixed 40/40/20 mix of BTC, SPY and GLD, never sold</div>
-  <div class="spec"><div class="sl">Period</div><div class="sv">Mar 2, 2020 – today</div><div class="sl">Contribution</div><div class="sv">$7,000 a year into a Roth IRA = ~$135 every Monday</div><div class="sl">Buys each week</div><div class="sv">40% BTC, 40% SPY, 20% GLD</div><div class="sl">Selling</div><div class="sv">never: buy and hold, no rebalancing</div></div>
+  <div class="bt-sub">Weekly DCA into a fixed 40/40/20 mix of BTC, SPY and gold, never sold</div>
+  <div class="spec"><div class="sl">Period</div><div class="sv">Mar 2, 2020 – today</div><div class="sl">Contribution</div><div class="sv">$7,000 a year into a Roth IRA = ~$135 every Monday</div><div class="sl">Buys each week</div><div class="sv">40% BTC, 40% SPY, 20% gold</div><div class="sl">Selling</div><div class="sv">never: buy and hold, no rebalancing</div></div>
   <div class="sim"><div class="sim-t">Backtest 1 <span id="simA-res"></span></div>
     <div class="sim-c"><canvas id="simA-chart"></canvas></div>
     <div id="simA-stats"></div>
@@ -449,9 +449,9 @@ CSVs) and refreshed every day by the GitHub Action in
 (function () {
   var years = 3, tf = "D", logScale = true, DATA = null, charts = [];
   var FEATURED = [];
-  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "NVDA", "MU", "MRVL", "FWDI", "DFDV", "UPXI", "MP", "GLD", "SLV", "SILJ", "UUUU", "URNM", "YCA", "CPER", "ETH-USD"];
+  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "NVDA", "MU", "MRVL", "FWDI", "DFDV", "UPXI", "MP", "GC=F", "SLV", "SILJ", "UUUU", "URNM", "YCA", "CPER", "ETH-USD"];
   var TREASURY_T = ["MSTR", "MTPLF", "SPCX", "TSLA", "FWDI", "DFDV", "UPXI", "HSDT"];
-  var PAIRS = [["ETH-USD", "BTC-USD"], ["BTC-USD", "GC=F"], ["FWDI", "SOL-USD"], ["MSTR", "BTC-USD"], ["SOL-USD", "BTC-USD"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["AVGO", "NVDA"], ["NVDA", "MU"], ["MRVL", "AVGO"], ["MRVL", "NVDA"], ["TSLA", "SPCX"], ["SLV", "GLD"], ["HG=F", "SLV"], ["SPY", "GLD"], ["SOL-USD", "ETH-USD"]];
+  var PAIRS = [["ETH-USD", "BTC-USD"], ["BTC-USD", "GC=F"], ["FWDI", "SOL-USD"], ["MSTR", "BTC-USD"], ["SOL-USD", "BTC-USD"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["AVGO", "NVDA"], ["NVDA", "MU"], ["MRVL", "AVGO"], ["MRVL", "NVDA"], ["TSLA", "SPCX"], ["SLV", "GC=F"], ["HG=F", "SLV"], ["SPY", "GC=F"], ["SOL-USD", "ETH-USD"]];
   var SHORT = {"BTC-USD": "BTC", "SOL-USD": "SOL", "BZ=F": "Brent", "GC=F": "Gold", "HG=F": "Copper", "ETH-USD": "ETH"};
   var sel = "BTC-USD";
   function sn(sym) { return SHORT[sym] || sym; }
@@ -483,7 +483,7 @@ CSVs) and refreshed every day by the GitHub Action in
   }
   // One color per ticker, used by every chart, pie, dot and swatch on the page
   var TCOL = {   // mostly vibrant red / blue / yellow, with pale versions of each, some orange and shades of green
-    "BTC-USD": "#f5b700", "MSTR": "#e09a00", "MTPLF": "#fbd96b", "GLD": "#f7c948", "GC=F": "#e0ad1f",          // yellows (bitcoin, gold)
+    "BTC-USD": "#f5b700", "MSTR": "#e09a00", "MTPLF": "#fbd96b", "GC=F": "#f7c948",          // yellows (bitcoin, gold)
     "SOL-USD": "#1f5fd6", "FWDI": "#2f6fe8", "UPXI": "#6a9cf0", "DFDV": "#9fc0f5", "HSDT": "#4a86e8", "ETH-USD": "#3b4fc4",   // blues (solana)
     "TSLA": "#e02d2d", "SPCX": "#f08a8a", "MP": "#b8232b",                                                   // reds
     "HG=F": "#f07c1b", "CPER": "#f5a25c",                                                                      // oranges (copper)
@@ -932,7 +932,7 @@ CSVs) and refreshed every day by the GitHub Action in
   }
   // ---------- Fair value: log regression trendline per asset ----------
   var INCEPTION = { "BTC-USD": "2009-01-03", "ETH-USD": "2015-07-30", "SOL-USD": "2020-03-16", "SPY": "1993-01-22", "TSLA": "2010-06-29", "NVDA": "1999-01-22",
-                    "AVGO": "2009-08-06", "MU": "1984-06-01", "MRVL": "2000-06-27", "MP": "2020-06-01", "GLD": "2004-11-18", "SLV": "2006-04-28", "SILJ": "2012-11-29", "CPER": "2011-11-15", "UUUU": "2013-12-01", "URNM": "2019-12-03", "YCA": "2018-07-05" };
+                    "AVGO": "2009-08-06", "MU": "1984-06-01", "MRVL": "2000-06-27", "MP": "2020-06-01", "GC=F": "2000-08-30", "SLV": "2006-04-28", "SILJ": "2012-11-29", "CPER": "2011-11-15", "UUUU": "2013-12-01", "URNM": "2019-12-03", "YCA": "2018-07-05" };
   var fvChart = null, fvLine = null, FV = {};
   function fairValue(k) {
     var pts = resampleW(DATA.prices[k].points); if (pts.length < 104) return null;   // needs 2 years of weekly closes
@@ -1042,7 +1042,7 @@ CSVs) and refreshed every day by the GitHub Action in
   var SIMCH = {}, PICK_CACHE = {}, TOPN = 5;
   var BUCKETS = [{ n: "AI", w: 0.4, k: ["TSLA", "SPCX", "NVDA", "AVGO", "MU", "MRVL"] },
                  { n: "Crypto", w: 0.4, k: ["BTC-USD", "ETH-USD", "SOL-USD", "MSTR", "MTPLF", "FWDI", "DFDV", "UPXI", "HSDT"] },
-                 { n: "Commodities", w: 0.2, k: ["GLD", "SLV", "SILJ", "CPER", "UUUU", "URNM", "YCA", "MP"] }];
+                 { n: "Commodities", w: 0.2, k: ["GC=F", "SLV", "SILJ", "CPER", "UUUU", "URNM", "YCA", "MP"] }];
   function tradePts(k) { return DATA.prices[k].adj || DATA.prices[k].points; }   // dividend-adjusted where Yahoo has it
   function tpx(k, day) { var p = tradePts(k), i = idxAt(p, day); return i < 0 ? null : p[i][1]; }
   function rankAt(day, mode) {   // full ranking on a given day, using only prices known that day
@@ -1226,7 +1226,7 @@ CSVs) and refreshed every day by the GitHub Action in
     bucketCards(top.slice(0, TOPN).map(function (r) { return r.k; }));
     if (noSims) return;   // backtests use prices only, so the toggle doesn't change them
     setTimeout(function () {
-      [{ id: "simA", start: "2020-03-02", mode: "fixed", w: { "BTC-USD": 0.4, "SPY": 0.4, "GLD": 0.2 } }, { id: "sim5", start: "2020-03-02", mode: "all" }, { id: "simL", start: "2020-03-02", mode: "layer" },
+      [{ id: "simA", start: "2020-03-02", mode: "fixed", w: { "BTC-USD": 0.4, "SPY": 0.4, "GC=F": 0.2 } }, { id: "sim5", start: "2020-03-02", mode: "all" }, { id: "simL", start: "2020-03-02", mode: "layer" },
        { id: "simU", start: "2020-03-02", mode: "fixed", w: { "UUUU": 1 / 9, "URNM": 1 / 9, "YCA": 1 / 9, "SILJ": 1 / 6, "SLV": 1 / 6, "BTC-USD": 1 / 3 } }]
         .forEach(function (c) { try { simPicks(c); } catch (e) { console.log("backtest " + c.id, e); } });
       try { btCompare(); } catch (e) { console.log("backtest compare", e); }
@@ -1425,7 +1425,7 @@ CSVs) and refreshed every day by the GitHub Action in
     function mult(k) { var t = T[k], s = spotAsof(k); return { lo: t.low / s, base: t.base / s, hi: t.high / s, n: t.n }; }
     function sector(sk) {   // 2030 target as a multiple of the price on the target date
       if (sk !== "COMMOD") return mult(sk);   // (n below = number of sector outlooks averaged, for COMMOD)
-      var ms = ["URANIUM", "SLV", "GLD", "CPER"].map(function (k) { var m = mult(k), d = T[k].x2 ? 2 : 1; return { lo: m.lo / d, base: m.base / d, hi: m.hi / d, n: m.n }; }), avg = function (f) { return ms.reduce(function (s, m) { return s + f(m); }, 0) / ms.length; };
+      var ms = ["URANIUM", "SLV", "GC=F", "CPER"].map(function (k) { var m = mult(k), d = T[k].x2 ? 2 : 1; return { lo: m.lo / d, base: m.base / d, hi: m.hi / d, n: m.n }; }), avg = function (f) { return ms.reduce(function (s, m) { return s + f(m); }, 0) / ms.length; };
       return { lo: avg(function (m) { return m.lo; }), base: avg(function (m) { return m.base; }), hi: avg(function (m) { return m.hi; }), n: ms.length + " outlooks" };
     }
     var M30 = (Date.parse("2030-12-31T00:00:00Z") - Date.now()) / 2.6298e9;   // months to end-2030
@@ -1515,7 +1515,7 @@ CSVs) and refreshed every day by the GitHub Action in
       if (t.long) h += '<div class="lab">2030 targets</div><ul>' + t.long.map(function (s) { return li(s, u); }).join("") + "</ul>";
       else if (t.kind === "nav") h += '<div class="lab">2030 targets</div><ul><li>Worked out from the ' + sn(t.coin) + " 2030 targets listed under " + sn(t.coin) + ", the coins each share holds, and the NAV multiple (see How it works).</li></ul>";
       else if (t.kind === "sector") h += '<div class="lab">2030 targets</div><ul><li>No named forecaster publishes a 2030 target, so this uses the ' + SECTOR_NAME[t.sector] + " 2030 outlook (sources listed under " +
-        (t.sector === "COMMOD" ? "Uranium, SLV, GLD and CPER" : t.sector === "URANIUM" ? "Uranium" : "SLV") + "), applied to its price on " + ASOF + " and locked in dollars.</li></ul>";
+        (t.sector === "COMMOD" ? "Uranium, SLV, Gold and CPER" : t.sector === "URANIUM" ? "Uranium" : "SLV") + "), applied to its price on " + ASOF + " and locked in dollars.</li></ul>";
       if (t.cons) h += '<div class="lab">12-month targets</div><ul><li>' + esc(t.cons.by) + " consensus of " + t.cons.n + " " + (t.cons.by.indexOf("TipRanks") === 0 ? "holdings" : "analysts") +
         ": <b>" + val(t.cons.avg) + "</b> average, range " + val(t.cons.low) + " to " + val(t.cons.high) + " <i>(" + t.cons.date + ")</i>" +
         ' <a href="' + t.cons.url + '" target="_blank" rel="noopener">link</a></li>' + (t.short ? t.short.map(function (s) { return li(s); }).join("") : "") + "</ul>";
@@ -1531,7 +1531,7 @@ CSVs) and refreshed every day by the GitHub Action in
       '<div class="fx">Value score = −(z₂₀w + z₂₀₀d) ÷ 2 + ' + ATH_BONUS + ' × (1 − Price ÷ ATH) &nbsp;·&nbsp; z = ln(Price ÷ EMA) ÷ its standard deviation over the last ~2 years</div>' +
       "<h4>How it works: Projected Growth</h4><ul>" +
       "<li>Low / median / high = smallest, middle and largest 2030 target from 3+ named forecasters (all in Sources; Personal predictions count for half on BTC, SOL, TSLA and MSTR). Ranked by <b>return to the 2030 median</b>; the bar and <b>CAGR to 2030</b> show it per year. <b>Avg 12-mo</b> = every ~1-year target restated to exactly 12 months from today, then averaged.</li>" +
-      "<li>Treasury companies are priced off their coin, with the NAV premium assumed halfway back to 1.0x; <b>At NAV 1.0x</b> = the share in coin terms today and at the coin's median target. MP, UUUU and SILJ borrow a sector outlook, locked in dollars on " + ASOF + ". GLD, SLV and CPER use gold, silver and copper forecasts converted at today's ratio. Forecasts, not facts. " + (skipped.length ? "Not ranked: " + skipped.map(sn).join(", ") + ". " : "") + "</li></ul>" +
+      "<li>Treasury companies are priced off their coin, with the NAV premium assumed halfway back to 1.0x; <b>At NAV 1.0x</b> = the share in coin terms today and at the coin's median target. MP, UUUU and SILJ borrow a sector outlook, locked in dollars on " + ASOF + ". Gold uses gold forecasts directly; SLV and CPER use silver and copper forecasts converted at today's ratio. Forecasts, not facts. " + (skipped.length ? "Not ranked: " + skipped.map(sn).join(", ") + ". " : "") + "</li></ul>" +
       '<div class="fx">Return to 2030 median = Median ÷ Price − 1 &nbsp;·&nbsp; CAGR = (Median ÷ Price)^(1/Y) − 1 &nbsp;·&nbsp; Treasury target = (coin target × coins × √EV-mNAV − net debt) ÷ shares &nbsp;·&nbsp; 12-mo = target restated to 12 months, averaged</div>';
   }
   // Debt clock: latest Treasury "Debt to the Penny" figure, run forward at its average pace over the past year
