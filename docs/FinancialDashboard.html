@@ -324,11 +324,11 @@ _________________________</p>
 .fd .trades{border:1px solid #cfdcf5;border-left:4px solid var(--blue);background:#f2f6fd;border-radius:10px;padding:.8rem 1.4rem;margin:.6rem 0}
 .fd .rec{border:1px solid #cfe6d6;border-left:4px solid #4f9d69;background:#eff8f2;border-radius:10px;padding:.8rem 1.4rem;margin:.6rem 0;text-align:center;font-size:1.5rem;color:var(--ink)}
 .fd .rec b{color:#2f7a4a}.fd .rec .up{color:#089981;font-weight:700}.fd .rec .dn{color:#f23645;font-weight:700}.fd .rec .eq{color:var(--muted)}
-.fd .strat{border:2px solid #1f2a3c;background:#f1f2f4;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,.28);padding:1.2rem 1.8rem;margin:.6rem 0;font-size:1.45rem;line-height:1.6}
+.fd .strat{border:2px solid #1f2a3c;background:#f1f2f4;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,.28);padding:1.2rem 1.8rem;margin:.6rem 0;font-size:1.3rem;font-weight:300;line-height:1.6}
 .fd .strat .sg{display:grid;grid-template-columns:1fr 1fr;gap:1rem 2.4rem}@media(max-width:760px){.fd .strat .sg{grid-template-columns:1fr}}
-.fd .strat h4{font:700 1.7rem system-ui,sans-serif;color:var(--ink);margin:.4rem 0 .3rem}.fd .strat h4 span{font-weight:400;color:var(--muted);font-size:.85em}
-.fd .strat ul{margin:0 0 .6rem;padding-left:1.4rem}.fd .strat .act div{margin:.2rem 0}.fd .strat .act .l{font-weight:700;display:inline-block;min-width:4.2rem}
-.fd .strat .buy{color:#2f8a4a;font-weight:600}.fd .strat .sell{color:#d23b3b;font-weight:600}.fd .strat .hold{color:#7a828e;font-weight:600}
+.fd .strat h4{font:500 1.5rem system-ui,sans-serif;color:var(--ink);margin:.4rem 0 .3rem}.fd .strat h4 span{font-weight:400;color:var(--muted);font-size:.85em}
+.fd .strat ul{margin:0 0 .6rem;padding-left:1.4rem}.fd .strat .act div{margin:.2rem 0}.fd .strat .act .l{font-weight:500;display:inline-block;min-width:4.2rem}
+.fd .strat .buy{color:#2f8a4a;font-weight:400}.fd .strat .sell{color:#d23b3b;font-weight:400}.fd .strat .hold{color:#7a828e;font-weight:400}
 .fd .bxt{font:700 1.6rem system-ui,sans-serif;text-align:center;margin:.2rem 0 .5rem;letter-spacing:.01em}
 .fd .trades h3.bxt{color:#5b8def}.fd .live .bxt{color:#e0a93b;margin-top:.4rem}.fd .fperf .bxt,.fd .rec .bxt{color:#4f9d69}
 .fd .trades ul{margin:0;padding-left:1.4rem;font-size:1.4rem;line-height:1.7}.fd .trades li b{font-weight:600}.fd .trades .arr{color:var(--blue);font-weight:700;margin:0 .4rem}
@@ -1079,7 +1079,7 @@ _________________________</p>
       '<div><span class="l">Buy:</span> Core: ' + sp("buy", bc ? sn(bc) : "n/a") + " &nbsp;·&nbsp; Growth: " + sp("buy", bg ? sn(bg) : "n/a") + "</div>" +
       '<div><span class="l">Sell:</span> Core: ' + sp("sell", sells.c.length ? sells.c.join(", ") : "n/a") + " &nbsp;·&nbsp; Growth: " + sp("sell", sells.g.length ? sells.g.join(", ") : "n/a") + "</div>" +
       '<div><span class="l">Hold:</span> ' + sp("hold", holds.join(", ")) + "</div>" +
-      '<div style="color:#6b7686;font-size:.85em;margin-top:.4rem">Best buy = highest combined rank in This Week\'s Best Buys (value + projected growth) among each portfolio\'s names. Sell = price at or above a sell level in Price Target Levels.</div>';
+      "";
   }
   var mpChart = null;
   var mpSel = null;
