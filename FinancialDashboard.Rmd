@@ -231,7 +231,7 @@ CSVs) and refreshed every day by the GitHub Action in
     </script></div>
     <div class="pfh" id="fd-pfh"></div>
   </div>
-  <div class="fperf"><div class="bxt">Fund performance</div><div class="fv"><small>Annualized performance</small><b>&#8964; 47.98%</b></div></div>
+  <div class="fperf"><div class="bxt">Fund performance</div><div class="fv"><small>Annualized performance</small><b style="color:#089981">&#8963; 11%</b></div></div>
   <div class="strip" id="fd-strip"></div>
   <div class="trades">
     <h3 class="bxt">Weekly trades &amp; allocations</h3>
