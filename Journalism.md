@@ -56,9 +56,7 @@ Story: [Rafting the Deschutes](https://www.lightheartedhumans.com/storytelling/2
 
 <br>
 
-***Blog***
-
-Blog: [One Hour in a Scanner: AI Can Now Redraw What You See](./brainreading.html)  
+***Blog***  
 
 
 
