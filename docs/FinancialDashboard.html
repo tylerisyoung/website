@@ -756,13 +756,12 @@ _________________________</p>
     pgShow(tabs, cards, Math.min(macroPage, cards.length - 1));
   }
   // One color per ticker, used by every chart, pie, dot and swatch on the page
-  var TCOL = {   // Wes Anderson / Yellow Submarine palette, families share shades of one hue
-    "BTC-USD": "#e8a33d", "MSTR": "#c9762b", "MTPLF": "#e3b062",                                   // bitcoin: mustard and burnt orange
-    "SOL-USD": "#7b5ea7", "FWDI": "#5e4592", "UPXI": "#9a7cc4", "DFDV": "#b57fb0", "HSDT": "#e39aa8", "ETH-USD": "#8f9fd1",   // solana: plum, lavender, mauve, Grand Budapest pink
-    "TSLA": "#c8402f", "SPCX": "#4c6a8c",                                                         // Tesla red, SpaceX slate blue
-    "NVDA": "#5e9e6e", "AVGO": "#2f7f7a", "MU": "#3b5b7a", "MRVL": "#4fa3a5",                       // chips: Darjeeling teal, sage, navy
-    "GLD": "#d9b44a", "GC=F": "#c49a2c", "SLV": "#9aa3a8", "SI=F": "#7d868c", "SILJ": "#b8c0c4", "HG=F": "#b76e45", "CPER": "#d08a5e", "MP": "#8b5a3c",
-    "UUUU": "#a9b83a", "URNM": "#7e8f2a", "YCA": "#c9c25a", "SPY": "#2b2d42" };
+  var TCOL = {   // pale earth tones on a red / yellow / blue triad with some green; each family uses shades of one hue
+    "BTC-USD": "#d6a54e", "MSTR": "#b98a3e", "MTPLF": "#e3c27c",                                   // yellow ochre: bitcoin
+    "SOL-USD": "#7393b8", "FWDI": "#56769a", "UPXI": "#93b2d2", "DFDV": "#a9bdd4", "HSDT": "#8399b8", "ETH-USD": "#9ba6c4",   // dusty blue: solana
+    "TSLA": "#c4675a", "SPCX": "#d79c8c", "MP": "#a65d4e", "HG=F": "#b97c62", "CPER": "#d3a48e",   // terracotta red
+    "NVDA": "#7fa37a", "AVGO": "#5f8a6e", "MU": "#9bb79f", "MRVL": "#6f9a8c", "UUUU": "#a5b27c", "URNM": "#879a5f", "YCA": "#bcc292",   // sage and olive green
+    "GLD": "#d9b96c", "GC=F": "#c8a659", "SLV": "#b4ad9e", "SI=F": "#9b9485", "SILJ": "#cbc3b0", "SPY": "#5b5751" };
   function tc(k) { if (TCOL[k]) return TCOL[k]; var h = 0; for (var i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) % 360; return "hsl(" + h + ",55%,48%)"; }
   function tca(k, a) { var c = tc(k); if (c[0] !== "#") return c.replace("hsl", "hsla").replace(")", "," + a + ")"); var n = parseInt(c.slice(1), 16); return "rgba(" + (n >> 16) + "," + (n >> 8 & 255) + "," + (n & 255) + "," + a + ")"; }
   function dot(k) { return '<span class="tdot" style="background:' + tc(k) + '"></span>'; }
