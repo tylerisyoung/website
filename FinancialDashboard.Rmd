@@ -453,6 +453,7 @@ CSVs) and refreshed every day by the GitHub Action in
       <div><h4>Core Portfolio</h4><ul>
         <li>Buy &amp; hold indefinitely</li>
         <li>Sell 10% at each price target</li>
+        <li>Only rebalance if any one asset is more than 40% of total portfolio</li>
         <li>New cash goes towards the best buy in the Core Portfolio</li></ul></div>
       <div><h4>Growth Portfolio <span>(tax free)</span></h4><ul>
         <li>Actively trade between pairs (TSLA/SPCX) (MSTR/BTC) (SLV/Gold)</li>
@@ -461,7 +462,6 @@ CSVs) and refreshed every day by the GitHub Action in
         <li>Sell 30% at the third price target</li>
         <li>Try to time the top with 20%</li>
         <li>Hold the rest or layer back in to best buys</li>
-        <li>Only rebalance if any one asset is more than 40% of total portfolio</li>
         <li>New cash goes towards the best buy in the Growth Portfolio if below targets</li></ul></div>
     </div>
     <h4>Current Actions</h4>
