@@ -46,7 +46,7 @@ output:
 
 ![](./Journalism/Economics/a16z-state-of-markets-ii/4-households-paying-for-ai.png)
 
-**5. Companies adopting AI are actually hiring MORE entry-level positions, not less.**
+**5. Companies adopting AI heavily are actually hiring MORE entry-level positions, not less.** After adopting AI, heavy adopters' entry-level share of headcount rose by an average of +1.15 percentage points compared with companies that haven't adopted yet, while light adopters' fell by an average of -0.52 points.
 
 ![](./Journalism/Economics/a16z-state-of-markets-ii/5-entry-level-jobs.png)
 

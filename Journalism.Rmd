@@ -6,7 +6,6 @@ output:
     sansfont: Georgia
     df_print: paged
     Highlight: Tango
-    keep_md: true
     css: styles.css
 
 
@@ -56,9 +55,16 @@ Story: [Rafting the Deschutes](https://www.lightheartedhumans.com/storytelling/2
 
 <br>
 
-***Blog***  
+</h4>
 
-Blog: [The five most interesting charts from a16z's "State of the Markets II"](./a16zstateofmarkets2.html)
+::: {#ongoing-ta}
+
+```{r, child="_blog.Rmd"}
+```
+
+:::
+
+<h4>
 
 
 
