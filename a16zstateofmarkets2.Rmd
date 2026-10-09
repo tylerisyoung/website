@@ -1,0 +1,61 @@
+---
+title: ""
+pagetitle: "Five Charts from a16z's State of the Markets II"
+output:
+  html_document:
+    theme: yeti
+    sansfont: Georgia
+    df_print: paged
+    Highlight: Tango
+
+    css: styles.css
+
+
+---
+
+<br>
+<br>
+
+<h1>**The five most interesting charts from a16z's "State of the Markets II"**</h1>
+<h6>
+***A blog post by Tyler Young.***
+</h6>
+
+*[Tylerisyoung.Substack.com](https://www.tylerisyoung.substack.com)*
+*[Twitter.com/TylerisYoung](https://www.twitter.com/Tylerisyoung)*
+ _________________________
+ <br>
+ 10/08/2026
+ <br>
+
+<h3>
+
+**1. Old GPUs are getting more valuable, not less, and they are running for longer useful lifespans.** Burry continues his recent losing streak.
+
+![](./Journalism/Economics/a16z-state-of-markets-ii/1-gpus-more-valuable.png)
+
+**2. Tech has grown 3.8x more than non-tech companies, and this gap began in 2023.**
+
+![](./Journalism/Economics/a16z-state-of-markets-ii/2-tech-earnings-3-8x.png)
+
+**3. A very nice 69% of companies in the S&P point to a live AI deployment as a part of business as usual.**
+
+![](./Journalism/Economics/a16z-state-of-markets-ii/3-sp500-ai-deployment.png)
+
+**4. More and more households are paying for AI.** From 2023 until now, currently about 2.2% of households pay, and this will likely become an S-curve. The average spend is $31/mo.
+
+![](./Journalism/Economics/a16z-state-of-markets-ii/4-households-paying-for-ai.png)
+
+**5. Companies adopting AI are actually hiring MORE entry-level positions, not less.**
+
+![](./Journalism/Economics/a16z-state-of-markets-ii/5-entry-level-jobs.png)
+
+</h3>
+
+<br>
+
+<h6>
+**Sources**
+
+[State of Markets II (a16z)](https://a16z.com/state-of-markets-ii/)
+</h6>

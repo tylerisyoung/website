@@ -58,6 +58,8 @@ Story: [Rafting the Deschutes](https://www.lightheartedhumans.com/storytelling/2
 
 ***Blog***  
 
+Blog: [The five most interesting charts from a16z's "State of the Markets II"](./a16zstateofmarkets2.html)
+
 
 
 
