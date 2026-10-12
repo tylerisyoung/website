@@ -13,6 +13,13 @@
   const GRADE_COLS = { "A+": "#3d6fd6", A: "#5b8def", "A-": "#8db0f3", "B+": "#c9982e", B: "#e3b453", "B-": "#efd08a",
     "C+": "#c75b5b", C: "#e07a7a", "C-": "#eca7a7" };
   const PAL = { blue: "#5b8def", blue_lt: "#a8c5f7", yellow: "#f2c46d", red: "#e07a7a", green: "#76bf94", ink: "#2d3a4a" };
+  const TIERS = ["Excellent", "Good", "Mid", "Bad", "Worst"];
+  const TIER_COLS = { Excellent: "#1f4e9c", Good: "#8db8ef", Mid: "#f2c94c", Bad: "#ef9a9a", Worst: "#a61c1c" };
+  const TIER_RULE = { Excellent: "$10+ per $1", Good: "$2–10", Mid: "$1–2", Bad: "under $1", Worst: "below zero" };
+  const tierOf = (m) => (m >= 10 ? "Excellent" : m >= 2 ? "Good" : m >= 1 ? "Mid" : m >= 0 ? "Bad" : "Worst");
+  const tierCol = (x) => TIER_COLS[tierOf(x.bcr_median)];
+  const tierBadge = (t) => `<span class="gb" style="background:${TIER_COLS[t]};color:${t === "Mid" || t === "Good" || t === "Bad" ? "#2d3a4a" : "#ffffff"}">${t}</span>`;
+  const tierKey = () => `<div class="gkey"><div class="gkey-t">Colour = verdict: the middle result per dollar spent</div><div class="gkey-row">${TIERS.map((t) => `${tierBadge(t)} <span class="meta">${TIER_RULE[t]}</span>`).join(" &nbsp; ")}</div></div>`;
   const DIFF_COLS = { easy: PAL.blue, moderate: PAL.yellow, hard: PAL.red };
   const WHO_LABEL = { "pro-poor": "Mostly the poor", broad: "Everyone", regressive: "Mostly the better-off" };
   const TYPE_LABEL = { peer_reviewed: "Peer-reviewed", book: "Book", working_paper: "Working paper",
@@ -92,7 +99,7 @@
 
   // ---- State -----------------------------------------------------------------------
   const DEFAULTS = { skep: 0.5, rate: 5, t_equity: 0.5, t_feas: 0.5, t_cost: 0.5, minbcr: 1 };
-  const state = { ...DEFAULTS, cats: null, grades: new Set(GRADES) };
+  const state = { ...DEFAULTS, cats: null };
   let DATA, MODEL, POL_BY_ID, SRC_BY_POL, PUB_RANK, N_WORKS, CATS;
   let res = null;           // current run, all policies, best first
   let shown = null;         // after filters
@@ -105,7 +112,7 @@
     applyFilters();
   }
   function applyFilters() {
-    shown = res.filter((r) => state.cats.has(r.category) && state.grades.has(r.grade));
+    shown = res.filter((r) => state.cats.has(r.category));
   }
 
   // ---- SVG helpers -------------------------------------------------------------------
@@ -226,8 +233,8 @@
       grid: (sx, T, B) => ax.map((a) => line(sx(slog(a)), T, sx(slog(a)), B, "#eeeeee")).join("") +
         line(sx(slog(1)), T, sx(slog(1)), B, "#666666", { dash: "4 4" }),
       marks: (sx, sy, ys) => r.map((x, i) => {
-        const c = GRADE_COLS[x.grade];
-        const tip = `${x.title}: ${fmtBcr(x.bcr_median)} (90% range ${fmtBcr(x.bcr_q05)} – ${fmtBcr(x.bcr_q95)}), grade ${x.grade}`;
+        const c = tierCol(x);
+        const tip = `${x.title}: ${fmtBcr(x.bcr_median)} (90% range ${fmtBcr(x.bcr_q05)} – ${fmtBcr(x.bcr_q95)}), ${tierOf(x.bcr_median)}`;
         return line(sx(slog(x.bcr_q05)), sy(ys[i]), sx(slog(x.bcr_q95)), sy(ys[i]), c, { w: 3, op: 0.55 }) +
           circle(sx(slog(x.bcr_median)), sy(ys[i]), 4.2, c, { title: tip });
       }).join(""),
@@ -282,16 +289,16 @@
     }
     r.forEach((x, i) => { s += line(sx(cx[i]), sy(cy[i]), sx(cx[i] + 0.04), sy(ly[i]), "#bfbfbf", { w: 0.6 }); });
     r.forEach((x, i) => {
-      s += circle(sx(cx[i]), sy(cy[i]), 6.5, DIFF_COLS[x.difficulty] || "#7f7f7f", { op: 0.85, stroke: "#ffffff", sw: 1,
-        title: `${x.title}: ratio ${fmtBcr(x.bcr_median)}, cost ${fmtBn(x.cost_bn)} a year, ${x.difficulty}` });
+      s += circle(sx(cx[i]), sy(cy[i]), 6.5, tierCol(x), { op: 0.9, stroke: "#ffffff", sw: 1,
+        title: `${x.title}: ratio ${fmtBcr(x.bcr_median)}, cost ${fmtBn(x.cost_bn)} a year, ${tierOf(x.bcr_median)}` });
     });
     r.forEach((x, i) => { s += txt(sx(cx[i] + 0.05), sy(ly[i]), x.short, { size: W < 560 ? 9 : 10, base: "central", fill: "#262626" }); });
     // legend
     const lx = R - 150, ly0 = T + 8;
-    s += txt(lx, ly0 + 4, "Difficulty to implement", { size: 10.5 });
-    [["Easy", "easy"], ["Moderate", "moderate"], ["Hard", "hard"]].forEach(([lab, k], i) => {
+    s += txt(lx, ly0 + 4, "Verdict", { size: 10.5 });
+    TIERS.forEach((k, i) => {
       const yy = ly0 + 22 + i * 17;
-      s += circle(lx + 8, yy, 6, DIFF_COLS[k], { stroke: "#ffffff" }) + txt(lx + 20, yy, lab, { size: 10.5, base: "central" });
+      s += circle(lx + 8, yy, 6, TIER_COLS[k], { stroke: "#ffffff" }) + txt(lx + 20, yy, k, { size: 10.5, base: "central" });
     });
     s += "</svg>";
     el.innerHTML = s;
@@ -367,10 +374,10 @@
   const tableWrap = (head, rows) => `<div class="tscroll"><table class="tbl"><thead><tr>${head}</tr></thead><tbody>${rows.join("")}</tbody></table></div>`;
 
   function rankTable() {
-    const rows = shown.map((r) => `<tr><td class="num">${r.rank}</td><td class="pn">${esc(r.title)}</td><td>${esc(r.category)}</td><td>${badge(r.grade)}</td>` +
+    const rows = shown.map((r) => `<tr><td class="num">${r.rank}</td><td class="pn">${esc(r.title)}</td><td>${esc(r.category)}</td><td>${tierBadge(tierOf(r.bcr_median))}</td><td>${badge(r.grade)}</td>` +
       `<td class="num">${fmtBcr(r.bcr_low)} – ${fmtBcr(r.bcr_high)}</td><td class="num"><b>${fmtBcr(r.bcr_median)}</b> <span class="meta">(${fmtBcr(r.bcr_q05)} – ${fmtBcr(r.bcr_q95)})</span></td>` +
       `<td class="num">${fmtBn(r.cost_bn)}</td><td>${esc(titleCase(r.difficulty))}</td><td>${esc(WHO_LABEL[r.who_benefits])}</td><td class="num">${r.score.toFixed(2)}</td><td class="num">${fmtPct(r.p_top)}</td></tr>`);
-    return tableWrap('<th class="num">Rank</th><th>Policy</th><th>Area</th><th>Grade</th><th class="num">Published ratio range</th><th class="num">Adjusted ratio (90% range)</th><th class="num">Cost / yr</th><th>Difficulty</th><th>Who benefits</th><th class="num">Score</th><th class="num">Top-20 chance</th>', rows);
+    return tableWrap('<th class="num">Rank</th><th>Policy</th><th>Area</th><th>Verdict</th><th>Grade</th><th class="num">Published ratio range</th><th class="num">Adjusted ratio (90% range)</th><th class="num">Cost / yr</th><th>Difficulty</th><th>Who benefits</th><th class="num">Score</th><th class="num">Top-20 chance</th>', rows);
   }
 
   function budgetTable(f) {
@@ -412,6 +419,7 @@
     drawBudget(document.getElementById("budget_top"), () => [PAL.blue, PAL.yellow, PAL.red, PAL.red], true, 280, F);
     drawRankPlot();
     drawXY();
+    setHTML("tierkey", tierKey());
     setHTML("rank_table", rankTable());
   }
 
@@ -610,13 +618,11 @@
       });
     };
     mk("f-cats", CATS, () => state.cats, esc);
-    mk("f-grades", GRADES, () => state.grades, badge);
   }
 
   function reset() {
     Object.entries(DEFAULTS).forEach(([k, v]) => { state[k] = v; sliders[k].input.value = v; sliders[k].paint(); });
     state.cats = new Set(CATS);
-    state.grades = new Set(GRADES);
     document.querySelectorAll(".chips input").forEach((c) => { c.checked = true; });
     compute();
     invalidate(DYNAMIC);

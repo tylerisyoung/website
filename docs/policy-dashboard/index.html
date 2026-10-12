@@ -57,9 +57,7 @@
       <div class="ctl">
         <label class="lab">Policy area</label>
         <div class="chips" id="f-cats"></div>
-        <label class="lab">Evidence grade</label>
-        <div class="chips" id="f-grades"></div>
-        <div class="help">Filters hide policies from the charts and tables; ranks are still worked out across all 40.</div>
+        <div class="help">The filter hides policies from the charts and tables; ranks are still worked out across all 40.</div>
       </div>
       <div class="help fixed"><b>Uncertainty:</b> each policy's ratio is drawn 1,000 times from its published range (a Monte Carlo simulation), and every chart shows the middle result and the range.</div>
     </aside>
@@ -74,11 +72,12 @@
       <div class="card"><div class="card-header">Adjusted benefit-cost ratio (middle result and 90% range), all policies in ranked order</div>
         <div class="card-body">
           <p class="note">Each dot is the middle of 1,000 simulated results; the line covers 90% of them. Right of the dashed line, benefits exceed costs. Numbers come from published evidence only.</p>
+          <div id="tierkey"></div>
           <div class="chart" id="rank_plot"></div>
         </div></div>
       <div class="card"><div class="card-header">Cost vs. return: where are the best buys?</div>
         <div class="card-body">
-          <p class="note">Up = bigger return per dollar. Left = cheaper per year. Colour = how hard it is to put in place (sourced). Top-left is the sweet spot: cheap, high-return, easy.</p>
+          <p class="note">Up = bigger return per dollar. Left = cheaper per year. Colour = verdict, from Excellent (dark blue) to Worst (dark red). Top-left is the sweet spot: cheap and high-return.</p>
           <div class="chart" id="xy_plot"></div>
         </div></div>
       <div class="card"><div class="card-header">All policies and their numbers</div>
@@ -219,7 +218,7 @@
       <dt>Published ranking and RESET</dt>
       <dd>The published ranking is the order at the default settings (skepticism and tilts in the middle, 5% discount rate). RESET returns every control to those settings; the yellow box on the Ranking tab shows where the current top policy sits in that published ranking.</dd>
       <dt>Filters</dt>
-      <dd>Policy-area and grade filters hide policies from the charts and tables; ranks are still worked out across all 40.</dd>
+      <dd>The policy-area filter hides policies from the charts and tables; ranks are still worked out across all 40.</dd>
       <dt>Development aid budget</dt>
       <dd>The headline on the Budget tab is official development aid from rich-country donors (OECD Development Assistance Committee; the UN uses the same figures): $174.3 billion in 2025. The other budgets are shown for scale, as money that could be re-allocated.</dd>
       <dt>Best buys vs. the 10 worst, and net value</dt>
