@@ -98,7 +98,7 @@
   const yearOf = (y) => (isBlank(y) ? "n.d." : y);
 
   // ---- State -----------------------------------------------------------------------
-  const DEFAULTS = { skep: 0.5, t_equity: 0.5, t_feas: 0.5, minbcr: 1 };
+  const DEFAULTS = { skep: 0.5, t_feas: 0.5, minbcr: 1 };
   const OPT_DEFAULTS = { view: "mid", deaths: true };
   const state = { ...DEFAULTS, ...OPT_DEFAULTS, cats: null };
   let DATA, MODEL, POL_BY_ID, SRC_BY_POL, PUB_RANK, N_WORKS, CATS;
@@ -108,9 +108,8 @@
   const dirty = new Set();
 
   function compute() {
-    const tilts = { equity: (0.5 - state.t_equity) * 2, feasibility: (state.t_feas - 0.5) * 2, cost: 0 };
+    const tilts = { equity: 0, feasibility: (state.t_feas - 0.5) * 2, cost: 0 };
     res = BCA.runBca(MODEL, { skepticism: state.skep, tilts, view: state.view, deaths: state.deaths });
-    syncOptions();
     applyFilters();
   }
   function applyFilters() {
@@ -605,7 +604,7 @@
       requestAnimationFrame(() => {
         queued = false;
         if (id === "minbcr") invalidate(["ranking", "budget"]);
-        else { document.querySelectorAll("#scen button").forEach((x) => x.classList.remove("on")); compute(); invalidate(DYNAMIC); }
+        else { compute(); invalidate(DYNAMIC); }
       });
     });
   }
@@ -623,37 +622,8 @@
     mk("f-cats", CATS, () => state.cats, esc);
   }
 
-  function syncOptions() {
-    document.querySelectorAll("#view-seg button").forEach((b) => b.classList.toggle("on", b.dataset.view === state.view));
-    const d = document.getElementById("deaths-toggle"); if (d) d.checked = state.deaths;
-  }
-  const SCENARIOS = {
-    published: {},
-    strong: { skep: 1 },
-    poor: { t_equity: 0 },
-    pessimist: { view: "low" },
-  };
-  function applyScenario(name) {
-    Object.entries(DEFAULTS).forEach(([k, v]) => { state[k] = v; });
-    Object.assign(state, OPT_DEFAULTS, SCENARIOS[name] || {});
-    Object.keys(DEFAULTS).forEach((k) => { if (sliders[k]) { sliders[k].input.value = state[k]; sliders[k].paint(); } });
-    document.querySelectorAll("#scen button").forEach((b) => b.classList.toggle("on", b.dataset.scen === name));
-    compute();
-    invalidate(DYNAMIC);
-  }
-  function buildOptions() {
-    document.querySelectorAll("#view-seg button").forEach((b) => b.addEventListener("click", () => {
-      state.view = b.dataset.view; document.querySelectorAll("#scen button").forEach((x) => x.classList.remove("on")); compute(); invalidate(DYNAMIC);
-    }));
-    document.getElementById("deaths-toggle").addEventListener("change", (e) => {
-      state.deaths = e.target.checked; document.querySelectorAll("#scen button").forEach((x) => x.classList.remove("on")); compute(); invalidate(DYNAMIC);
-    });
-    document.querySelectorAll("#scen button").forEach((b) => b.addEventListener("click", () => applyScenario(b.dataset.scen)));
-  }
-
   function reset() {
     Object.assign(state, OPT_DEFAULTS);
-    document.querySelectorAll("#scen button").forEach((b) => b.classList.toggle("on", b.dataset.scen === "published"));
     Object.entries(DEFAULTS).forEach(([k, v]) => { state[k] = v; sliders[k].input.value = v; sliders[k].paint(); });
     state.cats = new Set(CATS);
     document.querySelectorAll(".chips input").forEach((c) => { c.checked = true; });
@@ -663,7 +633,7 @@
 
   // ---- Start-up ----------------------------------------------------------------------------------
   async function init() {
-    const resp = await fetch("data.json?v=202610121624");
+    const resp = await fetch("data.json?v=202610121630");
     if (!resp.ok) throw new Error("Could not load data.json (" + resp.status + ")");
     DATA = await resp.json();
     MODEL = BCA.createModel(DATA.policies, DATA.draws);
@@ -681,7 +651,6 @@
 
     document.querySelectorAll("[data-slider]").forEach(buildSlider);
     buildFilters();
-    buildOptions();
     document.getElementById("reset").addEventListener("click", reset);
     document.querySelectorAll(".nav-link").forEach((a) => a.addEventListener("click", (e) => {
       e.preventDefault();

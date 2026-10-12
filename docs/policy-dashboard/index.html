@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Policy Priorities: a benefit-cost ranking of 40 policies</title>
 <meta name="description" content="A benefit-cost ranking of 40 policies built from published estimates, with evidence grades, Monte Carlo uncertainty and a budget exercise.">
-<link rel="preload" href="data.json?v=202610121624" as="fetch" crossorigin="anonymous">
-<link rel="stylesheet" href="styles.css?v=202610121624">
+<link rel="preload" href="data.json?v=202610121630" as="fetch" crossorigin="anonymous">
+<link rel="stylesheet" href="styles.css?v=202610121630">
 </head>
 <body>
 <nav class="navbar">
@@ -31,38 +31,13 @@
       <button type="button" class="resetbtn" id="reset">RESET</button>
       <div class="help" style="text-align:center;margin-top:.25rem">Reset to final published priority ranking</div>
       <div class="help top">Every number comes from published sources. Move a dial and the whole dashboard re-ranks.</div>
-      <h6>Scenarios</h6>
-      <div class="seg scen" id="scen">
-        <button type="button" data-scen="published" class="on">As published</button>
-        <button type="button" data-scen="strong">Strongest evidence only</button>
-        <button type="button" data-scen="poor">Favour the poorest</button>
-        <button type="button" data-scen="pessimist">Pessimist</button>
-      </div>
-      <div class="help">One click sets the dials below for each view.</div>
       <h6>Evidence</h6>
-      <div class="ctl">
-        <label class="lab">Which end of the evidence?</label>
-        <div class="seg" id="view-seg">
-          <button type="button" data-view="low">Pessimist</button>
-          <button type="button" data-view="mid" class="on">Middle</button>
-          <button type="button" data-view="high">Optimist</button>
-        </div>
-        <div class="help">Rank every policy on the low end (5th percentile), middle or high end (95th percentile) of its simulated range. A policy that stays near the top on the pessimist setting is a safe priority.</div>
-      </div>
-      <div class="ctl">
-        <label class="chk"><input type="checkbox" id="deaths-toggle" checked> Count deaths from lost income</label>
-        <div class="help">Lost income costs lives: about one death per $99.3 million of cost imposed, and each $1 gained saves the same. Switch off to see the ranking without this adjustment.</div>
-      </div>
-      <div class="ctl" data-slider="skep" data-label="How much to trust weaker studies" data-min="0" data-max="1" data-step="0.05" data-value="0.5"
-           data-left="Trust all equally" data-right="Trust strongest most">
+      <div class="ctl" data-slider="skep" data-label="Evidence skepticism" data-min="0" data-max="1" data-step="0.05" data-value="0.5"
+           data-left="C&#8722; &#183; All data" data-right="A+ &#183; Best data">
         <div class="help">Left takes every published number at face value; right trusts the strongest evidence most and pulls weaker numbers toward break-even (1:1).</div>
       </div>
       <h6>Tilt the ranking (middle = no tilt)</h6>
-      <div class="help">The benefit-cost ratio always counts in full. These dials only add a tilt toward one side; at the middle they have no effect.</div>
-      <div class="ctl" data-slider="t_equity" data-label="Helps the poor" data-min="0" data-max="1" data-step="0.05" data-value="0.5"
-           data-left="Benefits the poor" data-right="Benefits higher income">
-        <div class="help">Move left to favour policies whose gains go mostly to the poorest; right to favour those that mostly help higher incomes.</div>
-      </div>
+      <div class="help">The benefit-cost ratio always counts in full. This dial only adds a tilt toward one side; at the middle it has no effect.</div>
       <div class="ctl" data-slider="t_feas" data-label="Feasibility" data-min="0" data-max="1" data-step="0.05" data-value="0.5"
            data-left="Difficult" data-right="Easy">
         <div class="help">Move right to favour policies the sources show are easy to put in place; left to favour the hard ones.</div>
@@ -208,16 +183,10 @@
       <dd>The published ratio after the evidence settings are applied. The dot on each chart is its middle result across 1,000 simulations; the line covers the middle 90%.</dd>
       <dt>Evidence grade (A+ to C&#8722;)</dt>
       <dd>Each policy gets the grade of its best supporting evidence, using the nine-level rubric on the Uncertainty tab: from several peer-reviewed controlled studies (A+) down to published theory built by analogy (C&#8722;).</dd>
-      <dt>Scenarios</dt>
-      <dd>One-click views. <b>As published</b> is the default ranking. <b>Strongest evidence only</b> sets the trust slider fully to the right. <b>Favour the poorest</b> tilts fully toward policies whose gains go mostly to the poor. <b>Pessimist</b> ranks every policy on the low end of its range.</dd>
-      <dt>Which end of the evidence?</dt>
-      <dd>Ranks each policy on the low end (5th percentile), the middle, or the high end (95th percentile) of its 1,000 simulated results. A policy that stays near the top on the pessimist setting is a priority even if the most favourable studies are wrong.</dd>
-      <dt>Count deaths from lost income</dt>
-      <dd>Switches the lost-income mortality adjustment (below) on or off, so readers can see how much of the ranking depends on it.</dd>
-      <dt>How much to trust weaker studies (slider)</dt>
-      <dd>How far to pull weaker-graded ratios toward break-even (1:1) in log space. At the left every published number counts at face value; at the right a C&#8722; ratio keeps 60% of its size in log terms and an A+ ratio keeps all of it. The middle is the published setting.</dd>
-      <dt>Tilt dials: who benefits, feasibility</dt>
-      <dd>The benefit-cost ratio always counts in full; the ranking is not left to personal weights. Each dial adds a tilt toward one end of a criterion. At the middle it has no effect; at either end it can move a policy's score by up to &#177;0.15 on the 0&#8211;1 value scale, so one dial can reorder close calls but not overturn a large gap in value. Both dials at full strength together can reorder much of the middle of the ranking. There is no separate evidence dial, because the skepticism slider already does that job.</dd>
+      <dt>Evidence skepticism (slider)</dt>
+      <dd>How far to pull weaker-graded ratios toward break-even (1:1) in log space. At the left (&#8220;All data&#8221;) every published number counts at face value; at the right (&#8220;Best data&#8221;) a C&#8722; ratio keeps 60% of its size in log terms and an A+ ratio keeps all of it. The middle is the published setting.</dd>
+      <dt>Feasibility tilt</dt>
+      <dd>The benefit-cost ratio always counts in full; the ranking is not left to personal weights. The dial adds a tilt toward easy or hard policies. At the middle it has no effect; at either end it can move a policy's score by up to &#177;0.15 on the 0&#8211;1 value scale, so it can reorder close calls but not overturn a large gap in value. There is no separate evidence dial, because the skepticism slider already does that job.</dd>
       <dt>Who benefits</dt>
       <dd>Each policy is rated from its sources as benefiting mostly the poor, everyone, or mostly higher incomes. The rating uses the distribution evidence in the sources (for example, trade gains concentrated in low-income countries, or energy mandates that raise costs most for poor households).</dd>
       <dt>Difficulty to implement (easy / moderate / hard)</dt>
@@ -239,7 +208,7 @@
       <dt>Rank range and chance of making the top 20</dt>
       <dd>Across the 1,000 runs, the rank range shows where each policy landed in the middle 90% of runs, and the top-20 chance is the share of runs in which it finished 20th or better. A policy near 100% is a priority whichever of its studies is right.</dd>
       <dt>Published ranking and RESET</dt>
-      <dd>The published ranking is the order at the default settings (trust slider and tilts in the middle, middle of the evidence, deaths counted). RESET returns every control to those settings; the yellow box on the Ranking tab shows where the current top policy sits in that published ranking.</dd>
+      <dd>The published ranking is the order at the default settings (skepticism and feasibility in the middle). RESET returns every control to those settings; the yellow box on the Ranking tab shows where the current top policy sits in that published ranking.</dd>
       <dt>Filters</dt>
       <dd>The policy-area filter hides policies from the charts and tables; ranks are still worked out across all 40.</dd>
       <dt>Development aid budget</dt>
@@ -357,7 +326,7 @@
 </section>
 
 </div>
-<script src="engine.js?v=202610121624" defer></script>
-<script src="app.js?v=202610121624" defer></script>
+<script src="engine.js?v=202610121630" defer></script>
+<script src="app.js?v=202610121630" defer></script>
 </body>
 </html>

@@ -39,10 +39,10 @@ library ("cowplot")
 
 
 <center>
-A benefit-cost ranking of 40 policies built on published estimates, extended into a multi-criteria decision analysis, all in R. Change the assumptions and watch the ranking move. <a href="./policy-dashboard/index.html?v=202610121624" target="_blank">Open full screen</a>
+A benefit-cost ranking of 40 policies built on published estimates, extended into a multi-criteria decision analysis, all in R. Change the assumptions and watch the ranking move. <a href="./policy-dashboard/index.html?v=202610121630" target="_blank">Open full screen</a>
 </center>
 <br>
-<iframe src="./policy-dashboard/index.html?v=202610121624" title="Policy Priorities dashboard" loading="eager" style="width:96vw;max-width:1800px;height:1500px;position:relative;left:50%;transform:translateX(-50%);border:1px solid #ddd;border-radius:8px;display:block"></iframe>
+<iframe src="./policy-dashboard/index.html?v=202610121630" title="Policy Priorities dashboard" loading="eager" style="width:96vw;max-width:1800px;height:1500px;position:relative;left:50%;transform:translateX(-50%);border:1px solid #ddd;border-radius:8px;display:block"></iframe>
 
 <!-- POLICY VERDICTS TABLE (start) -->
 <style>#policy-verdicts td,#policy-verdicts th{padding:10px 8px;vertical-align:top;border-top:1px solid #e5e7eb;line-height:1.45}#policy-verdicts thead th{border-top:none;border-bottom:2px solid #cfd6e0}</style>
