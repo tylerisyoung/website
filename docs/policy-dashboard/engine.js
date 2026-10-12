@@ -110,7 +110,9 @@
         M[i * nP + j] = mortalityAdjust(num(row[keep[j]]), p.mort_a, p.mort_b);
       }
     }
-    return { all, pol, nS, nP, M };
+    const R0 = new Float64Array(nS * nP);
+    for (let i = 0; i < nS; i++) for (let j = 0; j < nP; j++) R0[i * nP + j] = num(rawDraws[i][keep[j]]);
+    return { all, pol, nS, nP, M, R0 };
   }
 
   function criteriaMatrix(pol, med) {
@@ -163,8 +165,9 @@
   // Main entry point: one row per policy, best first.
   // tilts: equity, feasibility, cost in [-1, 1]; positive favours the poor / easy / cheap.
   function runBca(model, opts) {
-    const o = Object.assign({ skepticism: 0.5, rate: 0.05, baseRate: 0.05, lag: 10, tilts: {}, topN: TOP_N }, opts || {});
-    const { pol, nS, nP, M } = model;
+    const o = Object.assign({ skepticism: 0.5, rate: 0.05, baseRate: 0.05, lag: 10, tilts: {}, topN: TOP_N, deaths: true, view: "mid" }, opts || {});
+    const { pol, nS, nP } = model;
+    const M = o.deaths ? model.M : model.R0;
     const tf = timeFactor(o.rate, o.baseRate, o.lag);
     const D = new Float64Array(nS * nP);
     for (let i = 0; i < nS; i++) {
@@ -182,6 +185,9 @@
       q05.push(quantileSorted(col, 0.05));
       q95.push(quantileSorted(col, 0.95));
     }
+    // Optional view: rank on the low or high end of each policy's simulated range
+    if (o.view === "low") med.splice(0, med.length, ...q05);
+    else if (o.view === "high") med.splice(0, med.length, ...q95);
     const C = criteriaMatrix(pol, med);
     const other = C.map((c) => tiltPart(c, o.tilts));
     const score = C.map((c, j) => c.value + other[j]);

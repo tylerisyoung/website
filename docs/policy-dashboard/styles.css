@@ -150,3 +150,11 @@ hr{border:0;border-top:1px solid #ccc;margin:1.5rem 0}
 .essay-body ul,.essay-body ol{margin:.35em 0 .35em 1.2em}
 details.sub.essay>summary{font-weight:600}
 .essay-result .kv{margin-bottom:.6em}
+.seg{display:flex;flex-wrap:wrap;gap:4px;margin:.3rem 0 .4rem}
+.seg button{flex:1 1 auto;border:1px solid #c9d3e3;background:#fff;color:#2d3a4a;border-radius:6px;padding:4px 6px;font-size:.8rem;cursor:pointer}
+.seg button.on{background:#3d6fd6;border-color:#3d6fd6;color:#fff}
+.seg.scen button{flex:1 1 45%}
+.chk{display:flex;gap:6px;align-items:center;font-weight:600;font-size:.9rem}
+.card.headline .hl-k{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:#3d6fd6;font-weight:600}
+.card.headline .hl-v{font-size:2.6rem;font-weight:500;color:#1f2a3a;line-height:1.15;margin:.15rem 0}
+.card.headline .hl-s{font-size:1rem;color:#3b4656;max-width:640px;margin:0 auto}
