@@ -477,8 +477,7 @@
     if (!e) return `<details class='sub' open><summary>Summary</summary><p>${esc(p0.summary)}</p>${adjTxt}</details>`;
     const sec = ESSAY_SECTIONS.map(([k, h]) => isBlank(e[k]) ? "" :
       `<details class='sub essay'${k === "evidence" ? " open" : ""}><summary>${h}</summary><div class='essay-body'>${mdLite(e[k])}</div></details>`).join("");
-    const refs = (e.references || []).length ? `<details class='sub essay'><summary>References (${e.references.length})</summary><div class='essay-body'>${e.references.map((r) => `<p class='bib'>${mdLite(r).replace(/^<p>|<\/p>$/g, "")}</p>`).join("")}</div></details>` : "";
-    return `<div class='essay-result'>${adjTxt}</div>` + sec + refs;
+    return `<div class='essay-result'>${adjTxt}</div>` + sec;
   }
 
   function renderExplorer() {
@@ -494,11 +493,12 @@
         "</ol></details>";
       const rangeTxt = p0.rated ? `published ratio ${fmtBcr(p0.bcr_low)} – ${fmtBcr(p0.bcr_high)}` : "not rated yet";
       const adjTxt = `<div class='kv'><b>Adjusted ratio</b><br>${fmtBcr(rr.bcr_median)} (90% range ${fmtBcr(rr.bcr_q05)} – ${fmtBcr(rr.bcr_q95)}) at your current settings; chance of top 20: ${fmtPct(rr.p_top)}</div>`;
-      const srcItems = !s.length ? "<p>No sources.</p>" : s.map((x) => `<li class='srcli'>${esc(x.authors)} (${esc(yearOf(x.year))}). ${esc(x.title)}. <em>${esc(x.venue)}</em>. <span class='meta'>[${esc(TYPE_LABEL[x.type] || x.type)}]</span>` +
+      const sSorted = s.slice().sort((a, b) => String(a.authors || a.title).localeCompare(String(b.authors || b.title)));
+      const srcItems = !sSorted.length ? "<p>No sources.</p>" : sSorted.map((x) => `<li class='srcli'>${esc(x.authors)} (${esc(yearOf(x.year))}). ${esc(x.title)}. <em>${esc(x.venue)}</em>. <span class='meta'>[${esc(TYPE_LABEL[x.type] || x.type)}]</span>` +
         `${isBlank(x.reported_estimate) ? "" : `<br><span class='meta'>Reports: ${esc(x.reported_estimate)}</span>`}${srcLink(x.url, x.doi)}</li>`).join("");
       return `<details class='pol' data-id='${rr.id}'${open.has(String(rr.id)) ? " open" : ""}><summary>#${rr.rank} · ${esc(p0.title)} <span class='meta'>· ${esc(p0.category)} · ${badge(p0.grade)} · ${rangeTxt}</span></summary><div class='polbody'>` +
         essayBlock(rr.id, p0, adjTxt) +
-        `<details class='sub'><summary>Sources (${s.length})</summary><ol>${srcItems}</ol></details>${csItems}</div></details>`;
+        `<details class='sub'><summary>References (${s.length})</summary><ol>${srcItems}</ol></details>${csItems}</div></details>`;
     });
     host.innerHTML = items.join("\n");
   }
