@@ -406,7 +406,12 @@
     return tableWrap('<th class="num">Rank</th><th>Policy</th><th>Grade</th><th class="num">Cost / yr</th><th class="num">Adjusted ratio</th><th class="num">Benefits / yr</th><th class="num">Net / yr</th>', rows);
   }
 
-  // One set of per-policy death figures, shared by the Deaths chart and table
+  // One set of per-policy death figures, shared by the Deaths chart and table.
+  // Caused: deaths from lost income (one per $99.3m of income lost; for health programmes this is the
+  // income lost to the taxes that fund them). Saved: lives saved directly, as published in each health
+  // programme's sources (lives_lo to lives_hi, midpoint used), plus lives saved from net income gained.
+  // Infant deaths in poor countries overlap with deaths from lost income, so they are shown but not netted.
+  const numOr0 = (x) => { const v = isBlank(x) ? NaN : Number(x); return isNA(v) ? 0 : v; };
   function deathsRows() {
     const rows = res.map((r, i) => {
       const m = POL_BY_ID.get(r.id);
@@ -414,27 +419,37 @@
       const gain = m.gain_bn;
       const net = !isNA(base) && base > 0 ? base * (r.bcr_median - 1) : (isNA(gain) ? 0 : gain);
       const dead = m.mort_b === 1 && net >= 0 ? 0 : (m.income_loss_bn / 99.3) * 1000;
-      const saved = m.mort_b === 1 && net > 0 ? (net / 99.3) * 1000 : 0;
+      const savedInc = m.mort_b === 1 && net > 0 ? (net / 99.3) * 1000 : 0;
+      const dlo = numOr0(m.lives_lo), dhi = numOr0(m.lives_hi);
+      const direct = (dlo + dhi) / 2;
       const ilo = isNA(m.emde_loss_lo) ? 0 : m.emde_loss_lo * 0.24 * 119.9 * 1000;
       const ihi = isNA(m.emde_loss_hi) ? 0 : m.emde_loss_hi * 0.4 * 119.9 * 1000;
-      return { r, net, dead, saved, ilo, ihi, i };
+      const lives = direct + savedInc - dead;
+      return { r, net, dead, savedInc, direct, dlo, dhi, basis: m.lives_basis || "", ilo, ihi, lives, i };
     });
-    rows.sort((a, b) => (b.dead - a.dead) || (b.ihi - a.ihi) || (b.saved - a.saved) || (a.i - b.i));
+    rows.sort((a, b) => (b.lives - a.lives) || (a.i - b.i));
     return rows;
   }
 
   function deathsTable(rows) {
     const n0 = (x) => (x <= 0 ? "—" : comma(String(rround(x))));
-    const html = rows.map(({ r, net, dead, saved, ilo, ihi }) => `<tr><td class="num">${r.rank}</td><td class="pn">${esc(r.title)}</td><td class="num">${n0(dead)}</td>` +
-      `<td class="num">${ihi > 0 ? n0(ilo) + " – " + n0(ihi) : "—"}</td><td class="num">${n0(dead * 20)}</td><td class="num">${n0(ihi * 20)}</td><td class="num">${n0(saved)}</td>` +
-      `<td class="num" style="color:${net < 0 ? "#c75b5b" : "#3a8f5c"}">${money(net)}</td></tr>`);
-    return tableWrap('<th class="num">Rank</th><th>Policy</th><th class="num">Deaths a year from lost income</th><th class="num">Infant deaths a year, poor countries</th><th class="num">Deaths over 20 years</th><th class="num">Infant deaths over 20 years (high)</th><th class="num">Lives saved a year from income gained</th><th class="num">Net value per year</th>', html);
+    const sgn = (x) => { const v = rround(x); return v === 0 ? "0" : (v < 0 ? "−" : "+") + comma(String(Math.abs(v))); };
+    const col = (x) => (x < 0 ? "#c75b5b" : x > 0 ? "#3a8f5c" : "inherit");
+    const html = rows.map(({ r, net, dead, savedInc, direct, dlo, dhi, basis, ilo, ihi, lives }) => {
+      const dcell = direct <= 0 ? "—" : n0(direct) + (dhi > dlo ? `<br><span class="meta">(${n0(dlo) === "—" ? "0" : n0(dlo)} – ${n0(dhi)})</span>` : "");
+      return `<tr><td class="num">${r.rank}</td><td class="pn">${esc(r.title)}</td>` +
+        `<td class="num"${basis ? ` title="${esc(basis)}"` : ""}>${dcell}</td><td class="num">${n0(savedInc)}</td><td class="num">${n0(dead)}</td>` +
+        `<td class="num">${ihi > 0 ? n0(ilo) + " – " + n0(ihi) : "—"}</td>` +
+        `<td class="num" style="color:${col(lives)}"><b>${sgn(lives)}</b></td><td class="num" style="color:${col(lives)}">${sgn(lives * 20)}</td>` +
+        `<td class="num" style="color:${net < 0 ? "#c75b5b" : "#3a8f5c"}">${money(net)}</td></tr>`;
+    });
+    return tableWrap('<th class="num">Rank</th><th>Policy</th><th class="num">Lives saved directly a year</th><th class="num">Lives saved a year from income gained</th><th class="num">Deaths a year from lost income</th><th class="num">Infant deaths a year, poor countries</th><th class="num">Net lives a year</th><th class="num">Net lives over 20 years</th><th class="num">Net value per year</th>', html);
   }
 
   // Deaths chart: every policy ranked from most lives saved (top) to most deaths caused (bottom),
   // on a signed log scale. Same figures as the Deaths table.
   function drawDeaths(el, rows) {
-    const d = rows.map((x) => ({ r: x.r, v: x.saved - x.dead, i: x.i }))
+    const d = rows.map((x) => ({ r: x.r, v: x.lives, saved: x.direct + x.savedInc, dead: x.dead, i: x.i }))
       .sort((a, b) => (b.v - a.v) || (a.i - b.i));
     const vs = d.map((x) => slog(x.v));
     const mx = Math.max(1, ...vs.map(Math.abs));
@@ -453,13 +468,13 @@
       labels: d.map((x) => labOf(x.r)), height: rowH(d.length) + 40, top: 40, bottom: 50, right: narrow ? 6 : 14,
       labFrac: narrow ? 0.42 : 0,
       xlim: [-mx * k, mx * k], xticks: xtLab.map(slog), xtickLabels: xtLab.map(lab),
-      xlab: narrow ? "Per year, log scale" : "Deaths caused (left) or lives saved (right) per year, log scale", endL: "Causes deaths", endR: "Saves lives",
+      xlab: narrow ? "Net lives a year, log scale" : "Net deaths caused (left) or net lives saved (right) per year, log scale", endL: "Causes deaths", endR: "Saves lives",
       grid: (sx, T, B) => xt.map((t) => line(sx(slog(t)), T, sx(slog(t)), B, "#eeeeee")).join("") + line(sx(0), T, sx(0), B, "#666666"),
       marks: (sx, sy, ys) => d.map((x, i) => {
         const y0 = sy(ys[i] + 0.36), y1 = sy(ys[i] - 0.36), v = vs[i];
         const x0 = sx(Math.min(0, v)), x1 = sx(Math.max(0, v));
         const c = x.v >= 0 ? GOOD_COL : BAD_COL;
-        const tip = `${x.r.title}: ${x.v > 0 ? n0(x.v) + " lives saved a year" : x.v < 0 ? n0(x.v) + " deaths a year" : "no change"}`;
+        const tip = `${x.r.title}: ${x.v > 0 ? "net " + n0(x.v) + " lives saved a year" : x.v < 0 ? "net " + n0(x.v) + " deaths a year" : "no change"} (${n0(x.saved)} saved, ${n0(x.dead)} caused)`;
         const lv = x.v === 0 ? "0" : narrow ? short(x.v) : n0(x.v);
         const right = x.v >= 0;
         return `<rect x="${f1(x0)}" y="${f1(y0)}" width="${f1(Math.max(x.v === 0 ? 0 : 1, x1 - x0))}" height="${f1(y1 - y0)}" fill="${c}"><title>${esc(tip)}</title></rect>` +
@@ -698,7 +713,7 @@
 
   // ---- Start-up ----------------------------------------------------------------------------------
   async function init() {
-    const resp = await fetch("data.json?v=202610131500");
+    const resp = await fetch("data.json?v=202610131600");
     if (!resp.ok) throw new Error("Could not load data.json (" + resp.status + ")");
     DATA = await resp.json();
     MODEL = BCA.createModel(DATA.policies, DATA.draws);

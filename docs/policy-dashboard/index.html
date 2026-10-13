@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Policy Priorities: a benefit-cost ranking of 40 policies</title>
 <meta name="description" content="A benefit-cost ranking of 40 policies built from published estimates, with evidence grades, Monte Carlo uncertainty and a budget exercise.">
-<link rel="preload" href="data.json?v=202610131500" as="fetch" crossorigin="anonymous">
-<link rel="stylesheet" href="styles.css?v=202610131500">
+<link rel="preload" href="data.json?v=202610131600" as="fetch" crossorigin="anonymous">
+<link rel="stylesheet" href="styles.css?v=202610131600">
 </head>
 <body>
 <nav class="navbar">
@@ -158,12 +158,12 @@
 <section class="tab" id="tab-deaths" role="tabpanel">
   <div class="card"><div class="card-header">Deaths caused or prevented each year, every policy ranked</div>
     <div class="card-body">
-      <p class="note">Deaths a year from lost income (red) and lives saved a year from income gained (blue), at the current settings: the same figures as the table below. Policies that save the most lives are at the top; those that cause the most deaths are at the bottom. Log scale, so small and very large numbers both show.</p>
+      <p class="note">Net lives a year for each policy: lives saved (directly, as counted in the sources of the health programmes, plus lives saved from income gained) minus deaths caused by lost income, including the income taken by the taxes that fund a programme. The same figures as the table below. Policies that save the most lives net are at the top; those that cause the most deaths net are at the bottom. Log scale, so small and very large numbers both show.</p>
       <div class="chart" id="deaths_plot"></div>
     </div></div>
-  <div class="card"><div class="card-header">Deaths from lost income, and total damage per year</div>
+  <div class="card"><div class="card-header">Lives saved and deaths caused per year</div>
     <div class="card-body">
-      <p class="note">Lost income costs lives: about one death per $99.3 million of cost imposed (Broughel &amp; Viscusi). Lower world income raises infant deaths in poor countries by 0.24 to 0.40 per 1,000 births for each 1% fall in income per person (Baird, Friedman &amp; Schady 2011). The two overlap slightly, so they are shown side by side, not added. Policies that raise income save lives instead. Sorted by deaths from lost income.</p>
+      <p class="note">Lives saved directly are the deaths averted a year reported in each health programme&#8217;s sources at the cost used here (midpoint shown, published range in brackets; hover for the source and method). They are shown as published and do not change with the skepticism slider. Lost income costs lives: about one death per $99.3 million of cost imposed (Broughel &amp; Viscusi); for health programmes this is the income lost to the taxes that pay for them. Policies that raise income save lives at the same rate. Net lives = lives saved directly + lives saved from income gained &#8722; deaths from lost income. Lower world income also raises infant deaths in poor countries by 0.24 to 0.40 per 1,000 births for each 1% fall in income per person (Baird, Friedman &amp; Schady 2011); these overlap with deaths from lost income, so they are shown beside it and not subtracted. Twenty-year figures multiply the yearly ones by 20. Sorted by net lives a year.</p>
       <div id="deaths_table"></div>
     </div></div>
 </section>
@@ -208,7 +208,7 @@
       <dt>Taxes beyond what can be raised</dt>
       <dd>At the peak of the Laffer curve the US can raise at most about 7.4% of GDP in extra tax revenue and the EU-14 about 3.1% (Trabandt &amp; Uhlig 2012). Programmes whose new tax-financed spending is larger than that (the Green New Deal, a global basic income, Medicare for All) use the high published estimate of the tax burden, about $2 of deadweight per $1 raised (Feldstein 1999), at both ends of their range.</dd>
       <dt>Lost-income mortality</dt>
-      <dd>Lower incomes cost lives: about one statistical death per $99.3 million of cost imposed (Broughel &amp; Viscusi). Valued at the US government's $13.1 million value of a statistical life, each $1 of net income lost carries 13 cents of mortality cost, and each $1 gained saves the same. This step is applied to every policy after its range is drawn. Health programmes, whose benefits are already counted in lives, carry only the mortality cost of the taxes that fund them.</dd>
+      <dd>Lower incomes cost lives: about one statistical death per $99.3 million of cost imposed (Broughel &amp; Viscusi). Valued at the US government's $13.1 million value of a statistical life, each $1 of net income lost carries 13 cents of mortality cost, and each $1 gained saves the same. This step is applied to every policy after its range is drawn. Health programmes, whose benefits are already counted in lives, carry only the mortality cost of the taxes that fund them; the Deaths tab sets the lives they save, as reported in their sources, against those deaths.</dd>
       <dt>Infant deaths in poor countries</dt>
       <dd>When world income falls, poor countries' incomes fall too. Each 1% fall in GDP per person raises infant mortality by 0.24 to 0.40 deaths per 1,000 births (Baird, Friedman &amp; Schady 2011), on about 120 million births a year in low- and middle-income countries. Spillovers from Western economies use 0.6 to 1.4 points of developing-country growth per point of Western growth (World Bank). The Deaths tab lists these alongside deaths from lost income.</dd>
       <dt>Carbon values</dt>
@@ -270,7 +270,7 @@
 <p><strong>Overlap groups.</strong> Some policies contain or share part of another's benefits. Medicare for All includes drug-price negotiation; the Green New Deal includes renewable-energy subsidies and replaces combustion vehicles; rent control is a form of price control; and the 15-minute-city scenario contains a combustion-car ban. Each policy is still ranked on its own. In the budget exercise (Section 2.12), only one member of each overlapping pair is funded or counted, so the same benefit is never counted twice.</p>
 <h2 id="evidence-search-and-source-selection">2.3 Evidence search and source selection</h2>
 <p>For each policy, a targeted search collected published benefit-cost ratios, or published benefits and costs that can be combined into a ratio. Sources were taken in order of evidential weight: peer-reviewed studies first, then official estimates from governments and international bodies, then working papers, books and think-tank studies with stated methods. Each source was checked against its own text, tables or abstract, and its estimate is recorded word for word or with the arithmetic used. Where a government or a proposer appraises its own policy, that appraisal is treated as the most favourable end of the range, because the authors of a proposal have a stake in its success.</p>
-<p>Studies that measure a narrower or different version of a policy, that leave out effects the policy is expected to have, or that have been superseded by later work from the same authors are not used to set the range. They are kept in a counter-evidence register together with the reason each was set aside, so that a reader can see what was left out and why. The final evidence base holds 650 source records covering 548 distinct works, matched by DOI and title. Of the records, 552 support a range and 98 are counter-evidence; 269 of all records are peer-reviewed articles.</p>
+<p>Studies that measure a narrower or different version of a policy, that leave out effects the policy is expected to have, or that have been superseded by later work from the same authors are not used to set the range. They are kept in a counter-evidence register together with the reason each was set aside, so that a reader can see what was left out and why. The final evidence base holds 652 source records covering 549 distinct works, matched by DOI and title. Of the records, 554 support a range and 98 are counter-evidence; 269 of all records are peer-reviewed articles.</p>
 <h2 id="extraction-and-construction-of-benefit-cost-ratios">2.4 Building each benefit-cost range</h2>
 <p>Each policy receives a low and a high benefit-cost ratio, taken from the least and the most favourable credible published estimates. Each end is a ratio a source reports directly, a ratio constructed from published components with every step of the arithmetic recorded, or, where a policy has never been tried at scale, a ratio built from the closest studied analogue. Every construction is set out in the policy's essay in the replication materials. Five conventions apply to every policy, so that ratios from different sources measure the same thing.</p>
 <p><strong>Full cost.</strong> A policy's cost is everything it takes to carry it out, counted in US dollars a year:</p>
@@ -491,7 +491,10 @@
 <h2 id="deaths-and-total-damage">2.11 Deaths and total damage</h2>
 <p>For each policy, the number of deaths a year caused by lost income is:</p>
 <p style="text-align:center;font-family:'Cambria Math','STIX Two Math',Georgia,serif;font-size:1.05rem;margin:.7rem 0">Deaths per year = Lost income ÷ $99.3 million&nbsp;&nbsp;&nbsp;&nbsp;(23)</p>
-<p>where <em>Lost income</em> is the part of the full cost that reduces incomes: administration, compliance, output lost and public spending that is not a transfer. For policies with <em>b</em> = 1 whose net value is positive, lost income is outweighed by income gained, and lives saved a year are calculated the same way, as net value divided by $99.3 million. Infant deaths in poor countries follow equation (9). The two measures overlap slightly, so they are reported side by side rather than added together. Twenty-year totals multiply the yearly figures by 20.</p>
+<p>where <em>Lost income</em> is the part of the full cost that reduces incomes: administration, compliance, output lost and public spending that is not a transfer. For health programmes it is the programme's cost, the income taken by the taxes that fund it. For policies with <em>b</em> = 1 whose net value is positive, lost income is outweighed by income gained, and lives saved a year from income gained are calculated the same way, as net value divided by $99.3 million.</p>
+<p>The health programmes (b = 0) also save lives directly, and these are the main benefit their ratios count. For each of them the deaths averted a year are taken from the sources behind the ratio, at the scale and cost used here: for example 523,000 a year for childhood immunization and 554,000 to 975,000 for tuberculosis (Copenhagen Consensus Center 2025; Pretorius et al. 2023), and 1.13 to 1.31 million for blood-pressure and heart-disease drugs and 203,000 to 443,000 for tobacco and alcohol taxes (Watkins, Ahmed, and Pickersgill 2023, replication data). Where a source reports only life-years, deaths are derived with the life-years per death stated in the same source (male circumcision, Geldsetzer et al. 2015). Deworming is counted at zero, since the review evidence finds little or no effect on deaths (Taylor-Robinson et al. 2015). These figures are reported as published and are not scaled by the evidence or discount settings. Net lives a year are:</p>
+<p style="text-align:center;font-family:'Cambria Math','STIX Two Math',Georgia,serif;font-size:1.05rem;margin:.7rem 0">Net lives = Lives saved directly + Lives saved from income gained − Deaths from lost income&nbsp;&nbsp;&nbsp;&nbsp;(23a)</p>
+<p>with the midpoint of each published range of lives saved directly. Infant deaths in poor countries follow equation (9); they overlap with deaths from lost income, so they are reported beside them and not subtracted. Twenty-year totals multiply the yearly figures by 20.</p>
 <p>The annual net value of a policy, the value it creates or destroys in a year after paying its cost, is:</p>
 <p style="text-align:center;font-family:'Cambria Math','STIX Two Math',Georgia,serif;font-size:1.05rem;margin:.7rem 0">NV = Base × (BCR − 1)&nbsp;&nbsp;&nbsp;&nbsp;(24)</p>
 <p>where:</p>
@@ -513,6 +516,6 @@
 
 </div>
 <script src="engine.js?v=202610131500" defer></script>
-<script src="app.js?v=202610131500" defer></script>
+<script src="app.js?v=202610131600" defer></script>
 </body>
 </html>

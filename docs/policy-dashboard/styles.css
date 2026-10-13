@@ -99,6 +99,7 @@ button{font:inherit}
 .tbl td{padding:.35rem .4rem;border-bottom:1px solid #eee;vertical-align:top}
 .tbl td.num,.tbl th.num{text-align:right;white-space:nowrap}
 .tbl td.pn{min-width:260px}
+#deaths_table .tbl th{white-space:normal;vertical-align:bottom;min-width:5.6rem}
 .tbl tr:hover td{background:#fafbfd}
 .barcell{width:35%;min-width:90px}.bar{height:12px;border-radius:6px;background:#a8c5f7}
 .small-src{font-size:.72rem;color:#789}
