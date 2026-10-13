@@ -536,7 +536,7 @@
     setText("vb_wspent", money(F.worstNet));
     setText("vb_wbenefit", money(F.worstFullNet));
     const z = port.filter((x) => x.cost_used === 0);
-    setText("netnote", `Net value = today's value of all the future benefits the money buys (spending × ratio), minus the spending. ${z.length} reforms above the threshold cost nothing (including ${z.slice(0, 3).map((x) => x.short).join(", ")}), so their gains come on top of the blue total for free.`);
+    setText("netnote", `Net value = today's value of all the future benefits the money buys (spending × ratio), minus the spending. ${z.length === 1 ? `1 reform above the threshold costs nothing (${z[0].short}), so its gains come` : `${z.length} reforms above the threshold cost nothing${z.length ? ` (including ${z.slice(0, 3).map((x) => x.short).join(", ")})` : ""}, so their gains come`} on top of the blue total for free.`);
     setText("fit_note", `Best buys funded from the $${AVAIL_YR.toFixed(1)}B aid budget (ratio above ${state.minbcr}): ${F.best.length ? F.best.map((x) => x.short).join(", ") : "none fit"}.`);
     drawBudget(document.getElementById("budget_plot"), NET_COLS, false, 400, F);
     setText("port_head", `Funded: ${port.length} policies with an adjusted ratio above ${state.minbcr}`);
@@ -550,11 +550,19 @@
     if (isBlank(t)) return "";
     const inline = (x) => esc(x).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\*(.+?)\*/g, "<em>$1</em>")
       .replace(/(https?:\/\/[^\s<)]+)/g, (u) => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`);
+    // Within each blank-line-separated block, runs of consecutive "- " (or "* ") lines become <ul>
+    // and runs of "1. " lines become <ol>; any other lines become a paragraph.
+    const UL = /^\s*[-*] /, OL = /^\s*\d+\. /;
+    const kind = (l) => (UL.test(l) ? "ul" : OL.test(l) ? "ol" : "p");
     return String(t).split(/\n\s*\n/).map((blk) => {
       const lines = blk.split("\n").filter((l) => l.trim());
-      if (lines.length && lines.every((l) => /^\s*[-*] /.test(l))) return "<ul>" + lines.map((l) => `<li>${inline(l.replace(/^\s*[-*] /, ""))}</li>`).join("") + "</ul>";
-      if (lines.length && lines.every((l) => /^\s*\d+\. /.test(l))) return "<ol>" + lines.map((l) => `<li>${inline(l.replace(/^\s*\d+\. /, ""))}</li>`).join("") + "</ol>";
-      return `<p>${lines.map(inline).join("<br>")}</p>`;
+      const runs = [];
+      lines.forEach((l) => {
+        const k = kind(l), last = runs[runs.length - 1];
+        if (last && last.k === k) last.ls.push(l); else runs.push({ k, ls: [l] });
+      });
+      return runs.map((r) => r.k === "p" ? `<p>${r.ls.map(inline).join("<br>")}</p>`
+        : `<${r.k}>` + r.ls.map((l) => `<li>${inline(l.replace(r.k === "ul" ? UL : OL, ""))}</li>`).join("") + `</${r.k}>`).join("");
     }).join("");
   }
   const ESSAY_SECTIONS = [["policy", "The policy"], ["why_on_list", "Why it is on the list"], ["evidence", "What the evidence finds"], ["ratio", "How the ratio is built"], ["cost", "Full cost"], ["strength", "Strength of evidence"], ["difficulty", "Difficulty"], ["who_benefits", "Who benefits"], ["counter", "Counter-evidence and limits"]];
@@ -713,7 +721,7 @@
 
   // ---- Start-up ----------------------------------------------------------------------------------
   async function init() {
-    const resp = await fetch("data.json?v=202610131245");
+    const resp = await fetch("data.json?v=202610131330");
     if (!resp.ok) throw new Error("Could not load data.json (" + resp.status + ")");
     DATA = await resp.json();
     MODEL = BCA.createModel(DATA.policies, DATA.draws);

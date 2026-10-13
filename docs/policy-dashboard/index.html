@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Policy Priorities: a benefit-cost ranking of 40 policies</title>
 <meta name="description" content="A benefit-cost ranking of 40 policies built from published estimates, with evidence grades, Monte Carlo uncertainty and a budget exercise.">
-<link rel="preload" href="data.json?v=202610131245" as="fetch" crossorigin="anonymous">
-<link rel="stylesheet" href="styles.css?v=202610131245">
+<link rel="preload" href="data.json?v=202610131330" as="fetch" crossorigin="anonymous">
+<link rel="stylesheet" href="styles.css?v=202610131330">
 </head>
 <body>
 <nav class="navbar">
@@ -122,7 +122,7 @@
       <ul class="note">
         <li><b>Best buys:</b> the aid budget goes to the highest-ratio policies above your slider threshold until it runs out. A policy is skipped if it no longer fits, or if it overlaps one already funded (for example, Medicare for All already includes drug-price negotiation).</li>
         <li><b>10 worst, same money:</b> the same amount is split equally across the ten lowest-ratio policies (those with a cost), so both sides spend exactly the same money.</li>
-        <li><b>10 best, fully implemented:</b> the ten highest-ratio policies (overlaps counted once) carried out in full: costed ones at their sourced yearly cost times (ratio minus 1); free reforms such as global free trade at their sourced yearly gain, since they have no spending to multiply. This is the like-for-like comparison with the 10 worst, fully implemented.</li>
+        <li><b>10 best, fully implemented:</b> the ten highest-ratio policies (overlaps counted once) carried out in full: costed ones at their sourced yearly cost times (ratio minus 1); the one reform with no cost, abolishing the income tax, at its sourced yearly gain, since it has no spending to multiply. This is the like-for-like comparison with the 10 worst, fully implemented.</li>
         <li><b>10 worst, fully implemented:</b> each of the ten lowest-ratio policies is carried out in full at its sourced yearly cost (overlaps counted once). These are mandates on whole economies, so this is the scale they would actually run at.</li>
       </ul>
       <div class="cols">
@@ -224,7 +224,7 @@
       <dt>Development aid budget</dt>
       <dd>The headline on the Budget tab is official development aid from rich-country donors (OECD Development Assistance Committee; the UN uses the same figures): $174.3 billion in 2025. The other budgets are shown for scale, as money that could be re-allocated.</dd>
       <dt>Best buys vs. the 10 worst, and net value</dt>
-      <dd>The best-buys side funds the highest-ratio policies above the slider threshold from the $174.3 billion aid budget, skipping any that no longer fit or that overlap a policy already funded. The counterfactual is shown two ways: the same amount the best buys actually spend split equally across the ten lowest-ratio policies that have a cost (value per dollar), and the ten lowest-ratio policies implemented in full at their sourced yearly cost, with overlapping policies counted once (the scale at which such mandates would actually run). Net value = today's value of all the future benefits the money buys (spending &#215; ratio), minus the spending. Reforms that cost nothing, like free trade, add their gains on top for free, so they are not in the blue total.</dd>
+      <dd>The best-buys side funds the highest-ratio policies above the slider threshold from the $174.3 billion aid budget, skipping any that no longer fit or that overlap a policy already funded. The counterfactual is shown two ways: the same amount the best buys actually spend split equally across the ten lowest-ratio policies that have a cost (value per dollar), and the ten lowest-ratio policies implemented in full at their sourced yearly cost, with overlapping policies counted once (the scale at which such mandates would actually run). Net value = today's value of all the future benefits the money buys (spending &#215; ratio), minus the spending. The only reform that costs nothing, abolishing the income tax, adds its gains on top for free, so it is not in the blue total.</dd>
       <dt>Counter-evidence</dt>
       <dd>Studies that measure a narrower or different version of a policy, or use static models that leave out growth effects, are not used in the range. They are still listed under each policy in the Policy explorer with the reason, so every reader can see what was left out.</dd>
     </dl>
@@ -359,7 +359,7 @@
 <li><em>a</em> = the change in income caused by each $1 of cost, −1 when the whole cost is income given up;</li>
 <li><em>b</em> = the share of each $1 of benefit that is extra income, 1 when the benefits are income or avoided damage and 0 when they are lives saved.</li>
 </ul>
-<p>For most policies <em>a</em> = −1 and <em>b</em> = 1, because the benefits are income or avoided damage and the cost is income given up, so the net change in income per $1 of cost is the ratio minus 1. A policy with a ratio of 3 then rises to about 3.26, because its net gain in income saves lives; a policy with a ratio of 0.5 falls to about 0.43, because its net loss of income costs lives. For the health best buys <em>a</em> = −1 and <em>b</em> = 0: their benefits are already counted mainly as lives saved, so only the cost side is adjusted, the ratio falls by 0.132, and those lives are not counted twice. For Medicare drug-price negotiation, which is mainly a transfer from drug makers to Medicare and its enrollees, <em>a</em> = −0.02 and <em>b</em> = 0, because only administration, about 2 cents per $1, is a real loss of income. The adjustment always moves a higher draw to a higher value, so it never changes the order of a policy's draws.</p>
+<p>For most policies <em>a</em> = −1 and <em>b</em> = 1, because the benefits are income or avoided damage and the cost is income given up, so the net change in income per $1 of cost is the ratio minus 1. A policy with a ratio of 3 then rises to about 3.26, because its net gain in income saves lives; a policy with a ratio of 0.5 falls to about 0.43, because its net loss of income costs lives. The rule is that <em>b</em> = 1 for policies whose benefits are income and <em>b</em> = 0 for health programmes whose benefits are counted as lives saved. For nine of the ten health best buys <em>a</em> = −1 and <em>b</em> = 0: their benefits are already counted mainly as lives saved, so only the cost side is adjusted, the ratio falls by 0.132, and those lives are not counted twice. School-based deworming takes <em>b</em> = 1, because its benefits are the higher adult earnings of the children treated, which are income. Family planning stays at <em>b</em> = 0, because most of its value is counted in lives saved and demographic outcomes. For Medicare drug-price negotiation, which is mainly a transfer from drug makers to Medicare and its enrollees, <em>a</em> = −0.02 and <em>b</em> = 0, because only administration, about 2 cents per $1, is a real loss of income. The adjustment always moves a higher draw to a higher value, so it never changes the order of a policy's draws.</p>
 <p><strong>Infant deaths in poor countries.</strong> When world output falls, incomes in poor countries fall too, and infant mortality there rises. For the policies whose sources give a loss of global or Western output, the additional infant deaths are calculated as:</p>
 <p style="text-align:center;font-family:'Cambria Math','STIX Two Math',Georgia,serif;font-size:1.05rem;margin:.7rem 0">ID = g × β × N ÷ 1,000&nbsp;&nbsp;&nbsp;&nbsp;(9)</p>
 <p>where:</p>
@@ -473,8 +473,8 @@
 <div class="tscroll"><table>
 <thead><tr><th style="min-width:10rem">Scenario</th><th>Spearman ρ</th><th>Top ten kept</th><th>Bottom ten kept</th><th>Largest move (places)</th><th>Rating changes</th><th>Ranked first</th><th>Ranked last</th></tr></thead>
 <tbody>
-<tr><td>No evidence skepticism (<em>s</em> = 0)</td><td>1.000</td><td>10</td><td>10</td><td>1</td><td>0</td><td>Free trade</td><td>15-minute cities</td></tr>
-<tr><td>Full evidence skepticism (<em>s</em> = 1)</td><td>0.998</td><td>9</td><td>10</td><td>3</td><td>1</td><td>Free trade</td><td>15-minute cities</td></tr>
+<tr><td>No evidence skepticism (<em>s</em> = 0)</td><td>0.999</td><td>10</td><td>10</td><td>2</td><td>0</td><td>Free trade</td><td>15-minute cities</td></tr>
+<tr><td>Full evidence skepticism (<em>s</em> = 1)</td><td>0.998</td><td>10</td><td>10</td><td>3</td><td>1</td><td>Free trade</td><td>15-minute cities</td></tr>
 <tr><td>Discount rate 2%</td><td>1.000</td><td>10</td><td>10</td><td>0</td><td>1</td><td>Free trade</td><td>15-minute cities</td></tr>
 <tr><td>Discount rate 3%</td><td>1.000</td><td>10</td><td>10</td><td>0</td><td>1</td><td>Free trade</td><td>15-minute cities</td></tr>
 <tr><td>Discount rate 7%</td><td>1.000</td><td>10</td><td>10</td><td>0</td><td>2</td><td>Free trade</td><td>15-minute cities</td></tr>
@@ -483,7 +483,7 @@
 <tr><td>Full tilt toward easy policies</td><td>0.957</td><td>9</td><td>9</td><td>9</td><td>0</td><td>Free trade</td><td>15-minute cities</td></tr>
 <tr><td>Full tilt toward cheap policies</td><td>0.971</td><td>9</td><td>8</td><td>8</td><td>0</td><td>Free trade</td><td>15-minute cities</td></tr>
 <tr><td>All three tilts</td><td>0.930</td><td>8</td><td>7</td><td>10</td><td>0</td><td>Free trade</td><td>15-minute cities</td></tr>
-<tr><td>Combined stress test</td><td>0.926</td><td>8</td><td>6</td><td>10</td><td>5</td><td>Free trade</td><td>15-minute cities</td></tr>
+<tr><td>Combined stress test</td><td>0.927</td><td>8</td><td>6</td><td>10</td><td>5</td><td>Free trade</td><td>15-minute cities</td></tr>
 <tr><td>Free trade at its narrowest range (11 to 180)</td><td>1.000</td><td>10</td><td>10</td><td>1</td><td>0</td><td>Maternal &amp; newborn care</td><td>15-minute cities</td></tr>
 </tbody>
 </table></div>
@@ -492,7 +492,7 @@
 <p>For each policy, the number of deaths a year caused by lost income is:</p>
 <p style="text-align:center;font-family:'Cambria Math','STIX Two Math',Georgia,serif;font-size:1.05rem;margin:.7rem 0">Deaths per year = Lost income ÷ $99.3 million&nbsp;&nbsp;&nbsp;&nbsp;(23)</p>
 <p>where <em>Lost income</em> is the part of the full cost that reduces incomes: administration, compliance, output lost and public spending that is not a transfer. For health programmes it is the programme's cost, the income taken by the taxes that fund it. For policies with <em>b</em> = 1 whose net value is positive, lost income is outweighed by income gained, and lives saved a year from income gained are calculated the same way, as net value divided by $99.3 million.</p>
-<p>The health programmes (b = 0) also save lives directly, and these are the main benefit their ratios count. For each of them the deaths averted a year are taken from the sources behind the ratio, at the scale and cost used here: for example 523,000 a year for childhood immunization and 554,000 to 975,000 for tuberculosis (Copenhagen Consensus Center 2025; Pretorius et al. 2023), and 1.13 to 1.31 million for blood-pressure and heart-disease drugs and 203,000 to 443,000 for tobacco and alcohol taxes (Watkins, Ahmed, and Pickersgill 2023, replication data). Where a source reports only life-years, deaths are derived with the life-years per death stated in the same source (male circumcision, Geldsetzer et al. 2015). Deworming is counted at zero, since the review evidence finds little or no effect on deaths (Taylor-Robinson et al. 2015). These figures are reported as published and are not scaled by the evidence or discount settings. Net lives a year are:</p>
+<p>The health programmes with b = 0 also save lives directly, and these are the main benefit their ratios count. For each of them the deaths averted a year are taken from the sources behind the ratio, at the scale and cost used here: for example 523,000 a year for childhood immunization and 554,000 to 975,000 for tuberculosis (Copenhagen Consensus Center 2025; Pretorius et al. 2023), and 1.13 to 1.31 million for blood-pressure and heart-disease drugs and 203,000 to 443,000 for tobacco and alcohol taxes (Watkins, Ahmed, and Pickersgill 2023, replication data). Where a source reports only life-years, deaths are derived with the life-years per death stated in the same source (male circumcision, Geldsetzer et al. 2015). Deworming, with b = 1, is counted only through lives saved from income gained, and none directly, since the review evidence finds little or no effect on deaths (Taylor-Robinson et al. 2015). These figures are reported as published and are not scaled by the evidence or discount settings. Net lives a year are:</p>
 <p style="text-align:center;font-family:'Cambria Math','STIX Two Math',Georgia,serif;font-size:1.05rem;margin:.7rem 0">Net lives = Lives saved directly + Lives saved from income gained − Deaths from lost income&nbsp;&nbsp;&nbsp;&nbsp;(23a)</p>
 <p>with the midpoint of each published range of lives saved directly. Infant deaths in poor countries follow equation (9); they overlap with deaths from lost income, so they are reported beside them and not subtracted. Twenty-year totals multiply the yearly figures by 20.</p>
 <p>The annual net value of a policy, the value it creates or destroys in a year after paying its cost, is:</p>
@@ -516,6 +516,6 @@
 
 </div>
 <script src="engine.js?v=202610131500" defer></script>
-<script src="app.js?v=202610131245" defer></script>
+<script src="app.js?v=202610131330" defer></script>
 </body>
 </html>
