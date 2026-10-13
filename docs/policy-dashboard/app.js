@@ -21,6 +21,9 @@
   const tierBadge = (t) => `<span class="gb" style="background:${TIER_COLS[t]};color:${t === "Mid" || t === "Good" || t === "Bad" ? "#2d3a4a" : "#ffffff"}">${t}</span>`;
   const tierKey = () => `<div class="gkey"><div class="gkey-t">Colour = verdict: the middle result per dollar spent</div><div class="gkey-row">${TIERS.map((t) => `${tierBadge(t)} <span class="meta">${TIER_RULE[t]}</span>`).join(" &nbsp; ")}</div></div>`;
   const DIFF_COLS = { easy: PAL.blue, moderate: PAL.yellow, hard: PAL.red };
+  // Net-value bars use the same colours on the Ranking and Budget tabs
+  const NET_COLS = () => [PAL.blue, PAL.yellow, PAL.red, PAL.red];
+  const GOOD_COL = TIER_COLS.Excellent, BAD_COL = TIER_COLS.Worst;
   const WHO_LABEL = { "pro-poor": "Mostly the poor", broad: "Everyone", regressive: "Mostly the better-off" };
   const TYPE_LABEL = { peer_reviewed: "Peer-reviewed", book: "Book", working_paper: "Working paper",
     think_tank: "Think tank", government: "Government", intl_org: "International body" };
@@ -188,7 +191,7 @@
     const W = chartWidth(el), H = o.height;
     const labPx = W < 560 ? 10 : 11.5;
     const maxLab = Math.max(...o.labels.map((s) => textWidth(s, labPx)));
-    const labW = Math.min(maxLab, W * (W < 560 ? 0.5 : 0.58));
+    const labW = Math.min(maxLab, W * (o.labFrac || (W < 560 ? 0.5 : 0.58)));
     const L = labW + 14, R = W - o.right, T = o.top, B = H - o.bottom;
     const sx = scale(o.xlim, L, R);
     const sy = scale([0.5, n + 0.5], B, T);
@@ -319,7 +322,7 @@
     };
   }
 
-  function drawBudget(el, colsFor, thin, height, F) {
+  function drawBudget(el, colsFor, thin, height, F, o = {}) {
     const nets = [F.bestNet, F.bestFullNet, F.worstNet, F.worstFullNet].map((v) => v / 1000);   // $ trillions
     const nfree = F.bestFull.filter((x) => x.spend === 0 && x.priced).length;
     const labs = [
@@ -336,13 +339,28 @@
     const H = stacked ? height + 70 : height;
     const L = stacked ? 12 : labW + 22, R = W - (stacked ? 12 : 28), T = 40, B = H - 46;
     const lo0 = Math.min(...nets, 0), hi0 = Math.max(...nets, 0);
-    const xr = [lo0 * 1.15, hi0 + (hi0 - lo0) * 0.12];
+    // o.symmetric: zero sits in the middle, so both sides take exactly the same width
+    const mAbs = Math.max(-lo0, hi0) * 1.15;
+    const xr = o.symmetric ? [-mAbs, mAbs] : [lo0 * 1.15, hi0 + (hi0 - lo0) * 0.12];
     const sx = scale(xr, L, R), sy = scale([0.4, 4.6], B, T);
     const hw = thin ? 0.24 : 0.32;
-    const ticks = pretty(xr[0], xr[1]).filter((v) => v >= sx.lo && v <= sx.hi);
+    let ticks = pretty(xr[0], xr[1]).filter((v) => v >= sx.lo && v <= sx.hi);
+    if (o.symmetric && stacked && ticks.length > 5) {
+      const z = ticks.indexOf(0);
+      ticks = ticks.filter((_, i) => z < 0 ? i % 2 === 0 : (i - z) % 2 === 0);
+    }
     let s = svgOpen(W, H);
-    s += txt(L, T - 10, "Value destroyed", { size: stacked ? 13 : 15.5, bold: true, fill: "#e07a7a" });
-    s += txt(R, T - 10, "Value created", { size: stacked ? 13 : 15.5, bold: true, fill: "#e07a7a", anchor: "end" });
+    if (o.symmetric) {
+      // two equal halves, each tinted and titled in the middle of its own side
+      const mid = sx(0), endPx = stacked ? 15 : 20;
+      s += rect(sx(xr[0]), T, mid - sx(xr[0]), B - T, PAL.red, { op: 0.08 });
+      s += rect(mid, T, sx(xr[1]) - mid, B - T, PAL.blue, { op: 0.08 });
+      s += `<text x="${f1((sx(xr[0]) + mid) / 2)}" y="${f1(T - 12)}" text-anchor="middle" font-size="${endPx}" font-weight="800" fill="${BAD_COL}">Value destroyed</text>`;
+      s += `<text x="${f1((mid + sx(xr[1])) / 2)}" y="${f1(T - 12)}" text-anchor="middle" font-size="${endPx}" font-weight="800" fill="${GOOD_COL}">Value created</text>`;
+    } else {
+      s += txt(L, T - 10, "Value destroyed", { size: stacked ? 13 : 15.5, bold: true, fill: "#e07a7a" });
+      s += txt(R, T - 10, "Value created", { size: stacked ? 13 : 15.5, bold: true, fill: "#e07a7a", anchor: "end" });
+    }
     ticks.forEach((v) => { s += line(sx(v), T, sx(v), B, "#eeeeee"); });
     s += line(sx(0), T, sx(0), B, "#666666");
     const ys = [4, 3, 2, 1];
@@ -356,7 +374,7 @@
       let lx = right ? x1 + 6 : x0 - 6, anchor = right ? "start" : "end";
       const lw = textWidth(lab, 12, true);
       if (right && lx + lw > W - 2) { lx = x1 - 6; anchor = "end"; }
-      if (!right && lx - lw < 2) { lx = x0 + 6; anchor = "start"; }
+      if (!right && lx - lw < (stacked ? 2 : L)) { lx = x0 + 6; anchor = "start"; }
       s += txt(lx, (yTop + yBot) / 2, lab, { size: 12, bold: true, anchor, base: "central", fill: "#333333" });
       if (stacked) s += txt(L, yTop - 5, fitText(labs[i], labPx, R - L, true), { size: labPx, bold: true, fill: "#222" });
       else s += txt(L - 8, (yTop + yBot) / 2, labs[i], { size: labPx, bold: true, anchor: "end", base: "central", fill: "#222" });
@@ -384,12 +402,12 @@
   function budgetTable(f) {
     const rows = f.map((r) => `<tr><td class="num">${r.rank}</td><td>${esc(r.title)}</td><td>${badge(r.grade)}</td><td class="num">${fmtBn(r.cost_bn)}</td><td class="num"><b>${fmtBcr(r.bcr_median)}</b></td>` +
       `<td class="num">${r.cost_used > 0 ? (r.benefit_bn < 0 ? "−" + fmtBn(-r.benefit_bn) : fmtBn(r.benefit_bn)) : "—"}</td>` +
-      `<td class="num" style="color:${r.net_bn < 0 ? "#c75b5b" : "#3a8f5c"}">${r.cost_used > 0 ? money(r.net_bn) : "no fiscal cost"}</td></tr>`);
+      `<td class="num" style="color:${r.net_bn < 0 ? BAD_COL : GOOD_COL}">${r.cost_used > 0 ? money(r.net_bn) : "no fiscal cost"}</td></tr>`);
     return tableWrap('<th class="num">Rank</th><th>Policy</th><th>Grade</th><th class="num">Cost / yr</th><th class="num">Adjusted ratio</th><th class="num">Benefits / yr</th><th class="num">Net / yr</th>', rows);
   }
 
-  function deathsTable() {
-    const n0 = (x) => (x <= 0 ? "—" : comma(String(rround(x))));
+  // One set of per-policy death figures, shared by the Deaths chart and table
+  function deathsRows() {
     const rows = res.map((r, i) => {
       const m = POL_BY_ID.get(r.id);
       const base = isNA(m.base_bn) ? m.cost_bn : m.base_bn;
@@ -402,10 +420,52 @@
       return { r, net, dead, saved, ilo, ihi, i };
     });
     rows.sort((a, b) => (b.dead - a.dead) || (b.ihi - a.ihi) || (b.saved - a.saved) || (a.i - b.i));
+    return rows;
+  }
+
+  function deathsTable(rows) {
+    const n0 = (x) => (x <= 0 ? "—" : comma(String(rround(x))));
     const html = rows.map(({ r, net, dead, saved, ilo, ihi }) => `<tr><td class="num">${r.rank}</td><td class="pn">${esc(r.title)}</td><td class="num">${n0(dead)}</td>` +
       `<td class="num">${ihi > 0 ? n0(ilo) + " – " + n0(ihi) : "—"}</td><td class="num">${n0(dead * 20)}</td><td class="num">${n0(ihi * 20)}</td><td class="num">${n0(saved)}</td>` +
       `<td class="num" style="color:${net < 0 ? "#c75b5b" : "#3a8f5c"}">${money(net)}</td></tr>`);
     return tableWrap('<th class="num">Rank</th><th>Policy</th><th class="num">Deaths a year from lost income</th><th class="num">Infant deaths a year, poor countries</th><th class="num">Deaths over 20 years</th><th class="num">Infant deaths over 20 years (high)</th><th class="num">Lives saved a year from income gained</th><th class="num">Net value per year</th>', html);
+  }
+
+  // Deaths chart: every policy ranked from most lives saved (top) to most deaths caused (bottom),
+  // on a signed log scale. Same figures as the Deaths table.
+  function drawDeaths(el, rows) {
+    const d = rows.map((x) => ({ r: x.r, v: x.saved - x.dead, i: x.i }))
+      .sort((a, b) => (b.v - a.v) || (a.i - b.i));
+    const vs = d.map((x) => slog(x.v));
+    const mx = Math.max(1, ...vs.map(Math.abs));
+    const narrow = chartWidth(el) < 560;
+    const ticksAll = [0, 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000];
+    const pos = ticksAll.filter((t) => slog(t) <= mx + 0.3);
+    const xt = [...pos.slice(1).reverse().map((t) => -t), ...pos];
+    // narrow screens label zero and one middle decade each side; grid lines stay on every decade
+    const midDec = Math.pow(10, Math.max(1, Math.round(mx / 2)));
+    const xtLab = narrow ? xt.filter((t) => t === 0 || Math.abs(t) === midDec) : xt;
+    const lab = (t) => (t === 0 ? "0" : (t < 0 ? "−" : "") + (Math.abs(t) >= 1e6 ? Math.abs(t) / 1e6 + "M" : Math.abs(t) >= 1000 ? Math.abs(t) / 1000 + "k" : String(Math.abs(t))));
+    const n0 = (x) => comma(String(rround(Math.abs(x))));
+    const short = (x) => { const a = rround(Math.abs(x)); return a >= 1e6 ? (a / 1e6).toFixed(1) + "M" : a >= 1e4 ? Math.round(a / 1000) + "k" : a >= 1000 ? (a / 1000).toFixed(1) + "k" : String(a); };
+    const k = narrow ? 1.4 : 1.12;
+    rowChart(el, {
+      labels: d.map((x) => labOf(x.r)), height: rowH(d.length) + 40, top: 40, bottom: 50, right: narrow ? 6 : 14,
+      labFrac: narrow ? 0.42 : 0,
+      xlim: [-mx * k, mx * k], xticks: xtLab.map(slog), xtickLabels: xtLab.map(lab),
+      xlab: narrow ? "Per year, log scale" : "Deaths caused (left) or lives saved (right) per year, log scale", endL: "Causes deaths", endR: "Saves lives",
+      grid: (sx, T, B) => xt.map((t) => line(sx(slog(t)), T, sx(slog(t)), B, "#eeeeee")).join("") + line(sx(0), T, sx(0), B, "#666666"),
+      marks: (sx, sy, ys) => d.map((x, i) => {
+        const y0 = sy(ys[i] + 0.36), y1 = sy(ys[i] - 0.36), v = vs[i];
+        const x0 = sx(Math.min(0, v)), x1 = sx(Math.max(0, v));
+        const c = x.v >= 0 ? GOOD_COL : BAD_COL;
+        const tip = `${x.r.title}: ${x.v > 0 ? n0(x.v) + " lives saved a year" : x.v < 0 ? n0(x.v) + " deaths a year" : "no change"}`;
+        const lv = x.v === 0 ? "0" : narrow ? short(x.v) : n0(x.v);
+        const right = x.v >= 0;
+        return `<rect x="${f1(x0)}" y="${f1(y0)}" width="${f1(Math.max(x.v === 0 ? 0 : 1, x1 - x0))}" height="${f1(y1 - y0)}" fill="${c}"><title>${esc(tip)}</title></rect>` +
+          txt(right ? x1 + 3 : x0 - 3, sy(ys[i]), lv, { size: narrow ? 8.5 : 9.5, base: "central", anchor: right ? "start" : "end", fill: "#4d4d4d" });
+      }).join(""),
+    });
   }
 
   // ---- Rendering per tab ----------------------------------------------------------------------
@@ -417,16 +477,16 @@
     setText("vb_top", r.length ? r[0].title : "—");
     setText("vb_n", r.length ? `#${PUB_RANK.get(r[0].id)} of ${DATA.policies.length}` : "—");
     const F = budgetFigures();
-    drawBudget(document.getElementById("budget_top"), () => [PAL.blue, PAL.yellow, PAL.red, PAL.red], true, 280, F);
+    drawBudget(document.getElementById("budget_top"), NET_COLS, true, 280, F, { symmetric: true });
     drawRankPlot();
     drawXY();
     setText("hl_aid", `$${ODA[2025].toFixed(1)} billion`);
     setHTML("tierkey", tierKey());
-    setHTML("rank_table", rankTable());
   }
 
   function renderUncertainty() {
     const r = shown, nAll = res.length;
+    setHTML("unc_tierkey", tierKey());
     rowChart(document.getElementById("unc_plot"), {
       labels: r.map(labOf), height: rowH(r.length) + 40, top: 40, bottom: 44, right: 14,
       xlim: [1, nAll], xticks: [1, 10, 20, 30, 40, 50, nAll].filter((v, i, a) => v <= nAll && a.indexOf(v) === i),
@@ -434,7 +494,7 @@
       xlab: "Rank across 1,000 re-runs (1 = best)", endL: "Top ranked", endR: "Bottom ranked",
       grid: (sx, T, B) => [1, 10, 20, 30, 40, 50].filter((v) => v <= sx.hi).map((v) => line(sx(v), T, sx(v), B, "#eeeeee")).join(""),
       marks: (sx, sy, ys) => r.map((x, i) => {
-        const c = GRADE_COLS[x.grade];
+        const c = tierCol(x);
         return line(sx(x.rank_lo), sy(ys[i]), sx(x.rank_hi), sy(ys[i]), c, { w: 6, op: 0.5, cap: "butt" }) +
           circle(sx(x.rank_med), sy(ys[i]), 3.6, c, { title: `${x.title}: typical rank ${x.rank_med}, 90% of runs between ${x.rank_lo} and ${x.rank_hi}` });
       }).join(""),
@@ -450,6 +510,7 @@
           txt(sx(x.p_top + 0.01), sy(ys[i]), fmtPct(x.p_top), { size: 9.5, base: "central", fill: "#4d4d4d" });
       }).join(""),
     });
+    setHTML("rank_table", rankTable());
   }
 
   function renderBudget() {
@@ -460,9 +521,9 @@
     setText("vb_wspent", money(F.worstNet));
     setText("vb_wbenefit", money(F.worstFullNet));
     const z = port.filter((x) => x.cost_used === 0);
-    setText("netnote", `Net value = today's value of all the future benefits the money buys (spending × ratio), minus the spending. ${z.length} reforms above the threshold cost nothing (including ${z.slice(0, 3).map((x) => x.short).join(", ")}), so their gains come on top of the green total for free.`);
+    setText("netnote", `Net value = today's value of all the future benefits the money buys (spending × ratio), minus the spending. ${z.length} reforms above the threshold cost nothing (including ${z.slice(0, 3).map((x) => x.short).join(", ")}), so their gains come on top of the blue total for free.`);
     setText("fit_note", `Best buys funded from the $${AVAIL_YR.toFixed(1)}B aid budget (ratio above ${state.minbcr}): ${F.best.length ? F.best.map((x) => x.short).join(", ") : "none fit"}.`);
-    drawBudget(document.getElementById("budget_plot"), (nets) => nets.map((v) => (v >= 0 ? PAL.green : PAL.red)), false, 400, F);
+    drawBudget(document.getElementById("budget_plot"), NET_COLS, false, 400, F);
     setText("port_head", `Funded: ${port.length} policies with an adjusted ratio above ${state.minbcr}`);
     setHTML("port_table", port.length ? budgetTable(port) : "<p>No policy clears that threshold.</p>");
     setHTML("worst_table", budgetTable(BCA.worstN(res, 10)));
@@ -513,7 +574,11 @@
     host.innerHTML = items.join("\n");
   }
 
-  function renderDeaths() { setHTML("deaths_table", deathsTable()); }
+  function renderDeaths() {
+    const rows = deathsRows();
+    drawDeaths(document.getElementById("deaths_plot"), rows);
+    setHTML("deaths_table", deathsTable(rows));
+  }
 
   // Tabs whose content never changes
   function renderStatic() {
@@ -633,7 +698,7 @@
 
   // ---- Start-up ----------------------------------------------------------------------------------
   async function init() {
-    const resp = await fetch("data.json?v=202610121815");
+    const resp = await fetch("data.json?v=202610131500");
     if (!resp.ok) throw new Error("Could not load data.json (" + resp.status + ")");
     DATA = await resp.json();
     MODEL = BCA.createModel(DATA.policies, DATA.draws);
@@ -665,7 +730,7 @@
       if (window.innerWidth === lastW) return;
       lastW = window.innerWidth;
       clearTimeout(rt);
-      rt = setTimeout(() => invalidate(["ranking", "uncertainty", "budget"]), 150);
+      rt = setTimeout(() => invalidate(["ranking", "uncertainty", "budget", "deaths"]), 150);
     });
 
     renderStatic();
