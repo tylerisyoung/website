@@ -14,12 +14,21 @@ button{font:inherit}
 /* Navbar */
 .navbar{display:flex;align-items:center;flex-wrap:wrap;gap:.25rem 1rem;padding:.5rem 1rem;background:#f8f9fa;border-bottom:1px solid #dee2e6}
 .navbar-brand{font-weight:700;font-size:1.25rem;color:#212529;text-decoration:none;margin-right:.5rem}
-.navbar-nav{display:flex;flex-direction:row;flex-wrap:wrap;gap:.5rem;margin:.4rem 0;padding:0;list-style:none}
-/* Tabs: faded theme-red buttons, white bold text; the active tab is full-strength red */
-.nav-link{display:block;border:1px solid #e07a7a;border-radius:6px;padding:.5rem 1.15rem;font:700 1.08rem system-ui,sans-serif;letter-spacing:.01em;color:#fff;background:#e07a7a;text-decoration:none;cursor:pointer;text-align:center;transition:background .12s}
-.nav-link:hover{background:#c75b5b;border-color:#c75b5b}
-.nav-link.active{background:#a61c1c;border-color:#a61c1c;color:#fff;box-shadow:inset 0 -3px 0 rgba(0,0,0,.25)}
-.nav-link:focus-visible{outline:2px solid #a61c1c;outline-offset:2px}
+.navbar-nav{display:flex;flex-direction:row;flex-wrap:wrap;gap:.5rem;margin:.4rem 0;justify-content:center;padding:0;list-style:none}
+/* Tabs: centred, each its own shade from the theme (blue, yellow, sage, red), white bold text; the active tab is full strength */
+.navbar{justify-content:center;position:relative}
+@media (min-width:1200px){.navbar-brand{position:absolute;left:1rem;top:50%;transform:translateY(-50%)}}
+.nav-link{--c:#2f5fae;display:block;border:1px solid var(--c);border-radius:6px;padding:.5rem 1.15rem;font:700 1.08rem system-ui,sans-serif;letter-spacing:.01em;color:#fff;background:var(--c);text-decoration:none;cursor:pointer;text-align:center;opacity:.86;transition:opacity .12s,box-shadow .12s;text-shadow:0 1px 1px rgba(0,0,0,.18)}
+.nav-link[data-tab="ranking"]{--c:#1f4e9c}
+.nav-link[data-tab="uncertainty"]{--c:#4a80cc}
+.nav-link[data-tab="budget"]{--c:#6f9174}
+.nav-link[data-tab="explorer"]{--c:#b8850d}
+.nav-link[data-tab="deaths"]{--c:#a61c1c}
+.nav-link[data-tab="sources"]{--c:#cc9c1c}
+.nav-link[data-tab="methodology"]{--c:#5d7189}
+.nav-link:hover{opacity:.9}
+.nav-link.active{opacity:1;box-shadow:inset 0 -3px 0 rgba(0,0,0,.28),0 0 0 2px #fff,0 0 0 4px var(--c)}
+.nav-link:focus-visible{outline:2px solid var(--c);outline-offset:2px}
 .page{padding:1rem 1.5rem 2rem}
 .tab{display:none}
 .tab.active{display:block}
