@@ -26,6 +26,9 @@ button{font:inherit}
 .nav-link[data-tab="deaths"]{--c:#a61c1c}
 .nav-link[data-tab="sources"]{--c:#cc9c1c}
 .nav-link[data-tab="methodology"]{--c:#5d7189}
+.navaux{font:500 .85rem system-ui,sans-serif;color:#5d7189;text-decoration:underline;text-underline-offset:2px}
+.navaux:hover{color:#2d3a4a}
+@media (min-width:1200px){.navaux{position:absolute;right:1rem;top:50%;transform:translateY(-50%)}}
 .nav-link:hover{opacity:.9}
 .nav-link.active{opacity:1;box-shadow:inset 0 -3px 0 rgba(0,0,0,.28),0 0 0 2px #fff,0 0 0 4px var(--c)}
 .nav-link:focus-visible{outline:2px solid var(--c);outline-offset:2px}
@@ -181,3 +184,25 @@ details.sub.essay>summary{font-weight:600}
   .hlcard .hl-s{flex:0 0 auto}
   .hlcard .hl-v{font-size:2.2rem}
 }
+/* Policy explorer: how the 40 policies were chosen */
+.selgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem;margin-top:.4rem}
+.selcol{--bg:#eef1f6;--hd:#dfe5ee;--bd:#c9d2df;border:1px solid var(--bd);border-radius:8px;background:var(--bg);overflow:hidden;color:#2d3a4a}
+.selcol.g-climate{--bg:#eef7f1;--hd:#d4ecdc;--bd:#9fd1b2}
+.selcol.g-freedom{--bg:#fdf7e6;--hd:#f9e7b5;--bd:#efd08a}
+.selcol.g-health{--bg:#eef3fd;--hd:#d6e3fb;--bd:#a8c5f7}
+.selcol.g-popular{--bg:#fcf0f0;--hd:#f7dada;--bd:#eca7a7}
+.selhd{background:var(--hd);padding:.5rem .7rem;border-bottom:1px solid var(--bd)}
+.selhd b{display:block;font:700 1rem system-ui,sans-serif}
+.selhd span{display:block;font-size:.8rem;line-height:1.35;margin-top:.2rem}
+.sellist{list-style:none;margin:0;padding:.25rem}
+.selp{display:grid;grid-template-columns:2.4em minmax(0,1fr) auto;align-items:center;gap:.1rem .4rem;width:100%;text-align:left;background:transparent;border:0;border-radius:5px;padding:.3rem .35rem;color:#2d3a4a;cursor:pointer}
+.selp:hover{background:rgba(255,255,255,.75)}
+.selp:focus-visible{outline:2px solid #3d6fd6;outline-offset:1px}
+.selp .rk{font:700 .8rem system-ui,sans-serif;color:#4a5566}
+.selp .tt{font:600 .88rem system-ui,sans-serif;overflow-wrap:anywhere}
+.selp .gb{font-size:.68rem}
+.selp .sb{grid-column:2 / 4;font-size:.72rem;line-height:1.3;color:#556}
+details.pol.flash>summary{animation:flash 1.4s ease-out}
+@keyframes flash{from{background:#fdf0c4}to{background:#f7f9fb}}
+@media (max-width:991px){.selgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.selgrid{grid-template-columns:1fr}}

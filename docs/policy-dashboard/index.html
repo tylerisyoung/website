@@ -6,7 +6,7 @@
 <title>Policy Priorities: a benefit-cost ranking of 40 policies</title>
 <meta name="description" content="A benefit-cost ranking of 40 policies built from published estimates, with evidence grades, Monte Carlo uncertainty and a budget exercise.">
 <link rel="preload" href="data.json?v=202610131330" as="fetch" crossorigin="anonymous">
-<link rel="stylesheet" href="styles.css?v=202610131330">
+<link rel="stylesheet" href="styles.css?v=202610131700">
 </head>
 <body>
 <nav class="navbar">
@@ -20,6 +20,7 @@
     <li><a class="nav-link" href="#sources" data-tab="sources" role="tab">All sources</a></li>
     <li><a class="nav-link" href="#methodology" data-tab="methodology" role="tab">Methodology</a></li>
   </ul>
+  <a class="navaux" href="#glossary" id="glossary_link">Glossary</a>
 </nav>
 
 <div class="page">
@@ -150,6 +151,12 @@
 
 <!-- Policy explorer -->
 <section class="tab" id="tab-explorer" role="tabpanel">
+  <div class="card selcard"><div class="card-header">How the 40 policies were chosen</div>
+    <div class="card-body">
+      <p>The 40 policies are four groups of ten. They were chosen partly on gut feel, after reading popular studies and the top-ranked policies in previous research. There was no formal rule: the list is the author&#8217;s judgment, so the groups are not matched in scale or ambition, and some mismatch between them is accepted. What does not rest on judgment is each policy&#8217;s range, which comes from the published evidence.</p>
+      <p class="note">Under each policy is the survey, list or proposal it was taken from. Click a policy to open it below. Ranks and verdicts follow your current settings.</p>
+      <div class="selgrid" id="selgrid"></div>
+    </div></div>
   <p class="note">Click a policy to open it; inside, open the summary and the sources. Listed in current rank order.</p>
   <div id="explorer"></div>
 </section>
@@ -158,7 +165,7 @@
 <section class="tab" id="tab-deaths" role="tabpanel">
   <div class="card"><div class="card-header">Deaths caused or prevented each year, every policy ranked</div>
     <div class="card-body">
-      <p class="note">Net lives a year for each policy: lives saved (directly, as counted in the sources of the health programmes, plus lives saved from income gained) minus deaths caused by lost income, including the income taken by the taxes that fund a programme. The same figures as the table below. Policies that save the most lives net are at the top; those that cause the most deaths net are at the bottom. Log scale, so small and very large numbers both show.</p>
+      <p class="note">Net lives a year for each policy: lives saved (directly, as counted in the sources of the health programmes, plus lives saved from income gained) minus deaths caused by lost income, including the income taken by the taxes that fund a programme. The same figures as the table below. Policies that save the most lives net are at the top; those that cause the most deaths net are at the bottom. Log scale, so small and very large numbers both show. The link from lost income to deaths uses a single US estimate (Broughel &amp; Viscusi 2017: about one death per $99.3 million of income lost) applied worldwide, so these counts are approximate.</p>
       <div class="chart" id="deaths_plot"></div>
     </div></div>
   <div class="card"><div class="card-header">Lives saved and deaths caused per year</div>
@@ -259,7 +266,7 @@
 <p>Four things that are usually taken at face value are modelled explicitly: the quality of the evidence behind each ratio, the uncertainty in each range, the discount rate, and the deaths caused or prevented when a policy changes incomes. Three further criteria, who benefits, how hard the policy is to carry out and how much it costs, are recorded for every policy and can tilt the ranking, which makes the study a light multi-criteria analysis; the published ranking itself uses the benefit-cost ratio alone (Section 2.9). The analysis asks what order of priority the published estimates imply, how robust that order is, and what a fixed budget would buy if spent in that order.</p>
 <p><strong>Perspective and standing.</strong> The intended perspective is global: benefits and costs count wherever in the world they fall and whoever receives them. Each ratio inherits the scope of its sources. Most trade, health and development estimates are global or cover low- and middle-income countries, while many regulatory and tax estimates are for the United States or the European Union. Benefits are measured the way each source measures them, whether as welfare, consumer value, output, lives valued in dollars, or budget savings. Ratios carry no units, so a common price year matters less than it would for totals, but mixed scopes and benefit concepts remain a limitation (Section 2.13).</p>
 <h2 id="policy-selection">2.2 Policy selection</h2>
-<p>The forty policies form four blocks of ten. Each block was defined by an outside list or survey, and the policies in each block were fixed before any ratio was collected, so that the selection could not be steered by expected results.</p>
+<p>The forty policies form four blocks of ten. They were chosen by the author's judgment after reading popular studies, public-opinion surveys and the top-ranked policies in previous benefit-cost research, not by a formal rule. The blocks are therefore not matched in scale or ambition. Each policy's range comes from the published evidence, and each policy's own selection note is shown in the Policy explorer.</p>
 <ul>
 <li><strong>Climate proposals.</strong> Five are the climate policies with the highest public support in the largest surveys of climate attitudes, the Peoples' Climate Vote (UNDP and University of Oxford 2021) and the international survey of Dechezleprêtre et al. (2025): conserving forests and ending deforestation, which came first of eighteen options in the Peoples' Climate Vote with 54% support; renewable-energy subsidies, tax credits and mandates; climate adaptation through early-warning systems and flood and nature defences; ocean and waterway protection; and a ban on sales of new combustion-engine cars and trucks, the only policy asked about in all three surveys consulted. Five are proposals that governments and international bodies have formally put forward: a Paris-aligned global carbon tax of $135 per tonne of CO2 by 2030; a global plastics ban with single-use mandates, as under negotiation for the UN plastics treaty; the Green New Deal of US House Resolution 109, applied here to all Western nations; the C40 Cities consumption scenario for 15-minute cities; and clean-energy innovation, pledged by governments through Mission Innovation at the 2015 Paris summit and evaluated here as privately funded innovation prizes.</li>
 <li><strong>Economic freedom.</strong> Ten reforms, two from each of the five areas of the Economic Freedom of the World index (Gwartney et al. 2024). Size of government: privatising Social Security into personal accounts and abolishing the income tax. Legal system and property rights: securing private property globally through titling, privatising government land and natural resources, and tradable fishing quotas. Sound money: ending the Federal Reserve in favour of a neutral reserve currency, and ending bailouts and deposit insurance. Freedom to trade: unilateral global free trade. Regulation: deregulating the economy through ten named federal, state and local regulations, and energy freedom without subsidies for any energy source.</li>
@@ -468,26 +475,8 @@
 <li><em>d<sub>i</sub></em> = the difference between policy <em>i</em>'s rank in the alternative and its default rank;</li>
 <li><em>n</em> = 40, the number of policies.</li>
 </ul>
-<p>Spearman's coefficient is the standard measure of agreement between two rankings, because it uses only the order of the policies and not the size of their ratios. For each scenario the analysis also reports how many of the default top ten and bottom ten stay in the top and bottom ten, the largest change in any policy's rank, the policies ranked first and last, and the number of policies that change rating. The results are summarised in the table below.</p>
-<p><strong>Table 2.</strong> Sensitivity of the ranking to twelve alternative settings</p>
-<div class="tscroll"><table>
-<thead><tr><th style="min-width:10rem">Scenario</th><th>Spearman ρ</th><th>Top ten kept</th><th>Bottom ten kept</th><th>Largest move (places)</th><th>Rating changes</th><th>Ranked first</th><th>Ranked last</th></tr></thead>
-<tbody>
-<tr><td>No evidence skepticism (<em>s</em> = 0)</td><td>0.999</td><td>10</td><td>10</td><td>2</td><td>0</td><td>Free trade</td><td>15-minute cities</td></tr>
-<tr><td>Full evidence skepticism (<em>s</em> = 1)</td><td>0.998</td><td>10</td><td>10</td><td>3</td><td>1</td><td>Free trade</td><td>15-minute cities</td></tr>
-<tr><td>Discount rate 2%</td><td>1.000</td><td>10</td><td>10</td><td>0</td><td>1</td><td>Free trade</td><td>15-minute cities</td></tr>
-<tr><td>Discount rate 3%</td><td>1.000</td><td>10</td><td>10</td><td>0</td><td>1</td><td>Free trade</td><td>15-minute cities</td></tr>
-<tr><td>Discount rate 7%</td><td>1.000</td><td>10</td><td>10</td><td>0</td><td>2</td><td>Free trade</td><td>15-minute cities</td></tr>
-<tr><td>No death adjustment</td><td>0.999</td><td>10</td><td>10</td><td>2</td><td>3</td><td>Free trade</td><td>15-minute cities</td></tr>
-<tr><td>Full tilt toward the poor</td><td>0.934</td><td>9</td><td>6</td><td>11</td><td>0</td><td>Free trade</td><td>15-minute cities</td></tr>
-<tr><td>Full tilt toward easy policies</td><td>0.957</td><td>9</td><td>9</td><td>9</td><td>0</td><td>Free trade</td><td>15-minute cities</td></tr>
-<tr><td>Full tilt toward cheap policies</td><td>0.971</td><td>9</td><td>8</td><td>8</td><td>0</td><td>Free trade</td><td>15-minute cities</td></tr>
-<tr><td>All three tilts</td><td>0.930</td><td>8</td><td>7</td><td>10</td><td>0</td><td>Free trade</td><td>15-minute cities</td></tr>
-<tr><td>Combined stress test</td><td>0.927</td><td>8</td><td>6</td><td>10</td><td>5</td><td>Free trade</td><td>15-minute cities</td></tr>
-<tr><td>Free trade at its narrowest range (11 to 180)</td><td>1.000</td><td>10</td><td>10</td><td>1</td><td>0</td><td>Maternal &amp; newborn care</td><td>15-minute cities</td></tr>
-</tbody>
-</table></div>
-<p class="note"><em>Note:</em> Spearman ρ compares each alternative ranking with the default ranking (equation 22). Top and bottom ten kept count the default top-ten and bottom-ten policies that remain in the top or bottom ten. Rating changes count policies whose rating differs from the default.</p>
+<p>Spearman's coefficient is the standard measure of agreement between two rankings, because it uses only the order of the policies and not the size of their ratios. For each scenario the analysis also reports how many of the default top ten and bottom ten stay in the top and bottom ten, the largest change in any policy's rank, the policies ranked first and last, and the number of policies that change rating.</p>
+<p>Across the twelve alternative settings the ranking barely moves: its rank correlation with the default ranking stays above 0.92, at least eight of the default top ten stay in the top ten, and free trade ranks first in every setting except the one that narrows its own range.</p>
 <h2 id="deaths-and-total-damage">2.11 Deaths and total damage</h2>
 <p>For each policy, the number of deaths a year caused by lost income is:</p>
 <p style="text-align:center;font-family:'Cambria Math','STIX Two Math',Georgia,serif;font-size:1.05rem;margin:.7rem 0">Deaths per year = Lost income ÷ $99.3 million&nbsp;&nbsp;&nbsp;&nbsp;(23)</p>
@@ -512,10 +501,53 @@
 <p>The method has limits that should be read with the results. Many of the policies have never been tried at full scale, so their ratios are built from components and analogies and carry lower grades. Ranges from different studies use different discount rates, horizons, regions and benefit concepts. Ratios are sensitive to whether a loss is counted as a cost or subtracted from benefits; the conventions of Section 2.4 are applied uniformly to limit this. The death adjustment uses one US estimate of the income-mortality link for all policies, and the infant-mortality link is estimated from income shocks in developing countries. Draws are independent across policies.</p>
     </div>
   </div></div>
+  <div class="card" id="glossary"><div class="card-header">Glossary</div>
+    <div class="card-body">
+    <dl class="meth gloss">
+      <dt>Benefit-cost ratio (return per $1)</dt>
+      <dd>Dollars of benefit to society for every $1 of cost, both in today&#8217;s money. Above 1, a policy creates more than it costs; between 0 and 1, it returns something but less than it costs; below 0, its harms are larger than its benefits.</dd>
+      <dt>Published range</dt>
+      <dd>The low and high ratio for a policy, taken from the least and the most favourable credible published estimates, or built from published numbers with the arithmetic shown in the Policy explorer.</dd>
+      <dt>Adjusted ratio (middle result)</dt>
+      <dd>The ratio after the adjustments for deaths from lost income and for the strength of the evidence. The middle result is the median of the 1,000 simulated adjusted ratios; it is the dot on the charts and the number policies are ranked by.</dd>
+      <dt>90% range</dt>
+      <dd>The span from the 5th to the 95th percentile of the 1,000 simulated adjusted ratios: nine runs in ten land inside it. It is the line through each dot on the charts.</dd>
+      <dt>Rank range</dt>
+      <dd>The span of ranks a policy took in the middle 90% of the 1,000 re-runs of the ranking (5th to 95th percentile). A short range means the rank holds whichever of its studies is right.</dd>
+      <dt>Tiers (verdicts)</dt>
+      <dd>Five ratings set by the middle result: <b>Excellent</b> $10 or more per $1; <b>Good</b> $2 to $10; <b>Mid</b> $1 to $2; <b>Bad</b> above $0 but under $1; <b>Worst</b> below zero, so the policy destroys more value than it costs.</dd>
+      <dt>Evidence grade (A+ to C&#8722;)</dt>
+      <dd>A nine-level rating of the strongest evidence behind a policy&#8217;s range, from several peer-reviewed benefit-cost studies with controlled trials (A+) down to published theory built by analogy (C&#8722;). The full rubric is on the Uncertainty tab.</dd>
+      <dt>Skepticism slider</dt>
+      <dd>How far to pull weaker-graded ratios toward break-even (1:1). At the left every published number counts at face value; at the right an A+ ratio keeps all of its size and a C&#8722; ratio keeps 60% of it in log terms. The middle is the published setting.</dd>
+      <dt>Value of a statistical life</dt>
+      <dd>The dollar value US agencies put on a small reduction in the risk of death, based on what people are willing to pay for such reductions: $13.1 million (US Department of Health and Human Services 2024).</dd>
+      <dt>Lost-income mortality</dt>
+      <dd>Poorer people die sooner, so costs that lower incomes cost lives: about one statistical death per $99.3 million of income lost (Broughel &amp; Viscusi 2017). At $13.1 million a life, each $1 of income lost carries about 13 cents of mortality cost, and each $1 gained saves the same.</dd>
+      <dt>Infant deaths from income shocks</dt>
+      <dd>When incomes in poor countries fall, more babies die: 0.24 to 0.40 extra infant deaths per 1,000 births for each 1% fall in income per person (Baird, Friedman &amp; Schady 2011), on about 120 million births a year. They overlap with deaths from lost income, so the Deaths tab shows them beside it rather than subtracting them.</dd>
+      <dt>Cost of raising taxes (excess burden)</dt>
+      <dd>The value lost when people work, save, invest and report less because of a tax, on top of the tax itself. Estimates run from about 34 cents per $1 raised (Ballard, Shoven &amp; Whalley 1985) to about $2 per $1 (Feldstein 1999); these are the favourable and unfavourable ends wherever a policy is paid for by taxes.</dd>
+      <dt>Transfer</dt>
+      <dd>Money moved from one group to another, such as a tax, subsidy or benefit payment. It is counted at $1 on both sides: $1 of benefit to whoever receives it and $1 of cost to whoever pays. Only the real resources the move uses up or creates change the ratio.</dd>
+      <dt>Discount rate</dt>
+      <dd>The yearly rate at which future dollars are marked down, because a dollar today is worth more than a dollar later. The published ratios already use their authors&#8217; rates, mostly 3 to 7%.</dd>
+      <dt>Monte Carlo simulation</dt>
+      <dd>Re-running the ranking 1,000 times, each time drawing every policy&#8217;s ratio at random from its published range (treated as the middle 90% of a distribution), to see how much the results depend on which studies are right.</dd>
+      <dt>Feasibility</dt>
+      <dd>How hard a policy is to carry out, rated from its sources as easy (one agency can do it under existing law, and it has been done before), moderate (ordinary legislation or a sustained funding increase, with a precedent somewhere) or hard (a constitutional amendment, a binding agreement among many countries, or dismantling a major institution with no modern precedent).</dd>
+      <dt>Who benefits</dt>
+      <dd>Whether a policy&#8217;s gains go mostly to the poor, to everyone, or mostly to the better-off, rated from the evidence in its sources on who gains and who pays.</dd>
+      <dt>Net value</dt>
+      <dd>The value a policy creates or destroys in a year after paying for itself: its cost base times (ratio minus 1). A ratio of 1 gives zero net value.</dd>
+      <dt>Cost base</dt>
+      <dd>The yearly dollar amount a policy&#8217;s ratio is measured against: its full cost for most policies, and the money actually spent or transferred for rules scored in net-damage form.</dd>
+    </dl>
+    </div></div>
 </section>
 
 </div>
 <script src="engine.js?v=202610131500" defer></script>
-<script src="app.js?v=202610131330" defer></script>
+<script src="app.js?v=202610131700" defer></script>
 </body>
 </html>

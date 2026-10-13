@@ -565,7 +565,7 @@
         : `<${r.k}>` + r.ls.map((l) => `<li>${inline(l.replace(r.k === "ul" ? UL : OL, ""))}</li>`).join("") + `</${r.k}>`).join("");
     }).join("");
   }
-  const ESSAY_SECTIONS = [["policy", "The policy"], ["why_on_list", "Why it is on the list"], ["evidence", "What the evidence finds"], ["ratio", "How the ratio is built"], ["cost", "Full cost"], ["strength", "Strength of evidence"], ["difficulty", "Difficulty"], ["who_benefits", "Who benefits"], ["counter", "Counter-evidence and limits"]];
+  const ESSAY_SECTIONS = [["policy", "The policy"], ["why_on_list", "Why it is on the list"], ["evidence", "Results"], ["ratio", "How the ratio is built"], ["cost", "Full cost"], ["strength", "Strength of evidence"], ["difficulty", "Difficulty"], ["who_benefits", "Who benefits"], ["counter", "Counter-evidence and what would change the verdict"]];
   function essayBlock(id, p0, adjTxt) {
     const e = (DATA.essays || {})[String(id)];
     if (!e) return `<details class='sub' open><summary>Summary</summary><p>${esc(p0.summary)}</p>${adjTxt}</details>`;
@@ -574,7 +574,41 @@
     return `<div class='essay-result'>${adjTxt}</div>` + sec;
   }
 
+  // "How the 40 policies were chosen": the ten policies of each group, from data.json
+  const GROUP_LABEL = { Freedom: "Economic freedom" };
+  const GROUP_NOTE = {
+    Health: "The top-ranked health investments in previous benefit-cost research (Copenhagen Consensus, Disease Control Priorities, WHO, GiveWell).",
+    Climate: "The most-discussed climate policies: those with the most support in large climate surveys, and proposals put forward by governments and international bodies.",
+    Freedom: "Widely proposed reforms that remove rules, subsidies or barriers, drawn from the areas of the Fraser Institute's Economic Freedom of the World index.",
+    Popular: "Policies with wide public support in recent polls, most of them backed by a majority.",
+  };
+  const groupClass = (c) => "g-" + String(c).toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  function renderSelection() {
+    const html = CATS.map((c) => {
+      const rows = res.filter((r) => r.category === c);
+      const items = rows.map((r) => {
+        const p0 = POL_BY_ID.get(r.id);
+        const sb = isBlank(p0.selected_by) ? "" : `<span class="sb">${esc(p0.selected_by)}</span>`;
+        const tip = [p0.title, p0.selection_method].filter((x) => !isBlank(x)).join(" · ");
+        return `<li><button type="button" class="selp" data-id="${r.id}" title="${esc(tip)}"><span class="rk">#${r.rank}</span>` +
+          `<span class="tt">${esc(p0.short || p0.title)}</span>${tierBadge(tierOf(r.bcr_median))}${sb}</button></li>`;
+      }).join("");
+      const note = GROUP_NOTE[c] ? `<span>${esc(GROUP_NOTE[c])}</span>` : "";
+      return `<div class="selcol ${groupClass(c)}"><div class="selhd"><b>${esc(GROUP_LABEL[c] || c)} (${rows.length})</b>${note}</div><ul class="sellist">${items}</ul></div>`;
+    }).join("");
+    setHTML("selgrid", html);
+  }
+  function openPolicy(id) {
+    const d = document.querySelector(`#explorer details.pol[data-id="${id}"]`);
+    if (!d) return;
+    d.open = true;
+    d.classList.remove("flash"); void d.offsetWidth; d.classList.add("flash");
+    d.scrollIntoView({ behavior: "smooth", block: "start" });
+    d.querySelector("summary").focus({ preventScroll: true });
+  }
+
   function renderExplorer() {
+    renderSelection();
     const host = document.getElementById("explorer");
     const open = new Set([...host.querySelectorAll("details.pol[open]")].map((d) => d.dataset.id));
     const items = res.map((rr) => {
@@ -646,12 +680,16 @@
 
   // ---- Tabs ----------------------------------------------------------------------------------
   function showTab(tab, push) {
+    const anchor = tab === "glossary" ? tab : null;
+    if (anchor) tab = "methodology";
     if (!RENDER[tab]) tab = "ranking";
     currentTab = tab;
     document.querySelectorAll(".nav-link").forEach((a) => a.classList.toggle("active", a.dataset.tab === tab));
     document.querySelectorAll(".tab").forEach((s) => s.classList.toggle("active", s.id === "tab-" + tab));
-    if (push && location.hash !== "#" + tab) history.replaceState(null, "", "#" + tab);
+    const hash = "#" + (anchor || tab);
+    if (push && location.hash !== hash) history.replaceState(null, "", hash);
     renderTab(tab);
+    if (anchor) document.getElementById(anchor).scrollIntoView({ block: "start" });
   }
 
   // ---- Controls -------------------------------------------------------------------------------
@@ -745,6 +783,11 @@
       showTab(a.dataset.tab, true);
       window.scrollTo(0, 0);
     }));
+    document.getElementById("glossary_link").addEventListener("click", (e) => { e.preventDefault(); showTab("glossary", true); });
+    document.getElementById("selgrid").addEventListener("click", (e) => {
+      const b = e.target.closest(".selp");
+      if (b) openPolicy(b.dataset.id);
+    });
     document.querySelector(".navbar-brand").addEventListener("click", (e) => { e.preventDefault(); showTab("ranking", true); });
     window.addEventListener("hashchange", () => showTab(location.hash.slice(1), false));
 
