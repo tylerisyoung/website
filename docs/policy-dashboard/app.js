@@ -135,6 +135,15 @@
     }
     return s.slice(0, Math.max(1, lo)).trimEnd() + "…";
   }
+  // Splits a label into at most two lines that fit maxW (the second is cut with "…" only if still too long).
+  function wrapLabel(s, px, maxW) {
+    if (textWidth(s, px) <= maxW) return [s];
+    const w = s.split(" ");
+    let a = "", k = 0;
+    for (; k < w.length; k++) { const t = a ? a + " " + w[k] : w[k]; if (textWidth(t, px) > maxW) break; a = t; }
+    if (!a) return [fitText(s, px, maxW)];
+    return [a, fitText(w.slice(k).join(" "), px, maxW)];
+  }
   const f1 = (v) => Math.round(v * 10) / 10;
   const svgOpen = (w, h) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img">`;
   const txt = (x, y, s, o = {}) => `<text x="${f1(x)}" y="${f1(y)}"${o.anchor ? ` text-anchor="${o.anchor}"` : ""}${o.base ? ` dominant-baseline="${o.base}"` : ""} font-size="${o.size || 11}"${o.bold ? ' font-weight="700"' : ""}${o.italic ? ' font-style="italic"' : ""} fill="${o.fill || "#222"}">${esc(s)}</text>`;
@@ -188,10 +197,14 @@
   function rowChart(el, o) {
     const n = o.labels.length;
     if (!n) { el.innerHTML = '<div class="empty">No policies match the filters.</div>'; return; }
-    const W = chartWidth(el), H = o.height;
+    const W = chartWidth(el);
     const labPx = W < 560 ? 10 : 11.5;
     const maxLab = Math.max(...o.labels.map((s) => textWidth(s, labPx)));
     const labW = Math.min(maxLab, W * (o.labFrac || (W < 560 ? 0.5 : 0.58)));
+    // full policy names: a label too wide for the column wraps onto a second line, and every row grows to fit
+    const labLines = o.labels.map((s) => wrapLabel(s, labPx, labW));
+    const wrapped = labLines.some((l) => l.length > 1);
+    const H = o.height + (wrapped ? Math.round(n * labPx * 1.05) : 0);
     const L = labW + 14, R = W - o.right, T = o.top, B = H - o.bottom;
     const sx = scale(o.xlim, L, R);
     const sy = scale([0.5, n + 0.5], B, T);
@@ -207,7 +220,11 @@
     s += o.marks(sx, sy, ys);
     // y labels
     o.labels.forEach((lab, i) => {
-      s += txt(L - 6, sy(ys[i]), fitText(lab, labPx, labW), { size: labPx, anchor: "end", base: "central", fill: "#222" });
+      const ls = labLines[i], cut = ls.join(" ") !== lab, tip = cut ? `<title>${esc(lab)}</title>` : "";
+      if (ls.length === 1) { s += `<text x="${f1(L - 6)}" y="${f1(sy(ys[i]))}" text-anchor="end" dominant-baseline="central" font-size="${labPx}" fill="#222">${tip}${esc(ls[0])}</text>`; return; }
+      const lh = labPx * 1.05, y0 = sy(ys[i]) - lh / 2;
+      s += `<text x="${f1(L - 6)}" y="${f1(y0)}" text-anchor="end" dominant-baseline="central" font-size="${labPx}" fill="#222">${tip}` +
+        `<tspan x="${f1(L - 6)}" y="${f1(y0)}">${esc(ls[0])}</tspan><tspan x="${f1(L - 6)}" y="${f1(y0 + lh)}">${esc(ls[1])}</tspan></text>`;
     });
     // x axis
     s += line(sx(o.xticks[0]), B, sx(o.xticks[o.xticks.length - 1]), B, "#333");
@@ -249,7 +266,7 @@
     const el = document.getElementById("xy_plot");
     const r = shown;
     if (!r.length) { el.innerHTML = '<div class="empty">No policies match the filters.</div>'; return; }
-    const W = chartWidth(el), H = W < 560 ? 560 : 720;
+    const W = chartWidth(el), H = W < 560 ? 760 : 720;  // taller on phones so full policy names have room
     const cx = r.map((x) => Math.log10(1 + Math.max(isNA(x.cost_bn) ? 0 : x.cost_bn, 0)));
     const cy = r.map((x) => slog(x.bcr_median));
     const xr = [-0.15, Math.max(Math.max(...cx), 1) * 1.08];
@@ -275,28 +292,37 @@
     s += `<text transform="translate(16 ${f1((T + B) / 2)}) rotate(-90)" text-anchor="middle" font-size="11.5" fill="#222">Adjusted benefit-cost ratio (log scale)</text>`;
     s += line(L, sy(slog(1)), R, sy(slog(1)), "#7f7f7f", { dash: "4 4" });
     s += txt(R - 2, sy(slog(1)) - 4, "break-even", { size: 9, anchor: "end", fill: "#666666" });
-    // nudge labels apart vertically within the same x neighbourhood
-    const ly = cy.slice();
-    const o = cx.map((_, i) => i).sort((a, b) => (cx[a] - cx[b]) || (cy[a] - cy[b]));
-    const gap = 0.032 * (sy.hi - sy.lo), xw = 0.18 * (sx.hi - sx.lo);
-    for (let it = 0; it < 60; it++) {
+    // Labels carry the full policy name. Each sits right of its dot, or left of it when it would run past
+    // the plot edge; labels whose boxes overlap are pushed apart vertically (in pixels).
+    const fs = W < 560 ? 8.5 : 10, pad = 3;
+    const lab = r.map((x, i) => {
+      const name = x.short || x.title, w = textWidth(name, fs), px = sx(cx[i]);
+      const right = px + 9 + w <= R || px - 9 - w < 2;
+      const x0 = right ? Math.max(2, Math.min(px + 9, W - 2 - w)) : px - 9 - w;  // never run off the chart
+      return { name, w, px, py: sy(cy[i]), right, x0, y: sy(cy[i]) };
+    });
+    const gap = fs + 2;
+    for (let it = 0; it < 120; it++) {
       let moved = false;
-      for (let a = 0; a < o.length; a++) for (let b = 0; b < o.length; b++) {
-        const i = o[a], j = o[b];
-        if (i < j && Math.abs(cx[i] - cx[j]) < xw && Math.abs(ly[i] - ly[j]) < gap) {
-          const d = (gap - Math.abs(ly[i] - ly[j])) / 2 + 1e-4;
-          if (ly[i] >= ly[j]) { ly[i] += d; ly[j] -= d; } else { ly[i] -= d; ly[j] += d; }
+      for (let i = 0; i < lab.length; i++) for (let j = i + 1; j < lab.length; j++) {
+        const A = lab[i], Bb = lab[j];
+        if (A.x0 < Bb.x0 + Bb.w + pad && Bb.x0 < A.x0 + A.w + pad && Math.abs(A.y - Bb.y) < gap) {
+          const d = (gap - Math.abs(A.y - Bb.y)) / 2 + 0.05;
+          if (A.y > Bb.y || (A.y === Bb.y && i > j)) { A.y += d; Bb.y -= d; } else { A.y -= d; Bb.y += d; }
           moved = true;
         }
       }
+      lab.forEach((q) => { q.y = Math.min(B - 4, Math.max(T + 4, q.y)); });
       if (!moved) break;
     }
-    r.forEach((x, i) => { s += line(sx(cx[i]), sy(cy[i]), sx(cx[i] + 0.04), sy(ly[i]), "#bfbfbf", { w: 0.6 }); });
+    lab.forEach((q) => { s += line(q.px, q.py, q.right ? q.x0 - 1 : q.x0 + q.w + 1, q.y, "#bfbfbf", { w: 0.6 }); });
     r.forEach((x, i) => {
       s += circle(sx(cx[i]), sy(cy[i]), 6.5, tierCol(x), { op: 0.9, stroke: "#ffffff", sw: 1,
         title: `${x.title}: ratio ${fmtBcr(x.bcr_median)}, cost ${fmtBn(x.cost_bn)} a year, ${tierOf(x.bcr_median)}` });
     });
-    r.forEach((x, i) => { s += txt(sx(cx[i] + 0.05), sy(ly[i]), x.short, { size: W < 560 ? 9 : 10, base: "central", fill: "#262626" }); });
+    lab.forEach((q) => {
+      s += `<text x="${f1(q.x0)}" y="${f1(q.y)}" dominant-baseline="central" font-size="${fs}" fill="#262626" stroke="#ffffff" stroke-width="2.5" stroke-linejoin="round" paint-order="stroke">${esc(q.name)}</text>`;
+    });
     // legend
     const lx = R - 150, ly0 = T + 8;
     s += txt(lx, ly0 + 4, "Verdict", { size: 10.5 });
@@ -764,7 +790,7 @@
 
   // ---- Start-up ----------------------------------------------------------------------------------
   async function init() {
-    const resp = await fetch("data.json?v=202610132100");
+    const resp = await fetch("data.json?v=202610132300");
     if (!resp.ok) throw new Error("Could not load data.json (" + resp.status + ")");
     DATA = await resp.json();
     MODEL = BCA.createModel(DATA.policies, DATA.draws);
