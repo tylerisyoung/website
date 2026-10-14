@@ -15,7 +15,7 @@ button{font:inherit}
 .navbar{display:flex;align-items:center;flex-wrap:wrap;gap:.25rem 1rem;padding:.5rem 1rem;background:#f8f9fa;border-bottom:1px solid #dee2e6}
 .navbar-brand{font-weight:700;font-size:1.25rem;color:#212529;text-decoration:none;margin-right:.5rem}
 .navbar-nav{display:flex;flex-direction:row;flex-wrap:wrap;gap:.5rem;margin:.4rem 0;justify-content:center;padding:0;list-style:none}
-/* Tabs: centred, each its own shade from the theme (blue, yellow, sage, red), white bold text; the active tab is full strength */
+/* Tabs: centred, each its own shade from the theme (Ranking/Uncertainty blue, Policy explorer yellow, Budget sage, Deaths red, Methodology slate), white bold text; the active tab is full strength */
 .navbar{justify-content:center;position:relative}
 @media (min-width:1200px){.navbar-brand{position:absolute;left:1rem;top:50%;transform:translateY(-50%)}}
 .nav-link{--c:#2f5fae;display:block;border:1px solid var(--c);border-radius:6px;padding:.5rem 1.15rem;font:700 1.08rem system-ui,sans-serif;letter-spacing:.01em;color:#fff;background:var(--c);text-decoration:none;cursor:pointer;text-align:center;opacity:.86;transition:opacity .12s,box-shadow .12s;text-shadow:0 1px 1px rgba(0,0,0,.18)}
@@ -24,7 +24,6 @@ button{font:inherit}
 .nav-link[data-tab="budget"]{--c:#6f9174}
 .nav-link[data-tab="explorer"]{--c:#b8850d}
 .nav-link[data-tab="deaths"]{--c:#a61c1c}
-.nav-link[data-tab="sources"]{--c:#cc9c1c}
 .nav-link[data-tab="methodology"]{--c:#5d7189}
 .navaux{font:500 .85rem system-ui,sans-serif;color:#5d7189;text-decoration:underline;text-underline-offset:2px}
 .navaux:hover{color:#2d3a4a}
@@ -206,3 +205,4 @@ details.pol.flash>summary{animation:flash 1.4s ease-out}
 @keyframes flash{from{background:#fdf0c4}to{background:#f7f9fb}}
 @media (max-width:991px){.selgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:600px){.selgrid{grid-template-columns:1fr}}
+.srccard{margin-top:1.25rem;scroll-margin-top:.5rem}

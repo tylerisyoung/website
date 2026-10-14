@@ -588,7 +588,9 @@
       const rows = res.filter((r) => r.category === c);
       const items = rows.map((r) => {
         const p0 = POL_BY_ID.get(r.id);
-        const sb = isBlank(p0.selected_by) ? "" : `<span class="sb">${esc(p0.selected_by)}</span>`;
+        // Selection note: who or what list put the policy here (falls back to the method; both optional in data.json)
+        const selNote = !isBlank(p0.selected_by) ? p0.selected_by : (!isBlank(p0.selection_method) ? p0.selection_method : "");
+        const sb = selNote ? `<span class="sb">${esc(selNote)}</span>` : "";
         const tip = [p0.title, p0.selection_method].filter((x) => !isBlank(x)).join(" · ");
         return `<li><button type="button" class="selp" data-id="${r.id}" title="${esc(tip)}"><span class="rk">#${r.rank}</span>` +
           `<span class="tt">${esc(p0.short || p0.title)}</span>${tierBadge(tierOf(r.bcr_median))}${sb}</button></li>`;
@@ -644,6 +646,7 @@
       `<div class="gkey-row"><span class="gkey-end">Strongest</span>${GRADES.map(badge).join(" ")}<span class="gkey-end">Weakest</span></div>` +
       `<div class="gkey-s"><b>A</b> grades = peer-reviewed benefit-cost studies, the best with randomized or controlled trials &nbsp;·&nbsp; <b>B</b> grades = natural experiments, published economic models and official estimates &nbsp;·&nbsp; <b>C</b> grades = think-tank studies and theory, down to C−: never tried at scale. Full rubric on the Uncertainty tab.</div></div>`);
     setText("vb_src", comma(String(N_WORKS)));
+    renderSources();
     setText("oda_big", `$${ODA[2025].toFixed(1)} billion`);
     setHTML("oda_years", `<div><b>$${ODA[2023].toFixed(1)}B</b>2023</div><div><b>$${ODA[2024].toFixed(1)}B</b>2024</div>` +
       `<div class="cur"><b>$${ODA[2025].toFixed(1)}B</b>2025</div><div><b>~$${ODA[2026].toFixed(0)}B</b>2026 est.</div>`);
@@ -665,7 +668,8 @@
     setHTML("bib", `<p class="lead-sm">${u.length} unique works cited across the 40 policies, in alphabetical order.</p>` + lines.join("\n"));
   }
 
-  const RENDER = { ranking: renderRanking, uncertainty: renderUncertainty, budget: renderBudget, explorer: renderExplorer, deaths: renderDeaths, sources: renderSources, methodology: () => {} };
+  // The full sources list sits under the Policy explorer (card #sources); it is rendered once in renderStatic.
+  const RENDER = { ranking: renderRanking, uncertainty: renderUncertainty, budget: renderBudget, explorer: renderExplorer, deaths: renderDeaths, methodology: () => {} };
 
   function renderTab(tab) {
     if (!dirty.has(tab)) return;
@@ -680,8 +684,9 @@
 
   // ---- Tabs ----------------------------------------------------------------------------------
   function showTab(tab, push) {
-    const anchor = tab === "glossary" ? tab : null;
-    if (anchor) tab = "methodology";
+    // In-page anchors: #glossary is on Methodology; #sources (the old All sources tab) is under the Policy explorer
+    const anchor = tab === "glossary" || tab === "sources" ? tab : null;
+    if (anchor) tab = tab === "sources" ? "explorer" : "methodology";
     if (!RENDER[tab]) tab = "ranking";
     currentTab = tab;
     document.querySelectorAll(".nav-link").forEach((a) => a.classList.toggle("active", a.dataset.tab === tab));
@@ -759,7 +764,7 @@
 
   // ---- Start-up ----------------------------------------------------------------------------------
   async function init() {
-    const resp = await fetch("data.json?v=202610131330");
+    const resp = await fetch("data.json?v=202610132100");
     if (!resp.ok) throw new Error("Could not load data.json (" + resp.status + ")");
     DATA = await resp.json();
     MODEL = BCA.createModel(DATA.policies, DATA.draws);
@@ -801,7 +806,7 @@
 
     renderStatic();
     compute();
-    DYNAMIC.concat(["sources"]).forEach((t) => dirty.add(t));
+    DYNAMIC.forEach((t) => dirty.add(t));
     showTab(location.hash.slice(1) || "ranking", false);
     document.documentElement.dataset.ready = "1";
   }

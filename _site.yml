@@ -20,3 +20,7 @@ navbar:
       href: Contact.html
 output_dir: "docs"
 exclude: ["scripts"]
+output:
+  html_document:
+    includes:
+      after_body: footer.html
