@@ -293,11 +293,12 @@
     return keep.map((x) => {
       const c = costed(x);
       const gain = x.gain_bn;
+      const based = !c && !isNA(x.base_bn) && x.base_bn > 0;   // zero-cost reform measured per $ of revenue given up
       return {
         ...x,
         spend: c ? x.cost_bn : 0,
-        net: c ? x.cost_bn * (x.bcr_median - 1) : (isNA(gain) ? 0 : gain),
-        priced: c || !isNA(gain),
+        net: c ? x.cost_bn * (x.bcr_median - 1) : (based ? x.base_bn * (x.bcr_median - 1) : (isNA(gain) ? 0 : gain)),
+        priced: c || based || !isNA(gain),
       };
     });
   }
