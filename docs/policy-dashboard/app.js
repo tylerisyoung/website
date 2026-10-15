@@ -614,12 +614,9 @@
       const rows = res.filter((r) => r.category === c);
       const items = rows.map((r) => {
         const p0 = POL_BY_ID.get(r.id);
-        // Selection note: who or what list put the policy here (falls back to the method; both optional in data.json)
-        const selNote = !isBlank(p0.selected_by) ? p0.selected_by : (!isBlank(p0.selection_method) ? p0.selection_method : "");
-        const sb = selNote ? `<span class="sb">${esc(selNote)}</span>` : "";
         const tip = [p0.title, p0.selection_method].filter((x) => !isBlank(x)).join(" · ");
         return `<li><button type="button" class="selp" data-id="${r.id}" title="${esc(tip)}"><span class="rk">#${r.rank}</span>` +
-          `<span class="tt">${esc(p0.short || p0.title)}</span>${tierBadge(tierOf(r.bcr_median))}${sb}</button></li>`;
+          `<span class="tt">${esc(p0.short || p0.title)}</span>${tierBadge(tierOf(r.bcr_median))}</button></li>`;
       }).join("");
       const note = GROUP_NOTE[c] ? `<span>${esc(GROUP_NOTE[c])}</span>` : "";
       return `<div class="selcol ${groupClass(c)}"><div class="selhd"><b>${esc(GROUP_LABEL[c] || c)} (${rows.length})</b>${note}</div><ul class="sellist">${items}</ul></div>`;
@@ -790,7 +787,7 @@
 
   // ---- Start-up ----------------------------------------------------------------------------------
   async function init() {
-    const resp = await fetch("data.json?v=202610151320");
+    const resp = await fetch("data.json?v=202610151545");
     if (!resp.ok) throw new Error("Could not load data.json (" + resp.status + ")");
     DATA = await resp.json();
     MODEL = BCA.createModel(DATA.policies, DATA.draws);
