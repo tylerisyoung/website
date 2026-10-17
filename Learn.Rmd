@@ -1,0 +1,22 @@
+---
+title: ""
+pagetitle: "Learn"
+output:
+  html_document:
+    theme: yeti
+---
+
+<!--
+Learn: password-gated flashcards and quizzes (Health, Finance, BCR).
+Static app in docs/learn/: learn.js + learn.css, finance.js (finance lessons),
+data.json (built from the Health Pyramid and Policy dashboard by
+scripts/build_learn_data.py). Password "learn" is checked by its SHA-256 hash.
+-->
+
+```{=html}
+<link rel="stylesheet" href="learn/learn.css?v=20261017a">
+<div id="lr"></div>
+<script>window.LEARN_HASH="6a8da52e920664ef15b3c36c0edb24e27e6604bb2dc2f6c7c1f1f5076ff28ee9";window.LEARN_V="20261017a";</script>
+<script src="learn/finance.js?v=20261017a"></script>
+<script src="learn/learn.js?v=20261017a"></script>
+```
