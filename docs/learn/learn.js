@@ -51,23 +51,25 @@
     const allTitles = H.studies.map((s) => s.title);
     const allTopics = uniq(H.topics.map((t) => t.label));
     const tiers = uniq(H.topics.map((t) => t.tier));
+    const sameTier = (t) => H.topics.filter((x) => x.tier === t.tier).map((x) => x.label);
+    const tierStudies = (t) => H.studies.filter((x) => (topicById[x.topic] || {}).tier === t.tier);
     H.topics.forEach((t) => {
       const st = H.studies.filter((s) => s.topic === t.id);
       const tid = "h-t-" + t.id;
       hc.push({ id: tid, kind: "Pyramid item", front: `<div class="k">${esc(t.tier)} tier</div><h3>${esc(t.label)}</h3><p class="hint">What's the recommendation, and what's the evidence?</p>`,
         back: `<p>${esc(t.blurb)}</p><div class="k">${st.length} studies</div><ul>${st.map((s) => `<li><b>${esc(s.authors.split(",")[0])}</b> ${esc(s.year)}: ${esc(s.title)}</li>`).join("")}</ul>` });
       hq.push(() => mcq(`Which tier of the Health Pyramid is “${t.label}” in?`, t.tier, tiers.filter((x) => x !== t.tier), tid));
-      hq.push(() => mcq(`Which pyramid item says: “${t.blurb}”`, t.label, pick(allTopics, 3, t.label), tid, true));
+      hq.push(() => mcq(`Which pyramid item says: “${redact(t.blurb, t.label)}”`, t.label, near([sameTier(t), allTopics], t.label), tid, true));
       st.forEach((s) => {
         const id = "h-" + hash(s.title);
         hc.push({ id, kind: "Study", front: `<div class="k">${esc(t.label)} · ${esc(s.type)}</div><h3>${esc(s.title)}</h3><p class="meta">${esc(s.authors)} (${esc(s.year)}) · <i>${esc(s.journal)}</i></p><p class="hint">What did it find?</p>`,
           back: `<p>${esc(s.summary)}</p>${s.quote ? `<blockquote>“${esc(s.quote)}”</blockquote>` : ""}${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">Open paper</a>` : ""}` });
-        hq.push(() => mcq(`Who wrote “${s.title}” (${s.year})?`, s.authors, pick(allAuthors, 3, s.authors), id));
-        hq.push(() => mcq(`“${s.title}” is evidence for which Health Pyramid item?`, t.label, pick(allTopics, 3, t.label), id));
-        if (s.quote) hq.push(() => mcq(`Which study reported: “${s.quote}”`, s.title, pick(allTitles, 3, s.title), id, true));
+        hq.push(() => mcq(`Who wrote “${s.title}” (${s.year})?`, s.authors, near([st.map((x) => x.authors), tierStudies(t).map((x) => x.authors), allAuthors], s.authors), id));
+        hq.push(() => mcq(`“${s.title}” is evidence for which Health Pyramid item?`, t.label, near([sameTier(t), allTopics], t.label), id));
+        if (s.quote) hq.push(() => mcq(`Which study reported: “${s.quote}”`, s.title, near([st.map((x) => x.title), tierStudies(t).map((x) => x.title), allTitles], s.title), id, true));
         hq.push(() => mcq(`What kind of study is ${s.authors.split(",")[0]} et al. (${s.year}) on ${t.label.toLowerCase()}?`, s.type, pick(uniq(H.studies.map((x) => x.type)), 3, s.type), id));
         const others = H.studies.filter((x) => x.topic !== s.topic);
-        hq.push(() => mcq(`Key finding of “${s.title}”?`, finding(s.summary), pick(others.map((x) => finding(x.summary)), 3), id, true));
+        hq.push(() => mcq(`Key finding of “${s.title}”?`, finding(s.summary), near([st.map((x) => finding(x.summary)), tierStudies(t).map((x) => finding(x.summary)), others.map((x) => finding(x.summary))], finding(s.summary)), id, true));
       });
     });
     // BCR
@@ -75,6 +77,8 @@
     BCR_METHOD.forEach((m) => { bc.push({ id: "b-m-" + m.id, kind: "How the dashboard works", front: `<h3>${esc(m.term)}</h3><p class="hint">Explain it.</p>`, back: `<p>${m.def}</p>` });
       (m.quiz || []).forEach((q) => bq.push(() => mcq(q.q, q.c[q.a], q.c.filter((_, i) => i !== q.a), "b-m-" + m.id))); });
     const names = B.map((p) => p.name);
+    const catNames = (p) => B.filter((x) => x.category === p.category).map((x) => x.name);
+    const sameCat = (name, p) => (B.find((x) => x.name === name) || {}).category === p.category;
     const allStudies = B.flatMap((p) => p.key_studies.map((k) => ({ ...k, policy: p.name })));
     B.forEach((p) => {
       const id = "b-p-" + hash(p.name);
@@ -90,21 +94,23 @@
         const kid = "b-s-" + hash(k.title);
         bc.push({ id: kid, kind: "Key study", front: `<div class="k">${esc(p.name)} · ${esc(k.role)}</div><h3>${esc(k.title)}</h3><p class="meta">${esc(k.authors)} (${esc(k.year)}) · <i>${esc(k.venue)}</i></p><p class="hint">What did it report?</p>`,
           back: `<p>${esc(k.finding)}</p>${k.url ? `<a href="${esc(k.url)}" target="_blank" rel="noopener">Open source</a>` : ""}` });
-        bq.push(() => mcq(`Who found: “${k.finding}”`, `${k.authors} (${k.year})`, pick(allStudies.filter((x) => x.authors !== k.authors).map((x) => `${x.authors} (${x.year})`), 3), kid, true));
-        bq.push(() => mcq(`“${k.title}” (${k.year}) is evidence on which policy?`, p.name, pick(names, 3, p.name), kid));
+        const cite = (x) => `${x.authors} (${x.year})`;
+        bq.push(() => mcq(`Who found: “${k.finding}”`, cite(k), near([p.key_studies.map(cite), allStudies.filter((x) => sameCat(x.policy, p)).map(cite), allStudies.map(cite)], cite(k)), kid, true));
+        bq.push(() => mcq(`“${redact(k.title, p.name)}” (${k.year}) is evidence on which policy?`, p.name, near([catNames(p), names], p.name), kid));
       });
       p.quotes.forEach((q, i) => {
         const qid = "b-q-" + hash(q.text);
         bc.push({ id: qid, kind: "Quote", front: `<blockquote>“${esc(q.text)}”</blockquote><p class="hint">Which policy is this about?</p>`, back: `<h3>${esc(p.name)}</h3><p class="meta">Quoted in the ${esc(q.section)} section of the policy essay.</p>` });
-        bq.push(() => mcq(`“${q.text}” Which policy?`, p.name, pick(names, 3, p.name), qid, true));
+        bq.push(() => mcq(`“${redact(q.text, p.name)}” Which policy?`, p.name, near([catNames(p), names], p.name), qid, true));
       });
       bq.push(() => mcq(`Where does ${p.name} rank (of 40)?`, rankBand(p.rank), pick(["1–5", "6–10", "11–20", "21–30", "31–36", "37–40"], 3, rankBand(p.rank)), id));
       bq.push(() => mcq(`${p.name}: verdict?`, p.verdict, pick(["Excellent", "Good", "Mid", "Bad", "Worst"], 3, p.verdict), id));
       const r = `${ratio(p.bcr_low)} to ${ratio(p.bcr_high)}`;
-      bq.push(() => mcq(`${p.name}: benefit per $1 spent (published range)?`, r, pick(B.filter((x) => x !== p).map((x) => `${ratio(x.bcr_low)} to ${ratio(x.bcr_high)}`), 3, r), id));
+      const rng = (x) => `${ratio(x.bcr_low)} to ${ratio(x.bcr_high)}`;
+      bq.push(() => mcq(`${p.name}: benefit per $1 spent (published range)?`, r, near([B.filter((x) => Math.abs(x.rank - p.rank) <= 4).map(rng), B.filter((x) => Math.abs(x.rank - p.rank) <= 10).map(rng)], r), id));
       bq.push(() => mcq(`${p.name}: evidence grade?`, p.grade, pick(uniq(B.map((x) => x.grade)), 3, p.grade), id));
       bq.push(() => mcq(`${p.name}: who benefits most?`, p.who_benefits, ["pro-poor", "broad", "regressive"].filter((x) => x !== p.who_benefits), id));
-      bq.push(() => mcq(`Which is about ${p.name}? “…”`, firstSentence(p.why, 1), pick(B.filter((x) => x !== p).map((x) => firstSentence(x.why, 1)), 3), id, true));
+      bq.push(() => mcq(`Which policy is this? “${redact(firstSentence(p.why, 2), p.name)}”`, p.name, near([catNames(p), names], p.name), id, true));
       const o = B[Math.floor(Math.random() * B.length)];
       if (o !== p) bq.push(() => mcq(`Which ranks higher: ${p.name} or ${o.name}?`, p.rank < o.rank ? p.name : o.name, [p.rank < o.rank ? o.name : p.name], id));
     });
@@ -114,9 +120,28 @@
       fc.push({ id: c.id, kind: c.unit, front: `<div class="k">${esc(c.unit)}</div><h3>${esc(c.term)}</h3><p class="hint">Define it. Where is it on the dashboard?</p>`,
         back: `<p>${esc(c.def)}</p>${c.formula ? `<div class="formula">${esc(c.formula)}</div>` : ""}${c.page ? `<p><b>On the page:</b> ${esc(c.page)}</p>` : ""}${c.example ? `<p class="meta"><b>Example:</b> ${esc(c.example)}</p>` : ""}` });
       (c.quiz || []).forEach((q) => fq.push(() => mcq(q.q, q.c[q.a], q.c.filter((_, i) => i !== q.a), c.id)));
-      fq.push(() => mcq(`Which term means: “${c.def}”`, c.term, pick(F.map((x) => x.term), 3, c.term), c.id, true));
+      fq.push(() => mcq(`Which term means: “${c.def}”`, c.term, near([F.filter((x) => x.unit === c.unit).map((x) => x.term), F.map((x) => x.term)], c.term), c.id, true));
     });
     DECKS = { health: { cards: hc, quiz: hq }, finance: { cards: fc, quiz: fq }, bcr: { cards: bc, quiz: bq } };
+  }
+  // Wrong answers drawn from the closest pools first (same topic, tier, category),
+  // so the right answer can't be spotted by subject alone.
+  function near(pools, answer, n) {
+    const out = [], seen = new Set([answer]);
+    for (const pool of pools) {
+      for (const x of shuffle(pool)) { if (x != null && x !== "" && !seen.has(x)) { seen.add(x); out.push(x); if (out.length >= (n || 3)) return out; } }
+    }
+    return out;
+  }
+  const STOP = new Set(["with", "from", "that", "this", "into", "more", "less", "free", "care", "all", "the", "and", "for"]);
+  // Hide a policy's own name words so the text doesn't give the answer away
+  function redact(text, name) {
+    let t = String(text || "");
+    String(name || "").split(/[^A-Za-z]+/).filter((w) => w.length >= 4 && !STOP.has(w.toLowerCase())).forEach((w) => {
+      const stem = w.length > 5 ? w.slice(0, w.length - 2) : w;
+      t = t.replace(new RegExp("\\b" + stem + "[a-z]*", "gi"), "____");
+    });
+    return t;
   }
   const rankBand = (r) => r <= 5 ? "1–5" : r <= 10 ? "6–10" : r <= 20 ? "11–20" : r <= 30 ? "21–30" : r <= 36 ? "31–36" : "37–40";
   // the result sentence: usually the 2nd (the 1st describes the design)
