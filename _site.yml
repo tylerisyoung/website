@@ -16,6 +16,8 @@ navbar:
       href: datascience.html
     - text: "Financial Dashboard"
       href: FinancialDashboard.html
+    - text: "Health Pyramid"
+      href: HealthPyramid.html
     - text: "Contact"
       href: Contact.html
 output_dir: "docs"

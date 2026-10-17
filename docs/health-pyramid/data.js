@@ -1,0 +1,1227 @@
+window.HP_DATA=[
+{
+"id": "steps",
+"label": "10K steps",
+"title": "10,000 steps a day",
+"tier": "daily",
+"group": null,
+"blurb": "Walk. Every day. The single cheapest longevity habit with a clear dose-response curve.",
+"sources": [
+{
+"title": "Daily steps and all-cause mortality: a meta-analysis of 15 international cohorts",
+"authors": "Paluch AE, Bajpai S, Bassett DR, et al.",
+"year": 2022,
+"journal": "Lancet Public Health",
+"doi": "10.1016/S2468-2667(21)00302-9",
+"pmid": "35247352",
+"pmcid": "PMC9289978",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9289978/",
+"type": "meta-analysis",
+"summary": "Participant-level meta-analysis of 15 cohorts covering 47,471 adults followed for a median of 7.1 years with device-measured steps. Compared with the lowest quartile (about 3,500 steps/day), the highest quartile (about 10,900 steps/day) had a 53% lower risk of death (HR 0.47). Benefits levelled off around 6,000-8,000 steps/day in adults 60 and older and 8,000-10,000 in younger adults, so 10,000 is not a magic threshold.",
+"highlight": "Taking more steps per day was associated with a progressively lower risk of all-cause mortality, up to a level that varied by age."
+},
+{
+"title": "The association between daily step count and all-cause and cardiovascular mortality: a meta-analysis",
+"authors": "Banach M, Lewek J, Surma S, et al.",
+"year": 2023,
+"journal": "Eur J Prev Cardiol",
+"doi": "10.1093/eurjpc/zwad229",
+"pmid": "37555441",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/37555441/",
+"type": "meta-analysis",
+"summary": "Meta-analysis of 17 cohort studies with 226,889 participants followed for a median of 7.1 years. Each extra 1,000 steps/day was associated with a 15% lower risk of all-cause death, and each extra 500 steps/day with a 7% lower risk of cardiovascular death. The data are observational, so sicker people walking less (reverse causation) may inflate the benefit, but no upper limit of benefit was found.",
+"highlight": "A 1000-step increment was associated with a 15% decreased risk of all-cause mortality"
+},
+{
+"title": "Daily steps and health outcomes in adults: a systematic review and dose-response meta-analysis",
+"authors": "Ding D, Nguyen B, Nau T, et al.",
+"year": 2025,
+"journal": "Lancet Public Health",
+"doi": "10.1016/S2468-2667(25)00164-1",
+"pmid": "40713949",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/40713949/",
+"type": "meta-analysis",
+"summary": "Systematic review of 57 prospective studies (31 in meta-analyses) linking device-measured steps to mortality, heart disease, cancer, diabetes, dementia, depression and falls. Compared with 2,000 steps/day, 7,000 steps/day was associated with 47% lower all-cause mortality, 25% lower cardiovascular disease incidence and 38% lower dementia risk. Most gains came by 5,000-7,000 steps/day, and several outcomes rested on only two to four studies.",
+"highlight": "7000 steps per day is associated with clinically meaningful improvements in health outcomes and might be a more realistic and achievable target for some"
+}
+]
+},
+{
+"id": "sauna",
+"label": "Sauna",
+"title": "Sauna",
+"tier": "daily",
+"group": null,
+"blurb": "Regular heat exposure, roughly 20 minutes at 80°C+, ideally 4–7 sessions a week.",
+"sources": [
+{
+"title": "Association between sauna bathing and fatal cardiovascular and all-cause mortality events",
+"authors": "Laukkanen T, Khan H, Zaccardi F, Laukkanen JA",
+"year": 2015,
+"journal": "JAMA Intern Med",
+"doi": "10.1001/jamainternmed.2014.8187",
+"pmid": "25705824",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/25705824/",
+"type": "cohort",
+"summary": "Prospective cohort of 2,315 middle-aged Finnish men (Kuopio study) followed for a median of 20.7 years. Men using the sauna 4-7 times a week had a 63% lower risk of sudden cardiac death (HR 0.37) than once-a-week users, with similar trends for heart disease and all-cause death. It is one observational cohort of men only, and frequent sauna use may partly mark better health, wealth and leisure time.",
+"highlight": "Increased frequency of sauna bathing is associated with a reduced risk of SCD, CHD, CVD, and all-cause mortality."
+},
+{
+"title": "Sauna bathing is inversely associated with dementia and Alzheimer's disease in middle-aged Finnish men",
+"authors": "Laukkanen T, Kunutsor S, Kauhanen J, Laukkanen JA",
+"year": 2017,
+"journal": "Age Ageing",
+"doi": "10.1093/ageing/afw212",
+"pmid": "27932366",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/27932366/",
+"type": "cohort",
+"summary": "Same Kuopio cohort of 2,315 men aged 42-60, followed about 20 years for dementia and Alzheimer's diagnoses. Compared with once a week, sauna use 4-7 times a week was associated with a 66% lower dementia risk (HR 0.34) and 65% lower Alzheimer's risk. Case numbers in the top group were small and the cohort is all male and Finnish, so this is a hypothesis, not proof.",
+"highlight": "moderate to high frequency of sauna bathing was associated with lowered risks of dementia and Alzheimer's disease"
+},
+{
+"title": "Cardiovascular and Other Health Benefits of Sauna Bathing: A Review of the Evidence",
+"authors": "Laukkanen JA, Laukkanen T, Kunutsor SK",
+"year": 2018,
+"journal": "Mayo Clin Proc",
+"doi": "10.1016/j.mayocp.2018.04.008",
+"pmid": "30077204",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/30077204/",
+"type": "review",
+"summary": "Narrative review of observational, experimental and interventional studies on Finnish sauna bathing and health. It reports links to lower blood pressure, cardiovascular disease, dementia and mortality, with plausible mechanisms such as better endothelial function and reduced arterial stiffness. It is written largely by the same group that produced the main cohort data, and randomized evidence on hard outcomes is lacking.",
+"highlight": "regular sauna bathing may improve cardiovascular function via improved endothelium-dependent dilatation, reduced arterial stiffness, modulation of the autonomic nervous system"
+}
+]
+},
+{
+"id": "wimhof",
+"label": "Wim Hof breathing",
+"title": "Wim Hof breathing",
+"tier": "daily",
+"group": null,
+"blurb": "Rounds of deep cyclic breathing followed by breath holds. Sit or lie down, never in water or while driving.",
+"sources": [
+{
+"title": "Voluntary activation of the sympathetic nervous system and attenuation of the innate immune response in humans",
+"authors": "Kox M, van Eijk LT, Zwaag J, et al.",
+"year": 2014,
+"journal": "Proc Natl Acad Sci U S A",
+"doi": "10.1073/pnas.1322174111",
+"pmid": "24799686",
+"pmcid": "PMC4034215",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4034215/",
+"type": "RCT",
+"summary": "Small randomized trial in which 12 healthy men trained 10 days in Wim Hof-style breathing, meditation and cold exposure, versus 12 untrained controls, before an injection of bacterial endotoxin. The trained group had sharply higher adrenaline, higher anti-inflammatory IL-10, lower inflammatory cytokines and fewer flu-like symptoms. With 24 young men, a lab endotoxin model and no long-term outcomes, it shows a physiological effect, not a health benefit in daily life.",
+"highlight": "voluntary activation of the sympathetic nervous system results in epinephrine release and subsequent suppression of the innate immune response in humans in vivo"
+},
+{
+"title": "Effect of breathwork on stress and mental health: A meta-analysis of randomised-controlled trials",
+"authors": "Fincham GW, Strauss C, Montero-Marin J, Cavanagh K",
+"year": 2023,
+"journal": "Sci Rep",
+"doi": "10.1038/s41598-022-27247-y",
+"pmid": "36624160",
+"pmcid": "PMC9828383",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9828383/",
+"type": "meta-analysis",
+"summary": "Meta-analysis of 12 RCTs (785 adults) on breathwork of many styles versus non-breathwork controls, with secondary analyses on anxiety and depression. Breathwork produced a small-to-medium reduction in self-reported stress (g = -0.35), with similar effects on anxiety and depressive symptoms. Most trials had moderate risk of bias and few tested Wim Hof breathing specifically, and the authors warn against hype outrunning evidence.",
+"highlight": "we urge caution and advocate for nuanced research approaches with low risk-of-bias study designs to avoid a miscalibration between hype and evidence"
+},
+{
+"title": "Does the Wim Hof Method have a beneficial impact on physiological and psychological outcomes in healthy and non-healthy participants? A systematic review",
+"authors": "Almahayni O, Hammond L",
+"year": 2024,
+"journal": "PLoS One",
+"doi": "10.1371/journal.pone.0286933",
+"pmid": "38478473",
+"pmcid": "PMC10936795",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10936795/",
+"type": "systematic review",
+"summary": "Systematic review of studies on the Wim Hof Method or its breathing component, finding only nine papers from eight trials. The most consistent signal was an anti-inflammatory effect via raised adrenaline; effects on exercise performance and breathing parameters were mixed. The evidence base is tiny and heterogeneous, so claims beyond short-term inflammation changes are not well supported.",
+"highlight": "the findings of this review show promising use of WHM in the inflammatory response category"
+}
+]
+},
+{
+"id": "dailydozen",
+"label": "Daily Dozen",
+"title": "Dr. Greger's Daily Dozen",
+"tier": "daily",
+"group": null,
+"blurb": "Greger's checklist: beans, berries, other fruit, cruciferous veg, greens, other veg, flaxseed, nuts & seeds, herbs & spices, whole grains, water, exercise. Evidence below is for its main food groups.",
+"sources": [
+{
+"title": "Fruit and vegetable intake and the risk of cardiovascular disease, total cancer and all-cause mortality-a systematic review and dose-response meta-analysis of prospective studies",
+"authors": "Aune D, Giovannucci E, Boffetta P, et al.",
+"year": 2017,
+"journal": "Int J Epidemiol",
+"doi": "10.1093/ije/dyw319",
+"pmid": "28338764",
+"pmcid": "PMC5837313",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5837313/",
+"type": "meta-analysis",
+"summary": "Dose-response meta-analysis of 95 prospective studies on fruit and vegetable intake and heart disease, cancer and death. Each 200 g/day was associated with 10% lower all-cause mortality, with risk falling up to about 800 g/day (roughly 10 servings). The studies are observational and produce eaters tend to have healthier lifestyles, though the dose-response pattern is consistent.",
+"highlight": "Fruit and vegetable intakes were associated with reduced risk of cardiovascular disease, cancer and all-cause mortality."
+},
+{
+"title": "Whole grain consumption and risk of cardiovascular disease, cancer, and all cause and cause specific mortality: systematic review and dose-response meta-analysis of prospective studies",
+"authors": "Aune D, Keum N, Giovannucci E, et al.",
+"year": 2016,
+"journal": "BMJ",
+"doi": "10.1136/bmj.i2716",
+"pmid": "27301975",
+"pmcid": "PMC4908315",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4908315/",
+"type": "meta-analysis",
+"summary": "Dose-response meta-analysis of 45 prospective studies on whole grain intake. Each 90 g/day (about three servings) was associated with 19% lower coronary heart disease risk and 17% lower all-cause mortality. Refined grains and white rice showed little association, and residual confounding by overall healthy diet cannot be ruled out.",
+"highlight": "whole grain intake is associated with a reduced risk of coronary heart disease, cardiovascular disease, and total cancer, and mortality from all causes"
+},
+{
+"title": "Nut consumption and risk of cardiovascular disease, total cancer, all-cause and cause-specific mortality: a systematic review and dose-response meta-analysis of prospective studies",
+"authors": "Aune D, Keum N, Giovannucci E, et al.",
+"year": 2016,
+"journal": "BMC Med",
+"doi": "10.1186/s12916-016-0730-3",
+"pmid": "27916000",
+"pmcid": "PMC5137221",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5137221/",
+"type": "meta-analysis",
+"summary": "Dose-response meta-analysis of 20 prospective studies on nut intake and disease and death. A daily handful (28 g) was associated with 29% lower coronary heart disease risk and 22% lower all-cause mortality. These are observational associations for one component of the Daily Dozen; no trial has tested Greger's full checklist on hard outcomes.",
+"highlight": "Higher nut intake is associated with reduced risk of cardiovascular disease, total cancer and all-cause mortality"
+}
+]
+},
+{
+"id": "acv",
+"label": "Apple cider vinegar",
+"title": "Apple cider vinegar",
+"tier": "daily",
+"group": null,
+"blurb": "About 1 tablespoon diluted in water with a meal. Rinse after; it is hard on tooth enamel.",
+"sources": [
+{
+"title": "The effect of apple cider vinegar on lipid profiles and glycemic parameters: a systematic review and meta-analysis of randomized clinical trials",
+"authors": "Hadi A, Pourmasoumi M, Najafgholizadeh A, et al.",
+"year": 2021,
+"journal": "BMC Complement Med Ther",
+"doi": "10.1186/s12906-021-03351-w",
+"pmid": "34187442",
+"pmcid": "PMC8243436",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8243436/",
+"type": "meta-analysis",
+"summary": "Meta-analysis of nine clinical trials (10 arms) testing apple cider vinegar for at least two weeks. It lowered total cholesterol by about 6 mg/dL, fasting glucose by about 8 mg/dL and HbA1c by 0.5 points, with no effect on LDL, HDL, insulin or insulin resistance. Trials were small and highly heterogeneous, and effects mostly appeared in people with type 2 diabetes.",
+"highlight": "We found a significant favorable effect of ACV consumption on FPG and blood lipid levels."
+},
+{
+"title": "Effects of apple cider vinegar on glycemic control and insulin sensitivity in patients with type 2 diabetes: A GRADE-assessed systematic review and dose-response meta-analysis of controlled clinical trials",
+"authors": "Arjmandfard D, Behzadi M, Sohrabi Z, et al.",
+"year": 2025,
+"journal": "Front Nutr",
+"doi": "10.3389/fnut.2025.1528383",
+"pmid": "39949546",
+"pmcid": "PMC11821484",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11821484/",
+"type": "meta-analysis",
+"summary": "Dose-response meta-analysis of seven controlled trials of apple cider vinegar in people with type 2 diabetes. Vinegar lowered fasting blood sugar by about 22 mg/dL and HbA1c by about 1.5 points, with no change in insulin resistance. Only seven small trials were pooled, and the effects apply to diabetics, not healthy people.",
+"highlight": "ACV had positive effects on FBS and HbA1c in T2DM patients."
+},
+{
+"title": "Vinegar Consumption and Health: An Umbrella Review of Meta-Analyses of Randomized Controlled Trials",
+"authors": "Shahmohammadi F, Khosroshahi RA, Derakhshanian H, et al.",
+"year": 2026,
+"journal": "Food Sci Nutr",
+"doi": "10.1002/fsn3.71849",
+"pmid": "42110393",
+"pmcid": "PMC13149749",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13149749/",
+"type": "systematic review",
+"summary": "Umbrella review re-analysing 10 meta-analyses covering 38 trials of vinegar on cardiometabolic markers. Vinegar modestly improved fasting glucose (-9.4 mg/dL), HbA1c (-0.7%), body weight (-1.06 kg) and systolic blood pressure (-2.9 mmHg), with no effect on LDL, HDL, triglycerides, BMI or waist size. The effects are small, and a widely publicized 2024 BMJ Nutrition trial of apple cider vinegar for weight loss was retracted in 2025, so big weight-loss claims are unsupported.",
+"highlight": "Vinegar intake was associated with statistically significant improvements in FBG (moderate certainty), PPG (moderate certainty), HbA1c (moderate certainty)"
+}
+]
+},
+{
+"id": "creatine",
+"label": "Creatine",
+"title": "Creatine monohydrate",
+"tier": "daily",
+"group": "bj",
+"blurb": "Blueprint: 2.5 g in the Longevity Mix plus 5 g on its own.",
+"sources": [
+{
+"title": "Effect of creatine supplementation during resistance training on lean tissue mass and muscular strength in older adults: a meta-analysis",
+"authors": "Chilibeck PD, Kaviani M, Candow DG, et al.",
+"year": 2017,
+"journal": "Open Access Journal of Sports Medicine",
+"doi": "10.2147/OAJSM.S123529",
+"pmid": "29138605",
+"pmcid": "PMC5679696",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5679696/",
+"type": "meta-analysis",
+"summary": "This meta-analysis pooled 22 randomized trials (721 adults, mean age 57-70) comparing creatine with placebo during 7-52 weeks of resistance training. Creatine added about 1.4 kg more lean mass (95% CI 0.97-1.76 kg) and modestly larger gains in chest press and leg press strength. The benefit depends on lifting at the same time, and the strength effects are small to moderate.",
+"highlight": "creatine supplementation increases lean tissue mass and upper and lower body muscular strength during resistance training of older adults"
+},
+{
+"title": "Effects of creatine supplementation on cognitive function of healthy individuals: A systematic review of randomized controlled trials",
+"authors": "Avgerinos KI, Spyrou N, Bougioukas KI, et al.",
+"year": 2018,
+"journal": "Experimental Gerontology",
+"doi": "10.1016/j.exger.2018.04.013",
+"pmid": "29704637",
+"pmcid": "PMC6093191",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6093191/",
+"type": "systematic review",
+"summary": "This systematic review looked at 6 randomized trials (281 healthy people) testing oral creatine on cognitive tests. Short-term memory and reasoning may improve, while results for attention, executive function, and reaction time were conflicting and young people showed no change. The evidence base is small, so the cognitive case is promising but unproven, with the best signal in older, stressed, or vegetarian people.",
+"highlight": "Oral creatine administration may improve short-term memory and intelligence/reasoning of healthy individuals but its effect on other cognitive domains remains unclear"
+},
+{
+"title": "International Society of Sports Nutrition position stand: safety and efficacy of creatine supplementation in exercise, sport, and medicine",
+"authors": "Kreider RB, Kalman DS, Antonio J, et al.",
+"year": 2017,
+"journal": "Journal of the International Society of Sports Nutrition",
+"doi": "10.1186/s12970-017-0173-z",
+"pmid": "28615996",
+"pmcid": "PMC5469049",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5469049/",
+"type": "guideline",
+"summary": "This position stand from the International Society of Sports Nutrition reviews the research on creatine for performance, recovery, aging, and clinical uses. It concludes creatine reliably improves high-intensity exercise performance and training adaptations, and that doses up to 30 g/day for 5 years have been safe in healthy people. It is a consensus review by an industry-adjacent society rather than a fresh meta-analysis, but the core guidance of about 3-5 g/day is well supported.",
+"highlight": "short and long-term supplementation (up to 30 g/day for 5 years) is safe and well-tolerated in healthy individuals"
+}
+]
+},
+{
+"id": "collagen",
+"label": "Collagen",
+"title": "Collagen peptides",
+"tier": "daily",
+"group": "bj",
+"blurb": "Blueprint: collagen peptides at breakfast and mid-morning.",
+"sources": [
+{
+"title": "Effects of Oral Collagen for Skin Anti-Aging: A Systematic Review and Meta-Analysis",
+"authors": "Pu SY, Huang YL, Pu CM, et al.",
+"year": 2023,
+"journal": "Nutrients",
+"doi": "10.3390/nu15092080",
+"pmid": "37432180",
+"pmcid": "PMC10180699",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10180699/",
+"type": "meta-analysis",
+"summary": "This meta-analysis pooled 26 randomized trials (1,721 participants) of hydrolyzed collagen versus placebo for skin. Collagen significantly improved skin hydration and elasticity (both p < 0.00001), with hydration effects varying by collagen source and duration. The authors flag bias in many included trials, several of which are industry-funded, so the effect is real-looking but likely overstated.",
+"highlight": "the findings suggest that HC supplementation can have positive effects on skin health, but further large-scale randomized control trials are necessary"
+},
+{
+"title": "The effects of collagen peptide supplementation on body composition, collagen synthesis, and recovery from joint injury and exercise: a systematic review",
+"authors": "Khatri M, Naughton RJ, Clifford T, et al.",
+"year": 2021,
+"journal": "Amino Acids",
+"doi": "10.1007/s00726-021-03072-x",
+"pmid": "34491424",
+"pmcid": "PMC8521576",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8521576/",
+"type": "systematic review",
+"summary": "This systematic review covered 15 randomized trials of collagen peptides combined with exercise, mostly in recreational athletes. The clearest benefit was improved joint function and less joint pain, with 15 g/day raising collagen synthesis but not muscle protein synthesis compared with higher-quality protein. Collagen is not a substitute for regular protein for muscle, and the trials were small.",
+"highlight": "The results indicated that COL is most beneficial in improving joint functionality and reducing joint pain"
+},
+{
+"title": "Effect of collagen supplementation on knee osteoarthritis: an updated systematic review and meta-analysis of randomised controlled trials",
+"authors": "Simental-Mendía M, Ortega-Mata D, Acosta-Olivo CA, et al.",
+"year": 2025,
+"journal": "Clinical and Experimental Rheumatology",
+"doi": "10.55563/clinexprheumatol/kflfr5",
+"pmid": "39212129",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/39212129/",
+"type": "meta-analysis",
+"summary": "This meta-analysis pooled 11 randomized trials (870 people with knee osteoarthritis) of oral collagen-based supplements versus placebo. Collagen improved pain scores (mean difference -13.6) and function scores (mean difference -6.5). Heterogeneity was very high (I2 75-88%) and the collagen products varied, so the size of the benefit is uncertain.",
+"highlight": "The results of this meta-analysis suggest that oral collagen administration relieves OA symptoms"
+}
+]
+},
+{
+"id": "omega3",
+"label": "Omega-3",
+"title": "Omega-3 (EPA/DHA)",
+"tier": "daily",
+"group": "bj",
+"blurb": "Blueprint: EPA/DHA softgels.",
+"sources": [
+{
+"title": "Marine Omega-3 Supplementation and Cardiovascular Disease: An Updated Meta-Analysis of 13 Randomized Controlled Trials Involving 127 477 Participants",
+"authors": "Hu Y, Hu FB, Manson JE",
+"year": 2019,
+"journal": "Journal of the American Heart Association",
+"doi": "10.1161/JAHA.119.013543",
+"pmid": "31567003",
+"pmcid": "PMC6806028",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6806028/",
+"type": "meta-analysis",
+"summary": "This meta-analysis pooled 13 randomized trials (127,477 participants, mean 5 years) of marine omega-3 supplements. Even excluding REDUCE-IT, omega-3 lowered heart attack risk by about 8% (RR 0.92) and cardiovascular death by about 7% (RR 0.93), with larger doses linked to larger reductions. The relative reductions are small, so the absolute benefit for a healthy person is modest.",
+"highlight": "Marine omega-3 supplementation lowers risk for myocardial infarction, CHD death, total CHD, CVD death, and total CVD, even after exclusion of REDUCE-IT"
+},
+{
+"title": "Omega-3 fatty acids for the primary and secondary prevention of cardiovascular disease",
+"authors": "Abdelhamid AS, Brown TJ, Brainard JS, et al.",
+"year": 2020,
+"journal": "Cochrane Database of Systematic Reviews",
+"doi": "10.1002/14651858.CD003177.pub5",
+"pmid": "32114706",
+"pmcid": "PMC7049091",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7049091/",
+"type": "systematic review",
+"summary": "This Cochrane review analyzed 86 randomized trials (162,796 participants) lasting at least a year. Long-chain omega-3 had little or no effect on all-cause mortality (RR 0.97) or total cardiovascular events (RR 0.96), may slightly reduce coronary events (NNT 167), and cut triglycerides by about 15%. It is the most sober read of the evidence: fish oil is a triglyceride tool, not a broad heart-protection pill.",
+"highlight": "increasing LCn3 slightly reduces risk of coronary heart disease mortality and events, and reduces serum triglycerides"
+},
+{
+"title": "Omega-3 Fatty Acids for the Management of Hypertriglyceridemia: A Science Advisory From the American Heart Association",
+"authors": "Skulas-Ray AC, Wilson PWF, Harris WS, et al.",
+"year": 2019,
+"journal": "Circulation",
+"doi": "10.1161/CIR.0000000000000709",
+"pmid": "31422671",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/31422671/",
+"type": "guideline",
+"summary": "This American Heart Association science advisory reviews trial data on prescription-strength omega-3 (about 4 g/day EPA+DHA or EPA alone) for high triglycerides. At 4 g/day, omega-3 lowers very high triglycerides by 30% or more, and EPA-only cut major cardiovascular events by 25% in REDUCE-IT among statin-treated high-risk patients. These results apply to pharmacological doses in people with high triglycerides, not to a typical 1 g fish oil capsule.",
+"highlight": "In treatment of very high triglycerides with 4 g/d, EPA+DHA agents reduce triglycerides by ≥30%"
+}
+]
+},
+{
+"id": "prebiotic",
+"label": "Prebiotic fiber",
+"title": "Prebiotic fiber (GOS, inulin, arabinogalactan)",
+"tier": "daily",
+"group": "bj",
+"blurb": "Blueprint: a morning microbiome blend of galactooligosaccharides, inulin and arabinogalactan.",
+"sources": [
+{
+"title": "Effects of Dietary Fibers on Short-Chain Fatty Acids and Gut Microbiota Composition in Healthy Adults: A Systematic Review",
+"authors": "Vinelli V, Biscotti P, Martini D, et al.",
+"year": 2022,
+"journal": "Nutrients",
+"doi": "10.3390/nu14132559",
+"pmid": "35807739",
+"pmcid": "PMC9268559",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9268559/",
+"type": "systematic review",
+"summary": "This systematic review examined 44 human intervention studies of fibers and prebiotics in healthy adults, with inulin the most studied (11 studies). Fibers shifted gut microbiota composition, but only 7 studies found a significant rise in total short-chain fatty acids while 26 found no difference in individual ones. The effect depends heavily on fiber type and dose, and the promised metabolic payoff is not consistently shown in healthy people.",
+"highlight": "DFs do not produce univocal significant increase in SCFA levels in apparently healthy adults"
+},
+{
+"title": "Effect of arabinogalactan on the gut microbiome: A randomized, double-blind, placebo-controlled, crossover trial in healthy adults",
+"authors": "Chen O, Sudakaran S, Blonquist T, et al.",
+"year": 2021,
+"journal": "Nutrition",
+"doi": "10.1016/j.nut.2021.111273",
+"pmid": "34004416",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/34004416/",
+"type": "RCT",
+"summary": "This crossover RCT gave 30 healthy adults 15 g/day of larch arabinogalactan (ResistAid) or maltodextrin for 6 weeks each. Arabinogalactan lowered the Firmicutes-to-Bacteroidetes ratio, nudged Bifidobacterium up, and caused no GI side effects, though it also reduced microbial diversity. The trial was small, industry-funded, and measured microbes rather than health outcomes.",
+"highlight": "ResistAid supplementation led to a significant decrease in the ratio of fecal Firmicutes to Bacteroidetes"
+},
+{
+"title": "Effect of Prebiotic Supplementation on Health Status in Adults with Prediabetes: A Systematic Review and Meta-Analysis of Randomized Clinical Trials",
+"authors": "Hosseini E, Mokhtari Z, Askari G",
+"year": 2025,
+"journal": "Journal of Nutrition",
+"doi": "10.1016/j.tjnut.2025.01.003",
+"pmid": "39800313",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/39800313/",
+"type": "meta-analysis",
+"summary": "This meta-analysis pooled 11 randomized trials (546 adults with prediabetes) of prebiotic supplements. Prebiotics reduced body fat percentage (SMD -1.27) but did not change fasting glucose, HbA1c, insulin resistance, cholesterol, triglycerides, BMI, or waist size. Certainty was very low for most outcomes, so metabolic claims for prebiotics remain weak.",
+"highlight": "There was no fair evidence that prebiotic consumption could improve metabolic and anthropometric features in subjects with prediabetes"
+}
+]
+},
+{
+"id": "protein",
+"label": "Protein",
+"title": "Protein",
+"tier": "daily",
+"group": "bj",
+"blurb": "Blueprint: Metabolic Protein powder mid-morning.",
+"sources": [
+{
+"title": "A systematic review, meta-analysis and meta-regression of the effect of protein supplementation on resistance training-induced gains in muscle mass and strength in healthy adults",
+"authors": "Morton RW, Murphy KT, McKellar SR, et al.",
+"year": 2018,
+"journal": "British Journal of Sports Medicine",
+"doi": "10.1136/bjsports-2017-097608",
+"pmid": "28698222",
+"pmcid": "PMC5867436",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5867436/",
+"type": "meta-analysis",
+"summary": "This meta-analysis pooled 49 randomized trials (1,863 participants) of protein supplementation during at least 6 weeks of resistance training. Protein added about 2.49 kg to one-rep-max strength and 0.30 kg of fat-free mass, with no further gains beyond a total intake of about 1.62 g/kg/day. The effects are modest, shrink with age, and depend on actually doing resistance training.",
+"highlight": "Dietary protein supplementation significantly enhanced changes in muscle strength and size during prolonged RET in healthy adults."
+},
+{
+"title": "Systematic review and meta-analysis of protein intake to support muscle mass and function in healthy adults",
+"authors": "Nunes EA, Colenso-Semple L, McKellar SR, et al.",
+"year": 2022,
+"journal": "Journal of Cachexia, Sarcopenia and Muscle",
+"doi": "10.1002/jcsm.12922",
+"pmid": "35187864",
+"pmcid": "PMC8978023",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8978023/",
+"type": "meta-analysis",
+"summary": "This meta-analysis of 74 randomized trials in healthy non-obese adults tested whether eating more daily protein increases lean mass, strength and physical function. More protein produced small gains in lean mass during resistance training (SMD 0.22), significant in adults 65+ at 1.2-1.59 g/kg/day and in younger adults at 1.6 g/kg/day or more. Effects on strength were slight and on physical function minimal, so protein is a helper to training, not a substitute.",
+"highlight": "increasing daily protein ingestion results in small additional gains in LBM and lower body muscle strength gains in healthy adults enrolled in resistance exercise training"
+},
+{
+"title": "Dose-response relationship between protein intake and muscle mass increase: a systematic review and meta-analysis of randomized controlled trials",
+"authors": "Tagawa R, Watanabe D, Ito K, et al.",
+"year": 2020,
+"journal": "Nutrition Reviews",
+"doi": "10.1093/nutrit/nuaa104",
+"pmid": "33300582",
+"pmcid": "PMC7727026",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7727026/",
+"type": "meta-analysis",
+"summary": "This dose-response meta-analysis included 105 articles (5,402 participants) from randomized trials of protein intake and lean body mass. Each extra 0.1 g/kg/day of protein was linked to 0.39 kg more lean mass below a total intake of 1.3 g/kg/day, but only 0.12 kg above it. The practical takeaway is diminishing returns: raising protein matters most for people starting from low intake.",
+"highlight": "These findings suggest that slightly increasing current protein intake for several months"
+}
+]
+},
+{
+"id": "adaptogens",
+"label": "Ashwagandha & Rhodiola",
+"title": "Ashwagandha & Rhodiola",
+"tier": "daily",
+"group": "bj",
+"blurb": "Blueprint: one ashwagandha & rhodiola capsule in the morning.",
+"sources": [
+{
+"title": "Effect of Ashwagandha (Withania somnifera) extract on sleep: A systematic review and meta-analysis",
+"authors": "Cheah KL, Norhayati MN, Husniati Yaacob L, et al.",
+"year": 2021,
+"journal": "PLoS One",
+"doi": "10.1371/journal.pone.0257843",
+"pmid": "34559859",
+"pmcid": "PMC8462692",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8462692/",
+"type": "meta-analysis",
+"summary": "This meta-analysis pooled 5 randomized trials (400 adults) of ashwagandha extract versus placebo for sleep. Ashwagandha had a small but significant effect on overall sleep (SMD -0.59), strongest in people with insomnia, at 600 mg/day or more, and over 8 weeks or longer. Only five trials were available and long-term safety data are thin, with rare liver injury reported elsewhere.",
+"highlight": "Ashwagandha extract exhibited a small but significant effect on overall sleep"
+},
+{
+"title": "The effect of Withania somnifera (Ashwagandha) on mental health symptoms in individuals with mental disorders: systematic review and meta-analysis",
+"authors": "Marchi M, Grenzi P, Travascio A, et al.",
+"year": 2025,
+"journal": "BJPsych Open",
+"doi": "10.1192/bjo.2025.10885",
+"pmid": "41140145",
+"pmcid": "PMC12569615",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12569615/",
+"type": "meta-analysis",
+"summary": "This meta-analysis pooled 14 randomized trials (713 people with mental disorders, mostly anxiety) using a median 600 mg/day of ashwagandha for about 8 weeks. Ashwagandha improved anxiety (outlier-corrected SMD -1.13), stress, and sleep quality, with no difference in tolerability versus comparators. Trials were few, small, and highly heterogeneous, and the depression effect did not hold up in Bayesian analysis.",
+"highlight": "We found evidence supporting the effectiveness of Withania somnifera in treating anxiety symptoms"
+},
+{
+"title": "Rhodiola rosea for physical and mental fatigue: a systematic review",
+"authors": "Ishaque S, Shamseer L, Bukutu C, et al.",
+"year": 2012,
+"journal": "BMC Complementary and Alternative Medicine",
+"doi": "10.1186/1472-6882-12-70",
+"pmid": "22643043",
+"pmcid": "PMC3541197",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3541197/",
+"type": "systematic review",
+"summary": "This systematic review assessed 11 controlled trials of Rhodiola rosea for physical and mental fatigue. Two of six trials found benefit for physical fatigue and three of five found benefit for mental fatigue. Every included study had high or unclear risk of bias, so Rhodiola's evidence is weak and inconsistent.",
+"highlight": "While some evidence suggests that the herb may be helpful for enhancing physical performance and alleviating mental fatigue"
+}
+]
+},
+{
+"id": "carotenoids",
+"label": "Astaxanthin · Lutein · Lycopene",
+"title": "Astaxanthin, lutein & lycopene",
+"tier": "daily",
+"group": "bj",
+"blurb": "Blueprint: the Advanced Antioxidants softgel (astaxanthin 12 mg, lutein 15 mg, lycopene 15 mg plus vitamin K).",
+"sources": [
+{
+"title": "The Effect of Lutein/Zeaxanthin Intake on Human Macular Pigment Optical Density: A Systematic Review and Meta-Analysis",
+"authors": "Wilson LM, Tharmarajah S, Jia Y, et al.",
+"year": 2021,
+"journal": "Advances in Nutrition",
+"doi": "10.1093/advances/nmab071",
+"pmid": "34157098",
+"pmcid": "PMC8634499",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8634499/",
+"type": "meta-analysis",
+"summary": "This systematic review and meta-analysis pooled 46 studies (3,189 adults with healthy eyes) testing lutein/zeaxanthin from supplements or food on macular pigment optical density (MPOD). Intakes under 5 mg/day showed no significant change, while 5 to under 20 mg/day raised MPOD by 0.04 units and 20 mg/day or more raised it by 0.11 units over 3-12 months. MPOD is a surrogate marker, and the authors note it is still unclear what dose or duration produces a clinically meaningful change in vision.",
+"highlight": "MPOD increased with lutein/zeaxanthin intake, particularly at higher doses, among adults with healthy eyes."
+},
+{
+"title": "Tomato and lycopene supplementation and cardiovascular risk factors: A systematic review and meta-analysis",
+"authors": "Cheng HM, Koutsidis G, Lodge JK, et al.",
+"year": 2017,
+"journal": "Atherosclerosis",
+"doi": "10.1016/j.atherosclerosis.2017.01.009",
+"pmid": "28129549",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/28129549/",
+"type": "meta-analysis",
+"summary": "This meta-analysis pooled 21 intervention trials in adults testing tomato products or lycopene supplements on blood lipids, endothelial function, blood pressure and inflammation markers. Lycopene supplements lowered systolic blood pressure by 5.66 mmHg, while tomato products lowered LDL cholesterol by 0.22 mmol/L and improved flow-mediated dilation by 2.53%. Most other outcomes were unchanged, the trials were small and short, and these are risk-factor changes, not proof of fewer heart attacks or strokes.",
+"highlight": "increasing the intake of these has positive effects on blood lipids, blood pressure and endothelial function"
+},
+{
+"title": "Systematic Review and Meta-Analysis on the Effects of Astaxanthin on Human Skin Ageing",
+"authors": "Zhou X, Cao Q, Orfila C, et al.",
+"year": 2021,
+"journal": "Nutrients",
+"doi": "10.3390/nu13092917",
+"pmid": "34578794",
+"pmcid": "PMC8472736",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8472736/",
+"type": "meta-analysis",
+"summary": "This systematic review covered 11 human studies of astaxanthin and skin ageing, with a meta-analysis of 9 randomized placebo-controlled trials of oral astaxanthin. Oral astaxanthin improved skin moisture (SMD 0.53) and elasticity (SMD 0.77) but did not significantly reduce wrinkle depth (SMD -0.26, p = 0.11). The trials were few and small with notable heterogeneity, so evidence for a skin benefit is suggestive rather than firm.",
+"highlight": "Oral ASX supplementation significantly restored moisture content (SMD = 0.53; 95% CI = 0.05, 1.01; I2 = 52%; p = 0.03)"
+}
+]
+},
+{
+"id": "vitamink",
+"label": "Vitamin K1 + K2",
+"title": "Vitamin K1 + K2",
+"tier": "daily",
+"group": "bj",
+"blurb": "Blueprint: K1, K2 MK-4 and K2 MK-7, inside the Advanced Antioxidants softgel.",
+"sources": [
+{
+"title": "Effect of vitamin K on bone mineral density and fractures in adults: an updated systematic review and meta-analysis of randomised controlled trials",
+"authors": "Mott A, Bradley T, Wright K, et al.",
+"year": 2019,
+"journal": "Osteoporosis International",
+"doi": "10.1007/s00198-019-04949-0",
+"pmid": "31076817",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/31076817/",
+"type": "meta-analysis",
+"summary": "This updated systematic review identified 36 randomized trials of oral vitamin K (K1 and K2 forms) on bone mineral density and fractures in adults. In postmenopausal or osteoporotic patients, vitamin K was linked to lower odds of clinical fracture (OR 0.72), but this weakened to a non-significant OR 0.76 when restricted to low risk-of-bias trials, and vertebral fractures were unchanged. The authors conclude there is no evidence vitamin K improves bone density and the fracture signal is insufficient to confirm.",
+"highlight": "For post-menopausal or osteoporotic patients, there is no evidence that vitamin K affects bone mineral density or vertebral fractures"
+},
+{
+"title": "Three-year low-dose menaquinone-7 supplementation helps decrease bone loss in healthy postmenopausal women",
+"authors": "Knapen MH, Drummen NE, Smit E, et al.",
+"year": 2013,
+"journal": "Osteoporosis International",
+"doi": "10.1007/s00198-013-2325-6",
+"pmid": "23525894",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/23525894/",
+"type": "RCT",
+"summary": "This 3-year randomized placebo-controlled trial gave 244 healthy postmenopausal women 180 µg/day of vitamin K2 as MK-7 or placebo, measuring bone density by DXA. MK-7 improved vitamin K status and slowed the age-related decline in bone density and bone mineral content at the lumbar spine and femoral neck, but not at the total hip. It is a single trial in one population measuring bone density rather than fractures, so it supports but does not prove a fracture benefit.",
+"highlight": "MK-7 intake significantly improved vitamin K status and decreased the age-related decline in BMC and BMD at the lumbar spine and femoral neck"
+},
+{
+"title": "Vitamin K supplementation and vascular calcification: a systematic review and meta-analysis of randomized controlled trials",
+"authors": "Li T, Wang Y, Tu WP",
+"year": 2023,
+"journal": "Frontiers in Nutrition",
+"doi": "10.3389/fnut.2023.1115069",
+"pmid": "37252246",
+"pmcid": "PMC10218696",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10218696/",
+"type": "meta-analysis",
+"summary": "This meta-analysis pooled 14 randomized trials (1,533 patients, many with kidney or cardiovascular disease) testing vitamin K supplementation on vascular calcification. Vitamin K slowed coronary artery calcification score progression (mean difference -17.37, p = 0.04) and lowered dp-ucMGP, a marker of poor vitamin K status, with no excess adverse events. The calcification effect was small and borderline, came largely from patient populations, and the authors call for more rigorous trials.",
+"highlight": "VK supplementation has a significant effect on CAC scores, slowing down the progression of CAC"
+}
+]
+},
+{
+"id": "multivitamin",
+"label": "Multivitamin + D3",
+"title": "Multivitamin + vitamin D3",
+"tier": "daily",
+"group": "bj",
+"blurb": "Blueprint: two Essential Capsules (a broad multivitamin/mineral).",
+"sources": [
+{
+"title": "Effects of cocoa extract and a multivitamin on cognitive function: A randomized clinical trial",
+"authors": "Baker LD, Manson JE, Rapp SR, et al.",
+"year": 2023,
+"journal": "Alzheimer's & Dementia",
+"doi": "10.1002/alz.12767",
+"pmid": "36102337",
+"pmcid": "PMC10011015",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10011015/",
+"type": "RCT",
+"summary": "COSMOS-Mind randomized 2,262 older adults (mean age 73) in a 2x2 factorial design to a daily multivitamin-mineral, cocoa extract, or placebo for 3 years, with cognition tested by phone each year. The multivitamin produced a small but significant benefit on global cognition (mean z-score 0.07, p = 0.007), with gains in memory and executive function, while cocoa extract had no effect. The effect size is modest, the multivitamin result was a secondary endpoint, and the cohort was 89% non-Hispanic White, so confirmation is needed.",
+"highlight": "Daily MVM supplementation, relative to placebo, resulted in a statistically significant benefit on global cognition"
+},
+{
+"title": "Multivitamin Use and Mortality Risk in 3 Prospective US Cohorts",
+"authors": "Loftfield E, O'Connell CP, Abnet CC, et al.",
+"year": 2024,
+"journal": "JAMA Network Open",
+"doi": "10.1001/jamanetworkopen.2024.18729",
+"pmid": "38922615",
+"pmcid": "PMC11208972",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11208972/",
+"type": "cohort",
+"summary": "This analysis followed 390,124 initially healthy US adults across 3 prospective cohorts for up to 27 years, comparing daily multivitamin users to nonusers. Multivitamin use was not associated with lower all-cause mortality (adjusted HR 1.04 in the first half of follow-up), and results were similar for major causes of death. Observational data cannot rule out confounding, but the large size and long follow-up make a meaningful longevity benefit from multivitamins unlikely in healthy adults.",
+"highlight": "In this cohort study of US adults, MV use was not associated with a mortality benefit."
+},
+{
+"title": "Vitamin D Supplements and Prevention of Cancer and Cardiovascular Disease",
+"authors": "Manson JE, Cook NR, Lee IM, et al.",
+"year": 2019,
+"journal": "The New England Journal of Medicine",
+"doi": "10.1056/NEJMoa1809944",
+"pmid": "30415629",
+"pmcid": "PMC6425757",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6425757/",
+"type": "RCT",
+"summary": "The VITAL trial randomized 25,871 US adults aged 50+ (men) or 55+ (women) to 2,000 IU/day vitamin D3 or placebo, following them for a median of 5.3 years. Vitamin D3 did not lower invasive cancer (HR 0.96) or major cardiovascular events (HR 0.97), and all-cause mortality was unchanged (HR 0.99), though cancer death showed a non-significant trend (HR 0.83). Participants were mostly not vitamin D deficient, so the results argue against routine D3 for disease prevention in replete adults rather than against correcting a deficiency.",
+"highlight": "Supplementation with vitamin D did not result in a lower incidence of invasive cancer or cardiovascular events than placebo."
+}
+]
+},
+{
+"id": "caakg",
+"label": "CaAKG",
+"title": "Calcium alpha-ketoglutarate (CaAKG)",
+"tier": "daily",
+"group": "bj",
+"blurb": "Blueprint: part of the Longevity Mix.",
+"sources": [
+{
+"title": "Alpha-Ketoglutarate, an Endogenous Metabolite, Extends Lifespan and Compresses Morbidity in Aging Mice",
+"authors": "Asadi Shahmirzadi A, Edgar D, Liao CY, et al.",
+"year": 2020,
+"journal": "Cell Metabolism",
+"doi": "10.1016/j.cmet.2020.08.004",
+"pmid": "32877690",
+"pmcid": "PMC8508957",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8508957/",
+"type": "animal study",
+"summary": "This study fed middle-aged C57BL/6 mice calcium alpha-ketoglutarate (CaAKG) in their diet and tracked lifespan alongside longitudinal frailty and healthspan measures. CaAKG extended lifespan, reduced frailty and lowered systemic inflammatory cytokines, an effect the authors tie to induction of IL-10. These are mouse results only; no human lifespan or hard-outcome data exist for CaAKG.",
+"highlight": "We find that CaAKG promotes a longer, healthier life associated with a decrease in levels of systemic inflammatory cytokines."
+},
+{
+"title": "Rejuvant, a potential life-extending compound formulation with alpha-ketoglutarate and vitamins, conferred an average 8 year reduction in biological aging, after an average of 7 months of use, in the TruAge DNA methylation test",
+"authors": "Demidenko O, Barardo D, Budovskii V, et al.",
+"year": 2021,
+"journal": "Aging",
+"doi": "10.18632/aging.203736",
+"pmid": "34847066",
+"pmcid": "PMC8660611",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8660611/",
+"type": "cohort",
+"summary": "This retrospective analysis looked at DNA methylation age in 42 people who took Rejuvant, a CaAKG-plus-vitamin formulation, for an average of 7 months. Their measured biological age fell by an average of about 8 years. There was no placebo or control group, the sample was small and self-selected, and the authors themselves state placebo-controlled testing is required, so this is very weak evidence.",
+"highlight": "individuals showed an average decrease in biological aging of 8 years (p-value=6.538x10-12)"
+},
+{
+"title": "Alpha-ketoglutarate supplementation and BiologicaL agE in middle-aged adults (ABLE)-intervention study protocol",
+"authors": "Sandalova E, Goh J, Lim ZX, et al.",
+"year": 2023,
+"journal": "GeroScience",
+"doi": "10.1007/s11357-023-00813-6",
+"pmid": "37217632",
+"pmcid": "PMC10643463",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10643463/",
+"type": "RCT",
+"summary": "This paper describes the ABLE trial, a double-blind placebo-controlled RCT of 1 g/day sustained-release CaAKG for 6 months in 120 healthy 40-60-year-olds whose DNA methylation age exceeds their chronological age. The primary outcome is change in DNA methylation age, with secondary outcomes including inflammation, strength, arterial stiffness and aerobic capacity. It is a protocol, not results, and its existence underlines that properly controlled human evidence for CaAKG is still pending.",
+"highlight": "Alpha-Ketoglutarate (AKG) has been studied widely in model animals, but there are few studies testing its geroprotective properties in humans."
+}
+]
+},
+{
+"id": "taurine_glycine",
+"label": "Taurine & Glycine",
+"title": "Taurine & glycine",
+"tier": "daily",
+"group": "bj",
+"blurb": "Blueprint: both in the Longevity Mix (alongside glutathione, lysine, L-theanine, magnesium and vitamin C).",
+"sources": [
+{
+"title": "Taurine deficiency as a driver of aging",
+"authors": "Singh P, Gollapalli K, Mangiola S, et al.",
+"year": 2023,
+"journal": "Science",
+"doi": "10.1126/science.abn9257",
+"pmid": "37289866",
+"pmcid": "PMC10630957",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10630957/",
+"type": "animal study",
+"summary": "This multi-species study measured circulating taurine across age in mice, monkeys and humans and tested taurine supplementation in worms, mice and rhesus monkeys. Taurine levels declined with age, and supplementation extended healthspan and lifespan in mice and improved healthspan markers in monkeys, while lower taurine correlated with several age-related diseases in human cohorts. Human data were correlational only, and the authors say clinical trials are needed before taurine can be called an anti-aging supplement.",
+"highlight": "A reversal of this decline through taurine supplementation increased the health span (the period of healthy living) and life span in mice"
+},
+{
+"title": "Experimental Evidence Against Taurine Deficiency as a Driver of Aging in Humans",
+"authors": "Marcangeli V, Cefis M, Hammad R, et al.",
+"year": 2025,
+"journal": "Aging Cell",
+"doi": "10.1111/acel.70191",
+"pmid": "41061678",
+"pmcid": "PMC12507425",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12507425/",
+"type": "cohort",
+"summary": "This cross-sectional study measured circulating taurine in 137 physically inactive and active men aged 20-93. Taurine levels were not associated with age, muscle mass, strength, physical performance or mitochondrial function. It is a modest, men-only sample, but it directly challenges the idea that declining taurine drives human aging.",
+"highlight": "No association between circulating taurine levels and age, muscle mass, strength, physical performance, or mitochondrial function was observed"
+},
+{
+"title": "Supplementing Glycine and N-Acetylcysteine (GlyNAC) in Older Adults Improves Glutathione Deficiency, Oxidative Stress, Mitochondrial Dysfunction, Inflammation, Physical Function, and Aging Hallmarks: A Randomized Clinical Trial",
+"authors": "Kumar P, Liu C, Suliburk J, et al.",
+"year": 2023,
+"journal": "The Journals of Gerontology Series A",
+"doi": "10.1093/gerona/glac135",
+"pmid": "35975308",
+"pmcid": "PMC9879756",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9879756/",
+"type": "RCT",
+"summary": "This placebo-controlled trial randomized 24 older adults to glycine plus N-acetylcysteine (GlyNAC) or an alanine placebo for 16 weeks, with 12 young adults as a reference group. GlyNAC corrected glutathione deficiency and improved oxidative stress, mitochondrial function, inflammation, insulin resistance, gait speed, strength and blood pressure, and was well tolerated. With only 12 people per arm from a single research group, the results need independent replication before strong claims can be made.",
+"highlight": "GlyNAC supplementation in OA for 16-weeks was safe and well-tolerated."
+}
+]
+},
+{
+"id": "legs",
+"label": "Legs",
+"title": "Leg day",
+"tier": "weekly",
+"group": null,
+"blurb": "Squats, lunges, deadlifts, step-ups. Once a week, hard.",
+"sources": [
+{
+"title": "Association between muscular strength and mortality in men: prospective cohort study",
+"authors": "Ruiz JR, Sui X, Lobelo F, et al.",
+"year": 2008,
+"journal": "BMJ (Clinical research ed.)",
+"doi": "10.1136/bmj.a439",
+"pmid": "18595904",
+"pmcid": "PMC2453303",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2453303/",
+"type": "cohort",
+"summary": "Prospective cohort of 8,762 men aged 20-80 in the Aerobics Center Longitudinal Study, with strength measured by 1-rep max leg press and bench press and followed for about 19 years. Men in the middle and top thirds of strength had roughly 23-28% lower all-cause mortality than the weakest third, and the link held after adjusting for cardiorespiratory fitness. It is observational, men only, and combines leg and upper-body strength, so it shows strength tracks with survival rather than proving leg training causes it.",
+"highlight": "Muscular strength is inversely and independently associated with death from all causes and cancer in men"
+},
+{
+"title": "Exercise for preventing falls in older people living in the community",
+"authors": "Sherrington C, Fairhall NJ, Wallbank GK, et al.",
+"year": 2019,
+"journal": "The Cochrane database of systematic reviews",
+"doi": "10.1002/14651858.CD012424.pub2",
+"pmid": "30703272",
+"pmcid": "PMC6360922",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6360922/",
+"type": "systematic review",
+"summary": "Cochrane review of 108 randomised trials with 23,407 community-dwelling adults aged 60 and over, testing exercise programmes for fall prevention. Exercise cut the rate of falls by 23% (high-certainty evidence), and programmes combining balance and functional work with resistance training cut falls by about 34%. Resistance training alone had uncertain effects on falls, so leg strength work pays off most when paired with balance training.",
+"highlight": "Exercise programmes reduce the rate of falls and the number of people experiencing falls in older people living in the community"
+},
+{
+"title": "Progressive resistance strength training for improving physical function in older adults",
+"authors": "Liu CJ, Latham NK",
+"year": 2009,
+"journal": "The Cochrane database of systematic reviews",
+"doi": "10.1002/14651858.CD002759.pub2",
+"pmid": "19588334",
+"pmcid": "PMC4324332",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4324332/",
+"type": "systematic review",
+"summary": "Cochrane review of 121 randomised trials with 6,700 older adults doing progressive resistance training, usually 2-3 times a week at high intensity. Training produced a large gain in muscle strength (SMD 0.84) and a moderate-to-large improvement in getting out of a chair, with a smaller gain in gait speed. Effects on broad physical ability were small and adverse events were poorly reported, so the clearest benefit is strength and basic lower-body function.",
+"highlight": "This review provides evidence that PRT is an effective intervention for improving physical functioning in older people"
+}
+]
+},
+{
+"id": "armsback",
+"label": "Arms & Back",
+"title": "Arms & back day",
+"tier": "weekly",
+"group": null,
+"blurb": "Rows, pull-ups, curls, presses.",
+"sources": [
+{
+"title": "Muscle-strengthening activities are associated with lower risk and mortality in major non-communicable diseases: a systematic review and meta-analysis of cohort studies",
+"authors": "Momma H, Kawakami R, Honda T, et al.",
+"year": 2022,
+"journal": "British journal of sports medicine",
+"doi": "10.1136/bjsports-2021-105061",
+"pmid": "35228201",
+"pmcid": "PMC9209691",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9209691/",
+"type": "meta-analysis",
+"summary": "Systematic review and meta-analysis of 16 prospective cohort studies on muscle-strengthening activity and disease and death, independent of aerobic activity. Muscle-strengthening was linked to 10-17% lower risk of all-cause mortality, cardiovascular disease, total cancer and diabetes, with the biggest benefit at about 30-60 minutes per week. The curve was J-shaped, so more than an hour or so a week showed no added mortality benefit, and all included data are observational.",
+"highlight": "Muscle-strengthening activities were associated with a 10-17% lower risk of all-cause mortality, cardiovascular disease (CVD), total cancer, diabetes and lung cancer"
+},
+{
+"title": "Dose-response relationship between weekly resistance training volume and increases in muscle mass: A systematic review and meta-analysis",
+"authors": "Schoenfeld BJ, Ogborn D, Krieger JW",
+"year": 2017,
+"journal": "Journal of sports sciences",
+"doi": "10.1080/02640414.2016.1210197",
+"pmid": "27433992",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/27433992/",
+"type": "meta-analysis",
+"summary": "Meta-regression of 15 training studies (34 treatment groups) testing how weekly resistance training volume affects muscle growth. Each additional weekly set was associated with about 0.37% more muscle gain, and higher-volume groups gained about 3.9% more than lower-volume groups. The studies were small and short, and the three-level comparison (under 5, 5-9, 10+ sets per muscle) only trended toward significance.",
+"highlight": "The findings indicate a graded dose-response relationship whereby increases in RT volume produce greater gains in muscle hypertrophy"
+},
+{
+"title": "Effects of Resistance Training Frequency on Measures of Muscle Hypertrophy: A Systematic Review and Meta-Analysis",
+"authors": "Schoenfeld BJ, Ogborn D, Krieger JW",
+"year": 2016,
+"journal": "Sports medicine (Auckland, N.Z.)",
+"doi": "10.1007/s40279-016-0543-8",
+"pmid": "27102172",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/27102172/",
+"type": "meta-analysis",
+"summary": "Systematic review and meta-analysis of 10 trials comparing how often a muscle group is trained per week, with volume equated. Training a muscle twice a week produced a larger hypertrophy effect size than once a week (0.49 vs 0.30). Whether three times a week beats twice is unknown, and the evidence base is small, but hitting arms and back at least twice weekly is a reasonable target.",
+"highlight": "frequencies of training twice a week promote superior hypertrophic outcomes to once a week"
+}
+]
+},
+{
+"id": "fullbody",
+"label": "Full body",
+"title": "Full-body workout",
+"tier": "weekly",
+"group": null,
+"blurb": "One session that hits everything.",
+"sources": [
+{
+"title": "Efficacy of Split Versus Full-Body Resistance Training on Strength and Muscle Growth: A Systematic Review With Meta-Analysis",
+"authors": "Ramos-Campo DJ, Benito-Peinado PJ, Andreu-Caravaca L, et al.",
+"year": 2024,
+"journal": "Journal of strength and conditioning research",
+"doi": "10.1519/JSC.0000000000004774",
+"pmid": "38595233",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/38595233/",
+"type": "meta-analysis",
+"summary": "Systematic review and meta-analysis of 14 studies (392 healthy adults) comparing split routines with full-body routines. Strength gains in bench press and lower limbs, and muscle growth in arms, thighs and lean mass, were statistically similar between the two approaches. The studies were small and volume was matched, so the practical point is that full-body sessions work as well as splits and the choice can rest on schedule and preference.",
+"highlight": "does not significantly impact either strength gains or muscle hypertrophy when volume is equated"
+},
+{
+"title": "American College of Sports Medicine position stand. Progression models in resistance training for healthy adults",
+"authors": "American College of Sports Medicine",
+"year": 2009,
+"journal": "Medicine and science in sports and exercise",
+"doi": "10.1249/MSS.0b013e3181915670",
+"pmid": "19204579",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/19204579/",
+"type": "guideline",
+"summary": "ACSM position stand setting out evidence-based progression models for resistance training in healthy adults. It recommends 2-3 sessions a week for novices, 8-12 rep loads to start, large-muscle and multi-joint exercises before small ones, and emphasis on multi-joint lifts involving the whole body. It is a consensus document built largely on short training studies, and it is now dated (2009), though its core advice has held up.",
+"highlight": "It is also recommended that emphasis be placed on multiple-joint exercises especially those involving the total body"
+},
+{
+"title": "World Health Organization 2020 guidelines on physical activity and sedentary behaviour",
+"authors": "Bull FC, Al-Ansari SS, Biddle S, et al.",
+"year": 2020,
+"journal": "British journal of sports medicine",
+"doi": "10.1136/bjsports-2020-102955",
+"pmid": "33239350",
+"pmcid": "PMC7719906",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7719906/",
+"type": "guideline",
+"summary": "WHO 2020 physical activity guidelines, built by an expert group from updated systematic reviews across all ages and several special populations. Adults are advised to do 150-300 minutes of moderate aerobic activity weekly plus muscle-strengthening activity involving all major muscle groups on two or more days. This is a population-level minimum rather than an optimal program, but a full-body session twice a week satisfies the strength part in one go.",
+"highlight": "These guidelines highlight the importance of regularly undertaking both aerobic and muscle strengthening activities"
+}
+]
+},
+{
+"id": "run5k",
+"label": "Long run 5K+",
+"title": "Long run, 5K+",
+"tier": "weekly",
+"group": null,
+"blurb": "One easy long run a week of at least 5 km.",
+"sources": [
+{
+"title": "Is running associated with a lower risk of all-cause, cardiovascular and cancer mortality, and is the more the better? A systematic review and meta-analysis",
+"authors": "Pedisic Z, Shrestha N, Kovalchik S, et al.",
+"year": 2020,
+"journal": "British journal of sports medicine",
+"doi": "10.1136/bjsports-2018-100493",
+"pmid": "31685526",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/31685526/",
+"type": "meta-analysis",
+"summary": "Systematic review and meta-analysis of 14 studies from six prospective cohorts with 232,149 participants and 25,951 deaths. Any running was associated with 27% lower all-cause, 30% lower cardiovascular and 23% lower cancer mortality compared with no running. No dose-response was found for frequency, duration, pace or volume, so a single weekly run captures much of the benefit and more is not clearly better.",
+"highlight": "Any amount of running, even just once a week, is better than no running"
+},
+{
+"title": "Leisure-time running reduces all-cause and cardiovascular mortality risk",
+"authors": "Lee DC, Pate RR, Lavie CJ, et al.",
+"year": 2014,
+"journal": "Journal of the American College of Cardiology",
+"doi": "10.1016/j.jacc.2014.04.058",
+"pmid": "25082581",
+"pmcid": "PMC4131752",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4131752/",
+"type": "cohort",
+"summary": "Prospective cohort of 55,137 adults in the Aerobics Center Longitudinal Study followed for a mean of 15 years. Runners had 30% lower all-cause and 45% lower cardiovascular mortality than non-runners, about 3 extra years of life expectancy, and even under 6 miles a week was enough. It is observational and runners may differ from non-runners in other ways, but persistent runners over time saw the largest benefit.",
+"highlight": "Compared with nonrunners, runners had 30% and 45% lower adjusted risks of all-cause and cardiovascular mortality, respectively, with a 3-year life expectancy benefit"
+},
+{
+"title": "Cardiorespiratory fitness as a quantitative predictor of all-cause mortality and cardiovascular events in healthy men and women: a meta-analysis",
+"authors": "Kodama S, Saito K, Tanaka S, et al.",
+"year": 2009,
+"journal": "JAMA",
+"doi": "10.1001/jama.2009.681",
+"pmid": "19454641",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/19454641/",
+"type": "meta-analysis",
+"summary": "Meta-analysis of 33 cohort studies with about 103,000 healthy adults linking measured cardiorespiratory fitness to mortality and heart disease. Each 1-MET higher fitness level, roughly a 1 km/h faster running speed, was associated with 13% lower all-cause mortality and 15% lower cardiovascular events. Low-fit people (under 7.9 METs) had 70% higher mortality than high-fit people, so regular running is a practical way to move up the fitness scale.",
+"highlight": "Better CRF was associated with lower risk of all-cause mortality and CHD/CVD"
+}
+]
+},
+{
+"id": "fish",
+"label": "Fish",
+"title": "Fish",
+"tier": "weekly",
+"group": null,
+"blurb": "Fatty fish (salmon, sardines, mackerel) once or twice a week.",
+"sources": [
+{
+"title": "Seafood Long-Chain n-3 Polyunsaturated Fatty Acids and Cardiovascular Disease: A Science Advisory From the American Heart Association",
+"authors": "Rimm EB, Appel LJ, Chiuve SE, et al.",
+"year": 2018,
+"journal": "Circulation",
+"doi": "10.1161/CIR.0000000000000574",
+"pmid": "29773586",
+"pmcid": "PMC6903778",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6903778/",
+"type": "guideline",
+"summary": "American Heart Association science advisory reviewing observational studies and trials on seafood omega-3 fats and cardiovascular disease. It concludes that 1-2 seafood meals per week lower the risk of heart failure, coronary heart disease, ischemic stroke and sudden cardiac death. The benefit is clearest when fish replaces less healthy foods, and the authors note longer dietary trials are still needed.",
+"highlight": "We conclude that 1 to 2 seafood meals per week be included to reduce the risk of congestive heart failure, coronary heart disease"
+},
+{
+"title": "Fish intake, contaminants, and human health: evaluating the risks and the benefits",
+"authors": "Mozaffarian D, Rimm EB",
+"year": 2006,
+"journal": "JAMA",
+"doi": "10.1001/jama.296.15.1885",
+"pmid": "17047219",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/17047219/",
+"type": "review",
+"summary": "Systematic review and meta-analysis in JAMA weighing the cardiovascular benefits of fish against risks from mercury, dioxins and PCBs. Eating 1-2 servings a week, especially oily fish, was associated with 36% lower coronary death and 17% lower total mortality. Benefits outweigh contaminant risks for most adults, but very high eaters and women of childbearing age should limit high-mercury species.",
+"highlight": "reduces risk of coronary death by 36% (95% confidence interval, 20%-50%; P<.001) and total mortality by 17%"
+},
+{
+"title": "Fish Consumption and the Risk of Chronic Disease: An Umbrella Review of Meta-Analyses of Prospective Cohort Studies",
+"authors": "Jayedi A, Shab-Bidar S",
+"year": 2020,
+"journal": "Advances in nutrition (Bethesda, Md.)",
+"doi": "10.1093/advances/nmaa029",
+"pmid": "32207773",
+"pmcid": "PMC7490170",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7490170/",
+"type": "meta-analysis",
+"summary": "Umbrella review of 34 meta-analyses covering 298 prospective cohort studies on fish intake and 40 chronic disease outcomes. Each extra 100 g/day of fish was linked to 8% lower all-cause mortality and 25% lower cardiovascular mortality, with lower risk of heart attack, stroke, heart failure and depression. The evidence is observational and rated moderate at best, and there was no clear link with most cancers.",
+"highlight": "evidence of moderate quality suggests that fish consumption is associated with a lower risk of cardiovascular disease, depression, and mortality"
+}
+]
+},
+{
+"id": "redmeat",
+"label": "Red meat",
+"title": "Red meat",
+"tier": "weekly",
+"group": null,
+"blurb": "Unprocessed, once a week. The benefit lives in moderation.",
+"sources": [
+{
+"title": "Meat nutritional composition and nutritive role in the human diet",
+"authors": "Pereira PM, Vicente AF",
+"year": 2013,
+"journal": "Meat science",
+"doi": "10.1016/j.meatsci.2012.09.018",
+"pmid": "23273468",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/23273468/",
+"type": "review",
+"summary": "Narrative review of the nutritional composition of meat and its role in the human diet. It describes meat as a rich source of high-quality protein, iron, vitamin B12 and other B vitamins, zinc, selenium and phosphorus. It is a composition review rather than an outcome study, and it explicitly advises moderation and separating fresh meat cuts from processed products.",
+"highlight": "Meat is a valuable source of high biological value protein, iron, vitamin B12 as well as other B complex vitamins, zinc, selenium and phosphorus"
+},
+{
+"title": "Red and Processed Meat Consumption and Risk for All-Cause Mortality and Cardiometabolic Outcomes: A Systematic Review and Meta-analysis of Cohort Studies",
+"authors": "Zeraatkar D, Han MA, Guyatt GH, et al.",
+"year": 2019,
+"journal": "Annals of internal medicine",
+"doi": "10.7326/M19-0655",
+"pmid": "31569213",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/31569213/",
+"type": "meta-analysis",
+"summary": "Systematic review and meta-analysis of 55 cohorts with over 4 million participants on red and processed meat and mortality and cardiometabolic disease. Cutting unprocessed red meat by 3 servings a week was associated with a very small reduction in cardiovascular death, stroke, heart attack and type 2 diabetes, with similar small effects for processed meat. The evidence was low certainty, which supports eating unprocessed red meat in moderation but does not show high intake is harmless.",
+"highlight": "between red and processed meat consumption and all-cause mortality and adverse cardiometabolic outcomes is very small, and the evidence is of low certainty"
+},
+{
+"title": "Meat consumption and risk of 25 common conditions: outcome-wide analyses in 475,000 men and women in the UK Biobank study",
+"authors": "Papier K, Fensom GK, Knuppel A, et al.",
+"year": 2021,
+"journal": "BMC medicine",
+"doi": "10.1186/s12916-021-01922-9",
+"pmid": "33648505",
+"pmcid": "PMC7923515",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7923515/",
+"type": "cohort",
+"summary": "UK Biobank cohort of about 475,000 adults followed for 8 years, testing meat intake against 25 common non-cancer conditions. Each extra 70 g/day of red and processed meat was linked to 15% higher heart disease risk and 30% higher diabetes risk, while unprocessed red meat was linked to 20% lower iron-deficiency anaemia per 50 g/day. Much of the excess risk shrank after adjusting for BMI, so the honest read is that a modest amount supplies iron while high intake carries risk.",
+"highlight": "Higher consumption of unprocessed red meat alone was associated with a lower risk of iron deficiency anaemia"
+}
+]
+},
+{
+"id": "organ",
+"label": "Liver",
+"title": "Liver & organ meat",
+"tier": "weekly",
+"group": null,
+"blurb": "A small serving once a week; more than that risks too much vitamin A.",
+"sources": [
+{
+"title": "Priority Micronutrient Density in Foods",
+"authors": "Beal T, Ortenzi F",
+"year": 2022,
+"journal": "Frontiers in nutrition",
+"doi": "10.3389/fnut.2022.806566",
+"pmid": "35321287",
+"pmcid": "PMC8936507",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8936507/",
+"type": "review",
+"summary": "Analysis of an aggregated global food composition database ranking foods by density of six commonly lacking micronutrients: iron, zinc, folate, vitamin A, calcium and vitamin B12. Organ meats ranked as the top source of these priority micronutrients, ahead of small fish, leafy greens, shellfish and beef. This is a nutrient-density ranking, not a health outcome study, so it shows what organ meat supplies rather than proving it improves health.",
+"highlight": "the top sources of priority micronutrients are organs, small fish, dark green leafy vegetables, bivalves, crustaceans, goat, beef, eggs"
+},
+{
+"title": "Characterization of Hanwoo Bovine By-products by Means of Yield, Physicochemical and Nutritional Compositions",
+"authors": "Seong PN, Kang GH, Park KM, et al.",
+"year": 2014,
+"journal": "Korean journal for food science of animal resources",
+"doi": "10.5851/kosfa.2014.34.4.434",
+"pmid": "26761281",
+"pmcid": "PMC4662147",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4662147/",
+"type": "review",
+"summary": "Laboratory analysis of yield and nutrient composition across edible by-products of Korean Hanwoo cattle, including liver, kidney, heart and spleen. Liver had the highest vitamin A, riboflavin, niacin and copper content of the organs tested, and most by-products were good sources of essential amino acids and minerals. It is a single-breed composition study with no health outcomes, so it supports liver as nutrient-dense but nothing more.",
+"highlight": "Liver had the highest vitamin A, B2 and niacin contents whereas the highest B1 and B5 contents were found in kidney"
+},
+{
+"title": "The acute and chronic toxic effects of vitamin A",
+"authors": "Penniston KL, Tanumihardjo SA",
+"year": 2006,
+"journal": "The American journal of clinical nutrition",
+"doi": "10.1093/ajcn/83.2.191",
+"pmid": "16469975",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/16469975/",
+"type": "review",
+"summary": "Review in the American Journal of Clinical Nutrition of the acute and chronic toxic effects of preformed vitamin A from liver and supplements. It notes that preformed vitamin A intake often exceeds the RDA in developed countries and that intakes only about twice the RDA have been linked to osteoporosis and hip fracture. Liver is very high in preformed vitamin A, so a small weekly portion is sensible, and pregnant women and supplement users should be especially careful.",
+"highlight": "Osteoporosis and hip fracture are associated with preformed vitamin A intakes that are only twice the current RDA"
+}
+]
+},
+{
+"id": "run10k",
+"label": "Long run 10K+",
+"title": "Long run, 10K+",
+"tier": "monthly",
+"group": null,
+"blurb": "Once a month, go long: 10 km or more.",
+"sources": [
+{
+"title": "Association of Cardiorespiratory Fitness With Long-term Mortality Among Adults Undergoing Exercise Treadmill Testing",
+"authors": "Mandsager K, Harb S, Cremer P, et al.",
+"year": 2018,
+"journal": "JAMA network open",
+"doi": "10.1001/jamanetworkopen.2018.3605",
+"pmid": "30646252",
+"pmcid": "PMC6324439",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6324439/",
+"type": "cohort",
+"summary": "Retrospective cohort of 122,007 patients who had treadmill exercise testing at the Cleveland Clinic, followed for a median 8.4 years. Elite fitness was associated with 80% lower mortality than low fitness, and being unfit carried as much or more risk than smoking, diabetes or coronary disease. The cohort was patients referred for testing, not the general public, but no upper limit of benefit was seen for fitness.",
+"highlight": "Cardiorespiratory fitness is inversely associated with long-term mortality with no observed upper limit of benefit"
+},
+{
+"title": "Cardiorespiratory Fitness and Mortality Risk Across the Spectra of Age, Race, and Sex",
+"authors": "Kokkinos P, Faselis C, Samuel IBH, et al.",
+"year": 2022,
+"journal": "Journal of the American College of Cardiology",
+"doi": "10.1016/j.jacc.2022.05.031",
+"pmid": "35926933",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/35926933/",
+"type": "cohort",
+"summary": "Cohort of 750,302 US veterans aged 30-95 with treadmill-measured fitness, followed for a median 10.2 years. The least fit 20% had about 4-fold higher mortality than the most fit, and the lowest risk was around 14 METs with no increase at extremely high fitness. The population was mostly older men, but the graded benefit held across age, sex and race.",
+"highlight": "Being unfit carried a greater risk than any of the cardiac risk factors examined"
+},
+{
+"title": "Cardiac arrest during long-distance running races",
+"authors": "Kim JH, Malhotra R, Chiampas G, et al.",
+"year": 2012,
+"journal": "The New England journal of medicine",
+"doi": "10.1056/NEJMoa1106468",
+"pmid": "22236223",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/22236223/",
+"type": "cohort",
+"summary": "Registry study of cardiac arrests among 10.9 million runners in US marathons and half-marathons from 2000 to 2010. Cardiac arrest occurred in 0.54 per 100,000 participants, higher in marathons (1.01 per 100,000) than half-marathons and mostly in men, often from hypertrophic cardiomyopathy or coronary disease. The absolute risk of long-distance running is very low, but it is not zero, so training up gradually and checking heart risk factors is sensible.",
+"highlight": "Marathons and half-marathons are associated with a low overall risk of cardiac arrest and sudden death"
+}
+]
+},
+{
+"id": "bloodtest",
+"label": "Blood test",
+"title": "Annual blood test",
+"tier": "annual",
+"group": null,
+"blurb": "Once a year: lipids incl. ApoB, HbA1c/glucose, CBC, metabolic panel, vitamin D.",
+"sources": [
+{
+"title": "General health checks in adults for reducing morbidity and mortality from disease",
+"authors": "Krogsbøll LT, Jørgensen KJ, Gøtzsche PC",
+"year": 2019,
+"journal": "The Cochrane database of systematic reviews",
+"doi": "10.1002/14651858.CD009009.pub3",
+"pmid": "30699470",
+"pmcid": "PMC6353639",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6353639/",
+"type": "systematic review",
+"summary": "Cochrane review of 17 randomised trials with about 252,000 adults comparing general health checks with no checks. Health checks had little or no effect on total mortality (RR 1.00), cancer mortality or cardiovascular mortality, based mostly on high-certainty evidence. This means broad untargeted checkups do not save lives on their own, so the value of a yearly blood test lies in specific, evidence-backed markers acted on when abnormal.",
+"highlight": "Health checks have little or no effect on total mortality (risk ratio (RR) 1.00, 95% confidence interval (CI) 0.97 to 1.03"
+},
+{
+"title": "Screening for Prediabetes and Type 2 Diabetes: US Preventive Services Task Force Recommendation Statement",
+"authors": "US Preventive Services Task Force, Davidson KW, Barry MJ, et al.",
+"year": 2021,
+"journal": "JAMA",
+"doi": "10.1001/jama.2021.12531",
+"pmid": "34427594",
+"pmcid": null,
+"url": "https://pubmed.ncbi.nlm.nih.gov/34427594/",
+"type": "guideline",
+"summary": "USPSTF recommendation statement based on a commissioned systematic review of screening for prediabetes and type 2 diabetes in asymptomatic adults. It concludes with moderate certainty that screening adults aged 35-70 with overweight or obesity, and referring those with prediabetes to prevention programs, has a moderate net benefit (B grade). The recommendation is targeted to a risk group rather than everyone, which is how screening tends to earn its benefit.",
+"highlight": "The USPSTF recommends screening for prediabetes and type 2 diabetes in adults aged 35 to 70 years who have overweight or obesity"
+},
+{
+"title": "Apolipoprotein B Particles and Cardiovascular Disease: A Narrative Review",
+"authors": "Sniderman AD, Thanassoulis G, Glavinovic T, et al.",
+"year": 2019,
+"journal": "JAMA cardiology",
+"doi": "10.1001/jamacardio.2019.3780",
+"pmid": "31642874",
+"pmcid": "PMC7369156",
+"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7369156/",
+"type": "review",
+"summary": "Narrative review in JAMA Cardiology of the biology and evidence behind apolipoprotein B as a measure of atherogenic lipoprotein particles. It argues apoB counts the particles that actually drive plaque and captures cardiovascular risk more accurately than LDL cholesterol or non-HDL cholesterol. It is a narrative review by advocates rather than a trial, but it makes a solid case for adding apoB to a routine lipid panel.",
+"highlight": "Apolipoprotein B unifies, amplifies, and simplifies the information from the conventional lipid markers as to the atherogenic risk attributable to the apoB lipoproteins"
+}
+]
+}
+];

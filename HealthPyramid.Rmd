@@ -1,0 +1,49 @@
+---
+title: ""
+pagetitle: "Health Pyramid"
+output:
+  html_document:
+    theme: yeti
+---
+
+<!--
+Health Pyramid dashboard. Static: the pyramid is drawn in the browser by
+docs/health-pyramid/hp.js from docs/health-pyramid/data.js (the 75 sources).
+-->
+
+<br>
+<br>
+
+<h2>**Health Pyramid**</h2> 
+<h6>
+<br>
+***Feel better, live better.***
+</h6>
+
+*[Tylerisyoung.Substack.com](https://www.tylerisyoung.substack.com)*   
+*[Twitter.com/TylerisYoung](https://www.twitter.com/Tylerisyoung)*  
+ _________________________
+
+```{=html}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap">
+<link rel="stylesheet" href="health-pyramid/hp.css?v=20261017">
+<div class="hp">
+  <h1 class="hp-title"><span>Daily Health Tier List</span></h1>
+  <p class="hp-sub">The base is what I do every day. Each tier up happens less often. Tap anything on the pyramid to jump to the evidence.</p>
+  <div class="hp-figure">
+    <svg id="hp-svg" viewBox="0 0 1100 980" role="img" aria-label="Hand-drawn health pyramid with four tiers: Daily, Weekly, Monthly and Annual"></svg>
+  </div>
+  <div class="hp-legend"><span><i style="background:#5b8def"></i>Daily</span><span><i style="background:#f2c46d"></i>Weekly</span><span><i style="background:#76bf94"></i>Monthly</span><span><i style="background:#e07a7a"></i>Annual</span></div>
+  <p class="hp-hint">75 sources, 3 per item, each summarized in three sentences.</p>
+  <div class="hp-ex">
+    <h2 class="exh">The Evidence</h2>
+    <p class="exnote">Every item gets three published sources: what was studied, what it found, and the catch. Highlighted lines are the key finding, also highlighted in my Zotero library.</p>
+    <div class="tools"><button type="button" id="hp-open">Expand all</button><button type="button" id="hp-close">Collapse all</button></div>
+    <div id="hp-explorer"></div>
+    <p class="hp-foot">Not medical advice. Supplements and the Blueprint protocol are one person's experiment; talk to a doctor before adding anything, especially with medications or a health condition.</p>
+  </div>
+</div>
+<script src="health-pyramid/data.js?v=20261017"></script>
+<script src="health-pyramid/hp.js?v=20261017"></script>
+```
