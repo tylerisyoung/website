@@ -4,7 +4,7 @@
   var DATA = window.HP_DATA || [];
   var BY = {}; DATA.forEach(function (d) { BY[d.id] = d; });
   var NS = "http://www.w3.org/2000/svg";
-  var TIER = { supplements: "#a98bd6", daily: "#5b8def", weekly: "#f2c46d", monthly: "#76bf94", annual: "#e07a7a" };
+  var TIER = { supplements: "#e8772e", daily: "#2f5fae", weekly: "#f2c46d", monthly: "#76bf94", annual: "#e07a7a" };
   var INK = "#1a1a1a";
   var rc, SEED = 7;
   function el(tag, attrs, parent) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
@@ -98,7 +98,7 @@
     if (history.replaceState) history.replaceState(null, "", "#hp-" + id);
   }
 
-  var BADGE = { "meta-analysis": "#1f4e9c", "systematic review": "#4a80cc", "RCT": "#4f9d69", "cohort": "#b8850d", "guideline": "#5d7189", "review": "#8a94a3", "animal study": "#a61c1c" };
+  var BADGE = { "meta-analysis": "#1c3f80", "systematic review": "#2f5fae", "RCT": "#4f9d69", "cohort": "#b8850d", "guideline": "#5d7189", "review": "#8a94a3", "animal study": "#a61c1c" };
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 
   function srcHtml(s) {
@@ -119,7 +119,7 @@
   }
 
   function drawExplorer(host) {
-    var tiers = [["daily", "Daily"], ["supplements", "Supplements"], ["weekly", "Weekly"], ["monthly", "Monthly"], ["annual", "Annual"]];
+    var tiers = [["annual", "Annual"], ["monthly", "Monthly"], ["weekly", "Weekly"], ["daily", "Daily"], ["supplements", "Supplements"]];
     var html = "";
     tiers.forEach(function (t) {
       var list = DATA.filter(function (d) { return d.tier === t[0]; });

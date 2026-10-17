@@ -1,10 +1,10 @@
 /* Health Pyramid: hand-drawn ink pyramid + evidence explorer */
 .hp{--ink:#151515;--muted:#6b7686;--line:#e6e9ef;
-    --daily:#5b8def;--weekly:#f2c46d;--monthly:#76bf94;--annual:#e07a7a;--bj:#b58be0;
+    --daily:#2f5fae;--weekly:#f2c46d;--monthly:#76bf94;--annual:#e07a7a;--bj:#b58be0;
     font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#2d3a4a;max-width:1180px;margin:0 auto}
 .hp *{box-sizing:border-box}
 .hp-title{font:600 clamp(2rem,6vw,4.2rem)/1.1 system-ui,-apple-system,"Segoe UI",sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--ink);text-align:center;margin:1rem 0 .3rem}
-.hp-accent{height:4px;border-radius:4px;background:linear-gradient(90deg,#e8a0a0,#f2c46d 45%,#a8c5f7);margin:.3rem auto .7rem;opacity:.8;max-width:760px}
+.hp-accent{height:4px;border-radius:4px;background:linear-gradient(90deg,#e8a0a0,#f2c46d 45%,#5b86c9);margin:.3rem auto .7rem;opacity:.8;max-width:760px}
 .hp-sub{text-align:center;color:var(--muted);font-size:1rem;margin:0 auto .4rem;max-width:640px}
 .hp-figure{position:relative;margin:0 auto;max-width:1060px}
 .hp-figure svg{width:100%;height:auto;display:block;overflow:visible}
@@ -32,8 +32,8 @@
 .hp-ex .tier{border-left:5px solid var(--c);border-radius:10px;background:var(--bg);padding:.6rem 1rem .8rem;margin:0 0 1rem}
 .hp-ex .tier>h3{font:700 1.3rem system-ui,sans-serif;margin:.2rem 0 .5rem;color:var(--ink)}
 .hp-ex .tier>h3 small{font-weight:400;color:var(--muted);font-size:.85rem;margin-left:.4rem}
-.hp-ex .tier.supplements{--c:#a98bd6;--bg:#f6f2fc}
-.hp-ex .tier.daily{--c:var(--daily);--bg:#f2f6fd}
+.hp-ex .tier.supplements{--c:#e8772e;--bg:#fdf3ea}
+.hp-ex .tier.daily{--c:var(--daily);--bg:#eef2f9}
 .hp-ex .tier.weekly{--c:var(--weekly);--bg:#fefaf0}
 .hp-ex .tier.monthly{--c:var(--monthly);--bg:#eff8f2}
 .hp-ex .tier.annual{--c:var(--annual);--bg:#fdf2f2}
@@ -53,7 +53,7 @@ details.pol.flash>summary{animation:hpflash 1.6s ease-out}
 .src{border-top:1px dashed #e3e6ea;padding:.7rem 0 .2rem}
 .src:first-of-type{border-top:none}
 .src .st{font-weight:600;line-height:1.35}
-.src .st a{color:#3d6fd6;text-decoration:none}.src .st a:hover{text-decoration:underline}
+.src .st a{color:#2a55b0;text-decoration:none}.src .st a:hover{text-decoration:underline}
 .src .sm{font-size:.8rem;color:var(--muted);margin:.15rem 0 .35rem}
 .src .badge{display:inline-block;color:#fff;border-radius:4px;padding:0 .4em;font:600 .7rem system-ui,sans-serif;margin-right:.4rem;text-transform:uppercase;letter-spacing:.03em;vertical-align:1px}
 .src p{margin:0 0 .4rem;font-size:.95rem;line-height:1.5}
