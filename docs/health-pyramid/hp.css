@@ -66,3 +66,4 @@ details.pol.flash>summary{animation:hpflash 1.6s ease-out}
 .markers dt{font-weight:600;color:#2d3a4a}.markers dd{margin:0;color:#3d4756}
 .markers .ms{font-size:.78rem;color:#6b7686;margin-top:.45rem}
 @media (max-width:600px){.markers dl{grid-template-columns:1fr}.markers dd{margin-bottom:.35rem}}
+.polbody .pending{color:#6b7686;font-size:.9rem;margin:.2rem 0}

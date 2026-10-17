@@ -115,7 +115,7 @@
       (d.markers_src ? '<div class="ms">From: ' + d.markers_src.map(function (x) { return '<a href="' + esc(x[1]) + '" target="_blank" rel="noopener">' + esc(x[0]) + "</a>"; }).join(" · ") + "</div>" : "") + "</div>";
   }
   function itemHtml(d) {
-    return '<details class="pol" id="hp-' + d.id + '"><summary>' + esc(d.title) + '</summary><div class="polbody"><p class="blurb">' + esc(d.blurb) + "</p>" + markersHtml(d) + d.sources.map(srcHtml).join("") + "</div></details>";
+    return '<details class="pol" id="hp-' + d.id + '"><summary>' + esc(d.title) + '</summary><div class="polbody"><p class="blurb">' + esc(d.blurb) + "</p>" + markersHtml(d) + (d.sources.length ? d.sources.map(srcHtml).join("") : '<p class="pending">Sources are being added.</p>') + "</div></details>";
   }
 
   function drawExplorer(host) {
