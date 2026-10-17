@@ -36,8 +36,6 @@ docs/health-pyramid/hp.js from docs/health-pyramid/data.js (the 75 sources).
   <div class="hp-legend"><span><i style="background:#5b8def"></i>Daily</span><span><i style="background:#f2c46d"></i>Weekly</span><span><i style="background:#76bf94"></i>Monthly</span><span><i style="background:#e07a7a"></i>Annual</span><span><i style="background:#a98bd6"></i>Supplements</span></div>
   <p class="hp-hint" id="hp-count"></p>
   <div class="hp-ex">
-    <h2 class="exh">The Evidence</h2>
-    <p class="exnote">Every item gets three published sources: what was studied, what it found, and the catch. Highlighted lines are the key finding, also highlighted in my Zotero library.</p>
     <div class="tools"><button type="button" id="hp-open">Expand all</button><button type="button" id="hp-close">Collapse all</button></div>
     <div id="hp-explorer"></div>
     <p class="hp-foot">Not medical advice. Supplements and the Blueprint protocol are one person's experiment; talk to a doctor before adding anything, especially with medications or a health condition.</p>

@@ -109,8 +109,13 @@
       '<div class="sm">' + bits.join(" · ") + "</div><p>" + esc(s.summary) + "</p>" +
       (s.highlight ? '<blockquote>Highlighted: <mark>“' + esc(s.highlight) + '”</mark></blockquote>' : "") + "</div>";
   }
+  function markersHtml(d) {
+    if (!d.markers) return "";
+    return '<div class="markers"><div class="mh">Markers to check</div><dl>' + d.markers.map(function (m) { return "<dt>" + esc(m[0]) + "</dt><dd>" + esc(m[1]) + "</dd>"; }).join("") + "</dl>" +
+      (d.markers_src ? '<div class="ms">From: ' + d.markers_src.map(function (x) { return '<a href="' + esc(x[1]) + '" target="_blank" rel="noopener">' + esc(x[0]) + "</a>"; }).join(" · ") + "</div>" : "") + "</div>";
+  }
   function itemHtml(d) {
-    return '<details class="pol" id="hp-' + d.id + '"><summary>' + esc(d.title) + '</summary><div class="polbody"><p class="blurb">' + esc(d.blurb) + "</p>" + d.sources.map(srcHtml).join("") + "</div></details>";
+    return '<details class="pol" id="hp-' + d.id + '"><summary>' + esc(d.title) + '</summary><div class="polbody"><p class="blurb">' + esc(d.blurb) + "</p>" + markersHtml(d) + d.sources.map(srcHtml).join("") + "</div></details>";
   }
 
   function drawExplorer(host) {
@@ -132,7 +137,7 @@
     drawExplorer(ex);
     draw(svg);
     var nS = DATA.reduce(function (n, d) { return n + d.sources.length; }, 0), c = document.getElementById("hp-count");
-    if (c) c.textContent = DATA.length + " items, " + nS + " sources, each summarized in three sentences.";
+    if (c) c.textContent = DATA.length + " items, " + nS + " sources.";
     document.getElementById("hp-open").addEventListener("click", function () { ex.querySelectorAll("details.pol").forEach(function (d) { d.open = true; }); });
     document.getElementById("hp-close").addEventListener("click", function () { ex.querySelectorAll("details.pol").forEach(function (d) { d.open = false; }); });
     var h = location.hash.replace("#hp-", ""); if (BY[h]) setTimeout(function () { openItem(h); }, 300);

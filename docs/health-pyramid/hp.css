@@ -60,3 +60,9 @@ details.pol.flash>summary{animation:hpflash 1.6s ease-out}
 .src blockquote{margin:.2rem 0 .3rem;padding:.1rem 0 .1rem .7rem;border-left:3px solid #f2c46d;font-size:.86rem;color:#4a5566}
 .src blockquote mark{background:linear-gradient(transparent 35%,rgba(242,196,109,.65) 35%);color:inherit;padding:0 .1em}
 .hp-foot{font-size:.8rem;color:var(--muted);text-align:center;margin:1.2rem auto 0;max-width:760px}
+.markers{border:1px solid #e3e6ea;border-left:4px solid #e07a7a;background:#fbfbfc;border-radius:8px;padding:.6rem .9rem;margin:0 0 .7rem}
+.markers .mh{font:700 .8rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#2d3a4a;margin-bottom:.3rem}
+.markers dl{display:grid;grid-template-columns:max-content 1fr;gap:.25rem .9rem;margin:0;font-size:.9rem}
+.markers dt{font-weight:600;color:#2d3a4a}.markers dd{margin:0;color:#3d4756}
+.markers .ms{font-size:.78rem;color:#6b7686;margin-top:.45rem}
+@media (max-width:600px){.markers dl{grid-template-columns:1fr}.markers dd{margin-bottom:.35rem}}
