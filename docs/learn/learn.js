@@ -6,9 +6,9 @@
   const GOAL_MIN = 20, NEW_PER_SESSION = 12;
   const INTERVALS = [0, 1, 3, 7, 16, 35]; // days per Leitner box
   const SUBJECTS = {
-    health: { name: "Health", icon: "🫀", color: "#2f7a4a", blurb: "Studies behind the Health Pyramid: findings, authors, designs" },
-    finance: { name: "Finance", icon: "📈", color: "#3d6fd6", blurb: "Core principles to read the Financial Dashboard" },
-    bcr: { name: "BCR", icon: "⚖️", color: "#b0833a", blurb: "40 policies: rank, benefit per $1, key studies and quotes" }
+    health: { name: "Health", color: "#2f5fae", blurb: "Studies behind the Health Pyramid: findings, authors, designs" },
+    finance: { name: "Finance", color: "#76bf94", blurb: "Core principles to read the Financial Dashboard" },
+    bcr: { name: "BCR", color: "#f2c46d", blurb: "40 policies: rank, benefit per $1, key studies and quotes" }
   };
   const LEVELS = ["Novice", "Apprentice", "Student", "Scholar", "Analyst", "Expert", "Master", "Sage"];
   const $ = (s, el) => (el || document).querySelector(s);
@@ -61,7 +61,7 @@
       st.forEach((s) => {
         const id = "h-" + hash(s.title);
         hc.push({ id, kind: "Study", front: `<div class="k">${esc(t.label)} · ${esc(s.type)}</div><h3>${esc(s.title)}</h3><p class="meta">${esc(s.authors)} (${esc(s.year)}) · <i>${esc(s.journal)}</i></p><p class="hint">What did it find?</p>`,
-          back: `<p>${esc(s.summary)}</p>${s.quote ? `<blockquote>“${esc(s.quote)}”</blockquote>` : ""}${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">Open paper ↗</a>` : ""}` });
+          back: `<p>${esc(s.summary)}</p>${s.quote ? `<blockquote>“${esc(s.quote)}”</blockquote>` : ""}${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">Open paper</a>` : ""}` });
         hq.push(() => mcq(`Who wrote “${s.title}” (${s.year})?`, s.authors, pick(allAuthors, 3, s.authors), id));
         hq.push(() => mcq(`“${s.title}” is evidence for which Health Pyramid item?`, t.label, pick(allTopics, 3, t.label), id));
         if (s.quote) hq.push(() => mcq(`Which study reported: “${s.quote}”`, s.title, pick(allTitles, 3, s.title), id, true));
@@ -89,7 +89,7 @@
       p.key_studies.slice(0, 3).forEach((k) => {
         const kid = "b-s-" + hash(k.title);
         bc.push({ id: kid, kind: "Key study", front: `<div class="k">${esc(p.name)} · ${esc(k.role)}</div><h3>${esc(k.title)}</h3><p class="meta">${esc(k.authors)} (${esc(k.year)}) · <i>${esc(k.venue)}</i></p><p class="hint">What did it report?</p>`,
-          back: `<p>${esc(k.finding)}</p>${k.url ? `<a href="${esc(k.url)}" target="_blank" rel="noopener">Open source ↗</a>` : ""}` });
+          back: `<p>${esc(k.finding)}</p>${k.url ? `<a href="${esc(k.url)}" target="_blank" rel="noopener">Open source</a>` : ""}` });
         bq.push(() => mcq(`Who found: “${k.finding}”`, `${k.authors} (${k.year})`, pick(allStudies.filter((x) => x.authors !== k.authors).map((x) => `${x.authors} (${x.year})`), 3), kid, true));
         bq.push(() => mcq(`“${k.title}” (${k.year}) is evidence on which policy?`, p.name, pick(names, 3, p.name), kid));
       });
@@ -152,7 +152,7 @@
 
   // ---------- views ----------
   function gate() {
-    app.innerHTML = `<div class="lr-gate"><div class="lr-logo">🎓</div><h1>Learn</h1><p>Enter the password to start training.</p>
+    app.innerHTML = `<div class="lr-gate"><h1 class="lr-title">Learn</h1><div class="lr-accent"></div><p class="lr-sub">Enter the password to start training.</p>
       <form id="lr-f"><input id="lr-p" type="password" inputmode="text" autocomplete="current-password" placeholder="Password" autofocus><button class="btn primary" type="submit">Enter</button></form><p id="lr-err" class="err"></p></div>`;
     $("#lr-f").onsubmit = async (e) => {
       e.preventDefault();
@@ -180,18 +180,19 @@
     stopTimer();
     const L = level(), st = streak();
     const totalMin = Object.keys(SUBJECTS).reduce((a, k) => a + minToday(k), 0);
-    app.innerHTML = `<div class="lr-top"><div><div class="k">Level ${L.n}</div><div class="lvl">${L.name}</div></div>
-        <div class="chips"><span class="chip">🔥 ${st} day${st === 1 ? "" : "s"}</span><span class="chip">⭐ ${S.xp} XP</span></div></div>
+    app.innerHTML = `<h1 class="lr-title">Learn</h1><div class="lr-accent"></div><p class="lr-sub">Twenty minutes a day. Pick a subject.</p>
+      <div class="lr-top"><div><div class="k">Level ${L.n}</div><div class="lvl">${L.name}</div></div>
+        <div class="chips"><span class="chip">${st} day streak</span><span class="chip">${S.xp} XP</span></div></div>
       <div class="bar xp"><i style="width:${Math.min(100, 100 * (S.xp - L.prev) / (L.next - L.prev))}%"></i></div>
       <p class="sub">${L.next - S.xp} XP to level ${L.n + 1} · Today: ${Math.round(totalMin)} min trained</p>
-      <h2 class="lr-h">Choose a subject</h2>
+      <div class="lr-h">Subjects</div>
       ${Object.entries(SUBJECTS).map(([k, s]) => { const x = stats(k); const pct = Math.round(100 * x.mastered / x.n);
-        return `<button class="tile" data-s="${k}" style="--c:${s.color}"><div class="tile-h"><span class="ic">${s.icon}</span><span class="nm">${s.name}</span><span class="pct">${pct}%</span></div>
+        return `<button class="tile" data-s="${k}" style="--c:${s.color}"><div class="tile-h"><span class="nm">${s.name}</span><span class="pct">${pct}%</span></div>
           <div class="bar"><i style="width:${pct}%"></i></div>
           <div class="tile-s">${s.blurb}</div>
           <div class="tile-g"><span><b>${x.mastered}</b>/${x.n} mastered</span><span><b>${x.seen}</b> seen</span><span><b>${x.acc == null ? "–" : x.acc + "%"}</b> quiz</span><span><b>${x.due}</b> due</span></div>
-          <div class="goal"><div class="bar thin"><i style="width:${Math.min(100, 100 * x.min / GOAL_MIN)}%"></i></div><span>${Math.round(x.min)}/${GOAL_MIN} min today${x.min >= GOAL_MIN ? " ✅" : ""}</span></div></button>`; }).join("")}
-      <div class="badges">${BADGES.map((b) => `<span class="badge ${S.badges.includes(b.id) ? "on" : ""}" title="${esc(b.d)}">${b.i} ${esc(b.n)}</span>`).join("")}</div>
+          <div class="goal"><div class="bar thin"><i style="width:${Math.min(100, 100 * x.min / GOAL_MIN)}%"></i></div><span>${Math.round(x.min)}/${GOAL_MIN} min today${x.min >= GOAL_MIN ? " · done" : ""}</span></div></button>`; }).join("")}
+      <div class="badges">${BADGES.map((b) => `<span class="badge ${S.badges.includes(b.id) ? "on" : ""}" title="${esc(b.d)}">${esc(b.n)}</span>`).join("")}</div>
       <p class="foot">Progress is saved on this device. <button class="link" id="lr-out">Log out</button></p>`;
     app.querySelectorAll(".tile").forEach((b) => (b.onclick = () => session(b.dataset.s)));
     $("#lr-out").onclick = () => { try { localStorage.removeItem(AUTH); } catch (e) {} gate(); };
@@ -229,8 +230,8 @@
   }
   function header() {
     const s = SUBJECTS[sess.subj];
-    return `<div class="lr-bar"><button class="link" id="lr-home">← Home</button><span class="ttl">${s.icon} ${s.name}</span><span class="chip" id="lr-tm"></span></div>
-      <div class="bar thin"><i id="lr-tb"></i></div><div class="lr-meta"><span>🔥 combo ${sess.combo}</span><span>+${S.xp - sess.xp0} XP</span><span>${sess.queue.length} left</span></div>`;
+    return `<div class="lr-bar"><button class="link" id="lr-home">Home</button><span class="ttl">${s.name}</span><span class="chip" id="lr-tm"></span></div>
+      <div class="bar thin"><i id="lr-tb"></i></div><div class="lr-meta"><span>Combo ${sess.combo}</span><span>+${S.xp - sess.xp0} XP</span><span>${sess.queue.length} left</span></div>`;
   }
   function next() {
     if (!sess) return;
@@ -255,7 +256,7 @@
     paintTimer(); bindHome();
     $("#lr-show").onclick = () => {
       $(".back").hidden = false; $("#lr-show").remove();
-      $(".actions").innerHTML = `<button class="btn bad" id="lr-no">✗ Didn't know</button><button class="btn good" id="lr-yes">✓ Knew it</button>`;
+      $(".actions").innerHTML = `<button class="btn" id="lr-no">Didn't know</button><button class="btn primary" id="lr-yes">Knew it</button>`;
       $("#lr-no").onclick = () => grade(c, false, item); $("#lr-yes").onclick = () => grade(c, true, item);
       $(".back").scrollIntoView({ behavior: "smooth", block: "start" });
     };
@@ -290,7 +291,7 @@
       const s = S.cards[q.cardId]; if (s) { if (ok) s.b = Math.min(5, s.b + 1); else { s.b = Math.max(0, s.b - 1); s.due = today(); } }
       gain(ok ? 10 : 2, ok); save();
       $(".fb").innerHTML = ok ? `<b class="okt">Correct! +${10 * mult()} XP</b>` : `<b class="bad">Not quite.</b> Answer: ${esc(q.answer)}`;
-      $(".actions").innerHTML = `<button class="btn primary" id="lr-n">Next →</button>`; $("#lr-n").onclick = next;
+      $(".actions").innerHTML = `<button class="btn primary" id="lr-n">Next</button>`; $("#lr-n").onclick = next;
       $(".actions").scrollIntoView({ behavior: "smooth", block: "end" });
     }));
   }
@@ -303,22 +304,22 @@
   function done() {
     const sub = sess.subj, n = sess.n, r = sess.right, xp = S.xp - sess.xp0; stopTimer();
     const m = minToday(sub);
-    app.innerHTML = `<div class="card done"><div class="lr-logo">${m >= GOAL_MIN ? "🏆" : "👏"}</div><h2>${m >= GOAL_MIN ? "Daily goal hit!" : "Nice work"}</h2>
+    app.innerHTML = `<div class="card done"><h2>${m >= GOAL_MIN ? "Daily goal hit!" : "Nice work"}</h2>
       <p>${n} items · ${n ? Math.round(100 * r / n) : 0}% right · +${xp} XP</p><p>${Math.round(m)}/${GOAL_MIN} min of ${SUBJECTS[sub].name} today</p></div>
       <div class="actions"><button class="btn" id="lr-h2">Home</button><button class="btn primary" id="lr-again">Keep going</button></div>`;
     $("#lr-h2").onclick = home; $("#lr-again").onclick = () => session(sub);
   }
 
   const BADGES = [
-    { id: "first", i: "🌱", n: "First session", d: "Finish any card", t: () => Object.keys(S.cards).length > 0 },
-    { id: "s3", i: "🔥", n: "3-day streak", d: "Train 3 days in a row", t: () => streak() >= 3 },
-    { id: "s7", i: "🚀", n: "7-day streak", d: "Train 7 days in a row", t: () => streak() >= 7 },
-    { id: "m50", i: "🧠", n: "50 mastered", d: "50 cards in box 3+", t: () => Object.values(S.cards).filter((c) => c.b >= 3).length >= 50 },
-    { id: "m200", i: "🎓", n: "200 mastered", d: "200 cards in box 3+", t: () => Object.values(S.cards).filter((c) => c.b >= 3).length >= 200 },
-    { id: "combo", i: "⚡", n: "Combo 10", d: "10 right in a row", t: () => sess && sess.combo >= 10 },
-    { id: "goal", i: "🏆", n: "20-min day", d: "Hit the 20-minute goal", t: () => Object.keys(SUBJECTS).some((k) => minToday(k) >= GOAL_MIN) }
+    { id: "first", n: "First session", d: "Finish any card", t: () => Object.keys(S.cards).length > 0 },
+    { id: "s3", n: "3-day streak", d: "Train 3 days in a row", t: () => streak() >= 3 },
+    { id: "s7", n: "7-day streak", d: "Train 7 days in a row", t: () => streak() >= 7 },
+    { id: "m50", n: "50 mastered", d: "50 cards in box 3+", t: () => Object.values(S.cards).filter((c) => c.b >= 3).length >= 50 },
+    { id: "m200", n: "200 mastered", d: "200 cards in box 3+", t: () => Object.values(S.cards).filter((c) => c.b >= 3).length >= 200 },
+    { id: "combo", n: "Combo 10", d: "10 right in a row", t: () => sess && sess.combo >= 10 },
+    { id: "goal", n: "20-min day", d: "Hit the 20-minute goal", t: () => Object.keys(SUBJECTS).some((k) => minToday(k) >= GOAL_MIN) }
   ];
-  function checkBadges() { BADGES.forEach((b) => { if (!S.badges.includes(b.id) && b.t()) { S.badges.push(b.id); toast(`${b.i} Badge: ${b.n}`); } }); }
+  function checkBadges() { BADGES.forEach((b) => { if (!S.badges.includes(b.id) && b.t()) { S.badges.push(b.id); toast(`Badge earned: ${b.n}`); } }); }
   function toast(t) { const el = document.createElement("div"); el.className = "lr-toast"; el.textContent = t; document.body.appendChild(el); setTimeout(() => el.remove(), 2600); }
 
   // ---------- boot ----------
