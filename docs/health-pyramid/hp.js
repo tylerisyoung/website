@@ -110,7 +110,7 @@
       (s.highlight ? '<blockquote>Highlighted: <mark>“' + esc(s.highlight) + '”</mark></blockquote>' : "") + "</div>";
   }
   function itemHtml(d) {
-    return '<details class="pol" id="hp-' + d.id + '"><summary>' + esc(d.title) + ' <span class="meta">· 3 sources</span></summary><div class="polbody"><p class="blurb">' + esc(d.blurb) + "</p>" + d.sources.map(srcHtml).join("") + "</div></details>";
+    return '<details class="pol" id="hp-' + d.id + '"><summary>' + esc(d.title) + '</summary><div class="polbody"><p class="blurb">' + esc(d.blurb) + "</p>" + d.sources.map(srcHtml).join("") + "</div></details>";
   }
 
   function drawExplorer(host) {
