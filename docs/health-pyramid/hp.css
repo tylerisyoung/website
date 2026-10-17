@@ -12,11 +12,12 @@
 .hp-figure svg path{stroke-linecap:round;stroke-linejoin:round}
 .hp-figure .it text{font:500 21px system-ui,-apple-system,"Segoe UI",sans-serif;fill:var(--ink)}
 .hp-figure .it .mk{opacity:0;transition:opacity .15s}
-.hp-figure .it:hover .mk,.hp-figure .it:focus .mk{opacity:.45}
+.hp-figure .it text{font-size:19px}
+.hp-figure .it:hover .mk,.hp-figure .it:focus .mk{opacity:1}
 .hp-figure .it:focus{outline:none}
 .hp-figure .it .ul{opacity:.9}
 .hp-figure .tl{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:800;fill:var(--ink);letter-spacing:.16em;pointer-events:none}
-.hp-figure .bjh{font:italic 500 17px system-ui,-apple-system,"Segoe UI",sans-serif;fill:#555;letter-spacing:.02em}
+.hp-figure .bjh{font:700 17px system-ui,-apple-system,"Segoe UI",sans-serif;fill:#444;letter-spacing:.14em;text-transform:uppercase}
 .hp-legend{display:flex;justify-content:center;flex-wrap:wrap;gap:.4rem 1.2rem;margin:.6rem 0 0;font:500 .9rem system-ui,sans-serif;color:var(--ink)}
 .hp-legend i{display:inline-block;width:1.4em;height:.6em;border-radius:40% 55% 45% 60%;margin-right:.35em;vertical-align:middle;opacity:.75}
 .hp-hint{text-align:center;color:var(--muted);font-size:.9rem;margin:.3rem 0 1.4rem}
@@ -31,11 +32,12 @@
 .hp-ex .tier{border-left:5px solid var(--c);border-radius:10px;background:var(--bg);padding:.6rem 1rem .8rem;margin:0 0 1rem}
 .hp-ex .tier>h3{font:700 1.3rem system-ui,sans-serif;margin:.2rem 0 .5rem;color:var(--ink)}
 .hp-ex .tier>h3 small{font-weight:400;color:var(--muted);font-size:.85rem;margin-left:.4rem}
+.hp-ex .tier.supplements{--c:#a98bd6;--bg:#f6f2fc}
 .hp-ex .tier.daily{--c:var(--daily);--bg:#f2f6fd}
 .hp-ex .tier.weekly{--c:var(--weekly);--bg:#fefaf0}
 .hp-ex .tier.monthly{--c:var(--monthly);--bg:#eff8f2}
 .hp-ex .tier.annual{--c:var(--annual);--bg:#fdf2f2}
-.hp-ex .grp{font:600 .78rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#7a55a8;margin:.9rem 0 .3rem}
+.hp-ex .grp{font:600 .78rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#2d3a4a;margin:.9rem 0 .3rem}
 .hp-ex .grpnote{font-size:.82rem;color:var(--muted);margin:0 0 .4rem}
 details.pol{border:1px solid #e3e6ea;border-radius:8px;margin:.45rem 0;background:#fff;scroll-margin-top:80px}
 details.pol>summary{cursor:pointer;padding:.6rem .8rem;font-weight:600;list-style:none}

@@ -3,6 +3,8 @@
 // Loaded by a one-line loader in Zotero; reads docs/health-pyramid/data.js from GitHub.
 const DATA_URL = "https://raw.githubusercontent.com/tylerisyoung/website/" + (globalThis.HP_REF || "master") + "/docs/health-pyramid/data.js";
 const lib = Zotero.Libraries.userLibraryID;
+Zotero.HPabort = true; await Zotero.Promise.delay(100); Zotero.HPabort = false;
+const withTimeout = (p, ms, what) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error("timeout " + what)), ms))]);
 const ST = (Zotero.HPstatus = { stage: "start", done: 0, total: 0, created: 0, existing: 0, manual: 0, pdf: 0, nopdf: [], errors: [] });
 
 const txt = (await Zotero.HTTP.request("GET", DATA_URL + "?t=" + Date.now())).responseText;
@@ -19,7 +21,7 @@ async function getCol(name, parentID) {
   return c;
 }
 const root = await getCol("Health Pyramid");
-const tierName = { daily: "1 Daily", weekly: "2 Weekly", monthly: "3 Monthly", annual: "4 Annual" };
+const tierName = { supplements: "0 Supplements", daily: "1 Daily", weekly: "2 Weekly", monthly: "3 Monthly", annual: "4 Annual" };
 const tierCol = {};
 for (const t of Object.keys(tierName)) tierCol[t] = await getCol(tierName[t], root.id);
 
@@ -45,10 +47,10 @@ async function importOne(s, colID) {
     try {
       const tr = new Zotero.Translate.Search();
       tr.setIdentifier({ DOI: s.doi });
-      const trs = await tr.getTranslators();
+      const trs = await withTimeout(tr.getTranslators(), 30000, "translators");
       if (trs.length) {
         tr.setTranslator(trs);
-        const items = await tr.translate({ libraryID: lib, collections: [colID], saveAttachments: false });
+        const items = await withTimeout(tr.translate({ libraryID: lib, collections: [colID], saveAttachments: false }), 60000, "translate");
         if (items && items.length) { ST.created++; return items[0]; }
       }
     } catch (e) { ST.errors.push("translate " + s.doi + ": " + e); }
@@ -67,6 +69,7 @@ async function importOne(s, colID) {
 }
 const esc = (x) => String(x || "").replace(/&/g, "&amp;").replace(/</g, "&lt;");
 for (const d of DATA) {
+  if (Zotero.HPabort) { ST.stage = "aborted"; break; }
   const col = await getCol(d.title, tierCol[d.tier].id);
   for (const s of d.sources) {
     try {
@@ -86,7 +89,7 @@ for (const d of DATA) {
       const atts = item.getAttachments().map((id) => Zotero.Items.get(id)).filter((a) => a.isPDFAttachment && a.isPDFAttachment());
       if (!atts.length) {
         let a = null;
-        try { a = await (Zotero.Attachments.addAvailableFile || Zotero.Attachments.addAvailablePDF).call(Zotero.Attachments, item); } catch (e) { ST.errors.push("pdf " + s.doi + ": " + e); }
+        try { a = await withTimeout((Zotero.Attachments.addAvailableFile || Zotero.Attachments.addAvailablePDF).call(Zotero.Attachments, item), 90000, "pdf"); } catch (e) { ST.errors.push("pdf " + s.doi + ": " + e); }
         if (a) ST.pdf++; else ST.nopdf.push(d.id + " | " + (s.doi || s.title));
       } else ST.pdf++;
     } catch (e) { ST.errors.push(d.id + " " + (s.doi || s.title) + ": " + e); }

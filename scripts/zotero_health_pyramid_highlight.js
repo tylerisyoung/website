@@ -54,7 +54,7 @@ for (const d of DATA) {
       if (!att || !(await att.fileExists())) { ST.nopdf.push(d.id + " | " + (s.doi || s.title.slice(0, 50))); continue; }
       const existing = att.getAnnotations().some((a) => (a.annotationComment || "").includes(TAG));
       if (existing) { ST.already++; continue; }
-      const rd = await Zotero.PDFWorker.getRecognizerData(att.id, true);
+      const rd = await Promise.race([Zotero.PDFWorker.getRecognizerData(att.id, true), new Promise((_, r) => setTimeout(() => r(new Error("timeout recognizer")), 60000))]);
       const pages = rd.pages || [];
       let hit = null;
       for (let pi = 0; pi < pages.length && !hit; pi++) {
