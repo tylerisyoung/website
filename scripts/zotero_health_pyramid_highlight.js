@@ -47,6 +47,7 @@ for (const d of DATA) {
   if (globalThis.HP_ONLY && d.id !== globalThis.HP_ONLY) continue;
   for (const s of d.sources) {
     ST.done++;
+    await Zotero.Promise.delay(150);
     try {
       const item = (s.doi && (await findByDOI(s.doi))) || (await findByTitle(s.title));
       if (!item) { ST.nopdf.push(d.id + " | not in library | " + s.title.slice(0, 50)); continue; }
@@ -57,7 +58,7 @@ for (const d of DATA) {
       const rd = await Promise.race([Zotero.PDFWorker.getRecognizerData(att.id, true), new Promise((_, r) => setTimeout(() => r(new Error("timeout recognizer")), 60000))]);
       const pages = rd.pages || [];
       let hit = null;
-      for (let pi = 0; pi < pages.length && !hit; pi++) {
+      for (let pi = 0; pi < Math.min(pages.length, 4) && !hit; pi++) {
         const pg = pages[pi], W = pg[0], H = pg[1], words = [];
         collectWords(pg.slice(2), words);
         const loc = locate(words, s.highlight || "");
