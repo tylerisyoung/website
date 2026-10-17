@@ -23,7 +23,7 @@
     var y = AY, rows = [], cuts = [], labels = [], heads = [];
     TIERS.forEach(function (t, ti) {
       var groups = [DATA.filter(function (d) { return d.tier === t && !d.group; }), DATA.filter(function (d) { return d.tier === t && d.group === "supp"; })];
-      y += ti === 0 ? 118 : 46;
+      y += ti === 0 ? 140 : 46;
       groups.forEach(function (list, gi) {
         if (!list.length) return;
         if (gi === 1) { y += 12; heads.push({ y: y, text: "Supplements" }); y += ROW - 6; }
