@@ -4,7 +4,7 @@
     font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#2d3a4a;max-width:1180px;margin:0 auto}
 .hp *{box-sizing:border-box}
 .hp-title{font:600 clamp(2rem,6vw,4.2rem)/1.1 system-ui,-apple-system,"Segoe UI",sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--ink);text-align:center;margin:1rem 0 .3rem}
-.hp-accent{height:4px;border-radius:4px;background:linear-gradient(90deg,#e8a0a0,#f2c46d 45%,#5b86c9);margin:.3rem auto .7rem;opacity:.8;max-width:760px}
+.hp-accent{height:4px;border-radius:4px;background:linear-gradient(90deg,#8a8f98,#d9dce1);margin:.3rem auto .7rem;opacity:.8;max-width:760px}
 .hp-sub{text-align:center;color:var(--muted);font-size:1rem;margin:0 auto .4rem;max-width:640px}
 .hp-figure{position:relative;margin:0 auto;max-width:1060px}
 .hp-figure svg{width:100%;height:auto;display:block;overflow:visible}
