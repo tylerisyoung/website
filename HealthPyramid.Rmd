@@ -25,11 +25,10 @@ docs/health-pyramid/hp.js from docs/health-pyramid/data.js (the 75 sources).
  _________________________
 
 ```{=html}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap">
-<link rel="stylesheet" href="health-pyramid/hp.css?v=20261017">
+<link rel="stylesheet" href="health-pyramid/hp.css?v=20261017b">
 <div class="hp">
-  <h1 class="hp-title"><span>Daily Health Tier List</span></h1>
+  <h1 class="hp-title">Daily Health Tier List</h1>
+  <div class="hp-accent"></div>
   <p class="hp-sub">The base is what I do every day. Each tier up happens less often. Tap anything on the pyramid to jump to the evidence.</p>
   <div class="hp-figure">
     <svg id="hp-svg" viewBox="0 0 1100 980" role="img" aria-label="Hand-drawn health pyramid with four tiers: Daily, Weekly, Monthly and Annual"></svg>
@@ -44,6 +43,7 @@ docs/health-pyramid/hp.js from docs/health-pyramid/data.js (the 75 sources).
     <p class="hp-foot">Not medical advice. Supplements and the Blueprint protocol are one person's experiment; talk to a doctor before adding anything, especially with medications or a health condition.</p>
   </div>
 </div>
+<script src="health-pyramid/rough.min.js?v=4.6.6"></script>
 <script src="health-pyramid/data.js?v=20261017"></script>
-<script src="health-pyramid/hp.js?v=20261017"></script>
+<script src="health-pyramid/hp.js?v=20261017b"></script>
 ```
