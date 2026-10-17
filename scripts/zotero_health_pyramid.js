@@ -96,5 +96,13 @@ for (const d of DATA) {
     ST.done++;
   }
 }
+// tidy: trash item sub-collections that are no longer on the page (items stay in the library)
+ST.trashedCollections = [];
+for (const t of Object.keys(tierCol)) {
+  const want = new Set(DATA.filter((d) => d.tier === t).map((d) => d.title));
+  for (const c of Zotero.Collections.getByParent(tierCol[t].id)) {
+    if (!want.has(c.name)) { ST.trashedCollections.push(tierName[t] + " / " + c.name); c.deleted = true; await c.saveTx(); }
+  }
+}
 ST.stage = "done";
 return JSON.stringify(ST);
