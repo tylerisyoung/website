@@ -236,6 +236,18 @@ TARGETS = {
         S("Motley Fool (Ryan Vanzo), from Goldman's 2030 AI revenue estimate", 465, "2030", "2026-07", "https://finance.yahoo.com/markets/stocks/articles/prediction-500-000-invested-spacex-015900847.html", "~$6.3T market cap"),
         S("ARK Invest", 190, "2030", "2025-06", "https://www.ark-invest.com/articles/valuation-models/ark-expected-value-spacex-2030", "~$2.5T enterprise value (expected value)")],
       "cons": {"by": "MarketBeat", "avg": 219.24, "low": 75, "high": 800, "n": 44, "date": "2026-09-28", "url": MB + "NASDAQ/SPCX/forecast/"}},
+    "UMAC": {"kind": "direct", "unit": "$", "long": [
+        S("Meyka", 74.90, "2030", "2026-10", "https://meyka.com/stock/UMAC/forecasting/", "5-year forecast"),
+        S("CoinCodex", 41.23, "end-2030", "2026-10", "https://coincodex.com/stock/UMAC/price-prediction"),
+        S("StockScan", 39.41, "2030", "2026-10", "https://stockscan.io/stocks/UMAC/forecast")],
+      "short": [
+        S("InvestAnswers (James)", 40, "mid-2027", "2026-10", "https://investanswers.substack.com/p/recap-21-charts-spooktober", "$40 in two or three earnings cycles; $20-$30 along the way"),
+        S("HC Wainwright (Amit Dayal)", 42, "12 months", "2026-07", "https://www.marketbeat.com/stocks/NYSEAMERICAN/UMAC/forecast"),
+        S("National Bank Financial", 42, "12 months", "2026-07", "https://www.marketbeat.com/stocks/NYSEAMERICAN/UMAC/forecast"),
+        S("Needham (Austin Bohlig)", 40, "12 months", "2026-10", "https://www.marketbeat.com/stocks/NYSEAMERICAN/UMAC/forecast"),
+        S("Roth Capital (Craig Irwin)", 40, "12 months", "2026-06", "https://www.benzinga.com/quote/UMAC/analyst-ratings"),
+        S("Piper Sandler (Clarke Jeffries)", 38, "12 months", "2026-08", "https://parameter.io/piper-sandler-sets-38-target-on-unusual-machines-umac-stock-forecasts-103m-revenue-by-2027/", "Bull case $60, bear case $23"),
+        S("JonesTrading", 20, "12 months", "2025-12", "https://www.benzinga.com/quote/UMAC/analyst-ratings")]},
     "NVDA": {"kind": "direct", "unit": "$", "long": [
         S("I/O Fund (Beth Kindig)", 820, "2030", "2026-04", "https://io-fund.com/ai-stocks/nvidia-stock-20-trillion-market-cap-timing", "$20T market cap"),
         S("24/7 Wall St (Vandita Jadeja)", 600, "2030", "2026-09", "https://247wallst.com/investing/2026/09/08/price-prediction-nvidia-stock-could-be-worth-this-much-by-2030/"),

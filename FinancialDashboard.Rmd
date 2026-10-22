@@ -994,7 +994,7 @@ CSVs) and refreshed every day by the GitHub Action in
   }
   // ---------- Fair value: log regression trendline per asset ----------
   var INCEPTION = { "BTC-USD": "2009-01-03", "ETH-USD": "2015-07-30", "SOL-USD": "2020-03-16", "SPY": "1993-01-22", "TSLA": "2010-06-29", "NVDA": "1999-01-22",
-                    "AVGO": "2009-08-06", "MU": "1984-06-01", "MRVL": "2000-06-27", "UMAC": "2025-02-14", "MP": "2020-06-01", "GC=F": "2000-08-30", "SLV": "2006-04-28", "SILJ": "2012-11-29", "CPER": "2011-11-15", "UUUU": "2013-12-01", "URNM": "2019-12-03", "YCA": "2018-07-05" };
+                    "AVGO": "2009-08-06", "MU": "1984-06-01", "MRVL": "2000-06-27", "UMAC": "2024-02-14", "MP": "2020-06-01", "GC=F": "2000-08-30", "SLV": "2006-04-28", "SILJ": "2012-11-29", "CPER": "2011-11-15", "UUUU": "2013-12-01", "URNM": "2019-12-03", "YCA": "2018-07-05" };
   var fvChart = null, fvLine = null, FV = {};
   function fairValue(k) {
     var pts = resampleW(DATA.prices[k].points); if (pts.length < 104) return null;   // needs 2 years of weekly closes
