@@ -11,7 +11,7 @@ UA_FRED = {"User-Agent": "curl/8.0"}   # FRED rejects browser-like agents from s
 OUT = os.path.join(os.path.dirname(__file__), "..", "docs", "data", "markets.json")
 
 TICKERS = [("BTC-USD", "Bitcoin"), ("SPY", "S&P 500 (SPY)"),
-           ("SOL-USD", "Solana"), ("MSTR", "Strategy (MSTR)"), ("TSLA", "Tesla"), ("SPCX", "SpaceX (SPCX)"),
+           ("SOL-USD", "Solana"), ("MSTR", "Strategy (MSTR)"), ("TSLA", "Tesla"), ("SPCX", "SpaceX (SPCX)"), ("UMAC", "Unusual Machines (UMAC)"),
            ("AVGO", "Broadcom"), ("NVDA", "Nvidia"), ("MU", "Micron (MU)"), ("MRVL", "Marvell Technology (MRVL)"),
            ("FWDI", "Forward Industries (FWDI)"), ("DFDV", "DeFi Development (DFDV)"), ("UPXI", "Upexi (UPXI)"),
            ("MP", "MP Materials"), ("GC=F", "Gold (futures)"), ("SLV", "Silver (SLV)"), ("SILJ", "Junior silver miners (SILJ)"),
@@ -105,7 +105,7 @@ AUX = [("SI=F", "Silver (futures, $/oz)")]   # used only to convert silver targe
 # (e.g. USER_INPUT["MP"] = 90). Leave None to ignore.
 import statistics
 USER_INPUT = {"BTC-USD": None, "ETH-USD": None, "SOL-USD": None, "SPY": None, "GC=F": None, "SLV": None, "HG=F": None,
-              "TSLA": None, "SPCX": None, "NVDA": None, "AVGO": None, "MU": None, "MRVL": None, "MP": None, "UUUU": None, "SILJ": None}
+              "TSLA": None, "SPCX": None, "NVDA": None, "AVGO": None, "MU": None, "MRVL": None, "UMAC": None, "MP": None, "UUUU": None, "SILJ": None}
 
 TARGETS_ASOF = "2026-09-28"   # date the targets were checked; sector targets are locked to prices on this date
 MON = {m: i for i, m in enumerate(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], 1)}

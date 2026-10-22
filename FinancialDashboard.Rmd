@@ -281,7 +281,7 @@ CSVs) and refreshed every day by the GitHub Action in
     <h3 class="pf-h">Sharpe ratio: Growth Portfolio</h3>
     <div class="pf-front"><canvas id="pf-front1"></canvas></div>
     <div class="pf-tot" id="pf-tot1"></div>
-    <div class="pf-note">Pale dots: 4,000 random mixes of the four Growth Portfolio holdings, plus each holding (labeled). Colored dots use each ticker's page-wide color. Dark diamond = Growth Portfolio (1); dark star = the highest-Sharpe mix (max 60% per name, 80% per category) (2).</div>
+    <div class="pf-note">Pale dots: 4,000 random mixes of the six Growth Portfolio holdings, plus each holding (labeled). Colored dots use each ticker's page-wide color. Dark diamond = Growth Portfolio (1); dark star = the highest-Sharpe mix (max 60% per name, 80% per category) (2).</div>
       </div>
       <div class="pg" data-t="Sharpe: core portfolio">
     <h3 class="pf-h">Sharpe ratio: core portfolio</h3>
@@ -475,7 +475,7 @@ CSVs) and refreshed every day by the GitHub Action in
 (function () {
   var years = 3, tf = "D", logScale = true, DATA = null, charts = [];
   var FEATURED = [];
-  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "AVGO", "NVDA", "MU", "MRVL", "FWDI", "DFDV", "UPXI", "MP", "GC=F", "SLV", "SILJ", "UUUU", "URNM", "YCA", "CPER", "ETH-USD"];
+  var SINGLES = ["BTC-USD", "SPY", "SOL-USD", "MSTR", "TSLA", "SPCX", "UMAC", "AVGO", "NVDA", "MU", "MRVL", "FWDI", "DFDV", "UPXI", "MP", "GC=F", "SLV", "SILJ", "UUUU", "URNM", "YCA", "CPER", "ETH-USD"];
   var TREASURY_T = ["MSTR", "MTPLF", "SPCX", "TSLA", "FWDI", "DFDV", "UPXI", "HSDT"];
   var PAIRS = [["ETH-USD", "BTC-USD"], ["BTC-USD", "GC=F"], ["FWDI", "SOL-USD"], ["MSTR", "BTC-USD"], ["SOL-USD", "BTC-USD"], ["SOL-USD", "DFDV"], ["AVGO", "MU"], ["AVGO", "NVDA"], ["NVDA", "MU"], ["MRVL", "AVGO"], ["MRVL", "NVDA"], ["TSLA", "SPCX"], ["SLV", "GC=F"], ["HG=F", "SLV"], ["SPY", "GC=F"], ["SOL-USD", "ETH-USD"]];
   var SHORT = {"BTC-USD": "BTC", "SOL-USD": "SOL", "BZ=F": "Brent", "GC=F": "Gold", "HG=F": "Copper", "ETH-USD": "ETH"};
@@ -511,7 +511,7 @@ CSVs) and refreshed every day by the GitHub Action in
   var TCOL = {   // mostly vibrant red / blue / yellow, with pale versions of each, some orange and shades of green
     "BTC-USD": "#f5b700", "MSTR": "#e09a00", "MTPLF": "#fbd96b", "GC=F": "#f7c948",          // yellows (bitcoin, gold)
     "SOL-USD": "#1f5fd6", "FWDI": "#2f6fe8", "UPXI": "#6a9cf0", "DFDV": "#9fc0f5", "HSDT": "#4a86e8", "ETH-USD": "#3b4fc4",   // blues (solana)
-    "TSLA": "#e02d2d", "SPCX": "#f08a8a", "MP": "#b8232b",                                                   // reds
+    "TSLA": "#e02d2d", "SPCX": "#f08a8a", "MP": "#b8232b", "UMAC": "#f28c38",                                                   // reds
     "HG=F": "#f07c1b", "CPER": "#f5a25c",                                                                      // oranges (copper)
     "NVDA": "#3fa34d", "AVGO": "#1f7a4d", "MU": "#7cc48a", "MRVL": "#2bb39a", "UUUU": "#8cc63e", "URNM": "#5a9a2a", "YCA": "#c3e08a",   // greens
     "SLV": "#a9b4c2", "SI=F": "#8795a8", "SILJ": "#c9d3e0", "SPY": "#1d2b4f" };
@@ -994,7 +994,7 @@ CSVs) and refreshed every day by the GitHub Action in
   }
   // ---------- Fair value: log regression trendline per asset ----------
   var INCEPTION = { "BTC-USD": "2009-01-03", "ETH-USD": "2015-07-30", "SOL-USD": "2020-03-16", "SPY": "1993-01-22", "TSLA": "2010-06-29", "NVDA": "1999-01-22",
-                    "AVGO": "2009-08-06", "MU": "1984-06-01", "MRVL": "2000-06-27", "MP": "2020-06-01", "GC=F": "2000-08-30", "SLV": "2006-04-28", "SILJ": "2012-11-29", "CPER": "2011-11-15", "UUUU": "2013-12-01", "URNM": "2019-12-03", "YCA": "2018-07-05" };
+                    "AVGO": "2009-08-06", "MU": "1984-06-01", "MRVL": "2000-06-27", "UMAC": "2025-02-14", "MP": "2020-06-01", "GC=F": "2000-08-30", "SLV": "2006-04-28", "SILJ": "2012-11-29", "CPER": "2011-11-15", "UUUU": "2013-12-01", "URNM": "2019-12-03", "YCA": "2018-07-05" };
   var fvChart = null, fvLine = null, FV = {};
   function fairValue(k) {
     var pts = resampleW(DATA.prices[k].points); if (pts.length < 104) return null;   // needs 2 years of weekly closes
@@ -1102,7 +1102,7 @@ CSVs) and refreshed every day by the GitHub Action in
 
   // ---------- Backtests ----------
   var SIMCH = {}, PICK_CACHE = {}, TOPN = 5;
-  var BUCKETS = [{ n: "AI", w: 0.4, k: ["TSLA", "SPCX", "NVDA", "AVGO", "MU", "MRVL"] },
+  var BUCKETS = [{ n: "AI", w: 0.4, k: ["TSLA", "SPCX", "UMAC", "NVDA", "AVGO", "MU", "MRVL"] },
                  { n: "Crypto", w: 0.4, k: ["BTC-USD", "ETH-USD", "SOL-USD", "MSTR", "MTPLF", "FWDI", "DFDV", "UPXI", "HSDT"] },
                  { n: "Commodities", w: 0.2, k: ["GC=F", "SLV", "SILJ", "CPER", "UUUU", "URNM", "YCA", "MP"] }];
   function tradePts(k) { return DATA.prices[k].adj || DATA.prices[k].points; }   // dividend-adjusted where Yahoo has it
@@ -1298,7 +1298,7 @@ CSVs) and refreshed every day by the GitHub Action in
   // Chart 2 + table, Projected Growth: today's price vs median 2030 target
   // ---------- Portfolio & Sharpe ratio ----------
   var CORE = { w: { "TSLA": 15, "FWDI": 10, "SOL-USD": 10, "UPXI": 5, "MRVL": 5, "MSTR": 20, "BTC-USD": 5, "UUUU": 20, "SILJ": 10 } };
-  var PORTFOLIO = { w: { FWDI: 48.36, TSLA: 39.87, MRVL: 10.88, UPXI: 0.88 } };
+  var PORTFOLIO = { w: { FWDI: 44.85, TSLA: 42.06, UMAC: 6.17, MRVL: 3.45, SPCX: 2.75, UPXI: 0.66 } };
   var PF_COLORS = ["#5b8def", "#f2c46d", "#e07a7a", "#76bf94", "#a8c5f7", "#f5dfa6", "#eca7a7", "#b7e2c4", "#3d6fd6", "#e3b453", "#c75b5b", "#4f9d69"];
   var pfCharts = [];
   function psd(C) {   // nearest positive semi-definite matrix (Jacobi eigen-decomposition, eigenvalues floored)
