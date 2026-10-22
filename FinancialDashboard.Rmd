@@ -242,10 +242,10 @@ CSVs) and refreshed every day by the GitHub Action in
   <div class="trades">
     <h3 class="bxt">Weekly trades &amp; allocations</h3>
     <ul>
-      <li><b>Pair Trading TSLA/SPCX:</b> Rotate all SPCX &rarr; TSLA</li>
-      <li><b>Buy TSLA:</b> Add to TSLA with new $</li>
+      <li><b>Pair trade portion of MRVL into UMAC</b></li>
+      <li><b>Buy $UMAC with new capital</b></li>
       <li><b>Old Growth Portfolio allocation:</b> FWDI 49.28%, TSLA 26.53%, SPCX 12.14%, MRVL 11.09%, UPXI 0.90%</li>
-      <li><b>New Growth Portfolio allocation:</b> FWDI 48.36%, TSLA 39.87%, MRVL 10.88%, UPXI 0.88%</li>
+      <li><b>New Growth Portfolio allocation:</b> FWDI 44.85%, TSLA 42.06%, UMAC 6.17%, MRVL 3.45%, SPCX 2.75%, UPXI 0.66%</li>
     </ul>
   </div>
   <br><br><br><br><br><br><br><br><br><br>
