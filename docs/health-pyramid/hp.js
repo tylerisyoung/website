@@ -101,21 +101,9 @@
   var BADGE = { "meta-analysis": "#1c3f80", "systematic review": "#2f5fae", "RCT": "#4f9d69", "cohort": "#b8850d", "guideline": "#5d7189", "review": "#8a94a3", "animal study": "#a61c1c" };
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 
-  function srcHtml(s) {
-    var url = s.url || (s.doi ? "https://doi.org/" + s.doi : "#");
-    var bits = [esc(s.authors), esc(s.journal), esc(s.year)];
-    if (s.doi) bits.push('DOI <a href="https://doi.org/' + esc(s.doi) + '" target="_blank" rel="noopener">' + esc(s.doi) + "</a>");
-    return '<div class="src"><div class="st"><span class="badge" style="background:' + (BADGE[s.type] || "#8a94a3") + '">' + esc(s.type) + '</span><a href="' + esc(url) + '" target="_blank" rel="noopener">' + esc(s.title) + "</a></div>" +
-      '<div class="sm">' + bits.join(" · ") + "</div><p>" + esc(s.summary) + "</p>" +
-      (s.highlight ? '<blockquote>Highlighted: <mark>“' + esc(s.highlight) + '”</mark></blockquote>' : "") + "</div>";
-  }
-  function markersHtml(d) {
-    if (!d.markers) return "";
-    return '<div class="markers"><div class="mh">Markers to check</div><dl>' + d.markers.map(function (m) { return "<dt>" + esc(m[0]) + "</dt><dd>" + esc(m[1]) + "</dd>"; }).join("") + "</dl>" +
-      (d.markers_src ? '<div class="ms">From: ' + d.markers_src.map(function (x) { return '<a href="' + esc(x[1]) + '" target="_blank" rel="noopener">' + esc(x[0]) + "</a>"; }).join(" · ") + "</div>" : "") + "</div>";
-  }
+  function srcHtml(s) { return "<li>" + s.apa + "</li>"; }
   function itemHtml(d) {
-    return '<details class="pol" id="hp-' + d.id + '"><summary>' + esc(d.title) + '</summary><div class="polbody"><p class="blurb">' + esc(d.blurb) + "</p>" + markersHtml(d) + (d.sources.length ? d.sources.map(srcHtml).join("") : '<p class="pending">Sources are being added.</p>') + "</div></details>";
+    return '<details class="pol" id="hp-' + d.id + '"><summary>' + esc(d.title) + '</summary><div class="polbody">' + (d.sources.length ? '<ol class="apa">' + d.sources.map(srcHtml).join("") + "</ol>" : '<p class="pending">Sources are being added.</p>') + "</div></details>";
   }
 
   function drawExplorer(host) {

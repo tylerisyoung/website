@@ -67,3 +67,7 @@ details.pol.flash>summary{animation:hpflash 1.6s ease-out}
 .markers .ms{font-size:.78rem;color:#6b7686;margin-top:.45rem}
 @media (max-width:600px){.markers dl{grid-template-columns:1fr}.markers dd{margin-bottom:.35rem}}
 .polbody .pending{color:#6b7686;font-size:.9rem;margin:.2rem 0}
+.apa{margin:.1rem 0 .2rem;padding-left:1.4rem}
+.apa li{padding-left:2.2em;text-indent:-2.2em;margin:0 0 .7rem;font-size:.95rem;line-height:1.55;color:#2d3a4a}
+.apa li::marker{color:#8a94a3;font-weight:600}
+.apa li a{color:#2a55b0;overflow-wrap:anywhere;text-decoration:none}.apa li a:hover{text-decoration:underline}
