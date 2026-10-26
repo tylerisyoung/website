@@ -9,7 +9,9 @@ const run = async (f) => JSON.parse(await eval("(async()=>{" + (await Zotero.HTT
 const s1 = await run("zotero_health_pyramid.js");
 U.stage1 = { created: s1.created, existing: s1.existing, manual: s1.manual, pdf: s1.pdf, nopdf: s1.nopdf.length, errors: s1.errors, trashedCollections: s1.trashedCollections };
 U.stage = "free pdfs + highlights";
-const s3 = await run("zotero_health_pyramid_free_pdfs.js");
+let s3;
+if (globalThis.HP_SKIPFREE) { const h = await run("zotero_health_pyramid_highlight.js"); s3 = { checked: 0, attached: 0, stillMissing: [], highlightedNow: h.highlighted, highlightNotFound: h.notfound, errors: h.errors }; }
+else s3 = await run("zotero_health_pyramid_free_pdfs.js");
 U.stage3 = { checked: s3.checked, attached: s3.attached, stillMissing: s3.stillMissing.length, highlightedNow: s3.highlightedNow, highlightNotFound: (s3.highlightNotFound || []).length, errors: s3.errors.concat(s3.highlightErrors || []) };
 U.stage = "done";
 return JSON.stringify(U);

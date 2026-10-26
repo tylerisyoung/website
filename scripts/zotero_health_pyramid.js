@@ -14,7 +14,7 @@ ST.total = DATA.reduce((n, d) => n + d.sources.length, 0);
 async function getCol(name, parentID) {
   const all = Zotero.Collections.getByLibrary(lib, true);
   let c = all.find((x) => x.name === name && (x.parentID || null) === (parentID || null));
-  if (c) return c;
+  if (c) { if (c.deleted) { c.deleted = false; await c.saveTx(); } return c; }
   c = new Zotero.Collection({ name, libraryID: lib });
   if (parentID) c.parentID = parentID;
   await c.saveTx();
