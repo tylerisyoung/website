@@ -17,7 +17,7 @@
 .hp-figure .it:focus{outline:none}
 .hp-figure .it .ul{opacity:.9}
 .hp-figure .tl{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:800;fill:var(--ink);letter-spacing:.16em;pointer-events:none}
-.hp-figure .bjh{font:700 17px system-ui,-apple-system,"Segoe UI",sans-serif;fill:#444;letter-spacing:.14em;text-transform:uppercase}
+.hp-figure .bjh{font:700 14px system-ui,-apple-system,"Segoe UI",sans-serif;fill:#444;letter-spacing:.14em;text-transform:uppercase}
 .hp-legend{display:flex;justify-content:center;flex-wrap:wrap;gap:.4rem 1.2rem;margin:.6rem 0 0;font:500 .9rem system-ui,sans-serif;color:var(--ink)}
 .hp-legend i{display:inline-block;width:1.4em;height:.6em;border-radius:40% 55% 45% 60%;margin-right:.35em;vertical-align:middle;opacity:.75}
 .hp-hint{text-align:center;color:var(--muted);font-size:.9rem;margin:.3rem 0 1.4rem}

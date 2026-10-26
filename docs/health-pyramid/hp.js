@@ -23,7 +23,7 @@
     var y = AY, rows = [], cuts = [], labels = [], heads = [];
     var MAXPER = { annual: 2 };
     TIERS.forEach(function (t, ti) {
-      var groups = [DATA.filter(function (d) { return d.tier === t && !d.group; }), DATA.filter(function (d) { return d.tier === t && d.group === "supp"; })];
+      var groups = [DATA.filter(function (d) { return d.tier === t && d.group === "food"; }), DATA.filter(function (d) { return d.tier === t && !d.group; })];
       var avail = function (yy) { return 2 * hw(yy - 22) - 2 * PAD; };
       // tier title sits at the top of its band, items below it
       y += ti === 0 ? 30 : 22;
@@ -39,7 +39,8 @@
       y += 14 + ROW - 6;
       groups.forEach(function (list, gi) {
         if (!list.length) return;
-        if (gi === 1) { y += 12; heads.push({ y: y, text: "Supplements" }); y += ROW - 6; }
+        if (gi === 0) { heads.push({ y: y - 6, text: "Food" }); y += ROW - 14; }
+        if (gi === 1 && groups[0].length) { y += 4; heads.push({ y: y - 6, text: "Supplements" }); y += ROW - 14; }
         // rows needed by a greedy wrap, then spread the items evenly over that many rows
         var nr = 0, gi2 = 0, yy = y;
         while (gi2 < list.length) { var ww = 0, c = 0; while (gi2 < list.length && c < (MAXPER[t] || 1e9)) { var ad = meas[list[gi2].id] + (c ? GAP : 0); if (c && ww + ad > avail(yy)) break; ww += ad; c++; gi2++; } nr++; yy += ROW; }
@@ -122,19 +123,19 @@
   }
 
   var INTRO = {
-    annual: "Once a year get a blood test to track your vitals, including ApoB, Lp(a), testosterone, hs-CRP and HbA1c, and get a CT angiogram to see what's actually going on in your arteries. Do a parasite cleanse every year too, the longer you wait the worse it gets, and papaya seeds and pumpkin seeds help with the cleanse. And finally a 72 hour or longer fast once a year is one of the best things there is for cancer, aging and all cause mortality, so suck it up and put the fork down.",
-    monthly: "Once a month do a 24 hour fast to give your gut a break and let your body clean house, and take an endurance adventure day, a long hike, ride, paddle or run somewhere wild that pushes your limits. Easy to put on the calendar, hard to actually do, so just do it.",
+    annual: "Once a year get a blood test to track your vitals, including ApoB, Lp(a), testosterone, hs-CRP and HbA1c, and get a CT angiogram to see what's actually going on in your arteries. Get a biological age test too so you know if all of this is actually slowing you down. Do a parasite cleanse every year too, the longer you wait the worse it gets, and papaya seeds and pumpkin seeds help with the cleanse. And finally a 72 hour or longer fast once a year is one of the best things there is for cancer, aging and all cause mortality, so suck it up and put the fork down.",
+    monthly: "Once a month do a 24 hour fast to give your gut a break and let your body clean house, test your VO2 max so you know if your cardio is actually working, and take an endurance adventure day, a long hike, ride, paddle or run somewhere wild that pushes your limits. Easy to put on the calendar, hard to actually do, so just do it.",
     weekly: "Every week lift heavy 2-3 times, get your cardio in with around 7 hours of easy zone 2, a hard zone 5 session (4x4 style) and a long run of 5K or more, and do a cold plunge. Add mobility and stability work so you don't fall apart when you get old, and make time for friends and getting outside in nature, social time and green space are some of the most underrated longevity tools there are.",
-    daily: "Every day is the foundation. Sleep 8 hours and wake up at the same time every day, get morning sunlight in your eyes, drink a gallon of water, hit the sauna, do Wim Hof breathing, eat your daily dozen foods and hit your protein target. Nail these and everything else on the pyramid works better.",
-    supplements: "This is a list of supplements used by the leading anti-aging people and top performance athletes, built on a solid foundation of research. Talk to a doctor before adding anything."
+    daily: "Every day is the foundation. Sleep 8 hours and wake up at the same time every day, get morning sunlight in your eyes, drink a gallon of water, hit the sauna, do Wim Hof breathing and hit your protein target. Nail these and everything else on the pyramid works better.",
+    supplements: "Food first: the daily dozen, quality protein, fish, liver, nuts, flax and the rest are the base. Then this is a list of supplements used by the leading anti-aging people and top performance athletes, built on a solid foundation of research. Talk to a doctor before adding anything."
   };
   function drawExplorer(host) {
     var tiers = [["annual", "Annual"], ["monthly", "Monthly"], ["weekly", "Weekly"], ["daily", "Daily"], ["supplements", "Supplements"]];
     var html = "";
     tiers.forEach(function (t) {
       var list = DATA.filter(function (d) { return d.tier === t[0]; });
-      var core = list.filter(function (d) { return !d.group; }), bj = list.filter(function (d) { return d.group === "supp"; });
-      html += '<section class="tier ' + t[0] + '"><h3>' + t[1] + "<small>" + list.length + " item" + (list.length > 1 ? "s" : "") + "</small></h3>" + (INTRO[t[0]] ? '<p class="tintro">' + INTRO[t[0]] + "</p>" : "") + core.map(itemHtml).join("");
+      var core = list.filter(function (d) { return !d.group; }), food = list.filter(function (d) { return d.group === "food"; }), bj = [];
+      html += '<section class="tier ' + t[0] + '"><h3>' + t[1] + "<small>" + list.length + " item" + (list.length > 1 ? "s" : "") + "</small></h3>" + (INTRO[t[0]] ? '<p class="tintro">' + INTRO[t[0]] + "</p>" : "") + (food.length ? '<div class="grp">Food</div>' + food.map(itemHtml).join("") + '<div class="grp">Supplements</div>' : "") + core.map(itemHtml).join("");
       if (bj.length) html += '<div class="grp">Supplements</div><p class="grpnote">Bryan Johnson\'s published Blueprint supplements (protocol.bryanjohnson.com and the Blueprint product labels), plus my own additions. His prescription drugs are left off: those are for a doctor to decide.</p>' + bj.map(itemHtml).join("");
       html += "</section>";
     });
