@@ -21,27 +21,38 @@
   // greedy wrap of measured chips into rows that fit the pyramid at each height
   function layout(meas) {
     var y = AY, rows = [], cuts = [], labels = [], heads = [];
+    var MAXPER = { annual: 2 };
     TIERS.forEach(function (t, ti) {
       var groups = [DATA.filter(function (d) { return d.tier === t && !d.group; }), DATA.filter(function (d) { return d.tier === t && d.group === "supp"; })];
-      y += ti === 0 ? 140 : 46;
+      var avail = function (yy) { return 2 * hw(yy - 22) - 2 * PAD; };
+      // tier title sits at the top of its band, items below it
+      y += ti === 0 ? 120 : 16;
+      y += LSIZE[t] * 0.8;
+      var first = groups[0].length ? groups[0] : groups[1];
+      if (ti === 0 && first.length) {
+        // push the apex band down until the first row (up to MAXPER chips) fits
+        var need = 0, k = Math.min(first.length, MAXPER[t] || first.length);
+        for (var j = 0; j < k; j++) need += meas[first[j].id] + (j ? GAP : 0);
+        while (avail(y + 14 + ROW - 6) < need) y += 4;
+      }
+      labels.push({ y: y, tier: t });
+      y += 14 + ROW - 6;
       groups.forEach(function (list, gi) {
         if (!list.length) return;
         if (gi === 1) { y += 12; heads.push({ y: y, text: "Supplements" }); y += ROW - 6; }
         var i = 0;
         while (i < list.length) {
-          var avail = 2 * hw(y - 22) - 2 * PAD, row = [], w = 0;
-          while (i < list.length) {
+          var row = [], w = 0, cap = MAXPER[t] || 1e9;
+          while (i < list.length && row.length < cap) {
             var add = meas[list[i].id] + (row.length ? GAP : 0);
-            if (row.length && w + add > avail) break;
+            if (row.length && w + add > avail(y)) break;
             row.push(list[i]); w += add; i++;
           }
           rows.push({ y: y, tier: t, items: row, w: w });
           y += ROW;
         }
       });
-      y += 8 + LSIZE[t] * 0.4;
-      labels.push({ y: y, tier: t });
-      y += 22;
+      y += -ROW + 26;
       cuts.push(y);
     });
     return { rows: rows, cuts: cuts.slice(0, -1), base: cuts[cuts.length - 1], labels: labels, heads: heads };
