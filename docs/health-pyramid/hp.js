@@ -121,13 +121,20 @@
     return '<details class="pol" id="hp-' + d.id + '"><summary>' + esc(d.title) + '</summary><div class="polbody">' + (d.sources.length ? '<ol class="apa">' + d.sources.map(srcHtml).join("") + "</ol>" : '<p class="pending">Sources are being added.</p>') + "</div></details>";
   }
 
+  var INTRO = {
+    annual: "Once a year get a blood test to track your vitals, including ApoB, testosterone, hs-CRP and HbA1c (the last two are on Bryan Johnson's panel). Do a parasite cleanse every year too, the longer you wait the worse it gets, and papaya seeds and pumpkin seeds help with the cleanse. And finally a 72 hour or longer fast once a year is one of the best things there is for cancer, aging and all cause mortality, so suck it up and put the fork down.",
+    monthly: "Once a month do a cold plunge to build cold tolerance and get the mood and metabolism boost, and do a 24 hour fast to give your gut a break and let your body clean house. Easy to put on the calendar, hard to actually do, so just do it.",
+    weekly: "Every week get your cardio in: around 7 hours of easy zone 2, a hard zone 5 session (4x4 style) and a long run of 5K or more. Add some stability and balance work so you don't fall apart when you get old, and make time for friends and getting outside in nature, social time and green space are some of the most underrated longevity tools there are.",
+    daily: "Every day is the foundation. Sleep 8 hours and wake up at the same time every day, get morning sunlight in your eyes, drink a gallon of water, hit the sauna, do Wim Hof breathing, stretch for 20 minutes and hit your protein target. Nail these and everything else on the pyramid works better.",
+    supplements: "This is a list of supplements used by the leading anti-aging people and top performance athletes, built on a solid foundation of research. Talk to a doctor before adding anything."
+  };
   function drawExplorer(host) {
     var tiers = [["annual", "Annual"], ["monthly", "Monthly"], ["weekly", "Weekly"], ["daily", "Daily"], ["supplements", "Supplements"]];
     var html = "";
     tiers.forEach(function (t) {
       var list = DATA.filter(function (d) { return d.tier === t[0]; });
       var core = list.filter(function (d) { return !d.group; }), bj = list.filter(function (d) { return d.group === "supp"; });
-      html += '<section class="tier ' + t[0] + '"><h3>' + t[1] + "<small>" + list.length + " item" + (list.length > 1 ? "s" : "") + "</small></h3>" + (t[0] === "supplements" ? '<p class="grpnote">Bryan Johnson\'s published Blueprint supplements (protocol.bryanjohnson.com and the Blueprint product labels), plus my own additions. His prescription drugs are left off: those are for a doctor to decide.</p>' : "") + core.map(itemHtml).join("");
+      html += '<section class="tier ' + t[0] + '"><h3>' + t[1] + "<small>" + list.length + " item" + (list.length > 1 ? "s" : "") + "</small></h3>" + (INTRO[t[0]] ? '<p class="tintro">' + INTRO[t[0]] + "</p>" : "") + core.map(itemHtml).join("");
       if (bj.length) html += '<div class="grp">Supplements</div><p class="grpnote">Bryan Johnson\'s published Blueprint supplements (protocol.bryanjohnson.com and the Blueprint product labels), plus my own additions. His prescription drugs are left off: those are for a doctor to decide.</p>' + bj.map(itemHtml).join("");
       html += "</section>";
     });
