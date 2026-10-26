@@ -12,7 +12,7 @@
   function put(g, node) { g.appendChild(node); return node; }
 
   // geometry: apex fixed, slope fixed, height grows with the content
-  var W = 1100, CX = 520, AY = 50, SLOPE = 0.6, PAD = 34, ROW = 40, GAP = 24;
+  var W = 1100, CX = 520, AY = 50, SLOPE = 0.85, PAD = 34, ROW = 40, GAP = 24;
   function hw(y) { return SLOPE * (y - AY); }
   var TIERS = ["annual", "monthly", "weekly", "daily", "supplements"];
   var LABEL = { annual: "ANNUAL", monthly: "MONTHLY", weekly: "WEEKLY", daily: "DAILY", supplements: "SUPPLEMENTS" };
@@ -26,7 +26,7 @@
       var groups = [DATA.filter(function (d) { return d.tier === t && !d.group; }), DATA.filter(function (d) { return d.tier === t && d.group === "supp"; })];
       var avail = function (yy) { return 2 * hw(yy - 22) - 2 * PAD; };
       // tier title sits at the top of its band, items below it
-      y += ti === 0 ? 120 : 16;
+      y += ti === 0 ? 30 : 22;
       y += LSIZE[t] * 0.8;
       var first = groups[0].length ? groups[0] : groups[1];
       if (ti === 0 && first.length) {
@@ -40,9 +40,13 @@
       groups.forEach(function (list, gi) {
         if (!list.length) return;
         if (gi === 1) { y += 12; heads.push({ y: y, text: "Supplements" }); y += ROW - 6; }
+        // rows needed by a greedy wrap, then spread the items evenly over that many rows
+        var nr = 0, gi2 = 0, yy = y;
+        while (gi2 < list.length) { var ww = 0, c = 0; while (gi2 < list.length && c < (MAXPER[t] || 1e9)) { var ad = meas[list[gi2].id] + (c ? GAP : 0); if (c && ww + ad > avail(yy)) break; ww += ad; c++; gi2++; } nr++; yy += ROW; }
+        var per = Math.min(MAXPER[t] || 1e9, Math.ceil(list.length / nr));
         var i = 0;
         while (i < list.length) {
-          var row = [], w = 0, cap = MAXPER[t] || 1e9;
+          var row = [], w = 0, cap = per;
           while (i < list.length && row.length < cap) {
             var add = meas[list[i].id] + (row.length ? GAP : 0);
             if (row.length && w + add > avail(y)) break;
