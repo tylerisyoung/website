@@ -144,11 +144,78 @@
     host.innerHTML = html;
   }
 
+
+  // ---- Difficulty vs benefit graph (replaces the pyramid figure) ----
+  var GC = { annual: "#e07a7a", monthly: "#76bf94", weekly: "#e0a93a", daily: "#2f5fae", food: "#6b8e23", supplements: "#e8772e", peptides: "#555" };
+  function cat(d) { return d.group === "food" ? "food" : d.group === "peptides" ? "peptides" : d.tier; }
+  function drawGraph(svg) {
+    var W = 1400, H = 1000, L = 90, R = 40, T = 40, B = 90, NS = "http://www.w3.org/2000/svg";
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    svg.setAttribute("aria-label", "Scatter chart of every item: perceived difficulty against benefit");
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    rc = rough.svg(svg);
+    var X = function (v) { return L + (v / 10) * (W - L - R); }, Y = function (v) { return H - B - (v / 10) * (H - T - B); };
+    function el(n, at, txt) { var e = document.createElementNS(NS, n); for (var k in at) e.setAttribute(k, at[k]); if (txt != null) e.textContent = txt; svg.appendChild(e); return e; }
+    // quadrant shading + names
+    var mx = X(5), my = Y(5);
+    [[X(0), T, mx - X(0), my - T, "Easy wins"], [mx, T, X(10) - mx, my - T, "Worth the grind"], [X(0), my, mx - X(0), Y(0) - my, "Nice to have"], [mx, my, X(10) - mx, Y(0) - my, "Probably skip"]].forEach(function (q, i) {
+      el("rect", { x: q[0], y: q[1], width: q[2], height: q[3], fill: i === 0 ? "#eef6ee" : i === 3 ? "#f8eeee" : "#f6f6f4" });
+      el("text", { x: i === 2 ? q[0] + q[2] - 16 : q[0] + q[2] / 2, y: i < 2 ? q[1] + 34 : q[1] + q[3] - 18, "text-anchor": i === 2 ? "end" : "middle", class: "gq" }, q[4]);
+    });
+    // axes (hand-drawn)
+    svg.appendChild(rc.line(X(0), Y(0), X(10) + 10, Y(0), o({ strokeWidth: 3 })));
+    svg.appendChild(rc.line(X(0), Y(0), X(0), T - 10, o({ strokeWidth: 3 })));
+    svg.appendChild(rc.line(mx, T, mx, Y(0), o({ strokeWidth: 1.2, stroke: "#999", roughness: 1 })));
+    svg.appendChild(rc.line(X(0), my, X(10), my, o({ strokeWidth: 1.2, stroke: "#999", roughness: 1 })));
+    el("text", { x: (X(0) + X(10)) / 2, y: H - 28, "text-anchor": "middle", class: "gax" }, "PERCEIVED DIFFICULTY →");
+    el("text", { x: 30, y: (T + Y(0)) / 2, "text-anchor": "middle", class: "gax", transform: "rotate(-90 30 " + (T + Y(0)) / 2 + ")" }, "BENEFIT →");
+    el("text", { x: X(0), y: Y(0) + 30, class: "gtk" }, "easy");
+    el("text", { x: X(10), y: Y(0) + 30, class: "gtk", "text-anchor": "end" }, "hard");
+    el("text", { x: X(0) - 12, y: Y(10) + 6, class: "gtk", "text-anchor": "end" }, "high");
+    el("text", { x: X(0) - 12, y: Y(0) - 4, class: "gtk", "text-anchor": "end" }, "low");
+    // dots
+    var pts = DATA.filter(function (d) { return d.diff != null; }).map(function (d) { return { d: d, x: X(d.diff), y: Y(d.ben) }; });
+    var gDots = el("g", {}), gLines = el("g", {}), gLab = el("g", {});
+    svg.appendChild(gLines); svg.appendChild(gDots); svg.appendChild(gLab);
+    pts.forEach(function (p) {
+      var a = document.createElementNS(NS, "a"); a.setAttribute("class", "gd"); a.setAttribute("href", "#hp-" + p.d.id); a.setAttribute("tabindex", "0");
+      var c = rc.circle(p.x, p.y, 15, o({ stroke: GC[cat(p.d)], fill: GC[cat(p.d)], fillStyle: "solid", strokeWidth: 1.5, roughness: 0.8 }));
+      a.appendChild(c);
+      var t = document.createElementNS(NS, "title"); t.textContent = p.d.label + " · difficulty " + p.d.diff + " · benefit " + p.d.ben; a.appendChild(t);
+      a.addEventListener("click", function (e) { e.preventDefault(); openItem(p.d.id); });
+      gDots.appendChild(a);
+      var lab = document.createElementNS(NS, "text"); lab.setAttribute("class", "gl"); lab.textContent = p.d.label; gLab.appendChild(lab);
+      lab.addEventListener("click", function () { openItem(p.d.id); });
+      p.lab = lab; p.w = lab.getComputedTextLength() + 4; p.h = 16; p.lx = p.x + 11; p.ly = p.y - p.h / 2;
+    });
+    // label relaxation: push overlapping label boxes apart, keep near their dot, avoid dots
+    for (var it = 0; it < 1500; it++) {
+      for (var i = 0; i < pts.length; i++) {
+        var a = pts[i];
+        for (var j = i + 1; j < pts.length; j++) {
+          var b = pts[j], ox = Math.min(a.lx + a.w, b.lx + b.w) - Math.max(a.lx, b.lx), oy = Math.min(a.ly + a.h, b.ly + b.h) - Math.max(a.ly, b.ly);
+          if (ox > 0 && oy > 0) { if (oy < ox) { var s1 = a.ly < b.ly ? -1 : 1; a.ly += s1 * oy / 2; b.ly -= s1 * oy / 2; } else { var s2 = a.lx < b.lx ? -1 : 1; a.lx += s2 * ox / 2; b.lx -= s2 * ox / 2; } }
+        }
+        pts.forEach(function (q) { // keep labels off other dots
+          var cx = Math.max(a.lx, Math.min(q.x, a.lx + a.w)), cy = Math.max(a.ly, Math.min(q.y, a.ly + a.h)), dx = q.x - cx, dy = q.y - cy;
+          if (dx * dx + dy * dy < 150) { a.ly += (q.y > a.ly + a.h / 2 ? -2 : 2); a.lx += (q.x > a.lx + a.w / 2 ? -1 : 1); }
+        });
+        a.lx += (a.x + 11 - a.lx) * 0.01; a.ly += (a.y - a.h / 2 - a.ly) * 0.01; // spring back
+        a.lx = Math.max(L + 4, Math.min(W - R - a.w, a.lx)); a.ly = Math.max(T, Math.min(Y(0) - a.h - 2, a.ly));
+      }
+    }
+    pts.forEach(function (p) {
+      p.lab.setAttribute("x", p.lx); p.lab.setAttribute("y", p.ly + 12);
+      var ax = Math.max(p.lx, Math.min(p.x, p.lx + p.w)), ay = Math.max(p.ly, Math.min(p.y, p.ly + p.h));
+      if (Math.hypot(ax - p.x, ay - p.y) > 14) gLines.appendChild(el("line", { x1: p.x, y1: p.y, x2: ax, y2: ay, stroke: "#999", "stroke-width": 1.2 }));
+    });
+  }
+
   function init() {
     var svg = document.getElementById("hp-svg"), ex = document.getElementById("hp-explorer");
     if (!svg || !ex || !window.rough) return;
     drawExplorer(ex);
-    draw(svg);
+    drawGraph(svg);
     var nS = DATA.reduce(function (n, d) { return n + d.sources.length; }, 0), c = document.getElementById("hp-count");
     if (c) c.textContent = DATA.length + " items, " + nS + " sources.";
     document.getElementById("hp-open").addEventListener("click", function () { ex.querySelectorAll("details.pol").forEach(function (d) { d.open = true; }); });

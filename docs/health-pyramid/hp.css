@@ -72,3 +72,8 @@ details.pol.flash>summary{animation:hpflash 1.6s ease-out}
 .apa li::marker{color:#8a94a3;font-weight:600}
 .apa li a{color:#2a55b0;overflow-wrap:anywhere;text-decoration:none}.apa li a:hover{text-decoration:underline}
 .hp-ex .tintro{font-size:.98rem;line-height:1.6;color:#2d3a4a;margin:0 0 .8rem}
+.hp-figure .gq{font:700 22px system-ui,-apple-system,"Segoe UI",sans-serif;fill:#9aa3ad;letter-spacing:.08em;text-transform:uppercase}
+.hp-figure .gax{font:800 22px system-ui,-apple-system,"Segoe UI",sans-serif;fill:#151515;letter-spacing:.14em}
+.hp-figure .gtk{font:500 16px system-ui,-apple-system,"Segoe UI",sans-serif;fill:#6b7686}
+.hp-figure .gl{font:500 14px system-ui,-apple-system,"Segoe UI",sans-serif;fill:#222;cursor:pointer}
+.hp-figure .gd{cursor:pointer}.hp-figure .gd:hover path{opacity:.7}
