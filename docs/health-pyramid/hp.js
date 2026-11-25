@@ -23,7 +23,7 @@
     var y = AY, rows = [], cuts = [], labels = [], heads = [];
     var MAXPER = { annual: 2 };
     TIERS.forEach(function (t, ti) {
-      var groups = [DATA.filter(function (d) { return d.tier === t && d.group === "food"; }), DATA.filter(function (d) { return d.tier === t && !d.group; })];
+      var groups = [DATA.filter(function (d) { return d.tier === t && d.group === "food"; }), DATA.filter(function (d) { return d.tier === t && !d.group; }), DATA.filter(function (d) { return d.tier === t && d.group === "peptides"; })];
       var avail = function (yy) { return 2 * hw(yy - 22) - 2 * PAD; };
       // tier title sits at the top of its band, items below it
       y += ti === 0 ? 30 : 22;
@@ -41,6 +41,7 @@
         if (!list.length) return;
         if (gi === 0) { heads.push({ y: y - 6, text: "Food" }); y += ROW - 14; }
         if (gi === 1 && groups[0].length) { y += 4; heads.push({ y: y - 6, text: "Supplements" }); y += ROW - 14; }
+        if (gi === 2) { y += 4; heads.push({ y: y - 6, text: "Peptides" }); y += ROW - 14; }
         // rows needed by a greedy wrap, then spread the items evenly over that many rows
         var nr = 0, gi2 = 0, yy = y;
         while (gi2 < list.length) { var ww = 0, c = 0; while (gi2 < list.length && c < (MAXPER[t] || 1e9)) { var ad = meas[list[gi2].id] + (c ? GAP : 0); if (c && ww + ad > avail(yy)) break; ww += ad; c++; gi2++; } nr++; yy += ROW; }
@@ -129,13 +130,14 @@
     daily: "Every day is the foundation. Sleep 8 hours and wake up at the same time every day, get morning sunlight in your eyes, drink a gallon of water, hit the sauna, do Wim Hof breathing and hit your protein target. Nail these and everything else on the pyramid works better.",
     supplements: "Food first: the daily dozen, quality protein, fish, liver, nuts, flax and the rest are the base. Then this is a list of supplements used by the leading anti-aging people and top performance athletes, built on a solid foundation of research. Talk to a doctor before adding anything."
   };
+  var PEPT = "Peptides are short chains of amino acids that tell your body to repair tissue or make more of a hormone. These three are the popular ones right now. <b>Tesamorelin</b> is the only one that's FDA approved (sold as Egrifta, for belly fat in people with HIV). It makes your body release more of its own growth hormone and mostly burns visceral and liver fat. The trials used <b>2 mg injected under the skin once a day</b> (the standard dose), and the older-adult brain study used a lower <b>1 mg a day</b> for 20 weeks. Higher than 2 mg hasn't been tested and side effects are joint pain, swelling and higher blood sugar. <b>BPC-157</b> is a healing peptide first found in stomach juice. It looks great in rats for tendons, ligaments, muscle and gut, but there are almost no human trials, just a small knee-injection chart review, so there is no tested human dose, low or high. <b>GHK-Cu</b> is a copper peptide your body makes less of as you age. The human research is mostly skin creams for collagen, wrinkles and wound healing, so injected doses haven't been studied either. The <b>30/10/10 blend</b> vials a lot of people are buying have never been tested in any study, so there is no research-backed mg or cc dose for the mix, and the cc amount depends completely on how much water the vial is mixed with. BPC-157 and GHK-Cu aren't FDA approved, BPC-157 is banned in pro sport, and grey-market vials vary a lot in what's actually in them, so do this with a doctor.";
   function drawExplorer(host) {
     var tiers = [["annual", "Annual"], ["monthly", "Monthly"], ["weekly", "Weekly"], ["daily", "Daily"], ["supplements", "Supplements"]];
     var html = "";
     tiers.forEach(function (t) {
       var list = DATA.filter(function (d) { return d.tier === t[0]; });
-      var core = list.filter(function (d) { return !d.group; }), food = list.filter(function (d) { return d.group === "food"; }), bj = [];
-      html += '<section class="tier ' + t[0] + '"><h3>' + t[1] + "<small>" + list.length + " item" + (list.length > 1 ? "s" : "") + "</small></h3>" + (INTRO[t[0]] ? '<p class="tintro">' + INTRO[t[0]] + "</p>" : "") + (food.length ? '<div class="grp">Food</div>' + food.map(itemHtml).join("") + '<div class="grp">Supplements</div>' : "") + core.map(itemHtml).join("");
+      var core = list.filter(function (d) { return !d.group; }), food = list.filter(function (d) { return d.group === "food"; }), pept = list.filter(function (d) { return d.group === "peptides"; }), bj = [];
+      html += '<section class="tier ' + t[0] + '"><h3>' + t[1] + "<small>" + list.length + " item" + (list.length > 1 ? "s" : "") + "</small></h3>" + (INTRO[t[0]] ? '<p class="tintro">' + INTRO[t[0]] + "</p>" : "") + (food.length ? '<div class="grp">Food</div>' + food.map(itemHtml).join("") + '<div class="grp">Supplements</div>' : "") + core.map(itemHtml).join("") + (pept.length ? '<div class="grp">Peptides</div><p class="tintro">' + PEPT + "</p>" + pept.map(itemHtml).join("") : "");
       if (bj.length) html += '<div class="grp">Supplements</div><p class="grpnote">Bryan Johnson\'s published Blueprint supplements (protocol.bryanjohnson.com and the Blueprint product labels), plus my own additions. His prescription drugs are left off: those are for a doctor to decide.</p>' + bj.map(itemHtml).join("");
       html += "</section>";
     });
